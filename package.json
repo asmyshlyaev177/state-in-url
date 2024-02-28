@@ -1,0 +1,181 @@
+{
+  "name": "state-in-url",
+  "version": "0.1.0",
+  "description": "Library to store state in browser URL, includes hook for NextJS, hook for pure React, and low level helpers.",
+  "homepage": "https://github.com/asmyshlyaev177/state-in-url#readme",
+  "keywords": [
+    "state-management",
+    "Next.js",
+    "client components communication",
+    "query string",
+    "typescript",
+    "react.js",
+    "workflow",
+    "javascript",
+    "hooks",
+    "reactjs",
+    "react",
+    "NextJS"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/asmyshlyaev177/state-in-url.git"
+  },
+  "author": {
+    "name": "asmyshlyaev177",
+    "email": "asmyshlyaev177@gmail.com",
+    "url": "https://www.linkedin.com/in/asmyshlyaev177/"
+  },
+  "license": "ISC",
+  "funding": {
+    "type": "patreon",
+    "url": "https://patreon.com/asmyshlyaev177"
+  },
+  "bugs": {
+    "url": "https://github.com/asmyshlyaev177/state-in-url/issues"
+  },
+  "workspaces": [
+    "packages/urlstate",
+    "packages/example-nextjs"
+  ],
+  "files": [
+    "dist"
+  ],
+  "main": "dist/index.js",
+  "type": "module",
+  "exports": {
+    "import": {
+      "default": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "module": {
+      "types": "./dist/index.js",
+      "default": "./dist/index.d.ts"
+    },
+    "default": {
+      "types": "./dist/index.js",
+      "default": "./dist/index.d.ts"
+    }
+  },
+  "types": "./dist/index.d.ts",
+  "typesVersions": {
+    "*": {
+      "*": [
+        "dist/types/"
+      ]
+    }
+  },
+  "scripts": {
+    "test:unit": "jest",
+    "test:int": "playwright test",
+    "dev": "wireit",
+    "dev:lib": "wireit",
+    "dev:nextjs": "wireit",
+    "bump": "standard-version",
+    "build": "wireit",
+    "cleanup": "rm -rf dist",
+    "setup": "playwright install --with-deps",
+    "prepare": "husky"
+  },
+  "wireit": {
+    "dev": {
+      "dependencies": [
+        "dev:lib"
+      ],
+      "service": true,
+      "command": "npm run dev:nextjs"
+    },
+    "dev:lib": {
+      "command": "cross-env IS_DEVELOPMENT=true rollup -c rollup.config.js -w",
+      "service": {
+        "readyWhen": {
+          "lineMatches": "created "
+        }
+      },
+      "dependencies": [
+        "cleanup"
+      ]
+    },
+    "dev:nextjs": {
+      "command": "cd packages/example-nextjs && npm run dev",
+      "service": {
+        "readyWhen": {
+          "lineMatches": "Compiled /"
+        }
+      }
+    },
+    "build": {
+      "command": "rollup -c rollup.config.js",
+      "dependencies": [
+        "cleanup"
+      ]
+    }
+  },
+  "browserslist": [
+    "last 5 Chrome versions",
+    "last 5 ChromeAndroid versions",
+    "last 5 Firefox versions",
+    "last 5 FirefoxAndroid versions",
+    "Firefox ESR",
+    "last 3 Safari major versions",
+    "last 2 iOS major versions"
+  ],
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "eslint --fix"
+    ],
+    "*.{html,css,less,ejs,json}": [
+      "prettier --write"
+    ]
+  },
+  "config": {
+    "commitizen": {
+      "path": "cz-conventional-changelog"
+    }
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^19.0.3",
+    "@commitlint/config-conventional": "^19.0.3",
+    "@playwright/test": "^1.42.0",
+    "@rollup/plugin-commonjs": "^25.0.7",
+    "@rollup/plugin-node-resolve": "^15.2.3",
+    "@rollup/plugin-typescript": "^11.1.6",
+    "@testing-library/dom": "^10.2.0",
+    "@testing-library/jest-dom": "^6.4.2",
+    "@testing-library/react": "^16.0.0",
+    "@testing-library/react-hooks": "^8.0.1",
+    "@types/jest": "^29.5.12",
+    "@types/node": "^20.11.24",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "commitizen": "^4.3.0",
+    "cross-env": "^7.0.3",
+    "cz": "^1.8.2",
+    "cz-conventional-changelog": "^3.3.0",
+    "eslint": "^8.57.0",
+    "eslint-plugin-maintainable": "^0.3.1",
+    "husky": "^9.0.11",
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0",
+    "lint-staged": "^15.2.2",
+    "playwright": "^1.42.0",
+    "prettier": "^3.2.5",
+    "rollup": "^2.79.1",
+    "rollup-plugin-copy": "^3.5.0",
+    "rollup-plugin-filesize": "^10.0.0",
+    "rollup-plugin-ignore": "^1.0.10",
+    "rollup-plugin-sourcemaps": "^0.6.3",
+    "rollup-plugin-terser": "^7.0.2",
+    "standard-version": "^9.5.0",
+    "ts-jest": "^29.1.5",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3",
+    "wait-on": "^7.2.0",
+    "wireit": "^0.14.4"
+  }
+}

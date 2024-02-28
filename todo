@@ -1,0 +1,16 @@
+TODO:
+react, NextJS, svelte, vue bindings in packages
+landing page in gh-pages
+
+NOTES:
+Only invalid characters are - "<>^`{|}\n\t=?
+https://stackoverflow.com/questions/1547899/which-characters-make-a-url-invalid
+standard - https://url.spec.whatwg.org/
+
+
+TODO: sitemap
+https://nextjs.org/docs/app/api-reference/file-conventions/metadata/sitemap
+
+NPM package name urlstate ?
+code example with editor
+https://github.com/suren-atoyan/monaco-react
