@@ -58,6 +58,13 @@ yarn add state-in-url
 pnpm add state-in-url
 ```
 
+## Run locally
+Clone this repo, run `npm install` and 
+```sh
+npm run dev
+```
+Go to [localhost:3000](http://localhost:3000)
+
 ## useUrlState hook for Next.js
 
 `useUrlState` is a custom React hook for Next.js applications that manages state in the URL query string. It allows you to store and retrieve state from the URL search parameters, providing a way to persist state across page reloads and share application state via URLs.
