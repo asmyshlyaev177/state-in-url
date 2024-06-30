@@ -3,7 +3,7 @@ import React from 'react';
 import { Field } from './components/Field';
 
 import { form } from './form';
-import { useUrlState } from '../../../../dist';
+import { useUrlState } from 'state-in-url';
 
 export const Status = ({ className }: { className?: string }) => {
   const { state } = useUrlState(form);

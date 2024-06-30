@@ -4,7 +4,7 @@ import { Button } from './components/Button';
 import { Field } from './components/Field';
 import { Input } from './components/Input';
 
-import { useUrlState } from '../../../../dist';
+import { useUrlState } from 'state-in-url';
 import { form } from './form';
 
 export const Form = ({ className }: { className?: string }) => {
