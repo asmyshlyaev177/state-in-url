@@ -10,6 +10,9 @@ Seamlessly sync React state with URL query parameters in Next.js/React.js applic
 
 <hr />
 
+Add a ⭐️ to support the project!
+
+  <hr />
 
 [![For hire](/assets/hireBadge.svg)](https://www.linkedin.com/in/asmyshlyaev177/)
 
