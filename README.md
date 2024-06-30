@@ -39,6 +39,7 @@ Seamlessly sync React state with URL query parameters in Next.js/React.js applic
 - [Contact & Support](#contact--support)
 - [Changelog](#changelog)
 - [License](#license)
+- [Inspiration](#inspiration)
 
 ## installation
 ```sh
@@ -224,3 +225,8 @@ const obj = Object.fromEntries(
 
 ## License
 This project is licensed under the [MIT license](https://github.com/asmyshlyaev177/state-in-url/blob/main/LICENSE).
+
+## Inspiration
+[this article](https://www.thisdot.co/blog/communication-between-client-components-in-next-js)
+
+[NextJS useSearchParams](https://nextjs.org/docs/app/api-reference/functions/use-search-params)
