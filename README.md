@@ -227,8 +227,7 @@ const obj = Object.fromEntries(
 
 ## Gothas
 
-1. Can pass only serializable values, `Function`, `BigInt` or `Symbol` won't work, probably things like `ArrayBuffer` neither. But won't throw an error if you do it accidently.
-2. Developed and tested with recent `Next.js` and `Typescript` versions.
+1. Can pass only serializable values, `Function`, `BigInt` or `Symbol` won't work, probably things like `ArrayBuffer` neither.
 
 ## Contact & Support
 
