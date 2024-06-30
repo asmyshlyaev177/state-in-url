@@ -39,24 +39,24 @@ jobs:
         path: playwright-report/
         retention-days: 10
 
-  deploy-gh-pages:
-    needs: test
-    runs-on: ubuntu-latest
-    if: github.ref_name == 'main'
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version-file: '.nvmrc'
-          cache: 'npm'
-          cache-dependency-path: 'package-lock.json'
-      - name: Install
-        run: npm install
-      - name: Build Demo
-        run: npm run build && npm run build:demo
-      - name: Deploy
-        uses: peaceiris/actions-gh-pages@v3
-        if: github.ref_name == 'main'
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./packages/example-nextjs/out
+  # deploy-gh-pages:
+  #   needs: test
+  #   runs-on: ubuntu-latest
+  #   if: github.ref_name == 'main'
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - uses: actions/setup-node@v4
+  #       with:
+  #         node-version-file: '.nvmrc'
+  #         cache: 'npm'
+  #         cache-dependency-path: 'package-lock.json'
+  #     - name: Install
+  #       run: npm install
+  #     - name: Build Demo
+  #       run: npm run build && npm run build:demo
+  #     - name: Deploy
+  #       uses: peaceiris/actions-gh-pages@v3
+  #       if: github.ref_name == 'main'
+  #       with:
+  #         github_token: ${{ secrets.GITHUB_TOKEN }}
+  #         publish_dir: ./packages/example-nextjs/out
