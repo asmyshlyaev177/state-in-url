@@ -8,11 +8,15 @@
 <div align="center">
 Seamlessly sync React state with URL query parameters in Next.js/React.js applications. Simplify state management, enhance shareability, and maintain type safety—all through your browser's URL.
 
+<a href="https://state-in-url-wine.vercel.app" target="_blank">DEMO</a>
+
+
 <hr />
 
 Add a ⭐️ to support the project!
 
   <hr />
+
 
 [![For hire](/assets/hireBadge.svg)](https://www.linkedin.com/in/asmyshlyaev177/)
 
@@ -22,7 +26,7 @@ Add a ⭐️ to support the project!
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](https://github.com/asmyshlyaev177/state-in-url/)
 ![npm bundle size (minified + gzip)](https://img.shields.io/bundlephobia/minzip/state-in-url.svg)
 
-</div>
+  </div>
 
 # Features
 - **Seamless state synchronization with URL query parameters.**
