@@ -73,6 +73,7 @@
     "dev:nextjs": "wireit",
     "bump": "standard-version",
     "build": "wireit",
+    "build:demo": "cd packages/example-nextjs && npm run build",
     "cleanup": "rm -rf dist",
     "setup": "playwright install --with-deps",
     "prepare": "husky"
