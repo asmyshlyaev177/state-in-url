@@ -215,6 +215,7 @@ const params = new URLSearchParams();
 Object.entries(state).forEach(([key, value]) => {
   params.set(key, encode(value));
 });
+const str = params.toString();
 
 // from params
 const obj = Object.fromEntries(
