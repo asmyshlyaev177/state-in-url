@@ -76,7 +76,7 @@
     "build:demo": "cd packages/example-nextjs && npx cross-env DEMO=true npm run build",
     "cleanup": "rm -rf dist",
     "setup": "playwright install --with-deps",
-    "prepare": "husky"
+    "prepare": "npx husky"
   },
   "wireit": {
     "dev": {
