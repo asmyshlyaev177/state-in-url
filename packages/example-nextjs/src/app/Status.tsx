@@ -18,7 +18,8 @@ export const Status = ({ className }: { className?: string }) => {
       <div className="flex-none  ">
         <pre
           className="h-[330px] text-sm overflow-y-scroll
-         text-gray-600 bg-white p-4 rounded-md shadow-inner"
+         text-gray-600 bg-white p-4 rounded-md shadow-inner
+          break-words whitespace-pre-wrap"
         >
           {JSON.stringify(state, null, 2)}
         </pre>
