@@ -1,15 +1,24 @@
 export const Field = ({
   className,
   children,
+  text,
+  id,
 }: {
   children: React.ReactNode;
   className?: string;
+  text: string;
+  id: string;
 }) => {
   return (
     <div
-      className={`flex flex-col gap-1 items-start
-        rounded-lg p-4 bg-slate-200 dark:text-black shadow-md ${className}`}
+      className={`block text-sm font-medium text-gray-700 mb-1 ${className}`}
     >
+      <label
+        className="mb-2 block select-none hover:cursor-pointer"
+        htmlFor={id}
+      >
+        {text}
+      </label>
       {children}
     </div>
   );

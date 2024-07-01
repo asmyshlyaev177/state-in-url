@@ -1,28 +1,27 @@
 'use client';
 import React from 'react';
-import { Field } from './components/Field';
 
-import { form } from './form';
 import { useUrlState } from 'state-in-url';
+import { form } from './form';
 
 export const Status = ({ className }: { className?: string }) => {
   const { state } = useUrlState(form);
 
   return (
     <div className={className}>
-      <div className="font-bold mb-4">Other client component</div>
-      <Field className="h-full">
-        <h3 className="font-extrabold text-lg">
-          Types and structure of data are presered
-        </h3>
+      <div className="font-semibold mb-2 text-black">
+        Other client component
+      </div>
+      <h3 className="text-black">Types and structure of data are presered</h3>
+
+      <div className="flex-none  ">
         <pre
-          className="h-full p-2 rounded-sm bg-slate-100
-              dark:text-black text-wrap break-all whitespace-pre-wrap
-              self-stretch overflow-y-auto grow-0"
+          className="h-[330px] text-sm overflow-y-scroll
+         text-gray-600 bg-white p-4 rounded-md shadow-inner"
         >
           {JSON.stringify(state, null, 2)}
         </pre>
-      </Field>
+      </div>
     </div>
   );
 };
