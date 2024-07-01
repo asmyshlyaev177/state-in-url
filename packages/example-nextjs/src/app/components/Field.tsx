@@ -11,7 +11,7 @@ export const Field = ({
 }) => {
   return (
     <div
-      className={`block text-sm font-medium text-gray-700 mb-1 ${className}`}
+      className={`block text-sm font-medium text-gray-700 mb-1 whitespace-nowrap ${className}`}
     >
       <label
         className="mb-2 block select-none hover:cursor-pointer"
