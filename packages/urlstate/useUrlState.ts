@@ -32,12 +32,21 @@ export function useUrlState<T>(defaultState?: JSONCompatible<T>) {
   );
 
   const updateUrl = React.useCallback(
-    (value: typeof state | ((currState: typeof state) => typeof state)) => {
-      typeof value === 'function'
-        ? router.push(`${pathname}?${stringify(value(state))}`)
-        : router.push(`${pathname}?${stringify(value)}`);
+    (
+      value: typeof state | ((currState: typeof state) => typeof state),
+      options?: Parameters<typeof router.push>[1],
+    ) => {
+      const currUrl = `${pathname}?${searchParams.toString()}`;
+      const isFunc = typeof value === 'function';
+      const newUrl = isFunc
+        ? `${pathname}?${stringify(value(state))}`
+        : `${pathname}?${stringify(value)}`;
+
+      if (currUrl !== newUrl) {
+        router.push(newUrl, options);
+      }
     },
-    [pathname, router, stringify, state],
+    [pathname, router, stringify, searchParams, state],
   );
 
   return { updateUrl, updateState, state };
