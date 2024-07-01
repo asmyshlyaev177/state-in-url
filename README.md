@@ -1,7 +1,6 @@
 
 <h1 align="center">state-in-url</h1>
 
-<h2 align="center">Under heavy development, NextJS hook not production ready</h2>
 
 <p align="center">
   <img src="/assets/logo.svg?raw=true" alt="Library logo"/>
@@ -9,6 +8,9 @@
 
 <div align="center">
 Seamlessly sync React state with URL query parameters in Next.js/React.js applications. Simplify state management, enhance shareability, and maintain type safety—all through your browser's URL.
+
+<h4 align="center">Don't hesitate to open issue if you found a bug</h4>
+
 
 <a href="https://state-in-url-wine.vercel.app" target="_blank">DEMO</a>
 
@@ -61,7 +63,7 @@ pnpm add state-in-url
 ```
 
 ## Run locally
-Clone this repo, run `npm install` and 
+Clone this repo, run `npm install` and
 ```sh
 npm run dev
 ```
@@ -93,7 +95,7 @@ function MyComponent() {
     <div>
       <p>Count: {state.count}</p>
 
-      <button onClick={() => updateUrl({ count: state.count + 1 })}>
+      <button onClick={() => updateUrl({ count: state.count + 1 }), { replace: true }}>
         Increment (Update URL)
       </button>
 
