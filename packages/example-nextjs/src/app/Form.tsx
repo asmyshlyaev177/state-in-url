@@ -1,7 +1,7 @@
 'use client';
 import React from 'react';
 
-import { useUrlState } from '../../../../dist';
+import { useUrlState } from 'state-in-url';
 import { form } from './form';
 
 import { Field } from './components/Field';
