@@ -3,7 +3,7 @@ import { Form } from './Form';
 import { Status } from './Status';
 import { GithubLink } from './components/GithubLink';
 
-export default function Home() {
+export default async function Home() {
   return (
     <main
       className="min-h-screen bg-gradient-to-br
