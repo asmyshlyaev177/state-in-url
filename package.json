@@ -72,7 +72,7 @@
     "dev": "wireit",
     "dev:lib": "wireit",
     "dev:nextjs": "wireit",
-    "bump": "standard-version",
+    "bump": "npx standard-version --no-verify",
     "build": "wireit",
     "build:demo": "cd packages/example-nextjs && npx cross-env DEMO=true npm run build",
     "cleanup": "rm -rf dist",
