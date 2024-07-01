@@ -12,4 +12,4 @@ https://nextjs.org/docs/app/api-reference/file-conventions/metadata/sitemap
 https://github.com/FormidableLabs/prism-react-renderer?tab=readme-ov-file#usage
 
 NOTE:
-npm i state-in-url --workspace=packages/example-nextjs
+npm i state-in-url@latest --workspace=packages/example-nextjs
