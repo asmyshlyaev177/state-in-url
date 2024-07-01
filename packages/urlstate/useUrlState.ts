@@ -34,20 +34,31 @@ export function useUrlState<T>(defaultState?: JSONCompatible<T>) {
   const updateUrl = React.useCallback(
     (
       value: typeof state | ((currState: typeof state) => typeof state),
-      options?: Parameters<typeof router.push>[1],
+      options?: Options,
     ) => {
-      const currUrl = `${pathname}?${searchParams.toString()}`;
+      const currSP = searchParams.toString();
+      const currUrl = `${pathname}${currSP.length ? '?' : ''}${currSP}`;
       const isFunc = typeof value === 'function';
-      const newUrl = isFunc
-        ? `${pathname}?${stringify(value(state))}`
-        : `${pathname}?${stringify(value)}`;
+      const qStr = isFunc ? stringify(value(state)) : stringify(value);
+      const newUrl = `${pathname}${qStr.length ? '?' : ''}${qStr}`;
 
       if (currUrl !== newUrl) {
-        router.push(newUrl, options);
+        const { replace, ...rOptions } = options || {};
+        router[replace ? 'replace' : 'push'](newUrl, {
+          scroll: false,
+          ...rOptions,
+        });
       }
     },
     [pathname, router, stringify, searchParams, state],
   );
 
   return { updateUrl, updateState, state };
+}
+
+type Router = ReturnType<typeof useRouter>;
+type RouterOptions = NonNullable<Parameters<Router['push']>[1]>;
+
+interface Options extends RouterOptions {
+  replace?: boolean;
 }
