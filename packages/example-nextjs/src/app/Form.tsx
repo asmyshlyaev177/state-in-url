@@ -7,7 +7,7 @@ import { form } from './form';
 import { Field } from './components/Field';
 import { Input } from './components/Input';
 import { RefreshButton } from './Refresh';
-import { Tag } from './components/Tab';
+import { Tag } from './components/Tag';
 
 export const Form = ({ className }: { className?: string }) => {
   const { state, updateState, updateUrl } = useUrlState(form);

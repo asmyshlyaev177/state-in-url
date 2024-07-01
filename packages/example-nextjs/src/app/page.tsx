@@ -19,11 +19,11 @@ export default function Home() {
 
         <div className="flex flex-col md:flex-row gap-8">
           <Suspense>
-            <Form className="flex  max-h-[425px] flex-col md:flex-row gap-8" />
+            <Form className="flex max-h-[450px] flex-col md:flex-row gap-8" />
           </Suspense>
           <Suspense>
             <Status
-              className="flex-1 max-h-[425px] bg-gray-100
+              className="flex-1 max-h-[450px] bg-gray-100
              rounded-lg p-4 flex flex-col shadow-md border border-grey"
             />
           </Suspense>
