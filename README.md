@@ -1,6 +1,8 @@
 
 <h1 align="center">state-in-url</h1>
 
+<h2 align="center">Under heavy development, NextJS hook not production ready</h2>
+
 <p align="center">
   <img src="/assets/logo.svg?raw=true" alt="Library logo"/>
 </p>
