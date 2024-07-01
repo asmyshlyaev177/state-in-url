@@ -26,8 +26,16 @@ export const Form = ({ className }: { className?: string }) => {
   );
 
   // set URI when state change
+  const timer = React.useRef(0 as unknown as NodeJS.Timeout);
   React.useEffect(() => {
-    updateUrl(state);
+    clearTimeout(timer.current);
+    timer.current = setTimeout(() => {
+      updateUrl(state);
+    }, 500);
+
+    return () => {
+      clearTimeout(timer.current);
+    };
   }, [state, updateUrl]);
 
   return (
