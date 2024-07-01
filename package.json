@@ -66,8 +66,9 @@
     }
   },
   "scripts": {
-    "test:unit": "jest",
+    "test:unit": "wireit",
     "test:int": "playwright test",
+    "test": "wireit",
     "dev": "wireit",
     "dev:lib": "wireit",
     "dev:nextjs": "wireit",
@@ -79,6 +80,17 @@
     "prepare": "npx husky"
   },
   "wireit": {
+    "test": {
+      "dependencies": [
+        "build",
+        "test:unit",
+        "dev:nextjs"
+      ],
+      "command": "npx playwright test --project=chromium"
+    },
+    "test:unit": {
+      "command": "npx jest"
+    },
     "dev": {
       "dependencies": [
         "dev:lib"
@@ -101,7 +113,7 @@
       "command": "cd packages/example-nextjs && npm run dev",
       "service": {
         "readyWhen": {
-          "lineMatches": "Compiled /"
+          "lineMatches": "Ready in"
         }
       }
     },
