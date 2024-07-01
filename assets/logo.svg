@@ -2,12 +2,8 @@
   <!-- Background circle -->
   <circle cx="100" cy="100" r="90" fill="#f0f0f0"/>
 
-  <!-- Circular arrow -->
-  <path d="M100,12 A88,88 0 1,1 12,100" fill="none" stroke="#0070f3" stroke-width="5" stroke-linecap="round"/>
-
-
   <!-- JS object symbol -->
-  <text x="40" y="135" font-family="monospace" font-size="120" fill="#66cc00" text-anchor="middle">{</text>
+  <text x="40" y="135" font-family="monospace" font-size="120" fill="#f97316" text-anchor="middle">{</text>
     <text x="100" y="125" font-family="monospace" font-size="72"  text-anchor="middle">🔗</text>
-      <text x="160" y="135" font-family="monospace" font-size="120" fill="#66cc00" text-anchor="middle">}</text>
+      <text x="160" y="135" font-family="monospace" font-size="120" fill="#f97316" text-anchor="middle">}</text>
 </svg>
