@@ -7,6 +7,30 @@ import { type JSONCompatible } from './utils';
  * NextJS hook. Returns `state`, `updateState`, and `updateUrl` functions
  *
  * @param {?JSONCompatible<T>} [defaultState] Optional fallback values for state
+ *
+ * * Example:
+ * ```ts
+ * export const form = { name: '' };
+ * const { state, updateState, updateUrl } = useUrlState(form);
+ *
+ * updateState({ name: 'test' });
+ * // by default it's uses router.push with scroll: false
+ * updateUrl({ name: 'test' }, { replace: true, scroll: true });
+ *  ```
+ * * Auto update URL
+ * ```ts
+ * const timer = React.useRef(0 as unknown as NodeJS.Timeout);
+ * React.useEffect(() => {
+ *   clearTimeout(timer.current);
+ *   timer.current = setTimeout(() => {
+ *     updateUrl(state);
+ *   }, 500);
+ *
+ *   return () => {
+ *    clearTimeout(timer.current);
+ *   };
+ *  }, [state, updateUrl]);
+ * ```
  */
 export function useUrlState<T>(defaultState?: JSONCompatible<T>) {
   const router = useRouter();

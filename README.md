@@ -7,7 +7,7 @@
 </p>
 
 <div align="center">
-Seamlessly sync React state with URL query parameters in Next.js/React.js applications. Simplify state management, enhance shareability, and maintain type safety—all through your browser's URL.
+Seamlessly store complex React state object in URL query parameters without losing types. Works with Next.js/React.js applications.
 
 <h4 align="center">Don't hesitate to open issue if you found a bug</h4>
 
@@ -43,9 +43,10 @@ Add a ⭐️ to support the project!
 
 ## Table of content
 - [Installation](#installation)
-- [Usage with Next.js](#useurlstate-hook-for-nextjs)
-- [Usage with React.js](#useurlencode-hook-for-reactjs)
-- [Low-level encode/decode functions](#encode-and-decode-helpers)
+- [`useUrlState` for Next.js](#useurlstate-hook-for-nextjs)
+- [`useUrlEncode` for React.js](#useurlencode-hook-for-reactjs)
+- [`encodeState` and `decodeState` for pure JS usage](#encodestate-and-decodestate-helpers)
+- [Low-level `encode` and `decode` functions](#encode-and-decode-helpers)
 - [Gothas](#gothas)
 - [Contact & Support](#contact--support)
 - [Changelog](#changelog)
@@ -71,7 +72,7 @@ Go to [localhost:3000](http://localhost:3000)
 
 ## useUrlState hook for Next.js
 
-`useUrlState` is a custom React hook for Next.js applications that manages state in the URL query string. It allows you to store and retrieve state from the URL search parameters, providing a way to persist state across page reloads and share application state via URLs.
+`useUrlState` is a custom React hook for Next.js applications that make communication between client components easy. It allows you to store and retrieve state from the URL search parameters, providing a way to persist state across page reloads and share application state via URLs.
 
 
 ### Usage examples
@@ -178,7 +179,7 @@ function SettingsComponent() {
 
 ## useUrlEncode hook for React.js
 
-`useUrlEncode` is a custom React hook that provides utility functions for encoding and decoding state to and from URL search parameters. This hook doesn't depend on Nextjs, and will works with any React application.
+`useUrlEncode` is a custom React hook that provides utility functions for encoding and decoding state object to and from URL search parameters. This hook doesn't depend on Nextjs, and will works with any React application.
 
 Accepts optional `defaultState` argument.
 
@@ -203,6 +204,22 @@ const Component = () => {
     // Output: existing params + query=react%20hooks&page=2
   };
 }
+```
+
+## `encodeState` and `decodeState` helpers
+
+`encodeState` let you encode some object with optional `defaults`, and optional existing queryString
+```ts
+ export const form = { name: '' };
+...
+ encodeState({ name: 'test' }, form, 'someExistingParam=123');
+```
+
+`decodeState` let you decode queryString with optional defaults
+```ts
+ export const form = { name: '' };
+...
+ decodeState('name=Alex', form);
 ```
 
 ## `encode` and `decode` helpers

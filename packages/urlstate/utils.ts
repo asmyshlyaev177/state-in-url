@@ -66,3 +66,10 @@ export type JSONCompatible<T> = unknown extends T
 export type DeepReadonly<T> = Readonly<{
   readonly [P in keyof T]: DeepReadonly<T[P]>;
 }>;
+
+export const getParams = (strOrSearchParams?: string | URLSearchParams) =>
+  new URLSearchParams(
+    typeof strOrSearchParams === 'string'
+      ? strOrSearchParams
+      : strOrSearchParams?.toString?.() || '',
+  );

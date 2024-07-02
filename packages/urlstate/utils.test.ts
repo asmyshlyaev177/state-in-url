@@ -1,4 +1,4 @@
-import { typeOf } from './utils';
+import { typeOf, getParams } from './utils';
 
 describe('typeOf', () => {
   it('string', () => {
@@ -48,5 +48,27 @@ describe('typeOf', () => {
 
   it('function', () => {
     expect(typeOf(() => {})).toEqual('function');
+  });
+});
+
+describe('getParams', () => {
+  it('should return URLSearchParams instance', () => {
+    expect(getParams('')).toBeInstanceOf(URLSearchParams);
+  });
+
+  it('from string', () => {
+    const url = 'key1=value1&key2=value2';
+    const url2 = `?${url}`;
+    expect(getParams(url).toString()).toStrictEqual(url);
+    expect(getParams(url2).toString()).toStrictEqual(url);
+  });
+
+  it('from URLSearchParams', () => {
+    const url = 'key1=value1&key2=value2';
+    const url2 = `?${url}`;
+    const params = new URLSearchParams(url);
+    const params2 = new URLSearchParams(url2);
+    expect(getParams(params).toString()).toStrictEqual(url);
+    expect(getParams(params2).toString()).toStrictEqual(url);
   });
 });

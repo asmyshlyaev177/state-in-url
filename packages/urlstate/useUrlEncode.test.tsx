@@ -42,6 +42,7 @@ describe('useUrlEncode', () => {
       } = renderHook(() => useUrlEncode<object>());
 
       expect(state).toStrictEqual(parse(stringify(state)));
+      expect(state).toStrictEqual(parse(new URLSearchParams(stringify(state))));
     });
   });
 
