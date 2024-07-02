@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.4](https://github.com/asmyshlyaev177/state-in-url/compare/v0.1.3...v0.1.4) (2024-07-02)
+
+
+### Features
+
+* `encodeState` and `decodeState` functions ([abc4dcb](https://github.com/asmyshlyaev177/state-in-url/commit/abc4dcbd51512f0bd2bef2abd4e2f78241a34b56))
+
 ### [0.1.3](https://github.com/asmyshlyaev177/state-in-url/compare/v0.1.2...v0.1.3) (2024-07-01)
 
 
