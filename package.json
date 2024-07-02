@@ -121,13 +121,10 @@
       }
     },
     "build": {
-      "command": "rollup -c rollup.config.js && npm run cleanupDist",
+      "command": "rollup -c rollup.config.js",
       "dependencies": [
         "cleanup"
       ]
-    },
-    "cleanupDist": {
-      "command": "find dist/ | grep -E '(test|spec).d.ts' | xargs rm"
     }
   },
   "browserslist": [
