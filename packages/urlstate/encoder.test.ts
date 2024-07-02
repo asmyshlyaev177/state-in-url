@@ -1,5 +1,3 @@
-/* eslint-disable no-secrets/no-secrets */
-/* eslint-disable max-len */
 import { encode, decode } from './encoder';
 
 describe('encoder', () => {

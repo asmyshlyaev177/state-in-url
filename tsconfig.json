@@ -27,6 +27,6 @@
     "strict": true,
     "skipLibCheck": true
   },
-  "include": ["./packages/index.ts"],
+  "include": ["packages/index.ts", "packages/urlstate/**/*", "tests/**/*"],
   "exclude": ["node_modules"]
 }

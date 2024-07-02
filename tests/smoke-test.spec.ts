@@ -1,4 +1,3 @@
-/* eslint-disable no-secrets/no-secrets */
 import { test, expect } from '@playwright/test';
 
 test('Cross browser test', async ({ page }) => {
