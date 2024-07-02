@@ -1,4 +1,6 @@
 export {
+  encodeState,
+  decodeState,
   encode,
   decode,
   type Type,
