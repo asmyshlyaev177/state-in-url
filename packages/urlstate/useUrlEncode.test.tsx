@@ -1,4 +1,3 @@
-/* eslint-disable no-secrets/no-secrets */
 import { renderHook } from '@testing-library/react';
 
 import { useUrlEncode } from './useUrlEncode';
