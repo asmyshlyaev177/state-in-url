@@ -79,6 +79,7 @@
     "start:demo": "cd packages/example-nextjs && npm run build && npx serve -s ./out",
     "cleanup": "rm -rf dist",
     "setup": "playwright install --with-deps",
+    "cleanupDist": "wireit",
     "prepare": "npx husky"
   },
   "wireit": {
@@ -120,10 +121,13 @@
       }
     },
     "build": {
-      "command": "rollup -c rollup.config.js",
+      "command": "rollup -c rollup.config.js && npm run cleanupDist",
       "dependencies": [
         "cleanup"
       ]
+    },
+    "cleanupDist": {
+      "command": "find dist/ | grep -E '(test|spec).d.ts' | xargs rm"
     }
   },
   "browserslist": [
