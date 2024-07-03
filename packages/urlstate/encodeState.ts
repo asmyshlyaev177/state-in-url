@@ -1,5 +1,5 @@
 import { encode, decode } from './encoder';
-import { type JSONCompatible, getParams } from './utils';
+import { type JSONCompatible, getParams, type UnknownObj } from './utils';
 
 /**
  * Encodes the state object into a URL query string.
@@ -43,7 +43,7 @@ export function encodeState<T>(
  */
 export function decodeState<T>(
   uriString: string | URLSearchParams,
-  defaults?: never extends T ? object : JSONCompatible<T>,
+  defaults?: JSONCompatible<T>,
 ) {
   return {
     ...(defaults || {}),
@@ -53,5 +53,5 @@ export function decodeState<T>(
         decode(value) ?? defaults?.[key as keyof typeof defaults],
       ]),
     ),
-  } as never extends T ? object : T;
+  } as undefined extends T ? UnknownObj : T;
 }

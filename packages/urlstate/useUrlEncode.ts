@@ -1,5 +1,10 @@
 import React from 'react';
-import { typeOf, type JSONCompatible, type DeepReadonly } from './utils';
+import {
+  typeOf,
+  type JSONCompatible,
+  type DeepReadonly,
+  type UnknownObj,
+} from './utils';
 import { encodeState, decodeState } from './encodeState';
 
 /**
@@ -24,12 +29,14 @@ export function useUrlEncode<T>(stateShape?: JSONCompatible<T>) {
   const stringify = React.useCallback(
     function (
       state:
-        | DeepReadonly<NonNullable<typeof stateShape>>
-        | NonNullable<typeof stateShape>,
+        | typeof stateShape
+        | NonNullable<typeof stateShape>
+        | DeepReadonly<NonNullable<typeof stateShape>>,
+
       paramsToKeep?: string | URLSearchParams,
     ): string {
       return typeOf(state) === 'object'
-        ? encodeState(state, stateShape, paramsToKeep)
+        ? encodeState(state as object, stateShape, paramsToKeep)
         : '';
     },
     [stateShape],
@@ -37,9 +44,9 @@ export function useUrlEncode<T>(stateShape?: JSONCompatible<T>) {
 
   const parse = React.useCallback(
     function (strOrSearchParams: string | URLSearchParams) {
-      return decodeState(strOrSearchParams, stateShape) as DeepReadonly<
-        NonNullable<typeof stateShape>
-      >;
+      return decodeState(strOrSearchParams, stateShape) as undefined extends T
+        ? DeepReadonly<UnknownObj>
+        : DeepReadonly<NonNullable<typeof stateShape>>;
     },
     [stateShape],
   );

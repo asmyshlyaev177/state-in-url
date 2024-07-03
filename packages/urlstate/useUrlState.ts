@@ -63,7 +63,10 @@ export function useUrlState<T>(defaultState?: JSONCompatible<T>) {
       const currSP = searchParams.toString();
       const currUrl = `${pathname}${currSP.length ? '?' : ''}${currSP}`;
       const isFunc = typeof value === 'function';
-      const qStr = isFunc ? stringify(value(state)) : stringify(value);
+      const qStr = isFunc
+        ? // @ts-expect-error output is string, and it can handle invalid input
+          stringify(value(state))
+        : stringify(value as unknown as JSONCompatible<T>);
       const newUrl = `${pathname}${qStr.length ? '?' : ''}${qStr}`;
 
       if (currUrl !== newUrl) {

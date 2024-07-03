@@ -61,13 +61,15 @@ describe('decodeState', () => {
   it('should decode a simple state object', () => {
     const uriString = 'key1=value1&key2=value2';
     const expected = { key1: 'value1', key2: 'value2' };
-    expect(decodeState(uriString)).toEqual(expected);
+    const result = decodeState(uriString, { key1: '', key2: '' });
+    expect(result).toEqual(expected);
   });
 
   it('should decode a state object with nested values', () => {
     const uriString = 'key1=value1&key2={"nestedKey":"nestedValue"}';
     const expected = { key1: 'value1', key2: { nestedKey: 'nestedValue' } };
-    expect(decodeState(uriString)).toEqual(expected);
+    const result = decodeState<typeof expected>(uriString);
+    expect(result).toEqual(expected);
   });
 
   it('should decode a state object with default values', () => {

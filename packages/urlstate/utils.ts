@@ -73,3 +73,5 @@ export const getParams = (strOrSearchParams?: string | URLSearchParams) =>
       ? strOrSearchParams
       : strOrSearchParams?.toString?.() || '',
   );
+
+export type UnknownObj = { [key: string]: unknown };
