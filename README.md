@@ -6,12 +6,22 @@
   <img src="/assets/logo.svg?raw=true" alt="Library logo"/>
 </p>
 
+
+<div align="center">
+  
+[![For hire](/assets/hireBadge.svg)](https://www.linkedin.com/in/asmyshlyaev177/)
+
+
+[![npm](https://img.shields.io/npm/v/state-in-url.svg)](https://www.npmjs.com/package/state-in-url)
+![Tests](https://github.com/asmyshlyaev177/state-in-url/actions/workflows/tests.yml/badge.svg?branch=main)
+[![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](https://github.com/asmyshlyaev177/state-in-url/)
+![npm bundle size (minified + gzip)](https://img.shields.io/bundlephobia/minzip/state-in-url.svg)
+</div>
+
 <div align="center">
 Seamlessly store complex React state object in URL query parameters without losing types. Works with Next.js/React.js applications.
 
 <h4 align="center">Don't hesitate to open issue if you found a bug</h4>
-
-
 
 
 https://github.com/asmyshlyaev177/state-in-url/assets/19854148/10456887-f149-4745-b3f1-e799e70b16cd
@@ -26,25 +36,25 @@ Add a ⭐️ to support the project!
 
   <hr />
 
-
-[![For hire](/assets/hireBadge.svg)](https://www.linkedin.com/in/asmyshlyaev177/)
-
-
-[![npm](https://img.shields.io/npm/v/state-in-url.svg)](https://www.npmjs.com/package/state-in-url)
-![Tests](https://github.com/asmyshlyaev177/state-in-url/actions/workflows/tests.yml/badge.svg?branch=main)
-[![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](https://github.com/asmyshlyaev177/state-in-url/)
-![npm bundle size (minified + gzip)](https://img.shields.io/bundlephobia/minzip/state-in-url.svg)
-
   </div>
 
+  ## Why use state-in-url?
+
+state-in-url simplifies the process of storing application state in URL parameters, enabling:
+
+- 🔗 Shareable URLs with full application state
+- 🔄 Easy state persistence across page reloads
+- 🧠 Pass data between unrelated client components
+
 # Features
-- **Seamless state synchronization with URL query parameters.**
-- **Preserves shape and types of data**
-- **Full TypeScript support for enhanced developer experience.**
-- **Automatic serialization and deserialization of complex objects.**
-- **Separate hooks for Next.js (useUrlState) and React.js (useUrlEncode) usage.**
-- **Efficient updates with minimal re-renders.**
-- **Lightweight, no dependencies.**
+- 🔄 **Seamless Synchronization**: Store and retrieve complex React state in URL parameters
+- 🛡️ **Type Safety**: Preserves data types and structure for improved reliability
+- 📘 **Full TypeScript Support**: Enhances developer experience with strong typing
+- 🧩 **Automatic Serialization**: Handles complex objects without extra effort
+- ⚛️ **Framework Flexibility**: Separate hooks for Next.js and React.js applications, and functions for pure JS
+- ⚡ **Efficient Updates**: Minimizes re-renders for optimal performance
+- 🪶 **Lightweight**: Zero dependencies for a smaller footprint
+
 
 ## Table of content
 - [Installation](#installation)
@@ -52,6 +62,7 @@ Add a ⭐️ to support the project!
 - [`useUrlEncode` for React.js](#useurlencode-hook-for-reactjs)
 - [`encodeState` and `decodeState` for pure JS usage](#encodestate-and-decodestate-helpers)
 - [Low-level `encode` and `decode` functions](#encode-and-decode-helpers)
+- [Best practices](#best-practices)
 - [Gothas](#gothas)
 - [Contact & Support](#contact--support)
 - [Changelog](#changelog)
@@ -251,6 +262,13 @@ const obj = Object.fromEntries(
   ]),
 )
 ```
+
+## Best Practices
+
+- Define your state shape as a constant to ensure consistency
+- Use TypeScript for enhanced type safety and autocomplete
+- Avoid storing sensitive information in URL parameters
+- Use `updateState` for frequent updates and `updateUrl` to sync changes to url
 
 ## Gothas
 
