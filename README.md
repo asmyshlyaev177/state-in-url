@@ -274,6 +274,7 @@ const obj = Object.fromEntries(
 ## Gothas
 
 1. Can pass only serializable values, `Function`, `BigInt` or `Symbol` won't work, probably things like `ArrayBuffer` neither.
+2. Vercel servers limit size of headers (query string and other stuff) to **14KB**, so keep your URL state under ~5000 words. https://vercel.com/docs/errors/URL_TOO_LONG
 
 ## Contact & Support
 
