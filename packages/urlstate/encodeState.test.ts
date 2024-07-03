@@ -95,6 +95,30 @@ describe('decodeState', () => {
     ).toStrictEqual(state);
   });
 
+  describe('invalid values(trimmed url string)', () => {
+    it('when one nested value invalid and replace with defaults', () => {
+      const state = { str: 'test', num: 123, bool: true, arr: [1, 'str'] };
+      const defaults2 = { str: '', num: 0, bool: false, arr: [0, ''] };
+      expect(
+        decodeState(
+          'str=%E2%97%96test&num=%E2%88%93123&bool=%F0%9F%97%B5true&arr=%57str%27%5D',
+          defaults2,
+        ),
+      ).toStrictEqual({ ...state, arr: defaults2.arr });
+    });
+
+    it('when 2 values invalid and replace with defaults', () => {
+      const state = { str: 'test', num: 123, bool: true, arr: [1, 'str'] };
+      const defaults2 = { str: '', num: 0, bool: false, arr: [0, ''] };
+      expect(
+        decodeState(
+          'str=%E2%97%96test&num=%E23123&bool=%F0%9F%97%B5true&arr=%57str%27%5D',
+          defaults2,
+        ),
+      ).toStrictEqual({ ...state, arr: defaults2.arr, num: defaults2.num });
+    });
+  });
+
   it('should return an empty object for an empty URI string', () => {
     expect(decodeState('')).toEqual({});
     expect(decodeState(undefined as unknown as string)).toEqual({});
