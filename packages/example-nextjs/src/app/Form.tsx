@@ -14,12 +14,50 @@ import { Tag } from './components/Tag';
 export const Form = ({ className }: { className?: string }) => {
   const { state, updateState, updateUrl } = useUrlState(form);
 
-  const handleChange = React.useCallback(
+  const onChangeAge = React.useCallback(
     (ev: React.ChangeEvent<HTMLInputElement>) => {
+      const val = +ev.target.value;
+      updateState((curr) => {
+        return {
+          ...curr,
+          age: val ? val : undefined,
+        };
+      });
+    },
+    [updateState],
+  );
+
+  const onChangeName = React.useCallback(
+    (ev: React.ChangeEvent<HTMLInputElement>) => {
+      updateState((curr) => {
+        return {
+          ...curr,
+          name: ev.target.value,
+        };
+      });
+    },
+    [updateState],
+  );
+
+  const onChangeTerms = React.useCallback(
+    (ev: React.ChangeEvent<HTMLInputElement>) => {
+      updateState((curr) => {
+        return {
+          ...curr,
+          'agree to terms': !!ev.target.checked,
+        };
+      });
+    },
+    [updateState],
+  );
+
+  const onChangeTags = React.useCallback(
+    (tag: (typeof tags)[number]) => {
       updateState((curr) => ({
         ...curr,
-        [ev.target.id]:
-          ev.target.type === 'checkbox' ? ev.target.checked : ev.target.value,
+        tags: curr.tags.find((t) => t.id === tag.id)
+          ? curr.tags.filter((t) => t.id !== tag.id)
+          : curr.tags.concat(tag),
       }));
     },
     [updateState],
@@ -47,7 +85,7 @@ export const Form = ({ className }: { className?: string }) => {
 
         <div className="space-y-6">
           <Field id="name" text="Name">
-            <Input id="name" value={state.name} onChange={handleChange} />
+            <Input id="name" value={state.name} onChange={onChangeName} />
           </Field>
 
           <Field id="age" text="Age">
@@ -55,7 +93,7 @@ export const Form = ({ className }: { className?: string }) => {
               id="age"
               type="number"
               value={state.age}
-              onChange={handleChange}
+              onChange={onChangeAge}
             />
           </Field>
 
@@ -68,7 +106,7 @@ export const Form = ({ className }: { className?: string }) => {
               id="agree to terms"
               type="checkbox"
               checked={state['agree to terms']}
-              onChange={handleChange}
+              onChange={onChangeTerms}
             />
           </Field>
 
@@ -78,14 +116,7 @@ export const Form = ({ className }: { className?: string }) => {
                 <Tag
                   active={!!state.tags.find((t) => t.id === tag.id)}
                   text={tag.value.text}
-                  onClick={() =>
-                    updateState((curr) => ({
-                      ...curr,
-                      tags: curr.tags.find((t) => t.id === tag.id)
-                        ? curr.tags.filter((t) => t.id !== tag.id)
-                        : curr.tags.concat(tag),
-                    }))
-                  }
+                  onClick={() => onChangeTags(tag)}
                   key={tag.id}
                 />
               ))}
