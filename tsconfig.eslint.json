@@ -28,6 +28,6 @@
     "skipLibCheck": true,
     "noEmit": true
   },
-  "include": ["packages/**/*"],
+  "include": ["packages/**/*", "tests/**/*"],
   "exclude": ["node_modules"]
 }

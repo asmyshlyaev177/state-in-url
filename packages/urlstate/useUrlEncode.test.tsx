@@ -58,8 +58,7 @@ describe('useUrlEncode', () => {
     };
     // no bool1 here because it is false here and in stateShape
     const stateStr =
-      // eslint-disable-next-line max-len
-      'str=string1&num=%E2%88%933333&float=%E2%88%933.14&bool2=%F0%9F%97%B5true&obj=%7B%27test%27%3A%27%E2%88%93123%27%7D&arr=%5B%27%E2%88%931%27%2C%27%E2%88%932%27%2C%27%E2%88%933%27%5D';
+      'str=%E2%97%96string1&num=%E2%88%933333&float=%E2%88%933.14&bool2=%F0%9F%97%B5true&obj=%7B%27test%27%3A%27%E2%88%93123%27%7D&arr=%5B%27%E2%88%931%27%2C%27%E2%88%932%27%2C%27%E2%88%933%27%5D';
     describe('stringify', () => {
       it('should return nothing if initial state not changed', () => {
         const { result } = renderHook(() => useUrlEncode(stateShape));
@@ -72,7 +71,7 @@ describe('useUrlEncode', () => {
 
         expect(
           result.current.stringify({ ...stateShape, str: 'my string %' }),
-        ).toEqual('str=my%2520string%2520%2525');
+        ).toEqual('str=%E2%97%96my%2520string%2520%2525');
         expect(result.current.stringify(state)).toEqual(stateStr);
       });
     });
@@ -85,13 +84,24 @@ describe('useUrlEncode', () => {
     });
   });
 
-  it('invalid string', () => {
-    const { result } = renderHook(() => useUrlEncode());
+  describe('invalid string', () => {
+    const invalidStr =
+      '?tags=%5B%7B%27id%27%3A%273%27%2C%27value%27%3A%7B%27text%27%3A%27Tailwi';
+    it('with fallback value', () => {
+      const shape: {
+        tags?: { id: string; value: { text: string; time: Date } }[];
+      } = { tags: [] };
+      const { result } = renderHook(() => useUrlEncode(shape));
 
-    expect(result.current.parse('1key_!=val&&0=val1&->=>{}')).toStrictEqual({
-      '->': '>{}',
-      '0': 'val1',
-      '1key_!': 'val',
+      const expected = result.current.parse(invalidStr);
+      expect(expected).toStrictEqual({ tags: [] });
+    });
+
+    it('no fallback value', () => {
+      const { result } = renderHook(() => useUrlEncode());
+
+      const expected = result.current.parse(invalidStr);
+      expect(expected).toStrictEqual({ tags: undefined });
     });
   });
 
@@ -101,15 +111,16 @@ describe('useUrlEncode', () => {
       params.set('key', 'value');
       const { result } = renderHook(() => useUrlEncode(stateShape));
 
+      const expected = 'key=value&str=%E2%97%96some%2520string';
       expect(
         result.current.stringify({ ...stateShape, str: 'some string' }, params),
-      ).toEqual('key=value&str=some%2520string');
+      ).toEqual(expected);
       expect(
         result.current.stringify(
           { ...stateShape, str: 'some string' },
           params.toString(),
         ),
-      ).toEqual('key=value&str=some%2520string');
+      ).toEqual(expected);
     });
   });
 });

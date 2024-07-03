@@ -17,7 +17,9 @@ export function encode(payload: unknown): string {
     case 'date':
       return SYMBOLS.date + (payload as Date).toISOString();
     case 'string':
-      return encodeURIComponent(payload as string);
+      return (payload as string).match(/^◖/)
+        ? encodeURIComponent(payload as string)
+        : `${SYMBOLS.string}${encodeURIComponent(payload as string)}`;
     case 'number':
       return SYMBOLS.number + String(payload as number);
     case 'boolean':
@@ -30,7 +32,7 @@ export function encode(payload: unknown): string {
     case 'undefined':
       return SYMBOLS.undefined;
     default:
-      return String(payload as string);
+      return String(payload);
   }
 }
 
@@ -43,38 +45,58 @@ const replacer = (key: string, value: unknown) => {
   return key && type !== 'object' && type !== 'array' ? encode(value) : value;
 };
 
-const decodeStr = (str: string) => {
-  if (str.match(/^∓/)) return Number.parseFloat(str.replaceAll('∓', ''));
-  if (str.match(/^🗵/)) return str.includes('true') ? true : false;
-  if (str.match(/^⏲/)) return new Date(str.slice(1));
+type Primitive = Exclude<ReturnType<typeof decodePrimitive>, typeof errorSym>;
+
+export const decodePrimitive = (str: string) => {
   if (str === SYMBOLS.null) return null;
   if (str === SYMBOLS.undefined) return undefined;
-  return decodeURIComponent(str);
+  if (str.startsWith(SYMBOLS.number))
+    return Number.parseFloat(str.replace(SYMBOLS.number, ''));
+  if (str.startsWith(SYMBOLS.boolean))
+    return str.includes('true') ? true : false;
+  if (str.startsWith(SYMBOLS.date)) return new Date(str.slice(1));
+
+  if (str.startsWith(SYMBOLS.string))
+    return decodeURIComponent(str).replace(/^◖/, '');
+
+  return errorSym;
 };
+
+export const errorSym = Symbol('isError');
 
 const reviver = (key: string, value: unknown) => {
-  return key && typeof value === 'string' ? decodeStr(value) : value;
+  const isStr = typeof value === 'string';
+  const decoded = isStr && decodePrimitive(value as string);
+  if (decoded === errorSym) return value;
+  return key && isStr ? decoded : value;
 };
 
-const parseJSON = (str: string) => {
-  let result;
-
+/**
+ * Parses a JSON string into a TypeScript object.
+ *
+ * @param {string} jsonString - The JSON string to parse.
+ * @param {T} [fallbackValue] - The fallback value to use if parsing fails.
+ * @return {T | Primitive | undefined} - The parsed object or a primitive value, or undefined if parsing fails.
+ */
+export function parseJSON<T>(
+  jsonString: string,
+  fallbackValue?: T,
+): T | Primitive | undefined {
   try {
-    result = JSON.parse(str, reviver);
-    // eslint-disable-next-line no-empty
-  } catch {}
-
-  return result;
-};
+    return JSON.parse(jsonString, reviver) as T;
+  } catch {
+    const decodedValue = decodePrimitive(jsonString);
+    return decodedValue !== errorSym ? decodedValue : fallbackValue;
+  }
+}
 
 /**
  * Decode value part of URLSearchParams back to JS value
  *
  * @param {string} payload URLSearchParams compatible value string
+ * @param {any} fallback optional fallback value
  * @returns {unknown} decoded object
  */
-export function decode<T>(payload: string): T {
-  const str = payload.replaceAll("'", '"');
-
-  return parseJSON(str) ?? decodeStr(payload);
+export function decode<T>(payload: string, fallback?: T) {
+  return parseJSON<T>(payload.replaceAll("'", '"'), fallback);
 }

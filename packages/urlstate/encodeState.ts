@@ -48,10 +48,10 @@ export function decodeState<T>(
   return {
     ...(defaults || {}),
     ...Object.fromEntries(
-      [...getParams(uriString).entries()].map(([key, value]) => [
-        key,
-        decode(value) ?? defaults?.[key as keyof typeof defaults],
-      ]),
+      [...getParams(uriString).entries()].map(([key, value]) => {
+        const fallback = defaults?.[key as keyof typeof defaults];
+        return [key, decode(value, fallback) ?? fallback];
+      }),
     ),
   } as undefined extends T ? UnknownObj : T;
 }

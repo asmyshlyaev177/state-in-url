@@ -1,4 +1,10 @@
-import { encode, decode } from './encoder';
+import {
+  encode,
+  decode,
+  decodePrimitive,
+  parseJSON,
+  errorSym,
+} from './encoder';
 
 describe('encoder', () => {
   describe('string', () => {
@@ -67,7 +73,7 @@ describe('encoder', () => {
         obj1: { obj2: { str: 'my_str' } },
       };
       expect(encode(obj)).toStrictEqual(
-        "{'num':'∓123','num2':'∓3.14','b1':'🗵true','b2':'🗵false','str':'test%20string','n':'∙null','obj1':{'obj2':{'str':'my_str'}}}",
+        "{'num':'∓123','num2':'∓3.14','b1':'🗵true','b2':'🗵false','str':'◖test%20string','n':'∙null','obj1':{'obj2':{'str':'◖my_str'}}}",
       );
       expect(obj).toStrictEqual(decode(encode(obj)));
     });
@@ -76,8 +82,9 @@ describe('encoder', () => {
   describe('array', () => {
     it('simple', () => {
       const obj = [123, 1.55, false];
-      expect(encode(obj)).toStrictEqual("['∓123','∓1.55','🗵false']");
-      expect(obj).toStrictEqual(decode(encode(obj)));
+      const expected = "['∓123','∓1.55','🗵false']";
+      expect(encode(obj)).toStrictEqual(expected);
+      expect(obj).toStrictEqual(decode(expected));
     });
 
     it('nested', () => {
@@ -86,6 +93,12 @@ describe('encoder', () => {
         "['∓123',['∓45','🗵true',{'arr':['∓1','∓2',{'test':'🗵true'},'∙null']}]]",
       );
       expect(obj).toStrictEqual(decode(encode(obj)));
+    });
+
+    it('array with invalid value', () => {
+      const expected = [1, 'str'];
+      expect(decode("['∓1','str']", expected)).toStrictEqual(expected);
+      expect(decode("['∓1','str']")).toStrictEqual(expected);
     });
   });
 
@@ -143,5 +156,85 @@ describe('real life example', () => {
     const a2 = performance.now();
     console.log('encode time', a2 - a1 + ' milliseconds');
     expect(bigObj).toStrictEqual(result);
+  });
+});
+
+describe('decodePrimitive', () => {
+  it('null', () => {
+    expect(decodePrimitive('∙null')).toStrictEqual(null);
+  });
+
+  it('undefined', () => {
+    expect(decodePrimitive('∙undefined')).toStrictEqual(undefined);
+  });
+
+  it('boolean', () => {
+    expect(decodePrimitive('🗵false')).toStrictEqual(false);
+    expect(decodePrimitive('🗵true')).toStrictEqual(true);
+  });
+
+  it('number', () => {
+    expect(decodePrimitive('∓3')).toStrictEqual(3);
+    expect(decodePrimitive('∓3.14')).toStrictEqual(3.14);
+  });
+
+  it('date', () => {
+    const date = new Date('2024-06-28T09:10:38.763Z');
+    expect((decodePrimitive(`⏲${date}`) as Date).toString()).toStrictEqual(
+      date.toString(),
+    );
+  });
+
+  it('string', () => {
+    expect(decodePrimitive('◖test%20string')).toStrictEqual('test string');
+  });
+
+  it('invalid string', () => {
+    expect(decodePrimitive('')).toStrictEqual(errorSym);
+    expect(decodePrimitive('invalid')).toStrictEqual(errorSym);
+    const date = new Date('2024-06-28T09:10:38.763Z');
+    expect(decodePrimitive(` ⏲${date}`) as Date).toStrictEqual(errorSym);
+    expect(decodePrimitive(' ∙null')).toStrictEqual(errorSym);
+    expect(decodePrimitive(' ∙undefined')).toStrictEqual(errorSym);
+    expect(decodePrimitive(' 🗵false')).toStrictEqual(errorSym);
+    expect(decodePrimitive(' 🗵true')).toStrictEqual(errorSym);
+    expect(decodePrimitive(' ∓3')).toStrictEqual(errorSym);
+    expect(decodePrimitive(' ∓3.14')).toStrictEqual(errorSym);
+    expect(decodePrimitive(' ◖test%20string')).toStrictEqual(errorSym);
+  });
+});
+
+describe('parseJSON', () => {
+  const state = {
+    age: 30,
+    terms: true,
+    terms2: false,
+    n: null,
+    u: undefined,
+    arr: [],
+    obj: {},
+    arr1: [1, 2],
+    obj1: { t: 123 },
+  };
+
+  it('standard JSON without strings', () => {
+    // undefined stripped out in default JSON too, toStrictEqual preserves undefined
+    expect(parseJSON(JSON.stringify(state))).toEqual(state);
+  });
+
+  it('standard JSON', () => {
+    expect(parseJSON(JSON.stringify({ ...state, str: 'string' }))).toEqual({
+      ...state,
+      str: 'string',
+    });
+  });
+
+  it('with encoded values', () => {
+    expect(parseJSON(encode(state).replace(/'/g, '"'))).toEqual(state);
+  });
+
+  it('should return fallback for invalid JSON', () => {
+    expect(parseJSON('invalid', '')).toEqual('');
+    expect(parseJSON('invalid')).toEqual(undefined);
   });
 });
