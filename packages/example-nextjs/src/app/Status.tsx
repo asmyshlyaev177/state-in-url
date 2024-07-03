@@ -19,7 +19,7 @@ export const Status = ({ className }: { className?: string }) => {
         <pre
           className="h-[330px] text-sm overflow-y-scroll
          text-gray-600 bg-white p-4 rounded-md shadow-inner
-          break-words whitespace-pre-wrap"
+          break-all whitespace-pre-wrap"
         >
           {JSON.stringify(state, null, 2)}
         </pre>
