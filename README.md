@@ -45,6 +45,7 @@ state-in-url simplifies the process of storing application state in URL paramete
 - 🔗 Shareable URLs with full application state
 - 🔄 Easy state persistence across page reloads
 - 🧠 Pass data between unrelated client components
+- 🧮 Store unsaved user forms in URL
 
 # Features
 - 🔄 **Seamless Synchronization**: Store and retrieve complex React state in URL parameters
