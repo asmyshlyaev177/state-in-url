@@ -80,7 +80,8 @@ describe('useUrlEncode', () => {
     it('parse', () => {
       const { result } = renderHook(() => useUrlEncode(stateShape));
 
-      expect(result.current.parse(stateStr)).toStrictEqual(state);
+      const expected = result.current.parse(stateStr);
+      expect(expected).toStrictEqual(state);
     });
   });
 
