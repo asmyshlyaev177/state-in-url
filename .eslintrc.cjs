@@ -8,6 +8,7 @@ module.exports = {
   },
   rules: {
     "max-len": "off",
-    "no-secrets/no-secrets": "off"
+    "no-secrets/no-secrets": "off",
+    "complexity": ["error", 12]
   }
 };

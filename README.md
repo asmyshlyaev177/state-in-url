@@ -258,6 +258,7 @@ const str = params.toString();
 const obj = Object.fromEntries(
   [...params.entries()].map(([key, value]) => [
     key,
+    // decode(value, optionalFallback),
     decode(value),
   ]),
 )
