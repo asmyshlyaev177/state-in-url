@@ -26,7 +26,7 @@ export function encode(payload: unknown): string {
       return SYMBOLS.boolean + String(payload as boolean);
     case 'object':
     case 'array':
-      return encodeObject(payload as object);
+      return JSON.stringify(payload as object, replacer).replaceAll('"', "'");
     case 'null':
       return SYMBOLS.null;
     case 'undefined':
@@ -35,10 +35,6 @@ export function encode(payload: unknown): string {
       return String(payload);
   }
 }
-
-const encodeObject = (val: object) => {
-  return JSON.stringify(val, replacer).replaceAll('"', "'");
-};
 
 const replacer = (key: string, value: unknown) => {
   const type = typeOf(value);
