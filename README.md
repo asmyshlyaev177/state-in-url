@@ -27,7 +27,7 @@ Seamlessly store complex React state object in URL query parameters without losi
 https://github.com/asmyshlyaev177/state-in-url/assets/19854148/10456887-f149-4745-b3f1-e799e70b16cd
 
 
-<a href="https://state-in-url-wine.vercel.app" target="_blank">DEMO</a>
+<a href="[https://state-in-url-wine.vercel.app](https://state-in-url-asmyshlyaev177.vercel.app/)" target="_blank">DEMO</a>
 
 
 <hr />
