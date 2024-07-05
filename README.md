@@ -50,7 +50,7 @@ Add a ⭐️ to support the project!
 
 # Features
 - 🧩 **Simple**: Handles complex objects without extra effort
-- 📘 **Typescript support and type Safety**: Preserves data types and structure, and enhances developer experience with strong typing
+- 📘 **Typescript support and type Safety**: Preserves data types and structure, enhances developer experience with strong typing and JSDoc comments
 - ⚛️ **Framework Flexibility**: Separate hooks for Next.js and React.js applications, and functions for pure JS
 - 🪶 **Lightweight**: Zero dependencies for a smaller footprint
 
