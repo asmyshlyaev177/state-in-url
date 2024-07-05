@@ -17,20 +17,8 @@ import { type JSONCompatible } from './utils';
  * // by default it's uses router.push with scroll: false
  * updateUrl({ name: 'test' }, { replace: true, scroll: true });
  *  ```
- * * Auto update URL
- * ```ts
- * const timer = React.useRef(0 as unknown as NodeJS.Timeout);
- * React.useEffect(() => {
- *   clearTimeout(timer.current);
- *   timer.current = setTimeout(() => {
- *     updateUrl(state);
- *   }, 500);
  *
- *   return () => {
- *    clearTimeout(timer.current);
- *   };
- *  }, [state, updateUrl]);
- * ```
+ *  * Github {@link https://github.com/asmyshlyaev177/state-in-url}
  */
 export function useUrlState<T>(defaultState?: JSONCompatible<T>) {
   const router = useRouter();

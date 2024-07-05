@@ -24,6 +24,8 @@ import { encodeState, decodeState } from './encodeState';
  * // by default it's uses router.push with scroll: false
  * parse('name=Tom');
  *  ```
+ *
+ * * Github {@link https://github.com/asmyshlyaev177/state-in-url}
  */
 export function useUrlEncode<T>(stateShape?: JSONCompatible<T>) {
   const stringify = React.useCallback(
