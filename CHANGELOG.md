@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.7](https://github.com/asmyshlyaev177/state-in-url/compare/v0.1.5...v0.1.7) (2024-07-05)
+
+
+### Features
+
+* use fallback for invalid/incomplet URL string ([7690030](https://github.com/asmyshlyaev177/state-in-url/commit/76900302379a9579df3813e0d77d2fa578a75d06))
+
 ### [0.1.6](https://github.com/asmyshlyaev177/state-in-url/compare/v0.1.5...v0.1.6) (2024-07-03)
 
 
