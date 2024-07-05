@@ -40,20 +40,18 @@ Add a ⭐️ to support the project!
 
   ## Why use state-in-url?
 
-state-in-url simplifies the process of storing application state in URL parameters, enabling:
+`state-in-url` lets you use URI string for state management.
 
+# Use cases
 - 🔗 Shareable URLs with full application state
 - 🔄 Easy state persistence across page reloads
 - 🧠 Pass data between unrelated client components
 - 🧮 Store unsaved user forms in URL
 
 # Features
-- 🔄 **Seamless Synchronization**: Store and retrieve complex React state in URL parameters
-- 🛡️ **Type Safety**: Preserves data types and structure for improved reliability
-- 📘 **Full TypeScript Support**: Enhances developer experience with strong typing
-- 🧩 **Automatic Serialization**: Handles complex objects without extra effort
+- 🧩 **Simple**: Handles complex objects without extra effort
+- 📘 **Typescript support and type Safety**: Preserves data types and structure, and enhances developer experience with strong typing
 - ⚛️ **Framework Flexibility**: Separate hooks for Next.js and React.js applications, and functions for pure JS
-- ⚡ **Efficient Updates**: Minimizes re-renders for optimal performance
 - 🪶 **Lightweight**: Zero dependencies for a smaller footprint
 
 
@@ -62,6 +60,7 @@ state-in-url simplifies the process of storing application state in URL paramete
 - [`useUrlState` for Next.js](#useurlstate-hook-for-nextjs)
 - [`useUrlEncode` for React.js](#useurlencode-hook-for-reactjs)
 - [`encodeState` and `decodeState` for pure JS usage](#encodestate-and-decodestate-helpers)
+- [auto sync state with url](#auto-sync-state)
 - [Low-level `encode` and `decode` functions](#encode-and-decode-helpers)
 - [Best practices](#best-practices)
 - [Gothas](#gothas)
@@ -80,12 +79,6 @@ yarn add state-in-url
 pnpm add state-in-url
 ```
 
-## Run locally
-Clone this repo, run `npm install` and
-```sh
-npm run dev
-```
-Go to [localhost:3000](http://localhost:3000)
 
 ## useUrlState hook for Next.js
 
@@ -120,6 +113,7 @@ function MyComponent() {
       <button onClick={() => updateState({ count: state.count + 1 })}>
         Increment (Local Only)
       </button>
+
       <button onClick={() => updateUrl(state)}>
         Sync changes to url
       </button>
@@ -179,6 +173,23 @@ function Component() {
     </div>
   )
 }
+```
+
+#### Auto sync state
+
+```typescript
+  const timer = React.useRef(0 as unknown as NodeJS.Timeout);
+  React.useEffect(() => {
+    clearTimeout(timer.current);
+    timer.current = setTimeout(() => {
+      // will compare state by content not by reference and fire update only for new values 
+      updateUrl(state);
+    }, 500);
+
+    return () => {
+      clearTimeout(timer.current);
+    };
+  }, [state, updateUrl]);
 ```
 
 #### With arbitrary state shape (not recommended)
@@ -276,6 +287,14 @@ const obj = Object.fromEntries(
 
 1. Can pass only serializable values, `Function`, `BigInt` or `Symbol` won't work, probably things like `ArrayBuffer` neither.
 2. Vercel servers limit size of headers (query string and other stuff) to **14KB**, so keep your URL state under ~5000 words. https://vercel.com/docs/errors/URL_TOO_LONG
+
+## Run locally
+Clone this repo, run `npm install` and
+```sh
+npm run dev
+```
+Go to [localhost:3000](http://localhost:3000)
+
 
 ## Contact & Support
 
