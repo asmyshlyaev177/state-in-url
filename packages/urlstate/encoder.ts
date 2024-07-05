@@ -6,6 +6,8 @@ import { SYMBOLS } from './constants';
  *
  * @param {unknown} payload any value to serialize
  * @returns {string} URLSearchParams compatible value string
+ *
+ *  * Github {@link https://github.com/asmyshlyaev177/state-in-url}
  */
 export function encode(payload: unknown): string {
   const type = typeOf(payload);
@@ -73,6 +75,8 @@ const reviver = (key: string, value: unknown) => {
  * @param {string} jsonString - The JSON string to parse.
  * @param {T} [fallbackValue] - The fallback value to use if parsing fails.
  * @return {T | Primitive | undefined} - The parsed object or a primitive value, or undefined if parsing fails.
+ *
+ *  * Github {@link https://github.com/asmyshlyaev177/state-in-url}
  */
 export function parseJSON<T>(
   jsonString: string,
@@ -92,6 +96,8 @@ export function parseJSON<T>(
  * @param {string} payload URLSearchParams compatible value string
  * @param {any} fallback optional fallback value
  * @returns {unknown} decoded object
+ *
+ *  * Github {@link https://github.com/asmyshlyaev177/state-in-url}
  */
 export function decode<T>(payload: string, fallback?: T) {
   return parseJSON<T>(payload.replaceAll("'", '"'), fallback);
