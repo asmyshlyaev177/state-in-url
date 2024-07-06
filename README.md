@@ -310,6 +310,8 @@ Go to [localhost:3000](http://localhost:3000)
 This project is licensed under the [MIT license](https://github.com/asmyshlyaev177/state-in-url/blob/main/LICENSE).
 
 ## Inspiration
-[this article](https://www.thisdot.co/blog/communication-between-client-components-in-next-js)
+[Using URL to store state in Vue ](https://dev.to/jacobandrewsky/using-url-to-store-state-in-vue-275c)
+
+[Storing state in the URL](https://antonz.org/storing-state/)
 
 [NextJS useSearchParams](https://nextjs.org/docs/app/api-reference/functions/use-search-params)
