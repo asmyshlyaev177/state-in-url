@@ -8,7 +8,7 @@
 
 
 <div align="center">
-  
+
 [![For hire](/assets/hireBadge.svg)](https://www.linkedin.com/in/asmyshlyaev177/)
 
 
@@ -113,7 +113,6 @@ function MyComponent() {
       <button onClick={() => updateState({ count: state.count + 1 })}>
         Increment (Local Only)
       </button>
-
       <button onClick={() => updateUrl(state)}>
         Sync changes to url
       </button>
@@ -186,7 +185,7 @@ function Component() {
   React.useEffect(() => {
     clearTimeout(timer.current);
     timer.current = setTimeout(() => {
-      // will compare state by content not by reference and fire update only for new values 
+      // will compare state by content not by reference and fire update only for new values
       updateUrl(state);
     }, 500);
 
