@@ -117,6 +117,10 @@ function MyComponent() {
       <button onClick={() => updateUrl(state)}>
         Sync changes to url
       </button>
+
+      <button onClick={() => updateUrl(state)}>
+        Reset
+      </button>
     </div>
   )
 }
