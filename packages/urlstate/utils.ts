@@ -35,6 +35,8 @@ export const typeOf = (val: unknown): Type => {
   );
 };
 
+export const isSSR = () => typeof window === 'undefined';
+
 type JSONPrimitive = string | number | boolean | Date | null | undefined;
 
 type JSONValue =
@@ -75,3 +77,6 @@ export const getParams = (strOrSearchParams?: string | URLSearchParams) =>
   );
 
 export type UnknownObj = { [key: string]: unknown };
+
+export const isEqual = (val1: unknown, val2: unknown) =>
+  JSON.stringify(val1) === JSON.stringify(val2);
