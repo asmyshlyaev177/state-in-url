@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.2.0](https://github.com/asmyshlyaev177/state-in-url/compare/v0.1.5...v0.2.0) (2024-07-08)
+
+
+### ⚠ BREAKING CHANGES
+
+* `defaultState` arg in `useUrlState` now required, could be just `const state: {
+[key: string]: value: any } = {}`
+
+### Features
+
+* observer pattern to communicate between `useUrlState` hooks, stateShape parameter required ([f8d8db1](https://github.com/asmyshlyaev177/state-in-url/commit/f8d8db10740fe2507a59fd424bc5eb560ab0b834))
+* use fallback for invalid/incomplet URL string ([7690030](https://github.com/asmyshlyaev177/state-in-url/commit/76900302379a9579df3813e0d77d2fa578a75d06))
+
 ### [0.1.7](https://github.com/asmyshlyaev177/state-in-url/compare/v0.1.5...v0.1.7) (2024-07-05)
 
 
