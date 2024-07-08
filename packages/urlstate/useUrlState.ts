@@ -23,7 +23,9 @@ import { parseSsrQs } from './encoder';
  *  * Github {@link https://github.com/asmyshlyaev177/state-in-url}
  */
 export function useUrlState<T>(defaultState: JSONCompatible<T>, sp?: object) {
-  const { state, getState, setState, stringify } = useState(defaultState);
+  const { state, getState, setState, stringify } = useState(
+    isSSR() ? parseSsrQs(sp, defaultState) : defaultState,
+  );
 
   const router = useRouter();
 
@@ -38,7 +40,7 @@ export function useUrlState<T>(defaultState: JSONCompatible<T>, sp?: object) {
       options?: Options,
     ) => {
       const currSP = window.location.search;
-      const currUrl = `${window.location.pathname}${currSP.length ? '?' : ''}${currSP}`;
+      const currUrl = `${window.location.pathname}${currSP.length && !currSP.includes('?') ? '?' : ''}${currSP}`;
       const isFunc = typeof value === 'function';
       const qStr = isFunc
         ? stringify(value(getState()))
@@ -59,7 +61,7 @@ export function useUrlState<T>(defaultState: JSONCompatible<T>, sp?: object) {
   return {
     updateUrl,
     updateState: setState,
-    state: isSSR() ? parseSsrQs(sp, defaultState) : state,
+    state,
   };
 }
 
