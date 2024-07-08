@@ -94,7 +94,7 @@ pnpm add state-in-url
 import { useUrlState } from 'state-in-url';
 
 // State shape should be stored in a constant, don't pass an object directly
-const countState = { count: 0 };
+const countState: { count: number } = { count: 0 };
 
 function MyComponent() {
   const { state, updateState, updateUrl } = useUrlState(countState);
