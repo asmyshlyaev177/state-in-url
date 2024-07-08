@@ -4,17 +4,18 @@ import { useSearchParams } from 'next/navigation';
 import { useUrlEncode } from '../../../../urlstate/useUrlEncode';
 import { Textarea } from './Textarea';
 import { toJSON } from './utils';
+import { stateShape } from './state';
 
 export const Comp2 = ({ className }: { className: string }) => {
   const searchParams = useSearchParams();
 
-  const { parse } = useUrlEncode<object>();
+  const { parse } = useUrlEncode(stateShape);
 
   return (
     <Textarea
       className={className}
       value={toJSON(parse(searchParams))}
-      data-testid="parse"
+      data-testid="parsed"
       onChange={() => {}}
     ></Textarea>
   );

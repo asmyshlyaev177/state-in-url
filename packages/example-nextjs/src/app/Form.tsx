@@ -11,8 +11,29 @@ import { Input } from './components/Input';
 import { RefreshButton } from './Refresh';
 import { Tag } from './components/Tag';
 
-export const Form = ({ className }: { className?: string }) => {
-  const { state, updateState, updateUrl } = useUrlState(form);
+export const Form = ({
+  className,
+  sp,
+  delay = 1500,
+}: {
+  className?: string;
+  sp?: object;
+  delay?: number;
+}) => {
+  const { state, updateState, updateUrl } = useUrlState(form, sp);
+
+  // set URI when state change
+  const timer = React.useRef(0 as unknown as NodeJS.Timeout);
+  React.useEffect(() => {
+    clearTimeout(timer.current);
+    timer.current = setTimeout(() => {
+      updateUrl(state);
+    }, delay);
+
+    return () => {
+      clearTimeout(timer.current);
+    };
+  }, [state, updateUrl, delay]);
 
   const onChangeAge = React.useCallback(
     (ev: React.ChangeEvent<HTMLInputElement>) => {
@@ -62,19 +83,6 @@ export const Form = ({ className }: { className?: string }) => {
     },
     [updateState],
   );
-
-  // set URI when state change
-  const timer = React.useRef(0 as unknown as NodeJS.Timeout);
-  React.useEffect(() => {
-    clearTimeout(timer.current);
-    timer.current = setTimeout(() => {
-      updateUrl(state);
-    }, 500);
-
-    return () => {
-      clearTimeout(timer.current);
-    };
-  }, [state, updateUrl]);
 
   return (
     <div className={className}>
@@ -131,7 +139,16 @@ export const Form = ({ className }: { className?: string }) => {
 };
 
 const tags = [
-  { id: '1', value: { text: 'React.js', time: new Date() } },
-  { id: '2', value: { text: 'Next.js', time: new Date() } },
-  { id: '3', value: { text: 'TailwindCSS', time: new Date() } },
+  {
+    id: '1',
+    value: { text: 'React.js', time: new Date(2024, 6, 17, 8, 53, 17) },
+  },
+  {
+    id: '2',
+    value: { text: 'Next.js', time: new Date(2024, 6, 18, 8, 53, 17) },
+  },
+  {
+    id: '3',
+    value: { text: 'TailwindCSS', time: new Date(2024, 6, 19, 8, 53, 17) },
+  },
 ];

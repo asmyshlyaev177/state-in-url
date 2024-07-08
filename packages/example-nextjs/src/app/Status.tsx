@@ -5,8 +5,14 @@ import { useUrlState } from 'state-in-url';
 // import { useUrlState } from '../../../../dist';
 import { form } from './form';
 
-export const Status = ({ className }: { className?: string }) => {
-  const { state } = useUrlState(form);
+export const Status = ({
+  className,
+  sp,
+}: {
+  className?: string;
+  sp?: object;
+}) => {
+  const { state } = useUrlState(form, sp);
 
   return (
     <div className={className}>
@@ -20,6 +26,7 @@ export const Status = ({ className }: { className?: string }) => {
           className="h-[330px] text-sm overflow-y-scroll
          text-gray-600 bg-white p-4 rounded-md shadow-inner
           break-all whitespace-pre-wrap"
+          data-testid="parsed"
         >
           {JSON.stringify(state, null, 2)}
         </pre>
