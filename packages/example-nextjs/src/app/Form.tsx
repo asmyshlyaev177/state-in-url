@@ -141,14 +141,14 @@ export const Form = ({
 const tags = [
   {
     id: '1',
-    value: { text: 'React.js', time: new Date(2024, 6, 17, 8, 53, 17) },
+    value: { text: 'React.js', time: new Date('2024-07-17T04:53:17.000Z') },
   },
   {
     id: '2',
-    value: { text: 'Next.js', time: new Date(2024, 6, 18, 8, 53, 17) },
+    value: { text: 'Next.js', time: new Date('2024-07-18T04:53:17.000Z') },
   },
   {
     id: '3',
-    value: { text: 'TailwindCSS', time: new Date(2024, 6, 19, 8, 53, 17) },
+    value: { text: 'TailwindCSS', time: new Date('2024-07-19T04:53:17.000Z') },
   },
 ];
