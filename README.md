@@ -160,6 +160,20 @@ function SettingsComponent() {
     }));
   };
 
+  // sync state to url when idle
+  const timer = React.useRef(0 as unknown as NodeJS.Timeout);
+  React.useEffect(() => {
+    clearTimeout(timer.current);
+    timer.current = setTimeout(() => {
+      // will compare state by content not by reference and fire update only for new values
+      updateUrl(state);
+    }, 500);
+
+    return () => {
+      clearTimeout(timer.current);
+    };
+  }, [state, updateUrl]);
+
   return (
     <div>
       <h2>User Settings</h2>
