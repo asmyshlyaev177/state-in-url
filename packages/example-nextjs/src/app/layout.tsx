@@ -11,6 +11,8 @@ export const metadata: Metadata = {
     'Demo page that demostrates communication between client components in Next.js',
 };
 
+const isDev = process.env.NODE_ENV === 'development';
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -19,7 +21,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>{children}</body>
-      <Analytics />
+      {isDev ? null : <Analytics />}
     </html>
   );
 }
