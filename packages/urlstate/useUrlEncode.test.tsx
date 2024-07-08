@@ -39,7 +39,7 @@ describe('useUrlEncode', () => {
         result: {
           current: { stringify, parse },
         },
-      } = renderHook(() => useUrlEncode<object>());
+      } = renderHook(() => useUrlEncode(state));
 
       expect(state).toStrictEqual(parse(stringify(state)));
       expect(state).toStrictEqual(parse(new URLSearchParams(stringify(state))));
@@ -59,6 +59,7 @@ describe('useUrlEncode', () => {
     // no bool1 here because it is false here and in stateShape
     const stateStr =
       'str=%E2%97%96string1&num=%E2%88%933333&float=%E2%88%933.14&bool2=%F0%9F%97%B5true&obj=%7B%27test%27%3A%27%E2%88%93123%27%7D&arr=%5B%27%E2%88%931%27%2C%27%E2%88%932%27%2C%27%E2%88%933%27%5D';
+
     describe('stringify', () => {
       it('should return nothing if initial state not changed', () => {
         const { result } = renderHook(() => useUrlEncode(stateShape));
@@ -84,25 +85,16 @@ describe('useUrlEncode', () => {
     });
   });
 
-  describe('invalid string', () => {
+  it('invalid string', () => {
     const invalidStr =
       '?tags=%5B%7B%27id%27%3A%273%27%2C%27value%27%3A%7B%27text%27%3A%27Tailwi';
-    it('with fallback value', () => {
-      const shape: {
-        tags?: { id: string; value: { text: string; time: Date } }[];
-      } = { tags: [] };
-      const { result } = renderHook(() => useUrlEncode(shape));
+    const shape: {
+      tags?: { id: string; value: { text: string; time: Date } }[];
+    } = { tags: [] };
+    const { result } = renderHook(() => useUrlEncode(shape));
 
-      const expected = result.current.parse(invalidStr);
-      expect(expected).toStrictEqual({ tags: [] });
-    });
-
-    it('no fallback value', () => {
-      const { result } = renderHook(() => useUrlEncode());
-
-      const expected = result.current.parse(invalidStr);
-      expect(expected).toStrictEqual({ tags: undefined });
-    });
+    const expected = result.current.parse(invalidStr);
+    expect(expected).toStrictEqual({ tags: [] });
   });
 
   describe('preserving existing queryParams', () => {

@@ -1,6 +1,5 @@
-import { Form } from './Form';
-import { Status } from './Status';
-import { GithubLink } from './components/GithubLink';
+import { Form } from '../Form';
+import { Status } from '../Status';
 
 export default async function Home({ searchParams }: { searchParams: object }) {
   return (
@@ -13,13 +12,13 @@ export default async function Home({ searchParams }: { searchParams: object }) {
           <h1 className="text-3xl font-bold text-gray-800">
             <span className="font-mono">state-in-url</span> Demo
           </h1>
-          <GithubLink />
         </header>
 
         <div className="flex flex-col md:flex-row gap-8">
           <Form
             className="flex max-h-[450px] flex-col md:flex-row gap-8 basis-1/2"
             sp={searchParams}
+            delay={400}
           />
           <Status
             className="flex-1 max-h-[450px] bg-gray-100

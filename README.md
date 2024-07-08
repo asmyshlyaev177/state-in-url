@@ -97,6 +97,9 @@ import { useUrlState } from 'state-in-url';
 const countState: { count: number } = { count: 0 };
 
 function MyComponent() {
+  // for use searchParams from server component
+  // e.g. export default async function Home({ searchParams }: { searchParams: object }) {
+  // const { state, updateState, updateUrl } = useUrlState(countState, searchParams);
   const { state, updateState, updateUrl } = useUrlState(countState);
 
   // won't let you to accidently mutate state directly, requires TS
@@ -113,7 +116,7 @@ function MyComponent() {
       <button onClick={() => updateState({ count: state.count + 1 })}>
         Increment (Local Only)
       </button>
-      <button onClick={() => updateUrl(state)}>
+      <button onClick={() => updateUrl()}>
         Sync changes to url
       </button>
 

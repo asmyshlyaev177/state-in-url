@@ -1,10 +1,5 @@
 import React from 'react';
-import {
-  typeOf,
-  type JSONCompatible,
-  type DeepReadonly,
-  type UnknownObj,
-} from './utils';
+import { typeOf, type JSONCompatible, type DeepReadonly } from './utils';
 import { encodeState, decodeState } from './encodeState';
 
 /**
@@ -12,7 +7,7 @@ import { encodeState, decodeState } from './encodeState';
  * to and from URL search parameters.
  *
  * @template T - The type of the state shape
- * @param {JSONCompatible<T>} [stateShape] Optional fallback values for state
+ * @param {JSONCompatible<T>} [stateShape] Fallback values for state
  * @returns {} `stringify` and `parse` functions
  *
  * * Example:
@@ -27,7 +22,7 @@ import { encodeState, decodeState } from './encodeState';
  *
  * * Github {@link https://github.com/asmyshlyaev177/state-in-url}
  */
-export function useUrlEncode<T>(stateShape?: JSONCompatible<T>) {
+export function useUrlEncode<T>(stateShape: JSONCompatible<T>) {
   const stringify = React.useCallback(
     function (
       state:
@@ -46,9 +41,9 @@ export function useUrlEncode<T>(stateShape?: JSONCompatible<T>) {
 
   const parse = React.useCallback(
     function (strOrSearchParams: string | URLSearchParams) {
-      return decodeState(strOrSearchParams, stateShape) as undefined extends T
-        ? DeepReadonly<UnknownObj>
-        : DeepReadonly<NonNullable<typeof stateShape>>;
+      return decodeState(strOrSearchParams, stateShape) as DeepReadonly<
+        NonNullable<typeof stateShape>
+      >;
     },
     [stateShape],
   );

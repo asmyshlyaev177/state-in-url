@@ -1,12 +1,14 @@
-import { useRouter, usePathname, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import React from 'react';
-import { useUrlEncode } from './useUrlEncode';
-import { type JSONCompatible } from './utils';
+import { DeepReadonly, isSSR, type JSONCompatible } from './utils';
+import { useState } from './state';
+import { parseSsrQs } from './encoder';
 
 /**
  * NextJS hook. Returns `state`, `updateState`, and `updateUrl` functions
  *
- * @param {?JSONCompatible<T>} [defaultState] Optional fallback values for state
+ * @param {JSONCompatible<T>} [defaultState] Fallback (default) values for state
+ * @param {?SearchParams<T>} [searchParams] searchParams from Next server component
  *
  * * Example:
  * ```ts
@@ -20,42 +22,28 @@ import { type JSONCompatible } from './utils';
  *
  *  * Github {@link https://github.com/asmyshlyaev177/state-in-url}
  */
-export function useUrlState<T>(defaultState?: JSONCompatible<T>) {
+export function useUrlState<T>(defaultState: JSONCompatible<T>, sp?: object) {
+  const { state, getState, setState, stringify } = useState(defaultState);
+
   const router = useRouter();
-  const pathname = usePathname();
-  const { parse, stringify } = useUrlEncode(defaultState);
-  const searchParams = useSearchParams();
-  const [state, setState] = React.useState(() => parse(searchParams));
-
-  React.useEffect(() => {
-    setState((curr) => {
-      const newVal = parse(searchParams);
-      return JSON.stringify(curr) === JSON.stringify(newVal) ? curr : newVal;
-    });
-  }, [parse, searchParams]);
-
-  const updateState = React.useCallback(
-    (value: typeof state | ((currState: typeof state) => typeof state)) => {
-      typeof value === 'function'
-        ? setState((curr) => value(curr))
-        : setState(value);
-    },
-    [],
-  );
 
   const updateUrl = React.useCallback(
     (
-      value: typeof state | ((currState: typeof state) => typeof state),
+      value?:
+        | NonNullable<typeof defaultState>
+        | DeepReadonly<NonNullable<typeof defaultState>>
+        | ((
+            currState: typeof defaultState | DeepReadonly<typeof defaultState>,
+          ) => typeof defaultState),
       options?: Options,
     ) => {
-      const currSP = searchParams.toString();
-      const currUrl = `${pathname}${currSP.length ? '?' : ''}${currSP}`;
+      const currSP = window.location.search;
+      const currUrl = `${window.location.pathname}${currSP.length ? '?' : ''}${currSP}`;
       const isFunc = typeof value === 'function';
       const qStr = isFunc
-        ? // @ts-expect-error output is string, and it can handle invalid input
-          stringify(value(state))
-        : stringify(value as unknown as JSONCompatible<T>);
-      const newUrl = `${pathname}${qStr.length ? '?' : ''}${qStr}`;
+        ? stringify(value(getState()))
+        : stringify(getState());
+      const newUrl = `${window.location.pathname}${qStr.length ? '?' : ''}${qStr}`;
 
       if (currUrl !== newUrl) {
         const { replace, ...rOptions } = options || {};
@@ -65,10 +53,14 @@ export function useUrlState<T>(defaultState?: JSONCompatible<T>) {
         });
       }
     },
-    [pathname, router, stringify, searchParams, state],
+    [router, stringify, getState],
   );
 
-  return { updateUrl, updateState, state };
+  return {
+    updateUrl,
+    updateState: setState,
+    state: isSSR() ? parseSsrQs(sp, defaultState) : state,
+  };
 }
 
 type Router = ReturnType<typeof useRouter>;
