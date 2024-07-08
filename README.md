@@ -46,6 +46,7 @@ Add a ⭐️ to support the project!
 - 🔗 Shareable URLs with full application state
 - 🔄 Easy state persistence across page reloads
 - 🧠 Pass data between unrelated client components
+- 🙃 Can just share the state without changing url
 - 🧮 Store unsaved user forms in URL
 
 # Features
@@ -113,11 +114,13 @@ function MyComponent() {
         Increment (Update URL)
       </button>
 
-      <button onClick={() => updateState({ count: state.count + 1 })}>
+        // same api as React.useState
+      <button onClick={() => updateState(currState => ({...currState, count: state.count + 1 }) )}>
         Increment (Local Only)
       </button>
       <button onClick={() => updateUrl()}>
         Sync changes to url
+        // Or don't sync it and just share state
       </button>
 
       <button onClick={() => updateUrl(state)}>
