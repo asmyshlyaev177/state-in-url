@@ -80,7 +80,7 @@
     "cleanup": "rm -rf dist",
     "setup": "playwright install --with-deps",
     "cleanupDist": "wireit",
-    "prepack": "npm run test:unit && npm run build",
+    "prepack": "npm run test:unit && npm run build && npm run build:demo",
     "prepare": "npx husky"
   },
   "wireit": {
