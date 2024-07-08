@@ -8,6 +8,7 @@ export const RefreshButton = ({ className }: { className?: string }) => {
         window.location.reload();
       }}
       className={className}
+      name="Reload page"
     >
       Reload page
     </Button>
