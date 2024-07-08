@@ -2,12 +2,15 @@
 <h1 align="center">state-in-url</h1>
 
 
-<p align="center">
+<div align="center">
   <img src="/assets/logo.svg?raw=true" alt="Library logo"/>
-</p>
+
+  <div>Seamlessly store complex nested state object in URL query parameters with IDE autotomplete and TS validation.</div>
+</div>
 
 
 <div align="center">
+<hr />
 
 [![For hire](/assets/hireBadge.svg)](https://www.linkedin.com/in/asmyshlyaev177/)
 
@@ -19,7 +22,6 @@
 </div>
 
 <div align="center">
-Seamlessly store complex React state object in URL query parameters without losing types. Works with Next.js/React.js applications.
 
 <h4 align="center">Don't hesitate to open issue if you found a bug</h4>
 
@@ -116,7 +118,7 @@ function MyComponent() {
       </button>
 
         // same api as React.useState
-      <button onClick={() => updateState(currState => ({...currState, count: state.count + 1 }) )}>
+      <button onClick={() => updateState(currState => ({...currState, count: currState.count + 1 }) )}>
         Increment (Local Only)
       </button>
       <button onClick={() => updateUrl()}>
