@@ -1,9 +1,16 @@
 interface Props extends React.DOMAttributes<HTMLButtonElement> {
+  name?: string;
   className?: string;
   children: React.ReactNode;
   disabled?: boolean;
 }
-export const Button = ({ className, children, disabled, ...props }: Props) => {
+export const Button = ({
+  className,
+  children,
+  disabled,
+  name,
+  ...props
+}: Props) => {
   return (
     <button
       disabled={disabled}
@@ -11,6 +18,7 @@ export const Button = ({ className, children, disabled, ...props }: Props) => {
          rounded-md shadow-sm text-sm font-medium text-white bg-orange-600
           hover:bg-orange-700 focus:outline-none focus:ring-2
            focus:ring-offset-2 focus:ring-orange-500 ${className}`}
+      name={name}
       {...props}
     >
       {children}
