@@ -1,6 +1,9 @@
 import { test } from '@playwright/test';
 import { useUrlStateTest } from './useUrlStateTest';
 
-test('useUrlState - with server components', useUrlStateTest('/test-ssr'));
+test('useUrlState - server with searchParams', useUrlStateTest('/test-ssr'));
 
-test('useUrlState - with client components', useUrlStateTest('/test-client'));
+test(
+  'useUrlState - server without searchParams',
+  useUrlStateTest('/test-client'),
+);

@@ -39,9 +39,7 @@ export function useUrlState<T>(defaultState: JSONCompatible<T>, sp?: object) {
           ) => typeof defaultState | DeepReadonly<typeof defaultState>),
       options?: Options,
     ) => {
-      if (value) {
-        setState(value);
-      }
+      setState((value as typeof defaultState) ?? getState());
 
       const currSP = window.location.search;
       const currUrl = `${window.location.pathname}${currSP.length && !currSP.includes('?') ? '?' : ''}${currSP}`;
@@ -49,7 +47,7 @@ export function useUrlState<T>(defaultState: JSONCompatible<T>, sp?: object) {
 
       const qStr = isFunc
         ? stringify(value(getState()))
-        : stringify(getState());
+        : stringify((value as typeof defaultState) ?? getState());
       const newUrl = `${window.location.pathname}${qStr.length ? '?' : ''}${qStr}`;
 
       if (currUrl !== newUrl) {
@@ -62,6 +60,8 @@ export function useUrlState<T>(defaultState: JSONCompatible<T>, sp?: object) {
     },
     [router, stringify, getState],
   );
+
+  // TODO: reset fn?
 
   return {
     updateUrl,

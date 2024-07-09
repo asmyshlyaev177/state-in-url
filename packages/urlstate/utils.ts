@@ -37,37 +37,22 @@ export const typeOf = (val: unknown): Type => {
 
 export const isSSR = () => typeof window === 'undefined';
 
-type JSONPrimitive = string | number | boolean | Date | null | undefined;
+type JSONPrimitive =
+  | null
+  | boolean
+  | Date
+  | number
+  | string
+  | JSONPrimitive[]
+  | { [prop: string]: JSONPrimitive };
 
-type JSONValue =
-  | JSONPrimitive
-  | JSONValue[]
-  | {
-      [key: string]: JSONValue;
-    };
-
-// eslint-disable-next-line @typescript-eslint/ban-types
-type NotAssignableToJson = bigint | symbol | Function;
-
-export type JSONCompatible<T> = unknown extends T
-  ? never
-  : {
-      [P in keyof T]: T[P] extends JSONValue
-        ? T[P]
-        : T[P] extends NotAssignableToJson
-          ? never
-          : JSONCompatible<T[P]>;
-    };
-
-// export type DeepReadonly<T> = Readonly<{
-//   [K in keyof T]: T[K] extends Date | object | null
-//     ? Readonly<T[K]>
-//     : Readonly<DeepReadonly<T[K]>>;
-// }>;
-
-// export type DeepReadonly<T> = Readonly<{
-//   readonly [P in keyof T]: DeepReadonly<T[P]>;
-// }>;
+export type JSONCompatible<T> = {
+  [P in keyof T]: T[P] extends JSONPrimitive
+    ? T[P]
+    : Pick<T, P> extends Required<Pick<T, P>>
+      ? never
+      : JSONCompatible<T[P]>;
+};
 
 // TODO: or this https://github.com/ts-essentials/ts-essentials/tree/master/lib/deep-readonly
 // https://github.com/microsoft/TypeScript/issues/13923
