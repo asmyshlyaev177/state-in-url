@@ -32,16 +32,21 @@ export function useUrlState<T>(defaultState: JSONCompatible<T>, sp?: object) {
   const updateUrl = React.useCallback(
     (
       value?:
-        | NonNullable<typeof defaultState>
-        | DeepReadonly<NonNullable<typeof defaultState>>
+        | typeof defaultState
+        | DeepReadonly<typeof defaultState>
         | ((
             currState: typeof defaultState | DeepReadonly<typeof defaultState>,
-          ) => typeof defaultState),
+          ) => typeof defaultState | DeepReadonly<typeof defaultState>),
       options?: Options,
     ) => {
+      if (value) {
+        setState(value);
+      }
+
       const currSP = window.location.search;
       const currUrl = `${window.location.pathname}${currSP.length && !currSP.includes('?') ? '?' : ''}${currSP}`;
       const isFunc = typeof value === 'function';
+
       const qStr = isFunc
         ? stringify(value(getState()))
         : stringify(getState());
@@ -61,7 +66,7 @@ export function useUrlState<T>(defaultState: JSONCompatible<T>, sp?: object) {
   return {
     updateUrl,
     updateState: setState,
-    state,
+    state: state as DeepReadonly<typeof defaultState>,
   };
 }
 
