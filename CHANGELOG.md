@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.3](https://github.com/asmyshlyaev177/state-in-url/compare/v0.2.2...v0.2.3) (2024-07-09)
+
+
+### Features
+
+* fix updateUrl, add more tests ([411c018](https://github.com/asmyshlyaev177/state-in-url/commit/411c01846c93bd873a90a536793b8068521810cf))
+
 ### [0.2.2](https://github.com/asmyshlyaev177/state-in-url/compare/v0.2.1...v0.2.2) (2024-07-09)
 
 
