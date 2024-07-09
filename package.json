@@ -1,6 +1,6 @@
 {
   "name": "state-in-url",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Library to store state in browser URL, includes hook for NextJS, hook for pure React, and low level helpers.",
   "homepage": "https://github.com/asmyshlyaev177/state-in-url#readme",
   "keywords": [
