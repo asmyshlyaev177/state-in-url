@@ -10,6 +10,15 @@ module.exports = {
     "max-len": "off",
     "no-secrets/no-secrets": "off",
     "sonarjs/no-empty-collection": "off",
-    "complexity": ["error", 12]
-  }
+    "complexity": ["error", 12],
+  },
+  overrides: [
+    {
+      "files": ["packages/example-nextjs/src/app/test-use-client/Form.tsx"],
+      "rules": {
+        "max-lines-per-function": ["error", 200]
+      }
+    }
+  ]
+
 };
