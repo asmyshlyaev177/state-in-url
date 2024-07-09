@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.2](https://github.com/asmyshlyaev177/state-in-url/compare/v0.2.1...v0.2.2) (2024-07-09)
+
+
+### Bug Fixes
+
+* fix import, no type module, and cjs bundle too ([ccb428b](https://github.com/asmyshlyaev177/state-in-url/commit/ccb428b0e1d2a5ee4d0d88499ebe566f227e54b1))
+* updateState on updateUrl and fix types ([59c8250](https://github.com/asmyshlyaev177/state-in-url/commit/59c82507e52921b929b8bea3ac9192703dd1576e))
+
 ### [0.2.1](https://github.com/asmyshlyaev177/state-in-url/compare/v0.2.0...v0.2.1) (2024-07-08)
 
 
