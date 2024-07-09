@@ -52,7 +52,9 @@ export function useState<T>(defaultState: JSONCompatible<T>) {
       value:
         | typeof defaultState
         | DeepReadonly<typeof defaultState>
-        | ((currState: typeof defaultState) => typeof defaultState),
+        | ((
+            currState: typeof defaultState | DeepReadonly<typeof defaultState>,
+          ) => typeof defaultState | DeepReadonly<typeof defaultState>),
     ) => {
       const curr = stateMap.get(stateShape.current) || stateShape.current;
       const isFunc = typeof value === 'function';

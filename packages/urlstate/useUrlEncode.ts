@@ -25,11 +25,7 @@ import { encodeState, decodeState } from './encodeState';
 export function useUrlEncode<T>(stateShape: JSONCompatible<T>) {
   const stringify = React.useCallback(
     function (
-      state:
-        | typeof stateShape
-        | NonNullable<typeof stateShape>
-        | DeepReadonly<NonNullable<typeof stateShape>>,
-
+      state: typeof stateShape | DeepReadonly<typeof stateShape>,
       paramsToKeep?: string | URLSearchParams,
     ): string {
       return typeOf(state) === 'object'
@@ -42,7 +38,7 @@ export function useUrlEncode<T>(stateShape: JSONCompatible<T>) {
   const parse = React.useCallback(
     function (strOrSearchParams: string | URLSearchParams) {
       return decodeState(strOrSearchParams, stateShape) as DeepReadonly<
-        NonNullable<typeof stateShape>
+        typeof stateShape
       >;
     },
     [stateShape],

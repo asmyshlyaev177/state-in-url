@@ -65,9 +65,20 @@ export type JSONCompatible<T> = unknown extends T
 //     : Readonly<DeepReadonly<T[K]>>;
 // }>;
 
-export type DeepReadonly<T> = Readonly<{
-  readonly [P in keyof T]: DeepReadonly<T[P]>;
-}>;
+// export type DeepReadonly<T> = Readonly<{
+//   readonly [P in keyof T]: DeepReadonly<T[P]>;
+// }>;
+
+// TODO: or this https://github.com/ts-essentials/ts-essentials/tree/master/lib/deep-readonly
+// https://github.com/microsoft/TypeScript/issues/13923
+export type DeepReadonly<T> =
+  T extends Map<infer K, infer V>
+    ? ReadonlyMap<DeepReadonly<K>, DeepReadonly<V>>
+    : T extends Set<infer S>
+      ? ReadonlySet<DeepReadonly<S>>
+      : T extends object
+        ? { readonly [K in keyof T]: DeepReadonly<T[K]> }
+        : T;
 
 export const getParams = (strOrSearchParams?: string | URLSearchParams) =>
   new URLSearchParams(
