@@ -14,8 +14,8 @@ const isProduction = !process.env.IS_DEVELOPMENT;
 const sourcemap = !isProduction;
 const clearScreen = { watch: { clearScreen: false } };
 
- // TODO: subpatch exports ?
- // https://dev.to/receter/organize-your-library-with-subpath-exports-4jb9
+// TODO: subpatch exports ?
+// https://dev.to/receter/organize-your-library-with-subpath-exports-4jb9
 
 console.log({ isProduction, sourcemap });
 
@@ -51,7 +51,23 @@ export default [
     input,
     plugins,
     external,
-    output: [{ file: pkg.main, format: 'es', sourcemap }],
+    output: [{ file: pkg.exports.import.default, format: 'es', sourcemap }],
+    ...clearScreen,
+  },
+  {
+    input,
+    plugins,
+    external,
+    output: [{
+      file: pkg.exports.require.default,
+      format: 'cjs',
+      // name: 'state-in-url',
+      // globals: {
+      //   'react': 'React',
+      //   'next': 'next'
+      // },
+      sourcemap
+    }],
     ...clearScreen,
   },
 ];

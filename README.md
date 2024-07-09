@@ -74,6 +74,7 @@ Add a ⭐️ to support the project!
 - [Inspiration](#inspiration)
 
 ## installation
+### 1. Install package
 ```sh
 # npm
 npm install --save state-in-url
@@ -82,6 +83,8 @@ yarn add state-in-url
 # pnpm
 pnpm add state-in-url
 ```
+### 2. Edit tsconfig.json
+set `"moduleResolution": "Node16"` or `"moduleResolution": "NodeNext"` in your `tsconfig.json`
 
 
 ## useUrlState hook for Next.js
