@@ -5,7 +5,7 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
-  basePath: process.env.DEMO ? '/state-in-url' : '',
+  basePath: '',
   // images: {
   //   unoptimized: true
   // }
