@@ -82,7 +82,7 @@
     "bump": "npx standard-version --no-verify",
     "bump:ex": "npm i state-in-url@latest --workspace=packages/example-nextjs",
     "build": "wireit",
-    "build:demo": "cd packages/example-nextjs && npx cross-env DEMO=true npm run build",
+    "build:demo": "cd packages/example-nextjs && npm run build",
     "start:demo": "npm run build && cd packages/example-nextjs && npm run build && npm run start",
     "cleanup": "rm -rf dist",
     "setup": "playwright install --with-deps",
