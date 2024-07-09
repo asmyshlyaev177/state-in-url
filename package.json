@@ -41,19 +41,26 @@
   "files": [
     "dist"
   ],
-  "main": "dist/index.js",
-  "type": "module",
+  "main": "dist/index.cjs",
   "exports": {
     "import": {
       "types": "./dist/index.d.ts",
-      "default": "./dist/index.js"
+      "default": "./dist/index.mjs"
+    },
+    "node": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.mjs"
+    },
+    "require": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.cjs"
     },
     "module": {
-      "types": "./dist/index.js",
+      "types": "./dist/index.mjs",
       "default": "./dist/index.d.ts"
     },
     "default": {
-      "types": "./dist/index.js",
+      "types": "./dist/index.mjs",
       "default": "./dist/index.d.ts"
     }
   },
