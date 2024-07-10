@@ -95,12 +95,21 @@ set `"moduleResolution": "Node16"` or `"moduleResolution": "NodeNext"` in your `
 
 #### Basic
 
+1. Define state shape
+   ```typescript
+   // countState.ts
+   // State shape should be stored in a constant, don't pass an object directly
+   export const countState: CountState = { count: 0 }
+
+   type CountState = { count: number }
+   ```
+
+2. Import it and use
 ```typescript
 'use client'
 import { useUrlState } from 'state-in-url';
 
-// State shape should be stored in a constant, don't pass an object directly
-const countState: { count: number } = { count: 0 };
+import { countState } from './countState';
 
 function MyComponent() {
   // for use searchParams from server component
@@ -139,24 +148,28 @@ function MyComponent() {
 #### With complex state shape
 
 ```typescript
-'use client'
-import { useUrlState } from 'state-in-url';
-
 interface UserSettings {
   theme: 'light' | 'dark';
   fontSize: number;
   notifications: boolean;
 }
 
-const defaultSettings: UserSettings {
+export const userSettings: UserSettings {
   theme: 'light',
   fontSize: 16,
   notifications: true,
 }
+```
+
+```typescript
+'use client'
+import { useUrlState } from 'state-in-url';
+
+import { userSettings } from './userSettings';
 
 function SettingsComponent() {
   // `state` will infer from UserSettings type!
-  const { state, updateUrl } = useUrlState(defaultSettings);
+  const { state, updateUrl } = useUrlState(userSettings);
 
   const toggleTheme = () => {
     updateUrl(current => ({
@@ -242,11 +255,14 @@ Accepts optional `defaultState` argument.
 ```typescript
 import { useUrlEncode } from 'state-in-url';
 
+const ageState = { age: 0 };
+
 const Component = () => {
   const { parse, stringify } = useUrlEncode();
 
   const str = stringify({ age: 36 }); // age=∓36
-  const obj = parse(str); // { age: 36 }
+  const obj = parse(str, ageState); // { age: 36 }
+  // Or const obj = parse(str); // { age: 36 }
 
   const currentParams = parse(window.location.search);
   // OR
@@ -327,7 +343,6 @@ Go to [localhost:3000](http://localhost:3000)
 ## Contact & Support
 
 - Create a [GitHub issue](https://github.com/asmyshlyaev177/state-in-url/issues) for bug reports, feature requests, or questions
-- Add a ⭐️ [star on GitHub](https://github.com/asmyshlyaev177/state-in-url) to support the project!
 
 ## [Changelog](https://github.com/asmyshlyaev177/state-in-url/blob/main/CHANGELOG.md)
 
