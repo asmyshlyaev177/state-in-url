@@ -75,6 +75,7 @@
   "scripts": {
     "test:unit": "wireit",
     "test:int": "playwright test",
+    "test:int:watch": "npx chokidar-cli 'packages/**/*.ts' 'packages/**/*.tsx' -i '.next' -t 500 -c 'npx playwright test -j 2 --project=chromium'",
     "test": "wireit",
     "dev": "wireit",
     "dev:lib": "wireit",
@@ -97,7 +98,7 @@
         "test:unit",
         "dev:nextjs"
       ],
-      "command": "npx playwright test --project=chromium"
+      "command": "npx playwright test --project=chromium -j 2"
     },
     "test:unit": {
       "command": "npx jest"
@@ -177,6 +178,7 @@
     "@types/node": "^20.11.24",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
+    "chokidar-cli": "^3.0.0",
     "commitizen": "^4.3.0",
     "cross-env": "^7.0.3",
     "cz": "^1.8.2",
