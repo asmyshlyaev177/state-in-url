@@ -23,9 +23,26 @@ import { parseSsrQs } from './encoder';
  *  * Github {@link https://github.com/asmyshlyaev177/state-in-url}
  */
 export function useUrlState<T>(defaultState: JSONCompatible<T>, sp?: object) {
-  const { state, getState, setState, stringify } = useState(
+  const { state, getState, setState, stringify, parse } = useState(
     isSSR() ? parseSsrQs(sp, defaultState) : defaultState,
   );
+
+  // for history navigation
+  React.useInsertionEffect(() => {
+    const cb = () => {
+      if (isSSR()) return void 0;
+
+      const newVal = parse(window.location.search);
+      setState(newVal);
+    };
+
+    const ev = 'popstate';
+    window.addEventListener(ev, cb);
+
+    return () => {
+      window.removeEventListener(ev, cb);
+    };
+  }, []);
 
   const router = useRouter();
 

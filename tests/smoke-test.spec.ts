@@ -1,6 +1,13 @@
 import { test, expect } from '@playwright/test';
 
 test('Cross browser test', async ({ page, baseURL }) => {
+  const errorLogs: unknown[] = [];
+  page.on('console', (message) => {
+    if (message.type() === 'error') {
+      errorLogs.push(message.text());
+    }
+  });
+
   const url = '/test';
   const obj = {
     str: 'some string !%^{}>?',
@@ -29,4 +36,6 @@ test('Cross browser test', async ({ page, baseURL }) => {
   });
   const decoded = await page.getByTestId('parsed').inputValue();
   await expect(JSON.parse(decoded)).toStrictEqual(obj);
+
+  await expect(errorLogs).toHaveLength(0);
 });

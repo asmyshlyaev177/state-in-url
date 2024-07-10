@@ -1,9 +1,11 @@
 import { test, expect } from '@playwright/test';
 
-test.describe('useUrlState - updateUrl', () => {
-  test('sync', async ({ page, baseURL }) => {
-    const url = '/test-use-client';
+const urls = ['/test-ssr', '/test-use-client', '/test-ssr-sp'];
+
+test('sync', async ({ page, baseURL }) => {
+  for (const url of urls) {
     await page.goto(url);
+    await page.waitForSelector('button[name="Reload page"]');
 
     await page.getByLabel('name').pressSequentially('My Name', { delay: 150 });
     await page.getByText('React.js').click();
@@ -22,8 +24,11 @@ test.describe('useUrlState - updateUrl', () => {
       ]
     }`;
 
-    // syncing state but not url
-    await page.waitForTimeout(500);
+    if (url === urls[1]) {
+      // syncing state but not url
+      await page.waitForTimeout(500);
+    }
+
     await expect(page).toHaveURL(`${baseURL}${url}`, {
       timeout: 1000,
     });
@@ -38,10 +43,11 @@ test.describe('useUrlState - updateUrl', () => {
       timeout: 1000,
     });
     await expect(page.getByTestId('parsed')).toHaveText(expectedText);
-  });
+  }
+});
 
-  test('reset', async ({ page, baseURL }) => {
-    const url = '/test-use-client';
+test('reset', async ({ page, baseURL }) => {
+  for (const url of urls) {
     await page.goto(url);
     await page.waitForSelector('button[name="Reload page"]');
 
@@ -76,10 +82,11 @@ test.describe('useUrlState - updateUrl', () => {
       "agree to terms": false,
       "tags": []
 }`);
-  });
+  }
+});
 
-  test('update', async ({ page, baseURL }) => {
-    const url = '/test-use-client';
+test('update', async ({ page, baseURL }) => {
+  for (const url of urls) {
     await page.goto(url);
     await page.waitForSelector('button[name="Reload page"]');
 
@@ -125,5 +132,5 @@ test.describe('useUrlState - updateUrl', () => {
         }
       ]
     }`);
-  });
+  }
 });

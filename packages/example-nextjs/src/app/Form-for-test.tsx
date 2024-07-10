@@ -2,17 +2,42 @@
 import React from 'react';
 
 import { useUrlState } from 'state-in-url';
-// import { useUrlState } from '../../../../../dist';
+// import { useUrlState } from '../../../../dist';
 
-import { form } from './../form';
+import { form } from './form';
 
-import { Field } from './../components/Field';
-import { Input } from './../components/Input';
-import { RefreshButton } from './../Refresh';
-import { Tag } from './../components/Tag';
+import { Field } from './components/Field';
+import { Input } from './components/Input';
+import { RefreshButton } from './Refresh';
+import { Tag } from './components/Tag';
 
-export const Form = ({ className }: { className?: string }) => {
-  const { state, updateState, updateUrl } = useUrlState(form);
+export const Form = ({
+  className,
+  sp,
+  delay = 500,
+}: {
+  className?: string;
+  sp?: object;
+  delay?: number;
+}) => {
+  const { state, updateState, updateUrl } = useUrlState(form, sp);
+
+  // set URI when state change
+  const timer = React.useRef(0 as unknown as NodeJS.Timeout);
+  React.useEffect(() => {
+    if (delay === 0) {
+      return () => {};
+    }
+
+    clearTimeout(timer.current);
+    timer.current = setTimeout(() => {
+      updateUrl(state);
+    }, delay);
+
+    return () => {
+      clearTimeout(timer.current);
+    };
+  }, [state, updateUrl, delay]);
 
   const onChangeAge = React.useCallback(
     (ev: React.ChangeEvent<HTMLInputElement>) => {
@@ -109,33 +134,32 @@ export const Form = ({ className }: { className?: string }) => {
               ))}
             </div>
           </Field>
-          <button
+
+          <Button
             onClick={() => {
               updateUrl();
             }}
-            className="text-black"
-            data-testid="sync-empty"
+            dataTestId="sync-empty"
           >
             Sync state
-          </button>
-          <button
+          </Button>
+          <Button
             onClick={() => {
               updateUrl(form);
             }}
-            className="text-black"
-            data-testid="sync-default"
+            dataTestId="sync-default"
           >
             Reset state
-          </button>
-          <button
+          </Button>
+          <Button
             onClick={() => {
               updateUrl((curr) => ({ ...curr, name: 'My Name', age: 55 }));
             }}
-            className="text-black"
-            data-testid="sync-object"
+            dataTestId="sync-object"
           >
             Sync state object
-          </button>
+          </Button>
+
           <RefreshButton />
         </div>
       </div>
@@ -157,3 +181,23 @@ const tags = [
     value: { text: 'TailwindCSS', time: new Date('2024-07-19T04:53:17.000Z') },
   },
 ];
+
+const Button = ({
+  onClick,
+  dataTestId,
+  children,
+}: {
+  onClick: () => void;
+  dataTestId: string;
+  children: React.ReactNode;
+}) => {
+  return (
+    <button
+      onClick={onClick}
+      className="text-black border border-black rounded-md px-2 py-1"
+      data-testid={dataTestId}
+    >
+      {children}
+    </button>
+  );
+};
