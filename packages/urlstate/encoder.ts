@@ -38,21 +38,6 @@ export function encode(payload: unknown): string {
   }
 }
 
-// TODO: use or remove
-// const stringifyDate = (d: Date) => {
-//   const date = new Date(d);
-//   const result = Date.UTC(
-//     date.getUTCFullYear(),
-//     date.getUTCMonth(),
-//     date.getUTCDate(),
-//     date.getUTCHours(),
-//     date.getUTCMinutes(),
-//     date.getUTCSeconds(),
-//     date.getUTCMilliseconds(),
-//   );
-//   return new Date(result).toISOString();
-// };
-
 /**
  * Decode value part of URLSearchParams back to JS value
  *
