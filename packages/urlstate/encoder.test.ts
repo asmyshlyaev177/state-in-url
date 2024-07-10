@@ -156,6 +156,7 @@ describe('real life example', () => {
     const a2 = performance.now();
     console.log('encode time', a2 - a1 + ' milliseconds');
     expect(bigObj).toStrictEqual(result);
+    expect(a2 - a1).toBeLessThan(1.5);
   });
 });
 
