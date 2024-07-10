@@ -1,9 +1,18 @@
 import { test, expect } from '@playwright/test';
 
-export const useUrlStateTest: (url: string) => Parameters<typeof test>[2] =
-  (url: string) =>
-  async ({ page, baseURL }) => {
+const urls = ['/test-ssr', '/test-use-client', '/test-ssr-sp'];
+
+test('main test', async ({ page, baseURL }) => {
+  for (const url of urls) {
+    const errorLogs: unknown[] = [];
+    page.on('console', (message) => {
+      if (message.type() === 'error') {
+        errorLogs.push(message.text());
+      }
+    });
+
     await page.goto(url);
+    await page.waitForSelector('button[name="Reload page"]');
 
     await page.getByLabel('name').pressSequentially('My Name', { delay: 150 });
     await page.getByLabel('age').pressSequentially('33', { delay: 150 });
@@ -43,4 +52,9 @@ export const useUrlStateTest: (url: string) => Parameters<typeof test>[2] =
     await expect(
       page.getByRole('checkbox', { name: 'agree to terms' }),
     ).toBeChecked();
-  };
+
+    if (url === '/test-ssr-sp') {
+      await expect(errorLogs).toHaveLength(0);
+    }
+  }
+});

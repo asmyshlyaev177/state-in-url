@@ -1,7 +1,8 @@
-import { Form } from './Form';
+'use client';
+import { Form } from '../Form-for-test';
 import { Status } from '../Status';
 
-export default async function Home() {
+export default function Home() {
   return (
     <main
       className="min-h-screen bg-gradient-to-br

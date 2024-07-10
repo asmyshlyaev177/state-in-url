@@ -1,7 +1,7 @@
-import { Form } from '../Form';
+import { Form } from '../Form-for-test';
 import { Status } from '../Status';
 
-export default async function Home() {
+export default async function Home({ searchParams }: { searchParams: object }) {
   return (
     <main
       className="min-h-screen bg-gradient-to-br
@@ -17,12 +17,14 @@ export default async function Home() {
         <div className="flex flex-col md:flex-row gap-8">
           <Form
             className="flex max-h-[450px] flex-col md:flex-row gap-8 basis-1/2"
+            sp={searchParams}
             delay={400}
           />
           <Status
             className="flex-1 max-h-[450px] bg-gray-100
              rounded-lg p-4 flex flex-col shadow-md border border-grey
               basis-1/2 grow-0"
+            sp={searchParams}
           />
         </div>
       </div>

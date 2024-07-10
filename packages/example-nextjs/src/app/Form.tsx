@@ -14,11 +14,9 @@ import { Tag } from './components/Tag';
 export const Form = ({
   className,
   sp,
-  delay = 1500,
 }: {
   className?: string;
   sp?: object;
-  delay?: number;
 }) => {
   const { state, updateState, updateUrl } = useUrlState(form, sp);
 
@@ -28,12 +26,12 @@ export const Form = ({
     clearTimeout(timer.current);
     timer.current = setTimeout(() => {
       updateUrl(state);
-    }, delay);
+    }, 1000);
 
     return () => {
       clearTimeout(timer.current);
     };
-  }, [state, updateUrl, delay]);
+  }, [state, updateUrl]);
 
   const onChangeAge = React.useCallback(
     (ev: React.ChangeEvent<HTMLInputElement>) => {
