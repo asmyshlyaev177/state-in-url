@@ -22,31 +22,6 @@ export function useState<T>(defaultState: JSONCompatible<T>) {
     return newVal as typeof defaultState;
   });
 
-  React.useInsertionEffect(() => {
-    const subs = subscribers.get(stateShape.current) || [];
-    const cb = () => {
-      _setState(
-        (stateMap.get(stateShape.current) ||
-          defaultState) as typeof defaultState,
-      );
-    };
-    subscribers.set(stateShape.current, subs.concat(cb));
-
-    return () => {
-      const subs = subscribers.get(stateShape.current) || [];
-      subscribers.set(
-        stateShape.current as object,
-        subs.filter((sub) => sub !== cb),
-      );
-    };
-  }, []);
-
-  // get state without deps
-  const getState = React.useCallback(() => {
-    return (stateMap.get(stateShape.current) ||
-      stateShape.current) as typeof defaultState;
-  }, []);
-
   const setState = React.useCallback(
     (
       value:
@@ -77,5 +52,40 @@ export function useState<T>(defaultState: JSONCompatible<T>) {
     [],
   );
 
-  return { state, getState, setState, parse, stringify };
+  React.useInsertionEffect(() => {
+    const subs = subscribers.get(stateShape.current) || [];
+    const cb = () => {
+      _setState(
+        (stateMap.get(stateShape.current) ||
+          defaultState) as typeof defaultState,
+      );
+    };
+    subscribers.set(stateShape.current, subs.concat(cb));
+
+    // for history navigation
+    const popCb = () => {
+      const newVal = parse(window.location.search);
+      setState(newVal as typeof defaultState);
+    };
+    const ev = 'popstate';
+    window.addEventListener(ev, popCb);
+
+    return () => {
+      const subs = subscribers.get(stateShape.current) || [];
+      subscribers.set(
+        stateShape.current as object,
+        subs.filter((sub) => sub !== cb),
+      );
+
+      window.removeEventListener(ev, popCb);
+    };
+  }, [setState]);
+
+  // get state without deps
+  const getState = React.useCallback(() => {
+    return (stateMap.get(stateShape.current) ||
+      stateShape.current) as typeof defaultState;
+  }, []);
+
+  return { state, getState, setState, stringify };
 }
