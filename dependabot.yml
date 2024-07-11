@@ -1,0 +1,10 @@
+# `dependabot.yml` file with updates
+
+version: 2
+updates:
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    ignore:
+      dependency-type: "development"
