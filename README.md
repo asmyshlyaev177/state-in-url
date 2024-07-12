@@ -5,7 +5,7 @@
 <div align="center">
   <img src="/assets/logo.svg?raw=true" alt="Library logo"/>
 
-  <div>Seamlessly store complex nested state object in URL query parameters with IDE autotomplete and TS validation.</div>
+  <div>Seamlessly store complex nested state object in URL query parameters with IDE autocomplete and TS validation.</div>
 </div>
 
 
