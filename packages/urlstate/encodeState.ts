@@ -16,9 +16,9 @@ import { type JSONCompatible, getParams, type UnknownObj } from './utils';
  *
  *  * Github {@link https://github.com/asmyshlyaev177/state-in-url}
  */
-export function encodeState<T>(
-  state: never extends T ? object : JSONCompatible<T>,
-  defaults?: JSONCompatible<T>,
+export function encodeState<T extends JSONCompatible>(
+  state: T,
+  defaults?: T,
   paramsToKeep?: string | URLSearchParams,
 ) {
   const params = getParams(paramsToKeep);
@@ -45,9 +45,9 @@ export function encodeState<T>(
  *
  *  * Github {@link https://github.com/asmyshlyaev177/state-in-url}
  */
-export function decodeState<T>(
+export function decodeState<T extends JSONCompatible>(
   uriString: string | URLSearchParams,
-  defaults?: JSONCompatible<T>,
+  defaults?: T,
 ) {
   return {
     ...(defaults || {}),
