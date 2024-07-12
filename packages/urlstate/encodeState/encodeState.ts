@@ -1,5 +1,5 @@
-import { decode, encode } from './encoder';
-import { getParams, type JSONCompatible, type UnknownObj } from './utils';
+import { decode, encode } from '../encoder';
+import { getParams, type JSONCompatible, type UnknownObj } from '../utils';
 
 /**
  * Encodes the state object into a URL query string.

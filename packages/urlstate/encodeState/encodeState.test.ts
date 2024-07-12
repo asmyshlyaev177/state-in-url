@@ -1,5 +1,5 @@
-import { decodeState, encodeState } from './encodeState';
-import { type JSONCompatible } from './utils';
+import { decodeState, encodeState } from '.';
+import { type JSONCompatible } from '../utils';
 
 describe('encodeState', () => {
   it('should encode a simple state object', () => {
