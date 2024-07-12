@@ -1,4 +1,4 @@
-import { encodeState, decodeState } from './encodeState';
+import { decodeState, encodeState } from './encodeState';
 import { type JSONCompatible } from './utils';
 
 describe('encodeState', () => {
