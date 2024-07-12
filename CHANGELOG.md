@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.6](https://github.com/asmyshlyaev177/state-in-url/compare/v0.2.5...v0.2.6) (2024-07-12)
+
+
+### Features
+
+* improve ts typings ([e0ec875](https://github.com/asmyshlyaev177/state-in-url/commit/e0ec875bcd686ec24464b7cb7961d1f2785e1802))
+
 ### [0.2.5](https://github.com/asmyshlyaev177/state-in-url/compare/v0.2.4...v0.2.5) (2024-07-11)
 
 ### [0.2.4](https://github.com/asmyshlyaev177/state-in-url/compare/v0.2.3...v0.2.4) (2024-07-10)
