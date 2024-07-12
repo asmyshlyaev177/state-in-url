@@ -1,9 +1,9 @@
 import {
-  encode,
   decode,
   decodePrimitive,
-  parseJSON,
+  encode,
   errorSym,
+  parseJSON,
 } from './encoder';
 import { type JSONCompatible } from './utils';
 

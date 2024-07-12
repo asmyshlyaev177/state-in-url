@@ -1,8 +1,9 @@
 import { useRouter } from 'next/navigation';
 import React from 'react';
-import { DeepReadonly, isSSR, type JSONCompatible } from './utils';
-import { useState } from './state';
+
 import { parseSsrQs } from './encoder';
+import { useState } from './state';
+import { DeepReadonly, isSSR, type JSONCompatible } from './utils';
 
 /**
  * NextJS hook. Returns `state`, `updateState`, and `updateUrl` functions

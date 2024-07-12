@@ -1,4 +1,4 @@
-import { typeOf, getParams } from './utils';
+import { getParams, typeOf } from './utils';
 
 describe('typeOf', () => {
   it('string', () => {

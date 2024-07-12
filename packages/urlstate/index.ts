@@ -1,17 +1,17 @@
-import { encode, decode, parseSsrQs } from './encoder';
-import { type Type, type JSONCompatible, typeOf, isSSR } from './utils';
+import { decode, encode, parseSsrQs } from './encoder';
+import { decodeState, encodeState } from './encodeState';
 import { useUrlEncode } from './useUrlEncode';
 import { useUrlState } from './useUrlState';
-import { encodeState, decodeState } from './encodeState';
+import { isSSR, type JSONCompatible, type Type, typeOf } from './utils';
 export {
-  encode,
   decode,
+  decodeState,
+  encode,
+  encodeState,
+  isSSR,
+  parseSsrQs,
   typeOf,
   useUrlEncode,
   useUrlState,
-  encodeState,
-  decodeState,
-  isSSR,
-  parseSsrQs,
 };
-export type { Type, JSONCompatible };
+export type { JSONCompatible, Type };

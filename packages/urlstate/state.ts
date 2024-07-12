@@ -1,8 +1,8 @@
 import React from 'react';
 
+import { stateMap, subscribers } from './subscribers';
 import { useUrlEncode } from './useUrlEncode';
-import { type JSONCompatible, isEqual, isSSR } from './utils';
-import { subscribers, stateMap } from './subscribers';
+import { isEqual, isSSR, type JSONCompatible } from './utils';
 
 export function useState<T extends JSONCompatible>(defaultState: T) {
   const stateShape = React.useRef(defaultState);
