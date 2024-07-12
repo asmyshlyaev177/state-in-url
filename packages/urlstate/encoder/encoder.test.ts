@@ -1,11 +1,5 @@
-import {
-  decode,
-  decodePrimitive,
-  encode,
-  errorSym,
-  parseJSON,
-} from './encoder';
-import { type JSONCompatible } from './utils';
+import { decode, decodePrimitive, encode, errorSym, parseJSON } from '.';
+import { type JSONCompatible } from '../utils';
 
 describe('encoder', () => {
   describe('string', () => {

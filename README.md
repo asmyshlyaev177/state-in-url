@@ -45,13 +45,15 @@ Add a ⭐️ to support the project!
 `state-in-url` lets you use URI string for state management.
 
 # Use cases
+
+- 🙃 Can just share the state without changing url, good as alternative to signals and other state management tools
 - 🔗 Shareable URLs with full application state
 - 🔄 Easy state persistence across page reloads
 - 🧠 Pass data between unrelated client components
-- 🙃 Can just share the state without changing url
 - 🧮 Store unsaved user forms in URL
 
 # Features
+
 - 🧩 **Simple**: Handles complex objects without extra effort
 - 📘 **Typescript support and type Safety**: Preserves data types and structure, enhances developer experience with IDE suggestions, strong typing and JSDoc comments
 - ⚛️ **Framework Flexibility**: Separate hooks for Next.js and React.js applications, and functions for pure JS
@@ -61,6 +63,7 @@ Add a ⭐️ to support the project!
 
 
 ## Table of content
+
 - [Installation](#installation)
 - [`useUrlState` for Next.js](#useurlstate-hook-for-nextjs)
 - [`useUrlEncode` for React.js](#useurlencode-hook-for-reactjs)
@@ -75,7 +78,9 @@ Add a ⭐️ to support the project!
 - [Inspiration](#inspiration)
 
 ## installation
+
 ### 1. Install package
+
 ```sh
 # npm
 npm install --save state-in-url
@@ -84,20 +89,23 @@ yarn add state-in-url
 # pnpm
 pnpm add state-in-url
 ```
-### 2. Edit tsconfig.json
-set `"moduleResolution": "Node16"` or `"moduleResolution": "NodeNext"` in your `tsconfig.json`
 
+### 2. Edit tsconfig.json
+
+set `"moduleResolution": "Node16"` or `"moduleResolution": "NodeNext"` in your `tsconfig.json`
 
 ## useUrlState hook for Next.js
 
-`useUrlState` is a custom React hook for Next.js applications that make communication between client components easy. It allows you to store and retrieve state from the URL search parameters, providing a way to persist state across page reloads and share application state via URLs.
+[Docs](packages/urlstate/useUrlState/README.md)
 
+`useUrlState` is a custom React hook for Next.js applications that make communication between client components easy. It allows you to store and retrieve state from the URL search parameters, providing a way to persist state across page reloads and share application state via URLs.
 
 ### Usage examples
 
 #### Basic
 
 1. Define state shape
+
    ```typescript
    // countState.ts
    // State shape should be stored in a constant, don't pass an object directly
@@ -107,6 +115,7 @@ set `"moduleResolution": "Node16"` or `"moduleResolution": "NodeNext"` in your `
    ```
 
 2. Import it and use
+
 ```typescript
 'use client'
 import { useUrlState } from 'state-in-url';
@@ -248,79 +257,17 @@ function SettingsComponent() {
 }
 ```
 
-## useUrlEncode hook for React.js
+## `useUrlEncode` hook for React.js
 
-`useUrlEncode` is a custom React hook that provides utility functions for encoding and decoding state object to and from URL search parameters. This hook doesn't depend on Nextjs, and will works with any React application.
-
-Accepts optional `defaultState` argument.
-
-```typescript
-import { useUrlEncode } from 'state-in-url';
-
-const ageState = { age: 0 };
-
-const Component = () => {
-  const { parse, stringify } = useUrlEncode();
-
-  const str = stringify({ age: 36 }); // age=∓36
-  const obj = parse(str, ageState); // { age: 36 }
-  // Or const obj = parse(str); // { age: 36 }
-
-  const currentParams = parse(window.location.search);
-  // OR
-  // const obj = parse(new URLSearchParams(window.location.search))
-
-  const updateSearch = () => {
-    const currentParams = new URLSearchParams(window.location.search);
-    const newState = { query: 'react hooks', page: 2 };
-    const updatedParamsString = stringify(newState, currentParams);
-    console.log(updatedParamsString);
-    // Output: existing params + query=react%20hooks&page=2
-  };
-}
-```
+[Docs](packages/urlstate/useUrlEncode/README.md)
 
 ## `encodeState` and `decodeState` helpers
 
-`encodeState` let you encode some object with optional `defaults`, and optional existing queryString
-```ts
- export const form = { name: '' };
-...
- encodeState({ name: 'test' }, form, 'someExistingParam=123');
-```
-
-`decodeState` let you decode queryString with optional defaults
-```ts
- export const form = { name: '' };
-...
- decodeState('name=Alex', form);
-```
+[Docs](packages/urlstate/encodeState/README.md)
 
 ## `encode` and `decode` helpers
 
-There low level helpers to stringify and parse query string params. Useful for other frameworks or pure JS.
-
-```javascript
-import { encode, decode } from 'state-in-url';
-
-const state = { obj: [1, 2, 3], obj2: true }
-
-// to params
-const params = new URLSearchParams();
-Object.entries(state).forEach(([key, value]) => {
-  params.set(key, encode(value));
-});
-const str = params.toString();
-
-// from params
-const obj = Object.fromEntries(
-  [...params.entries()].map(([key, value]) => [
-    key,
-    // decode(value, optionalFallback),
-    decode(value),
-  ]),
-)
-```
+[Docs](packages/urlstate/encoder/README.md)
 
 ## Best Practices
 
@@ -335,10 +282,13 @@ const obj = Object.fromEntries(
 2. Vercel servers limit size of headers (query string and other stuff) to **14KB**, so keep your URL state under ~5000 words. https://vercel.com/docs/errors/URL_TOO_LONG
 
 ## Run locally
+
 Clone this repo, run `npm install` and
+
 ```sh
 npm run dev
 ```
+
 Go to [localhost:3000](http://localhost:3000)
 
 
@@ -349,9 +299,11 @@ Go to [localhost:3000](http://localhost:3000)
 ## [Changelog](https://github.com/asmyshlyaev177/state-in-url/blob/main/CHANGELOG.md)
 
 ## License
+
 This project is licensed under the [MIT license](https://github.com/asmyshlyaev177/state-in-url/blob/main/LICENSE).
 
 ## Inspiration
+
 [Using URL to store state in Vue ](https://dev.to/jacobandrewsky/using-url-to-store-state-in-vue-275c)
 
 [Storing state in the URL](https://antonz.org/storing-state/)
