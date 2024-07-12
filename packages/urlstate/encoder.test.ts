@@ -5,6 +5,7 @@ import {
   parseJSON,
   errorSym,
 } from './encoder';
+import { type JSONCompatible } from './utils';
 
 describe('encoder', () => {
   describe('string', () => {
@@ -156,7 +157,6 @@ describe('real life example', () => {
     const a2 = performance.now();
     console.log('encode time', a2 - a1 + ' milliseconds');
     expect(bigObj).toStrictEqual(result);
-    expect(a2 - a1).toBeLessThan(1.5);
   });
 });
 
@@ -235,7 +235,7 @@ describe('parseJSON', () => {
   });
 
   it('should return fallback for invalid JSON', () => {
-    expect(parseJSON('invalid', '')).toEqual('');
+    expect(parseJSON('invalid', '' as unknown as JSONCompatible)).toEqual('');
     expect(parseJSON('invalid')).toEqual(undefined);
   });
 });

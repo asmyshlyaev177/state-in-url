@@ -22,7 +22,10 @@ import { parseSsrQs } from './encoder';
  *
  *  * Github {@link https://github.com/asmyshlyaev177/state-in-url}
  */
-export function useUrlState<T>(defaultState: JSONCompatible<T>, sp?: object) {
+export function useUrlState<T extends JSONCompatible>(
+  defaultState: T,
+  sp?: object,
+) {
   const { state, getState, setState, stringify } = useState(
     isSSR() ? parseSsrQs(sp, defaultState) : defaultState,
   );
@@ -33,21 +36,24 @@ export function useUrlState<T>(defaultState: JSONCompatible<T>, sp?: object) {
     (
       value?:
         | typeof defaultState
-        | DeepReadonly<typeof defaultState>
-        | ((
-            currState: typeof defaultState | DeepReadonly<typeof defaultState>,
-          ) => typeof defaultState | DeepReadonly<typeof defaultState>),
+        | ((currState: typeof defaultState) => typeof defaultState),
       options?: Options,
     ) => {
-      setState((value as typeof defaultState) ?? getState());
-
       const currSP = window.location.search;
       const currUrl = `${window.location.pathname}${currSP.length && !currSP.includes('?') ? '?' : ''}${currSP}`;
       const isFunc = typeof value === 'function';
 
-      const qStr = isFunc
-        ? stringify(value(getState()))
-        : stringify((value as typeof defaultState) ?? getState());
+      let qStr: string;
+      if (isFunc) {
+        const newVal = value(getState());
+        qStr = stringify(newVal);
+        setState(newVal);
+      } else {
+        const newVal = value ?? getState();
+        qStr = stringify(newVal);
+        setState(newVal);
+      }
+
       const newUrl = `${window.location.pathname}${qStr.length ? '?' : ''}${qStr}`;
 
       if (currUrl !== newUrl) {

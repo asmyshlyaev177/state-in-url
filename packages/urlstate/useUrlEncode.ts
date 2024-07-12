@@ -1,5 +1,5 @@
 import React from 'react';
-import { typeOf, type JSONCompatible, type DeepReadonly } from './utils';
+import { typeOf, type JSONCompatible } from './utils';
 import { encodeState, decodeState } from './encodeState';
 
 /**
@@ -22,14 +22,14 @@ import { encodeState, decodeState } from './encodeState';
  *
  * * Github {@link https://github.com/asmyshlyaev177/state-in-url}
  */
-export function useUrlEncode<T>(stateShape: JSONCompatible<T>) {
+export function useUrlEncode<T extends JSONCompatible>(stateShape: T) {
   const stringify = React.useCallback(
     function (
-      state: typeof stateShape | DeepReadonly<typeof stateShape>,
+      state: typeof stateShape,
       paramsToKeep?: string | URLSearchParams,
     ): string {
       return typeOf(state) === 'object'
-        ? encodeState(state as object, stateShape, paramsToKeep)
+        ? encodeState(state, stateShape, paramsToKeep)
         : '';
     },
     [stateShape],
@@ -37,9 +37,7 @@ export function useUrlEncode<T>(stateShape: JSONCompatible<T>) {
 
   const parse = React.useCallback(
     function (strOrSearchParams: string | URLSearchParams) {
-      return decodeState(strOrSearchParams, stateShape) as DeepReadonly<
-        typeof stateShape
-      >;
+      return decodeState(strOrSearchParams, stateShape) as typeof stateShape;
     },
     [stateShape],
   );

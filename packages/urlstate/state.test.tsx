@@ -46,7 +46,7 @@ describe('useState', () => {
 
   it('should set stateMap and subscribers', async () => {
     const subMock = jest.fn() as unknown as Map<object, Cb[]>;
-    const stateMock = jest.fn() as unknown as WeakMap<object, object>;
+    const stateMock = jest.fn() as unknown as void;
     const subSpy = jest
       .spyOn(subscribers.subscribers, 'set')
       .mockReturnValue(subMock);

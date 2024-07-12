@@ -1,4 +1,4 @@
-import { typeOf } from './utils';
+import { typeOf, type JSONCompatible } from './utils';
 import { SYMBOLS } from './constants';
 
 /**
@@ -48,7 +48,7 @@ export function encode(payload: unknown): string {
  *  * Github {@link https://github.com/asmyshlyaev177/state-in-url}
  */
 export function decode<T>(payload: string, fallback?: T) {
-  return parseJSON<T>(payload.replaceAll("'", '"'), fallback);
+  return parseJSON(payload.replaceAll("'", '"'), fallback as JSONCompatible);
 }
 
 export const replacer = (key: string, value: unknown) => {
@@ -80,7 +80,7 @@ export const errorSym = Symbol('isError');
 
 export const reviver = (key: string, value: unknown) => {
   const isStr = typeof value === 'string';
-  const decoded = isStr && decodePrimitive(value as string);
+  const decoded = isStr && decodePrimitive(value);
   if (decoded === errorSym) return value;
   return key && isStr ? decoded : value;
 };
@@ -94,7 +94,7 @@ export const reviver = (key: string, value: unknown) => {
  *
  *  * Github {@link https://github.com/asmyshlyaev177/state-in-url}
  */
-export function parseJSON<T>(
+export function parseJSON<T extends JSONCompatible>(
   jsonString: string,
   fallbackValue?: T,
 ): T | Primitive | undefined {
@@ -106,21 +106,23 @@ export function parseJSON<T>(
   }
 }
 
-export function parseSsrQs<T>(sp: object | undefined, defaults: T) {
+export function parseSsrQs<T extends JSONCompatible>(
+  sp: object | undefined,
+  defaults: T,
+) {
   return {
     ...defaults,
-    ...(parseJSONSsr(JSON.stringify(sp), defaults) as object),
-  } as T;
+    ...(parseJSONSsr<T>(JSON.stringify(sp), defaults) as T),
+  };
 }
 
 const reviverSsrQs = (key: string, value: unknown) => {
   const isStr = typeof value === 'string';
-  const decoded = isStr && decode(value?.replaceAll?.("'", '"') as string);
-  if (decoded === errorSym) return value;
+  const decoded = isStr && decode(value?.replaceAll?.("'", '"'));
   return key && isStr ? decoded : value;
 };
 
-function parseJSONSsr<T>(
+function parseJSONSsr<T extends JSONCompatible>(
   jsonString: string,
   fallbackValue?: T,
 ): T | Primitive | undefined {

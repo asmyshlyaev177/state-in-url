@@ -1,15 +1,10 @@
 import React from 'react';
 
 import { useUrlEncode } from './useUrlEncode';
-import {
-  type JSONCompatible,
-  type DeepReadonly,
-  isEqual,
-  isSSR,
-} from './utils';
+import { type JSONCompatible, isEqual, isSSR } from './utils';
 import { subscribers, stateMap } from './subscribers';
 
-export function useState<T>(defaultState: JSONCompatible<T>) {
+export function useState<T extends JSONCompatible>(defaultState: T) {
   const stateShape = React.useRef(defaultState);
   const { parse, stringify } = useUrlEncode(stateShape.current);
 
@@ -18,31 +13,29 @@ export function useState<T>(defaultState: JSONCompatible<T>) {
     const newVal = parse(isSSR() ? '' : window.location.search);
     if (!val) {
       stateMap.set(stateShape.current, newVal);
+      return newVal;
     }
-    return newVal as typeof defaultState;
+    return val;
   });
 
   const setState = React.useCallback(
     (
       value:
         | typeof defaultState
-        | DeepReadonly<typeof defaultState>
-        | ((
-            currState: typeof defaultState | DeepReadonly<typeof defaultState>,
-          ) => typeof defaultState | DeepReadonly<typeof defaultState>),
-    ) => {
+        | ((currState: typeof defaultState) => typeof defaultState),
+    ): void => {
       const curr = stateMap.get(stateShape.current) || stateShape.current;
       const isFunc = typeof value === 'function';
 
       if (isFunc) {
-        const newVal = value(curr as typeof defaultState);
-        if (isEqual(curr, newVal)) return false;
+        const newVal = value(curr);
+        if (isEqual(curr, newVal)) return void 0;
         stateMap.set(stateShape.current, newVal);
         (subscribers.get(stateShape.current) || []).forEach((sub) => {
           sub();
         });
       } else {
-        if (isEqual(curr, value)) return false;
+        if (isEqual(curr, value)) return void 0;
         stateMap.set(stateShape.current, value);
         (subscribers.get(stateShape.current) || []).forEach((sub) => {
           sub();
@@ -55,17 +48,14 @@ export function useState<T>(defaultState: JSONCompatible<T>) {
   React.useInsertionEffect(() => {
     const subs = subscribers.get(stateShape.current) || [];
     const cb = () => {
-      _setState(
-        (stateMap.get(stateShape.current) ||
-          defaultState) as typeof defaultState,
-      );
+      _setState(stateMap.get(stateShape.current) || defaultState);
     };
     subscribers.set(stateShape.current, subs.concat(cb));
 
     // for history navigation
     const popCb = () => {
       const newVal = parse(window.location.search);
-      setState(newVal as typeof defaultState);
+      setState(newVal);
     };
     const ev = 'popstate';
     window.addEventListener(ev, popCb);
@@ -73,7 +63,7 @@ export function useState<T>(defaultState: JSONCompatible<T>) {
     return () => {
       const subs = subscribers.get(stateShape.current) || [];
       subscribers.set(
-        stateShape.current as object,
+        stateShape.current,
         subs.filter((sub) => sub !== cb),
       );
 
@@ -83,8 +73,7 @@ export function useState<T>(defaultState: JSONCompatible<T>) {
 
   // get state without deps
   const getState = React.useCallback(() => {
-    return (stateMap.get(stateShape.current) ||
-      stateShape.current) as typeof defaultState;
+    return stateMap.get(stateShape.current) || stateShape.current;
   }, []);
 
   return { state, getState, setState, stringify };

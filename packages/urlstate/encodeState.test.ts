@@ -1,4 +1,5 @@
 import { encodeState, decodeState } from './encodeState';
+import { type JSONCompatible } from './utils';
 
 describe('encodeState', () => {
   it('should encode a simple state object', () => {
@@ -53,8 +54,8 @@ describe('encodeState', () => {
 
   it('should return an empty string for an empty state object', () => {
     expect(encodeState({})).toEqual('');
-    expect(encodeState(undefined as unknown as object)).toEqual('');
-    expect(encodeState(null as unknown as object)).toEqual('');
+    expect(encodeState(undefined as unknown as JSONCompatible)).toEqual('');
+    expect(encodeState(null as unknown as JSONCompatible)).toEqual('');
   });
 });
 

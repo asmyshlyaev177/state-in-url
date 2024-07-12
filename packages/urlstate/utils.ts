@@ -37,22 +37,31 @@ export const typeOf = (val: unknown): Type => {
 
 export const isSSR = () => typeof window === 'undefined';
 
-type JSONPrimitive =
+export type JSON =
   | null
   | boolean
   | Date
   | number
   | string
-  | JSONPrimitive[]
-  | { [prop: string]: JSONPrimitive };
+  | { [prop: string]: JSON | JSON[] };
 
-export type JSONCompatible<T> = {
-  [P in keyof T]: T[P] extends JSONPrimitive
-    ? T[P]
-    : Pick<T, P> extends Required<Pick<T, P>>
-      ? never
-      : JSONCompatible<T[P]>;
+export type JSONCompatible = {
+  [prop: string]: JSON | JSON[];
 };
+
+// export type Prettify<Type> = {
+//   [Key in keyof Type]: Type[Key];
+// } & {};
+
+// export type JSONCompatible<T> = {
+//   [P in keyof T]: T[P] extends JSON
+//   ? T[P]
+//   : Pick<T, P> extends Required<Pick<T, P>>
+//   ? never
+//   : T[P] extends (() => any) | undefined
+//   ? never
+//   : JSONCompatible<T[P]>;
+// };
 
 // TODO: or this https://github.com/ts-essentials/ts-essentials/tree/master/lib/deep-readonly
 // https://github.com/microsoft/TypeScript/issues/13923
@@ -61,7 +70,7 @@ export type DeepReadonly<T> =
     ? ReadonlyMap<DeepReadonly<K>, DeepReadonly<V>>
     : T extends Set<infer S>
       ? ReadonlySet<DeepReadonly<S>>
-      : T extends object
+      : T extends JSONCompatible
         ? { readonly [K in keyof T]: DeepReadonly<T[K]> }
         : T;
 
