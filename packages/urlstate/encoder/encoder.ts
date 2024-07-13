@@ -19,9 +19,7 @@ export function encode(payload: unknown): string {
     case 'date':
       return SYMBOLS.date + (payload as Date).toISOString();
     case 'string':
-      return (payload as string).match(/^◖/)
-        ? encodeURIComponent(payload as string)
-        : `${SYMBOLS.string}${encodeURIComponent(payload as string)}`;
+      return `${SYMBOLS.string}${encodeURIComponent(payload as string)}`;
     case 'number':
       return SYMBOLS.number + String(payload as number);
     case 'boolean':

@@ -18,43 +18,43 @@ describe('encoder', () => {
     it('integer and float', () => {
       const num1 = 5;
       const num2 = 5.55;
-      expect(encode(num1)).toStrictEqual('∓5');
       expect(num1).toStrictEqual(decode(encode(num1)));
-      expect(encode(num2)).toStrictEqual('∓5.55');
       expect(num2).toStrictEqual(decode(encode(num2)));
+      expect(encode(num1)).toStrictEqual('∓5');
+      expect(encode(num2)).toStrictEqual('∓5.55');
     });
   });
 
   it('date', () => {
     const d = new Date('2024-06-28T09:10:38.763Z');
-    expect(encode(d)).toStrictEqual('⏲2024-06-28T09:10:38.763Z');
     expect(d).toStrictEqual(decode(encode(d)));
+    expect(encode(d)).toStrictEqual('⏲2024-06-28T09:10:38.763Z');
   });
 
   it('boolean', () => {
-    expect(encode(true)).toStrictEqual('🗵true');
     expect(true).toStrictEqual(decode(encode(true)));
-    expect(encode(false)).toStrictEqual('🗵false');
     expect(false).toStrictEqual(decode(encode(false)));
+    expect(encode(true)).toStrictEqual('🗵true');
+    expect(encode(false)).toStrictEqual('🗵false');
   });
 
   it('null', () => {
-    expect(encode(null)).toStrictEqual('∙null');
     expect(null).toStrictEqual(decode(encode(null)));
+    expect(encode(null)).toStrictEqual('∙null');
   });
 
   it('undefined', () => {
-    expect(encode(undefined)).toStrictEqual('∙undefined');
     expect(undefined).toStrictEqual(decode(encode(undefined)));
+    expect(encode(undefined)).toStrictEqual('∙undefined');
   });
 
   describe('object', () => {
     it('simple', () => {
       const obj = { num: 123, float: 1.55, bool1: false };
+      expect(obj).toStrictEqual(decode(encode(obj)));
       expect(encode(obj)).toStrictEqual(
         "{'num':'∓123','float':'∓1.55','bool1':'🗵false'}",
       );
-      expect(obj).toStrictEqual(decode(encode(obj)));
     });
 
     it('nested', () => {
@@ -67,10 +67,10 @@ describe('encoder', () => {
         n: null,
         obj1: { obj2: { str: 'my_str' } },
       };
+      expect(obj).toStrictEqual(decode(encode(obj)));
       expect(encode(obj)).toStrictEqual(
         "{'num':'∓123','num2':'∓3.14','b1':'🗵true','b2':'🗵false','str':'◖test%20string','n':'∙null','obj1':{'obj2':{'str':'◖my_str'}}}",
       );
-      expect(obj).toStrictEqual(decode(encode(obj)));
     });
   });
 
@@ -78,16 +78,16 @@ describe('encoder', () => {
     it('simple', () => {
       const obj = [123, 1.55, false];
       const expected = "['∓123','∓1.55','🗵false']";
-      expect(encode(obj)).toStrictEqual(expected);
       expect(obj).toStrictEqual(decode(expected));
+      expect(encode(obj)).toStrictEqual(expected);
     });
 
     it('nested', () => {
       const obj = [123, [45, true, { arr: [1, 2, { test: true }, null] }]];
+      expect(obj).toStrictEqual(decode(encode(obj)));
       expect(encode(obj)).toStrictEqual(
         "['∓123',['∓45','🗵true',{'arr':['∓1','∓2',{'test':'🗵true'},'∙null']}]]",
       );
-      expect(obj).toStrictEqual(decode(encode(obj)));
     });
 
     it('array with invalid value', () => {
