@@ -2,7 +2,12 @@ import React from 'react';
 
 import { stateMap, subscribers } from './subscribers';
 import { useUrlEncode } from './useUrlEncode';
-import { isEqual, isSSR, type JSONCompatible } from './utils';
+import {
+  type DeepReadonly,
+  isEqual,
+  isSSR,
+  type JSONCompatible,
+} from './utils';
 
 export function useState<T extends JSONCompatible>(defaultState: T) {
   const stateShape = React.useRef(defaultState);
@@ -21,7 +26,7 @@ export function useState<T extends JSONCompatible>(defaultState: T) {
   const setState = React.useCallback(
     (
       value:
-        | typeof stateShape.current
+        | (T | DeepReadonly<T>)
         | ((currState: typeof stateShape.current) => typeof stateShape.current),
     ): void => {
       const curr = stateMap.get(stateShape.current) || stateShape.current;
@@ -36,7 +41,7 @@ export function useState<T extends JSONCompatible>(defaultState: T) {
         });
       } else {
         if (isEqual(curr, value)) return void 0;
-        stateMap.set(stateShape.current, value);
+        stateMap.set(stateShape.current, value as T);
         (subscribers.get(stateShape.current) || []).forEach((sub) => {
           sub();
         });
