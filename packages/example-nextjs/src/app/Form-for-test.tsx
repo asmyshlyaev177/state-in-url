@@ -41,13 +41,16 @@ export const Form = ({
   React.useEffect(() => {
     if (state?.tags?.length === 10) {
       // @ts-expect-error should be readonly
+      state.age = 18;
+      // @ts-expect-error should be readonly
       state.tags[0].value = { text: 'jjj', time: new Date() };
       // @ts-expect-error should be readonly
       state.tags[0].value.text = 'jjj';
       updateState(state);
       updateState((st) => st);
+      updateState((st) => ({ ...st, age: 18 }));
       updateUrl(state);
-      updateUrl((st) => st);
+      updateUrl((st) => ({ ...st, age: 18 }));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
