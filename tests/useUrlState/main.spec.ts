@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 
 const urls = ['/test-ssr', '/test-use-client', '/test-ssr-sp'];
 
@@ -49,6 +49,13 @@ test('main test', async ({ page, baseURL }) => {
       timeout: 1000,
     });
     await expect(page.getByTestId('parsed')).toHaveText(expectedText);
+    await expect(
+      page.getByRole('checkbox', { name: 'agree to terms' }),
+    ).toBeChecked();
+
+    // remount component
+    await page.getByTestId('remount').click();
+    await page.waitForTimeout(200);
     await expect(
       page.getByRole('checkbox', { name: 'agree to terms' }),
     ).toBeChecked();
