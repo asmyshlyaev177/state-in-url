@@ -29,12 +29,12 @@ const Status = ({ className, sp }: { className?: string; sp?: object }) => {
   );
 };
 
-const Wrapper = (props: Parameters<typeof Status>) => {
+const Wrapper = ({ className, sp }: { className?: string; sp?: object }) => {
   const [key, setKey] = React.useState(Math.random());
 
   return (
     <div>
-      <Status key={key} {...props} />
+      <Status key={key} className={className} sp={sp} />
       <button
         onClick={() => setKey(Math.random())}
         className="text-black p-4"
