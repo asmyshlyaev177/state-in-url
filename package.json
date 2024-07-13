@@ -70,6 +70,7 @@
     "test:int": "playwright test",
     "test:int:watch": "npx chokidar-cli 'packages/**/*.ts' 'packages/**/*.tsx' -i '.next' -t 500 -c 'npx playwright test -j 2 --project=chromium'",
     "test": "wireit",
+    "tsc": "wireit",
     "dev": "wireit",
     "dev:lib": "wireit",
     "dev:nextjs": "wireit",
@@ -87,13 +88,20 @@
   "wireit": {
     "test": {
       "dependencies": [
+        "tsc",
         "build",
         "test:unit",
         "dev:nextjs"
       ],
       "command": "npx playwright test --project=chromium -j 2"
     },
+    "tsc": {
+      "command": "npx tsc --noEmit"
+    },
     "test:unit": {
+      "dependencies": [
+        "tsc"
+      ],
       "command": "npx jest"
     },
     "dev": {
