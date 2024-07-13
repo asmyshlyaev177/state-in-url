@@ -65,6 +65,8 @@ export type JSONCompatible = {
 
 // TODO: or this https://github.com/ts-essentials/ts-essentials/tree/master/lib/deep-readonly
 // https://github.com/microsoft/TypeScript/issues/13923
+
+// Always will be some compromise between how strict checks are and readability
 export type DeepReadonly<T> =
   T extends Map<infer K, infer V>
     ? ReadonlyMap<DeepReadonly<K>, DeepReadonly<V>>
@@ -73,6 +75,21 @@ export type DeepReadonly<T> =
       : T extends JSONCompatible
         ? { readonly [K in keyof T]: DeepReadonly<T[K]> }
         : T;
+
+// export type DeepReadonly<T> = Readonly<{
+//   [K in keyof T]: T[K] extends Date | object | null
+//     ? Readonly<T[K]>
+//     : Readonly<DeepReadonly<T[K]>>;
+// }>;
+
+// export type DeepReadonly<T> = Readonly<{
+//   readonly [P in keyof T]: DeepReadonly<T[P]>;
+// }>;
+
+// export type Prettify<T> = {
+//   [K in keyof T]: T[K];
+// // eslint-disable-next-line @typescript-eslint/ban-types
+// } & {};
 
 export const getParams = (strOrSearchParams?: string | URLSearchParams) =>
   new URLSearchParams(
