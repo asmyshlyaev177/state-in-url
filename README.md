@@ -274,6 +274,7 @@ function SettingsComponent() {
 - Use TypeScript for enhanced type safety and autocomplete
 - Avoid storing sensitive information in URL parameters
 - Use `updateState` for frequent updates and `updateUrl` to sync changes to url
+- Use this [extension](https://marketplace.visualstudio.com/items?itemName=yoavbls.pretty-ts-errors) for readable TS errors
 
 ## Gothas
 
