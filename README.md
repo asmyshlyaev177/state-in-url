@@ -5,14 +5,12 @@
 <div align="center">
   <img src="/assets/logo.svg?raw=true" alt="Library logo"/>
 
-  <div>Seamlessly store complex nested state object in URL query parameters with IDE autocomplete and TS validation.</div>
+  <div>Easily share state between unrelated React components, with IDE autocomplete and TS validation. Without any hasssle or boilerplate. </div>
 </div>
 
 
 <div align="center">
 <hr />
-
-[![For hire](/assets/hireBadge.svg)](https://www.linkedin.com/in/asmyshlyaev177/)
 
 
 [![npm](https://img.shields.io/npm/v/state-in-url.svg)](https://www.npmjs.com/package/state-in-url)
@@ -24,7 +22,7 @@
 
 <div align="center">
 
-<h4 align="center">Don't hesitate to open issue if you found a bug</h4>
+<h4 align="center">Don't hesitate to open an issue if you found a bug</h4>
 
 ![Demo-gif](https://github.com/asmyshlyaev177/state-in-url/assets/19854148/c9802601-4d42-4362-b3e4-37ff87c3b97f)
 
@@ -42,19 +40,19 @@ Add a ⭐️ to support the project!
 
   ## Why use state-in-url?
 
-`state-in-url` lets you use URI string for state management.
+`state-in-url` Simple state management with URL synchronization.
 
 # Use cases
 
-- 🙃 Can just share the state without changing url, good as alternative to signals and other state management tools
+- 🙃 Share the state between different components without changing url, good as alternative to signals and other state management tools
 - 🔗 Shareable URLs with full application state
 - 🔄 Easy state persistence across page reloads
-- 🧠 Pass data between unrelated client components
+- 🧠 Sync data between unrelated client components
 - 🧮 Store unsaved user forms in URL
 
 # Features
 
-- 🧩 **Simple**: Handles complex objects without extra effort
+- 🧩 **Simple**: No providers, reducers, boilerplate or new concepts
 - 📘 **Typescript support and type Safety**: Preserves data types and structure, enhances developer experience with IDE suggestions, strong typing and JSDoc comments
 - ⚛️ **Framework Flexibility**: Separate hooks for Next.js and React.js applications, and functions for pure JS
 - ⚙ **Well tested**: Unit tests and Playwright tests
@@ -98,7 +96,7 @@ set `"moduleResolution": "Node16"` or `"moduleResolution": "NodeNext"` in your `
 
 [Docs](packages/urlstate/useUrlState/README.md)
 
-`useUrlState` is a custom React hook for Next.js applications that make communication between client components easy. It allows you to store and retrieve state from the URL search parameters, providing a way to persist state across page reloads and share application state via URLs.
+`useUrlState` is a custom React hook for Next.js applications that make communication between client components easy. It allows you to share any complex state and sync it with the URL search parameters, providing a way to persist state across page reloads and share application state via URLs.
 
 ### Usage examples
 
