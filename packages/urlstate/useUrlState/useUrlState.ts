@@ -1,9 +1,9 @@
 import { useRouter } from 'next/navigation';
 import React from 'react';
 
-import { parseSsrQs } from './encoder';
-import { useState } from './state';
-import { DeepReadonly, isSSR, type JSONCompatible } from './utils';
+import { parseSsrQs } from '../encoder';
+import { useState } from '../state';
+import { type DeepReadonly, isSSR, type JSONCompatible } from '../utils';
 
 /**
  * NextJS hook. Returns `state`, `updateState`, and `updateUrl` functions
@@ -35,25 +35,23 @@ export function useUrlState<T extends JSONCompatible>(
 
   const updateUrl = React.useCallback(
     (
-      value?:
-        | typeof defaultState
-        | ((currState: typeof defaultState) => typeof defaultState),
+      value?: typeof state | ((currState: typeof state) => typeof state),
       options?: Options,
     ) => {
       const currSP = window.location.search;
       const currUrl = `${window.location.pathname}${currSP.length && !currSP.includes('?') ? '?' : ''}${currSP}`;
       const isFunc = typeof value === 'function';
 
+      let newVal: T;
       let qStr: string;
       if (isFunc) {
-        const newVal = value(getState());
+        newVal = value(getState());
         qStr = stringify(newVal);
-        setState(newVal);
       } else {
-        const newVal = value ?? getState();
+        newVal = value ?? getState();
         qStr = stringify(newVal);
-        setState(newVal);
       }
+      setState(newVal);
 
       const newUrl = `${window.location.pathname}${qStr.length ? '?' : ''}${qStr}`;
 
@@ -68,12 +66,10 @@ export function useUrlState<T extends JSONCompatible>(
     [router, stringify, getState],
   );
 
-  // TODO: reset fn?
-
   return {
     updateUrl,
     updateState: setState,
-    state: state as DeepReadonly<typeof defaultState>,
+    state: state as DeepReadonly<typeof state>,
   };
 }
 

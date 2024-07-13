@@ -21,8 +21,8 @@ export function useState<T extends JSONCompatible>(defaultState: T) {
   const setState = React.useCallback(
     (
       value:
-        | typeof defaultState
-        | ((currState: typeof defaultState) => typeof defaultState),
+        | typeof stateShape.current
+        | ((currState: typeof stateShape.current) => typeof stateShape.current),
     ): void => {
       const curr = stateMap.get(stateShape.current) || stateShape.current;
       const isFunc = typeof value === 'function';
@@ -48,7 +48,7 @@ export function useState<T extends JSONCompatible>(defaultState: T) {
   React.useInsertionEffect(() => {
     const subs = subscribers.get(stateShape.current) || [];
     const cb = () => {
-      _setState(stateMap.get(stateShape.current) || defaultState);
+      _setState(stateMap.get(stateShape.current) || stateShape.current);
     };
     subscribers.set(stateShape.current, subs.concat(cb));
 

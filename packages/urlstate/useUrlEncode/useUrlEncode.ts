@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { decodeState, encodeState } from './encodeState';
-import { type JSONCompatible, typeOf } from './utils';
+import { decodeState, encodeState } from '../encodeState';
+import { type JSONCompatible, typeOf } from '../utils';
 
 /**
  * A hook that returns stringify and parse functions for encoding and decoding state
