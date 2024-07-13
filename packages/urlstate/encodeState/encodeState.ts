@@ -14,7 +14,7 @@ import { getParams, type JSONCompatible, type UnknownObj } from '../utils';
  * encodeState({ name: 'test' }, form, 'someExistingParam=123');
  *  ```
  *
- *  * Github {@link https://github.com/asmyshlyaev177/state-in-url}
+ *  * Github {@link https://github.com/asmyshlyaev177/state-in-url/tree/main/packages/urlstate/encodeState#encodestate}
  */
 export function encodeState<T extends JSONCompatible>(
   state: T,
@@ -43,7 +43,7 @@ export function encodeState<T extends JSONCompatible>(
  * decodeState('key=value&name=Alex', form);
  *  ```
  *
- *  * Github {@link https://github.com/asmyshlyaev177/state-in-url}
+ *  * Github {@link https://github.com/asmyshlyaev177/state-in-url/tree/main/packages/urlstate/encodeState#decodestate}
  */
 export function decodeState<T extends JSONCompatible>(
   uriString: string | URLSearchParams,

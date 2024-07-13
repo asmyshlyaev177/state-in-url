@@ -7,7 +7,7 @@ import { type JSONCompatible, typeOf } from '../utils';
  * @param {unknown} payload any value to serialize
  * @returns {string} URLSearchParams compatible value string
  *
- *  * Github {@link https://github.com/asmyshlyaev177/state-in-url}
+ *  * Github {@link https://github.com/asmyshlyaev177/state-in-url/tree/main/packages/urlstate/encoder#encode}
  */
 export function encode(payload: unknown): string {
   const type = typeOf(payload);
@@ -45,7 +45,7 @@ export function encode(payload: unknown): string {
  * @param {any} fallback optional fallback value
  * @returns {unknown} decoded object
  *
- *  * Github {@link https://github.com/asmyshlyaev177/state-in-url}
+ *  * Github {@link https://github.com/asmyshlyaev177/state-in-url/tree/main/packages/urlstate/encoder#decode}
  */
 export function decode<T>(payload: string, fallback?: T) {
   return parseJSON(payload.replaceAll("'", '"'), fallback as JSONCompatible);

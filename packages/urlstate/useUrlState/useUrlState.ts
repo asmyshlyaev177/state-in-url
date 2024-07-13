@@ -21,7 +21,7 @@ import { type DeepReadonly, isSSR, type JSONCompatible } from '../utils';
  * updateUrl({ name: 'test' }, { replace: true, scroll: true });
  *  ```
  *
- *  * Github {@link https://github.com/asmyshlyaev177/state-in-url}
+ *  * Github {@link https://github.com/asmyshlyaev177/state-in-url/tree/main/packages/urlstate/useUrlState#api}
  */
 export function useUrlState<T extends JSONCompatible>(
   defaultState: T,
@@ -67,8 +67,28 @@ export function useUrlState<T extends JSONCompatible>(
   );
 
   return {
-    updateUrl,
+    /**
+     * * Example:
+     * ```ts
+     * updateState({ name: 'test' });
+     * // or
+     * updateState(curr => ({ ...curr, name: 'test' }) );
+     *  ```
+     *
+     *  * Github {@link https://github.com/asmyshlyaev177/state-in-url/tree/main/packages/urlstate/useUrlState#updatestate}
+     */
     updateState: setState,
+    /**
+     * * Example:
+     * ```ts
+     * updateUrl({ name: 'test' });
+     * // or
+     * updateUrl(curr => ({ ...curr, name: 'test' }), { replace: true, scroll: false  } );
+     *  ```
+     *
+     *  * Github {@link https://github.com/asmyshlyaev177/state-in-url/tree/main/packages/urlstate/useUrlState#updateurl}
+     */
+    updateUrl,
     state: state as DeepReadonly<typeof state>,
   };
 }
