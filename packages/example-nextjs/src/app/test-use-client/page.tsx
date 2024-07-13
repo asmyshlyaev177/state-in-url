@@ -1,6 +1,6 @@
 'use client';
 import { Form } from '../Form-for-test';
-import { Status } from '../Status';
+import { Status } from '../Status-for-test';
 
 export default function Home() {
   return (
