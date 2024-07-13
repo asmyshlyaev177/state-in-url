@@ -72,7 +72,7 @@ export type DeepReadonly<T> =
     ? ReadonlyMap<DeepReadonly<K>, DeepReadonly<V>>
     : T extends Set<infer S>
       ? ReadonlySet<DeepReadonly<S>>
-      : T extends JSONCompatible
+      : T extends object
         ? { readonly [K in keyof T]: DeepReadonly<T[K]> }
         : T;
 
