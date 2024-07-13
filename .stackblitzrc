@@ -1,6 +1,6 @@
 {
   "installDependencies": false,
-  "startCommand": "rm -rf node_modules && npm install && npm run dev",
+  "startCommand": "rm -rf node_modules package-lock.json && npm install && npm run dev",
   "env": {
     "NODE_ENV": "development"
   }
