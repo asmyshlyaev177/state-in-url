@@ -1,5 +1,5 @@
-import { SYMBOLS } from './constants';
-import { type JSONCompatible, typeOf } from './utils';
+import { SYMBOLS } from '../constants';
+import { type JSONCompatible, typeOf } from '../utils';
 
 /**
  * Encode any JSON serializable value to URL friendly string
