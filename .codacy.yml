@@ -1,0 +1,15 @@
+---
+engines:
+languages:
+  css:
+    enabled: false
+exclude_paths:
+  - "**/tests/**"
+  - "**.test.ts"
+  - "**.test.tsx"
+  - "**.spec.ts"
+  - "**.spec.tsx"
+  - "**.config.*"
+  - "**.md"
+include_paths:
+  - "**/packages/urlstate/**"
