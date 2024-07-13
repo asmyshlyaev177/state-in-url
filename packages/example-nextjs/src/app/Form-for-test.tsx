@@ -37,13 +37,17 @@ export const Form = ({
     };
   }, [state, updateUrl, delay]);
 
-  // Just to test ts types readonly
+  // Just to test ts types
   React.useEffect(() => {
     if (state?.tags?.length === 10) {
       // @ts-expect-error should be readonly
       state.tags[0].value = { text: 'jjj', time: new Date() };
       // @ts-expect-error should be readonly
       state.tags[0].value.text = 'jjj';
+      updateState(state);
+      updateState((st) => st);
+      updateUrl(state);
+      updateUrl((st) => st);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
