@@ -70,10 +70,10 @@ describe('useUrlEncode', () => {
       it('should return stringify changed keys', () => {
         const { result } = renderHook(() => useUrlEncode(stateShape));
 
+        expect(result.current.stringify(state)).toEqual(stateStr);
         expect(
           result.current.stringify({ ...stateShape, str: 'my string %' }),
         ).toEqual('str=%E2%97%96my%2520string%2520%2525');
-        expect(result.current.stringify(state)).toEqual(stateStr);
       });
     });
 
