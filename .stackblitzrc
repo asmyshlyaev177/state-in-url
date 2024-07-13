@@ -1,0 +1,7 @@
+{
+  "installDependencies": false,
+  "startCommand": "rm -rf node_modules && npm install && npm run dev",
+  "env": {
+    "NODE_ENV": "development"
+  }
+}
