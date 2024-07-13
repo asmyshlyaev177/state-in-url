@@ -35,20 +35,20 @@ export function useUrlState<T extends JSONCompatible>(
 
   const updateUrl = React.useCallback(
     (
-      value?: typeof state | ((currState: typeof state) => typeof state),
+      value?: (T | DeepReadonly<T>) | ((currState: T) => T),
       options?: Options,
     ) => {
       const currSP = window.location.search;
       const currUrl = `${window.location.pathname}${currSP.length && !currSP.includes('?') ? '?' : ''}${currSP}`;
       const isFunc = typeof value === 'function';
 
-      let newVal: T;
+      let newVal: T | DeepReadonly<T>;
       let qStr: string;
       if (isFunc) {
         newVal = value(getState());
         qStr = stringify(newVal);
       } else {
-        newVal = value ?? getState();
+        newVal = (value ?? getState()) as T;
         qStr = stringify(newVal);
       }
       setState(newVal);
