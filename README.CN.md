@@ -1,18 +1,15 @@
-English | [한국어](./README.KO.md) | [简体中文](./README.CN.md)
+[English](./README.md) | [한국어](./README.KO.md) | 简体中文
 
 <h1 align="center">state-in-url</h1>
 
-
 <div align="center">
-  <img src="/assets/logo.svg?raw=true" alt="Library logo"/>
+  <img src="/assets/logo.svg?raw=true" alt="库标志"/>
 
-  <div>Easily share state between unrelated React components, with IDE autocomplete and TS validation. Without any hasssle or boilerplate. </div>
+  <div>轻松在不相关的 React 组件之间共享状态，具有 IDE 自动完成和 TS 验证功能。无需任何麻烦或样板代码。</div>
 </div>
-
 
 <div align="center">
 <hr />
-
 
 [![npm](https://img.shields.io/npm/v/state-in-url.svg)](https://www.npmjs.com/package/state-in-url)
 ![Tests](https://github.com/asmyshlyaev177/state-in-url/actions/workflows/tests.yml/badge.svg?branch=main)
@@ -23,63 +20,60 @@ English | [한국어](./README.KO.md) | [简体中文](./README.CN.md)
 
 <div align="center">
 
-<h4 align="center">Don't hesitate to open an issue if you found a bug</h4>
+<h4 align="center">如果发现bug，请不要犹豫，立即提出问题</h4>
 
-![Demo-gif](https://github.com/asmyshlyaev177/state-in-url/assets/19854148/c9802601-4d42-4362-b3e4-37ff87c3b97f)
-
+![演示-gif](https://github.com/asmyshlyaev177/state-in-url/assets/19854148/c9802601-4d42-4362-b3e4-37ff87c3b97f)
 
 <a href="https://state-in-url-asmyshlyaev177.vercel.app/" target="_blank">DEMO</a> |
 <a href ="https://codesandbox.io/p/github/asmyshlyaev177/state-in-url/main?layout=%257B%2522sidebarPanel%2522%253A%2522EXPLORER%2522%252C%2522rootPanelGroup%2522%253A%257B%2522direction%2522%253A%2522horizontal%2522%252C%2522contentType%2522%253A%2522UNKNOWN%2522%252C%2522type%2522%253A%2522PANEL_GROUP%2522%252C%2522id%2522%253A%2522ROOT_LAYOUT%2522%252C%2522panels%2522%253A%255B%257B%2522type%2522%253A%2522PANEL_GROUP%2522%252C%2522contentType%2522%253A%2522UNKNOWN%2522%252C%2522direction%2522%253A%2522vertical%2522%252C%2522id%2522%253A%2522clyk5bd9y00062v6jspcfrkx7%2522%252C%2522sizes%2522%253A%255B100%252C0%255D%252C%2522panels%2522%253A%255B%257B%2522type%2522%253A%2522PANEL_GROUP%2522%252C%2522contentType%2522%253A%2522EDITOR%2522%252C%2522direction%2522%253A%2522horizontal%2522%252C%2522id%2522%253A%2522EDITOR%2522%252C%2522panels%2522%253A%255B%257B%2522type%2522%253A%2522PANEL%2522%252C%2522contentType%2522%253A%2522EDITOR%2522%252C%2522id%2522%253A%2522clyk5bd9x00022v6jyg71cr9e%2522%257D%255D%257D%252C%257B%2522type%2522%253A%2522PANEL_GROUP%2522%252C%2522contentType%2522%253A%2522SHELLS%2522%252C%2522direction%2522%253A%2522horizontal%2522%252C%2522id%2522%253A%2522SHELLS%2522%252C%2522panels%2522%253A%255B%257B%2522type%2522%253A%2522PANEL%2522%252C%2522contentType%2522%253A%2522SHELLS%2522%252C%2522id%2522%253A%2522clyk5bd9x00042v6jsos2y043%2522%257D%255D%257D%255D%257D%252C%257B%2522type%2522%253A%2522PANEL_GROUP%2522%252C%2522contentType%2522%253A%2522DEVTOOLS%2522%252C%2522direction%2522%253A%2522vertical%2522%252C%2522id%2522%253A%2522DEVTOOLS%2522%252C%2522panels%2522%253A%255B%257B%2522type%2522%253A%2522PANEL%2522%252C%2522contentType%2522%253A%2522DEVTOOLS%2522%252C%2522id%2522%253A%2522clyk5bd9x00052v6j5r632b12%2522%257D%255D%257D%255D%252C%2522sizes%2522%253A%255B50%252C50%255D%257D%252C%2522tabbedPanels%2522%253A%257B%2522clyk5bd9x00022v6jyg71cr9e%2522%253A%257B%2522tabs%2522%253A%255B%257B%2522id%2522%253A%2522clyk5bd9w00012v6j83rq3bvo%2522%252C%2522mode%2522%253A%2522permanent%2522%252C%2522type%2522%253A%2522FILE%2522%252C%2522filepath%2522%253A%2522%252FREADME.md%2522%252C%2522state%2522%253A%2522IDLE%2522%257D%255D%252C%2522id%2522%253A%2522clyk5bd9x00022v6jyg71cr9e%2522%252C%2522activeTabId%2522%253A%2522clyk5bd9w00012v6j83rq3bvo%2522%257D%252C%2522clyk5bd9x00052v6j5r632b12%2522%253A%257B%2522id%2522%253A%2522clyk5bd9x00052v6j5r632b12%2522%252C%2522activeTabId%2522%253A%2522clyk5bdjx000b2v6jfc8ae464%2522%252C%2522tabs%2522%253A%255B%257B%2522type%2522%253A%2522SETUP_TASKS%2522%252C%2522id%2522%253A%2522clyk5bdjx000b2v6jfc8ae464%2522%252C%2522mode%2522%253A%2522permanent%2522%257D%252C%257B%2522type%2522%253A%2522UNASSIGNED_PORT%2522%252C%2522port%2522%253A2222%252C%2522id%2522%253A%2522clyk5cjbo004d2v6j3u55k74g%2522%252C%2522mode%2522%253A%2522permanent%2522%257D%252C%257B%2522type%2522%253A%2522ENV_SETUP%2522%252C%2522id%2522%253A%2522clyk5h8dp000r2v6j0r7kc7qq%2522%252C%2522mode%2522%253A%2522permanent%2522%257D%255D%257D%252C%2522clyk5bd9x00042v6jsos2y043%2522%253A%257B%2522id%2522%253A%2522clyk5bd9x00042v6jsos2y043%2522%252C%2522activeTabId%2522%253A%2522clyk5cbuv001q2v6joegrxxv6%2522%252C%2522tabs%2522%253A%255B%257B%2522id%2522%253A%2522clyk5bd9x00032v6jtfhj316o%2522%252C%2522mode%2522%253A%2522permanent%2522%252C%2522type%2522%253A%2522NEW_TERMINAL%2522%257D%252C%257B%2522type%2522%253A%2522TASK_LOG%2522%252C%2522taskId%2522%253A%2522dev%2522%252C%2522id%2522%253A%2522clyk5cbuv001q2v6joegrxxv6%2522%252C%2522mode%2522%253A%2522permanent%2522%257D%252C%257B%2522type%2522%253A%2522TASK_LOG%2522%252C%2522taskId%2522%253A%2522cleanupDist%2522%252C%2522id%2522%253A%2522clyk5dgvo005i2v6jj950sxft%2522%252C%2522mode%2522%253A%2522permanent%2522%257D%255D%257D%257D%252C%2522showDevtools%2522%253Atrue%252C%2522showShells%2522%253Atrue%252C%2522showSidebar%2522%253Atrue%252C%2522sidebarPanelSize%2522%253A15%257D" target="_blank">Demo on Codesandbox</a>
 
+<hr />
+
+给项目加个 ⭐️ 以示支持！
 
 <hr />
 
-Add a ⭐️ to support the project!
+</div>
 
-  <hr />
+## 为什么使用 state-in-url?
 
-  </div>
+`state-in-url` 是一个简单的状态管理工具，具有 URL 同步功能。
 
-  ## Why use state-in-url?
+# 使用场景
 
-`state-in-url` Simple state management with URL synchronization.
+- 🙃 在不改变 URL 的情况下在不同组件间共享状态，是信号和其他状态管理工具的良好替代品
+- 🔗 包含完整应用程序状态的可共享 URL
+- 🔄 在页面重新加载时轻松保持状态
+- 🧠 在不相关的客户端组件间同步数据
+- 🧮 在 URL 中存储未保存的用户表单
 
-# Use cases
+# 特性
 
-- 🙃 Share the state between different components without changing url, good as alternative to signals and other state management tools
-- 🔗 Shareable URLs with full application state
-- 🔄 Easy state persistence across page reloads
-- 🧠 Sync data between unrelated client components
-- 🧮 Store unsaved user forms in URL
+- 🧩 **简单**: 无需提供者、减速器、样板代码或新概念
+- 📘 **TypeScript 支持和类型安全**: 保留数据类型和结构，通过 IDE 建议、强类型和 JSDoc 注释增强开发体验
+- ⚛️ **框架灵活性**: 为 Next.js 和 React.js 应用程序提供单独的钩子，以及纯 JS 函数
+- ⚙ **测试充分**: 单元测试和 Playwright 测试
+- ⚡ **快速**: 最小化重新渲染
+- 🪶 **轻量级**: 零依赖，占用空间小
 
-# Features
+## 目录
 
-- 🧩 **Simple**: No providers, reducers, boilerplate or new concepts
-- 📘 **Typescript support and type Safety**: Preserves data types and structure, enhances developer experience with IDE suggestions, strong typing and JSDoc comments
-- ⚛️ **Framework Flexibility**: Separate hooks for Next.js and React.js applications, and functions for pure JS
-- ⚙ **Well tested**: Unit tests and Playwright tests
-- ⚡ **Fast**: Minimal rerenders
-- 🪶 **Lightweight**: Zero dependencies for a smaller footprint
+- [安装](#安装)
+- [Next.js 的 `useUrlState`](#nextjs-的-useurlstate-钩子)
+- [React.js 的 `useUrlEncode`](#reactjs-的-useurlencode-钩子)
+- [纯 JS 使用的 `encodeState` 和 `decodeState`](#纯-js-使用的-encodestate-和-decodestate-辅助函数)
+- [自动同步状态到 URL](#自动同步状态)
+- [低级 `encode` 和 `decode` 函数](#encode-和-decode-辅助函数)
+- [最佳实践](#最佳实践)
+- [注意事项](#注意事项)
+- [联系与支持](#联系与支持)
+- [更新日志](#更新日志)
+- [许可证](#许可证)
+- [灵感来源](#灵感来源)
 
+## 安装
 
-## Table of content
-
-- [Installation](#installation)
-- [`useUrlState` for Next.js](#useurlstate-hook-for-nextjs)
-- [`useUrlEncode` for React.js](#useurlencode-hook-for-reactjs)
-- [`encodeState` and `decodeState` for pure JS usage](#encodestate-and-decodestate-helpers)
-- [auto sync state with url](#auto-sync-state)
-- [Low-level `encode` and `decode` functions](#encode-and-decode-helpers)
-- [Best practices](#best-practices)
-- [Gothas](#gothas)
-- [Contact & Support](#contact--support)
-- [Changelog](#changelog)
-- [License](#license)
-- [Inspiration](#inspiration)
-
-## installation
-
-### 1. Install package
+### 1. 安装包
 
 ```sh
 # npm
@@ -90,31 +84,31 @@ yarn add state-in-url
 pnpm add state-in-url
 ```
 
-### 2. Edit tsconfig.json
+### 2. 编辑 tsconfig.json
 
-set `"moduleResolution": "Node16"` or `"moduleResolution": "NodeNext"` in your `tsconfig.json`
+在 `tsconfig.json` 中设置 `"moduleResolution": "Node16"` 或 `"moduleResolution": "NodeNext"`
 
-## useUrlState hook for Next.js
+## Next.js 的 useUrlState 钩子
 
-[Docs](packages/urlstate/useUrlState/README.md)
+[文档](packages/urlstate/useUrlState/README.md)
 
-`useUrlState` is a custom React hook for Next.js applications that make communication between client components easy. It allows you to share any complex state and sync it with the URL search parameters, providing a way to persist state across page reloads and share application state via URLs.
+`useUrlState` 是一个为 Next.js 应用程序设计的自定义 React 钩子，使客户端组件之间的通信变得简单。它允许你共享任何复杂的状态并将其与 URL 搜索参数同步，提供了一种在页面重新加载时保持状态和通过 URL 共享应用程序状态的方法。
 
-### Usage examples
+### 使用示例
 
-#### Basic
+#### 基本用法
 
-1. Define state shape
+1. 定义状态形状
 
    ```typescript
    // countState.ts
-   // State shape should be stored in a constant, don't pass an object directly
+   // 状态形状应该存储在一个常量中，不要直接传递对象
    export const countState: CountState = { count: 0 }
 
    type CountState = { count: number }
    ```
 
-2. Import it and use
+2. 导入并使用
 
 ```typescript
 'use client'
@@ -123,40 +117,40 @@ import { useUrlState } from 'state-in-url';
 import { countState } from './countState';
 
 function MyComponent() {
-  // for use searchParams from server component
-  // e.g. export default async function Home({ searchParams }: { searchParams: object }) {
+  // 用于从服务器组件使用 searchParams
+  // 例如 export default async function Home({ searchParams }: { searchParams: object }) {
   // const { state, updateState, updateUrl } = useUrlState(countState, searchParams);
   const { state, updateState, updateUrl } = useUrlState(countState);
 
-  // won't let you to accidently mutate state directly, requires TS
-  // state.count = 2 // <- error
+  // 不会让你意外地直接修改状态，需要 TS
+  // state.count = 2 // <- 错误
 
   return (
     <div>
-      <p>Count: {state.count}</p>
+      <p>计数: {state.count}</p>
 
       <button onClick={() => updateUrl({ count: state.count + 1 }), { replace: true }}>
-        Increment (Update URL)
+        增加 (更新 URL)
       </button>
 
-        // same api as React.useState
+      // 与 React.useState 相同的 API
       <button onClick={() => updateState(currState => ({...currState, count: currState.count + 1 }) )}>
-        Increment (Local Only)
+        增加 (仅本地)
       </button>
       <button onClick={() => updateUrl()}>
-        Sync changes to url
-        // Or don't sync it and just share state
+        同步更改到 URL
+        // 或者不同步，只共享状态
       </button>
 
       <button onClick={() => updateUrl(state)}>
-        Reset
+        重置
       </button>
     </div>
   )
 }
 ```
 
-#### With complex state shape
+#### 复杂状态形状示例
 
 ```typescript
 interface UserSettings {
@@ -179,7 +173,7 @@ import { useUrlState } from 'state-in-url';
 import { userSettings } from './userSettings';
 
 function SettingsComponent() {
-  // `state` will infer from UserSettings type!
+  // `state` 将从 UserSettings 类型推断!
   const { state, updateUrl } = useUrlState(userSettings);
 
   const toggleTheme = () => {
@@ -189,12 +183,12 @@ function SettingsComponent() {
     }));
   };
 
-  // sync state to url when idle
+  // 空闲时同步状态到 url
   const timer = React.useRef(0 as unknown as NodeJS.Timeout);
   React.useEffect(() => {
     clearTimeout(timer.current);
     timer.current = setTimeout(() => {
-      // will compare state by content not by reference and fire update only for new values
+      // 将按内容而不是引用比较状态，并仅对新值触发更新
       updateUrl(state);
     }, 500);
 
@@ -205,36 +199,36 @@ function SettingsComponent() {
 
   return (
     <div>
-      <h2>User Settings</h2>
-      <p>Theme: {state.theme}</p>
-      <p>Font Size: {state.fontSize}px</p>
-      <button onClick={toggleTheme}>Toggle Theme</button>
-      {/* Other UI elements to update other settings */}
+      <h2>用户设置</h2>
+      <p>主题: {state.theme}</p>
+      <p>字体大小: {state.fontSize}px</p>
+      <button onClick={toggleTheme}>切换主题</button>
+      {/* 其他用于更新其他设置的 UI 元素 */}
     </div>
   );
 }
 ...
 
-// Other component
+// 其他组件
 function Component() {
   const { state } = useUrlState(defaultSettings);
 
   return (
     <div>
-      <p>Notifications is {state.notifications ? 'On' : 'Off'}</p>
+      <p>通知功能 {state.notifications ? '开启' : '关闭'}</p>
     </div>
   )
 }
 ```
 
-#### Auto sync state
+#### 自动同步状态
 
 ```typescript
   const timer = React.useRef(0 as unknown as NodeJS.Timeout);
   React.useEffect(() => {
     clearTimeout(timer.current);
     timer.current = setTimeout(() => {
-      // will compare state by content not by reference and fire update only for new values
+      // 将按内容而不是引用比较状态，并仅对新值触发更新
       updateUrl(state);
     }, 500);
 
@@ -244,7 +238,7 @@ function Component() {
   }, [state, updateUrl]);
 ```
 
-#### With arbitrary state shape (not recommended)
+#### 任意状态形状 (不推荐)
 
 ```typescript
 'use client'
@@ -257,56 +251,55 @@ function SettingsComponent() {
 }
 ```
 
-## `useUrlEncode` hook for React.js
+## React.js 的 `useUrlEncode` 钩子
 
-[Docs](packages/urlstate/useUrlEncode/README.md)
+[文档](packages/urlstate/useUrlEncode/README.md)
 
-## `encodeState` and `decodeState` helpers
+## 纯 JS 使用的 `encodeState` 和 `decodeState` 辅助函数
 
-[Docs](packages/urlstate/encodeState/README.md)
+[文档](packages/urlstate/encodeState/README.md)
 
-## `encode` and `decode` helpers
+## `encode` 和 `decode` 辅助函数
 
-[Docs](packages/urlstate/encoder/README.md)
+[文档](packages/urlstate/encoder/README.md)
 
-## Best Practices
+## 最佳实践
 
-- Define your state shape as a constant to ensure consistency
-- Use TypeScript for enhanced type safety and autocomplete
-- Avoid storing sensitive information in URL parameters
-- Use `updateState` for frequent updates and `updateUrl` to sync changes to url
-- Use this [extension](https://marketplace.visualstudio.com/items?itemName=yoavbls.pretty-ts-errors) for readable TS errors
+- 将状态形状定义为常量以确保一致性
+- 使用 TypeScript 以增强类型安全性和自动完成功能
+- 避免在 URL 参数中存储敏感信息
+- 对频繁更新使用 `updateState`，使用 `updateUrl` 同步更改到 url
+- 使用此[扩展](https://marketplace.visualstudio.com/items?itemName=yoavbls.pretty-ts-errors)以获得可读的 TS 错误
 
-## Gothas
+## 注意事项
 
-1. Can pass only serializable values, `Function`, `BigInt` or `Symbol` won't work, probably things like `ArrayBuffer` neither.
-2. Vercel servers limit size of headers (query string and other stuff) to **14KB**, so keep your URL state under ~5000 words. https://vercel.com/docs/errors/URL_TOO_LONG
+1. 只能传递可序列化的值，`Function`、`BigInt` 或 `Symbol` 不起作用，`ArrayBuffer` 之类的东西也可能不行。
+2. Vercel 服务器将头部大小（查询字符串和其他内容）限制为 **14KB**，因此请将 URL 状态保持在约 5000 字以内。 https://vercel.com/docs/errors/URL_TOO_LONG
 
-## Run locally
+## 本地运行
 
-Clone this repo, run `npm install` and
+克隆此仓库，运行 `npm install` 然后
 
 ```sh
 npm run dev
 ```
 
-Go to [localhost:3000](http://localhost:3000)
+转到 [localhost:3000](http://localhost:3000)
 
+## 联系与支持
 
-## Contact & Support
+- 创建 [GitHub issue](https://github.com/asmyshlyaev177/state-in-url/issues) 以报告错误、请求功能或提出问题
 
-- Create a [GitHub issue](https://github.com/asmyshlyaev177/state-in-url/issues) for bug reports, feature requests, or questions
+## [更新日志](https://github.com/asmyshlyaev177/state-in-url/blob/main/CHANGELOG.md)
 
-## [Changelog](https://github.com/asmyshlyaev177/state-in-url/blob/main/CHANGELOG.md)
+## 许可证
 
-## License
+本项目采用 [MIT 许可证](https://github.com/asmyshlyaev177/state-in-url/blob/main/LICENSE)。
 
-This project is licensed under the [MIT license](https://github.com/asmyshlyaev177/state-in-url/blob/main/LICENSE).
+## 灵感来源
 
-## Inspiration
+[在 Vue 中使用 URL 存储状态](https://dev.to/jacobandrewsky/using-url-to-store-state-in-vue-275c)
 
-[Using URL to store state in Vue ](https://dev.to/jacobandrewsky/using-url-to-store-state-in-vue-275c)
-
-[Storing state in the URL](https://antonz.org/storing-state/)
+[在 URL 中存储状态](https://antonz.org/storing-state/)
 
 [NextJS useSearchParams](https://nextjs.org/docs/app/api-reference/functions/use-search-params)
