@@ -1,10 +1,9 @@
-import Image from 'next/image';
-
 import { GithubLink } from './components/GithubLink';
 import { Form } from './Form';
+import { Logo } from './Logo';
 import { Status } from './Status';
-import Logo from '../../../../assets/logo.svg';
 
+console.log({ type: typeof Logo, Logo });
 export default async function Home({ searchParams }: { searchParams: object }) {
   return (
     <main
@@ -15,25 +14,21 @@ export default async function Home({ searchParams }: { searchParams: object }) {
         <div className="flex flex-col items-center bg-stone-100 w-full p-2 lg:max-w-[80%] lg:p-[4em] rounded-lg lg:pt-6">
           <div className="text-center min-h-[35vh] md:min-h-[25vh] flex flex-col justify-center mb-8">
             <div className="flex flex-col md:flex-row items-center justify-center gap-1">
-              <Image
-                priority
-                src={Logo}
-                alt="state-in-url logo"
-                width="200"
-                height="200"
-              />
-              <div className="text-center md:text-left ml-4">
-                <h1 className="text-6xl font-semibold tracking-wide text-neutral-700  mb-2">
-                  State in url
-                </h1>
+              <div className="text-center md:text-left ml-4 flex flex-col items-center min-[800px]:items-left min-[800px]:flex-row gap-6">
+                <Logo className="relative block min-w-[200px] max-w-[200px] drop-shadow-xl hover:drop-shadow-2xl transition ease-in duration-150" />
 
-                <p className="text-2xl max-w-[700px] font-light text-neutral-700 mb-2">
-                  State management and deep links
-                </p>
-                <p className="text-3xl tracking-wide text-neutral-800 max-w-[700px] mt-2">
-                  Share complex state between unrelated React.js components and
-                  sync it to the URL
-                </p>
+                <div>
+                  <h1 className="text-6xl font-semibold tracking-wide text-neutral-700 mb-2 drop-shadow-sm">
+                    State in url
+                  </h1>
+                  <p className="text-2xl max-w-[700px] font-light text-neutral-700 mb-2 drop-shadow-sm">
+                    State management and deep links
+                  </p>
+                  <p className="text-3xl tracking-wide text-neutral-800 max-w-[700px] mt-2  drop-shadow-sm">
+                    Share complex state between unrelated React.js components
+                    and sync it to the URL
+                  </p>
+                </div>
               </div>
             </div>
           </div>
