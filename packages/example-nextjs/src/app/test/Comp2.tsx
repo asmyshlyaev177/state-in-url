@@ -1,10 +1,11 @@
 'use client';
-import React from 'react';
 import { useSearchParams } from 'next/navigation';
-import { useUrlEncode } from '../../../../urlstate/useUrlEncode';
+import React from 'react';
+
+import { stateShape } from './state';
 import { Textarea } from './Textarea';
 import { toJSON } from './utils';
-import { stateShape } from './state';
+import { useUrlEncode } from '../../../../urlstate';
 
 export const Comp2 = ({ className }: { className: string }) => {
   const searchParams = useSearchParams();
