@@ -11,7 +11,7 @@ export default async function Home({ searchParams }: { searchParams: object }) {
      from-orange-300 to-orange-500 p-4"
     >
       <div className="flex flex-col items-center container ml-auto mr-auto">
-        <div className="flex flex-col items-center bg-stone-100 w-full p-2 lg:max-w-[80%] lg:p-[4em] rounded-lg lg:pt-6">
+        <div className="flex flex-col items-center bg-gradient-to-t from-stone-50 to-white w-full p-2 lg:max-w-[80%] lg:p-[4em] rounded-lg lg:pt-6">
           <div className="text-center min-h-[35vh] md:min-h-[25vh] flex flex-col justify-center mb-8">
             <div className="flex flex-col md:flex-row items-center justify-center gap-1">
               <div className="text-center md:text-left ml-4 flex flex-col items-center min-[800px]:items-left min-[800px]:flex-row gap-6">
@@ -43,11 +43,11 @@ export default async function Home({ searchParams }: { searchParams: object }) {
 
             <div className="flex flex-col md:flex-row gap-8">
               <Form
-                className="flex max-h-[450px] flex-col md:flex-row gap-8 basis-1/2"
+                className="flex max-h-[550px] flex-col md:flex-row gap-8 basis-1/2"
                 sp={searchParams}
               />
               <Status
-                className="flex-1 max-h-[450px] bg-gray-100
+                className="flex-1 max-h-[550px] bg-gray-100
              rounded-lg p-4 flex flex-col shadow-md border border-grey
               basis-1/2 grow-0"
                 sp={searchParams}

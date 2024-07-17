@@ -1,15 +1,14 @@
 'use client';
+/* eslint-disable max-lines-per-function */
 import React from 'react';
-
 import { useUrlState } from 'state-in-url';
-// import { useUrlState } from '../../../../dist';
-
-import { form } from './form';
 
 import { Field } from './components/Field';
 import { Input } from './components/Input';
-import { RefreshButton } from './Refresh';
 import { Tag } from './components/Tag';
+// import { useUrlState } from '../../../../dist';
+import { form } from './form';
+import { RefreshButton } from './Refresh';
 
 export const Form = ({
   className,
@@ -19,10 +18,15 @@ export const Form = ({
   sp?: object;
 }) => {
   const { state, updateState, updateUrl } = useUrlState(form, sp);
+  const [autoSync, setAutoSync] = React.useState(true);
 
   // set URI when state change
   const timer = React.useRef(0 as unknown as NodeJS.Timeout);
   React.useEffect(() => {
+    if (!autoSync) {
+      return () => {};
+    }
+
     clearTimeout(timer.current);
     timer.current = setTimeout(() => {
       updateUrl(state);
@@ -31,7 +35,7 @@ export const Form = ({
     return () => {
       clearTimeout(timer.current);
     };
-  }, [state, updateUrl]);
+  }, [state, updateUrl, autoSync]);
 
   const onChangeAge = React.useCallback(
     (ev: React.ChangeEvent<HTMLInputElement>) => {
@@ -63,7 +67,7 @@ export const Form = ({
       updateState((curr) => {
         return {
           ...curr,
-          'agree to terms': !!ev.target.checked,
+          'agree to terms': ev.target.checked,
         };
       });
     },
@@ -106,13 +110,28 @@ export const Form = ({
           <Field
             id="agree to terms"
             text="Agree to terms"
-            className="flex gap-2"
+            className="flex gap-2 max-w-[150px] min-w-[150px] flex-row justify-between"
           >
             <Input
               id="agree to terms"
               type="checkbox"
+              className="max-w-[24px]"
               checked={state['agree to terms']}
               onChange={onChangeTerms}
+            />
+          </Field>
+
+          <Field
+            id="auto sync"
+            text="Auto sync"
+            className="flex gap-2 max-w-[150px] min-w-[150px] flex-row justify-between"
+          >
+            <Input
+              id="auto sync"
+              type="checkbox"
+              className="max-w-[24px]"
+              checked={autoSync}
+              onChange={(ev) => setAutoSync(ev.target.checked)}
             />
           </Field>
 
