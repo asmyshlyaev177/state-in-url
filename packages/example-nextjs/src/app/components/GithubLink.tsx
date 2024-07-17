@@ -1,15 +1,25 @@
+import React from 'react';
+
 /* eslint-disable max-len */
-export const GithubLink = () => {
+export const GithubLink = (
+  props: React.DetailedHTMLProps<
+    React.AnchorHTMLAttributes<HTMLAnchorElement>,
+    HTMLAnchorElement
+  >,
+) => {
+  const { className, ...rest } = props;
+
   return (
     <a
       href="https://github.com/asmyshlyaev177/state-in-url"
       target="_blank"
       rel="noopener"
-      className="inline-flex items-center px-4 py-2 border
+      className={`inline-flex items-center px-4 py-2 border
              border-transparent text-sm font-medium rounded-md
               text-white bg-gray-800 hover:bg-gray-700
                focus:outline-none focus:ring-2 focus:ring-offset-2
-                focus:ring-gray-500"
+                focus:ring-gray-500 ${className}`}
+      {...rest}
     >
       <svg
         className="mr-2 -ml-1 w-4 h-4"
