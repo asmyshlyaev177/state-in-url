@@ -1,4 +1,5 @@
 import { Analytics } from '@vercel/analytics/react';
+import type { Metadata } from 'next';
 import { Roboto } from 'next/font/google';
 
 import './globals.css';
@@ -22,3 +23,30 @@ export default function RootLayout({
     </html>
   );
 }
+
+const meta = {
+  title: 'state-in-url',
+  description:
+    'State management, client components communication and deep links',
+};
+
+export const metadata: Metadata = {
+  title: meta.title,
+  description: meta.description,
+  openGraph: {
+    url: 'https://state-in-url-asmyshlyaev177.vercel.app',
+    siteName: 'Next.js',
+    title: meta.title,
+    description: meta.description,
+    images: [
+      {
+        url: 'https://state-in-url-asmyshlyaev177.vercel.app/social_banner.jpg',
+        width: 1280,
+        height: 640,
+        alt: 'state-in-url library image',
+      },
+    ],
+    locale: 'en_US',
+    type: 'website',
+  },
+};

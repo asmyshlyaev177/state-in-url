@@ -1,4 +1,3 @@
-import type { Metadata } from 'next';
 import Image from 'next/image';
 
 import { GithubLink } from './components/GithubLink';
@@ -65,9 +64,3 @@ export default async function Home({ searchParams }: { searchParams: object }) {
     </main>
   );
 }
-
-export const metadata: Metadata = {
-  title: 'state-in-url',
-  description:
-    'State management, client components communication and deep links',
-};
