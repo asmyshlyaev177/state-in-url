@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import Image from 'next/image';
 
 import { GithubLink } from './components/GithubLink';
@@ -41,7 +42,7 @@ export default async function Home({ searchParams }: { searchParams: object }) {
           <div className="bg-white rounded-lg shadow-xl p-8 max-w-4xl w-full">
             <header className="mb-8 flex justify-between items-center flex-wrap gap-2">
               <h2 className="text-3xl font-bold text-gray-800">
-                Demo with Next.js SSR
+                Demo with Next.js
               </h2>
               <GithubLink className="ml-auto" />
             </header>
@@ -64,3 +65,9 @@ export default async function Home({ searchParams }: { searchParams: object }) {
     </main>
   );
 }
+
+export const metadata: Metadata = {
+  title: 'state-in-url',
+  description:
+    'State management, client components communication and deep links',
+};
