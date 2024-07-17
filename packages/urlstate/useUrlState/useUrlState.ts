@@ -25,10 +25,10 @@ import { type DeepReadonly, isSSR, type JSONCompatible } from '../utils';
  */
 export function useUrlState<T extends JSONCompatible>(
   defaultState: T,
-  sp?: object,
+  searchParams?: object,
 ) {
   const { state, getState, setState, stringify } = useState(
-    isSSR() ? parseSsrQs(sp, defaultState) : defaultState,
+    isSSR() ? parseSsrQs(searchParams, defaultState) : defaultState,
   );
 
   const router = useRouter();
