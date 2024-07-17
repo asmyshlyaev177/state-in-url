@@ -1,15 +1,12 @@
-import './globals.css';
-import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
 import { Analytics } from '@vercel/analytics/react';
-const inter = Inter({ subsets: ['latin'] });
+import { Roboto } from 'next/font/google';
 
-export const metadata: Metadata = {
-  title: 'state-in-url',
-  description:
-    // eslint-disable-next-line max-len
-    'Demo page that demostrates communication between client components in Next.js',
-};
+import './globals.css';
+const roboto = Roboto({
+  subsets: ['latin'],
+  weight: '400',
+  variable: '--font-roboto',
+});
 
 const isDev = process.env.NODE_ENV === 'development';
 
@@ -20,7 +17,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={roboto.className}>{children}</body>
       {isDev ? null : <Analytics />}
     </html>
   );
