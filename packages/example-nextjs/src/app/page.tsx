@@ -3,7 +3,6 @@ import { Form } from './Form';
 import { Logo } from './Logo';
 import { Status } from './Status';
 
-console.log({ type: typeof Logo, Logo });
 export default async function Home({ searchParams }: { searchParams: object }) {
   return (
     <main
