@@ -36,13 +36,13 @@ export function useState<T extends JSONCompatible>(defaultState: T) {
         const newVal = value(curr);
         if (isEqual(curr, newVal)) return void 0;
         stateMap.set(stateShape.current, newVal);
-        (subscribers.get(stateShape.current) || []).forEach((sub) => {
+        subscribers.get(stateShape.current).forEach((sub) => {
           sub();
         });
       } else {
         if (isEqual(curr, value)) return void 0;
         stateMap.set(stateShape.current, value as T);
-        (subscribers.get(stateShape.current) || []).forEach((sub) => {
+        subscribers.get(stateShape.current).forEach((sub) => {
           sub();
         });
       }
@@ -51,11 +51,10 @@ export function useState<T extends JSONCompatible>(defaultState: T) {
   );
 
   React.useInsertionEffect(() => {
-    const subs = subscribers.get(stateShape.current) || [];
     const cb = () => {
       _setState(stateMap.get(stateShape.current) || stateShape.current);
     };
-    subscribers.set(stateShape.current, subs.concat(cb));
+    const unsub = subscribers.add(stateShape.current, cb);
 
     // for history navigation
     const popCb = () => {
@@ -66,11 +65,7 @@ export function useState<T extends JSONCompatible>(defaultState: T) {
     window.addEventListener(ev, popCb);
 
     return () => {
-      const subs = subscribers.get(stateShape.current) || [];
-      subscribers.set(
-        stateShape.current,
-        subs.filter((sub) => sub !== cb),
-      );
+      unsub();
 
       window.removeEventListener(ev, popCb);
     };
