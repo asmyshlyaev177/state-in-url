@@ -2,7 +2,6 @@ import { act, renderHook } from '@testing-library/react';
 
 import { useState } from './state';
 import * as subscribers from './subscribers';
-import { type Cb } from './subscribers';
 
 describe('useState', () => {
   beforeEach(() => {
@@ -45,11 +44,11 @@ describe('useState', () => {
   });
 
   it('should set stateMap and subscribers', async () => {
-    const subMock = jest.fn() as unknown as Map<object, Cb[]>;
+    const unsubMock = jest.fn();
     const stateMock = jest.fn() as unknown as void;
     const subSpy = jest
-      .spyOn(subscribers.subscribers, 'set')
-      .mockReturnValue(subMock);
+      .spyOn(subscribers.subscribers, 'add')
+      .mockReturnValue(unsubMock);
     const stateSpy = jest
       .spyOn(subscribers.stateMap, 'set')
       .mockReturnValue(stateMock);
@@ -57,14 +56,14 @@ describe('useState', () => {
     const { unmount } = renderHook(() => useState(state));
 
     expect(subSpy).toHaveBeenCalledTimes(1);
-    expect(subSpy).toHaveBeenNthCalledWith(1, state, [expect.any(Function)]);
+    expect(subSpy).toHaveBeenNthCalledWith(1, state, expect.any(Function));
 
     expect(stateSpy).toHaveBeenCalledTimes(1);
     expect(stateSpy).toHaveBeenNthCalledWith(1, state, state);
+    expect(unsubMock).toHaveBeenCalledTimes(0);
 
     unmount();
-    expect(subSpy).toHaveBeenCalledTimes(2);
-    expect(subSpy).toHaveBeenNthCalledWith(2, state, []);
+    expect(unsubMock).toHaveBeenCalledTimes(1);
   });
 
   describe('getState', () => {

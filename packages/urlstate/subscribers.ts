@@ -1,9 +1,28 @@
 import { type JSONCompatible } from './utils';
 
 const _stateMap = new WeakMap<JSONCompatible, JSONCompatible>();
-export const subscribers = new WeakMap<JSONCompatible, Cb[]>();
+const _subscribers = new WeakMap<JSONCompatible, Cb[]>();
 
-export type Cb = () => void;
+export const subscribers = {
+  get(obj: JSONCompatible) {
+    return _subscribers.get(obj) || [];
+  },
+  add(obj: JSONCompatible, cb: Cb) {
+    const cbs = this.get(obj);
+    _subscribers.set(obj, cbs.concat(cb));
+
+    return () => this.remove(obj, cb);
+  },
+  remove(obj: JSONCompatible, cb: Cb) {
+    const cbs = this.get(obj);
+    const newCbs = cbs.filter((_cb) => _cb !== cb);
+    if (newCbs.length) {
+      _subscribers.set(obj, newCbs);
+    } else {
+      _subscribers.delete(obj);
+    }
+  },
+};
 
 export const stateMap = {
   get: function <T extends JSONCompatible>(objKey: T) {
@@ -13,3 +32,5 @@ export const stateMap = {
     _stateMap.set(objKey, value);
   },
 };
+
+export type Cb = () => void;
