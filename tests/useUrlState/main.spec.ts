@@ -2,8 +2,8 @@ import { expect, test } from '@playwright/test';
 
 // TODO: useIsMounted to deal with hydration errors?
 const urls = [
-  '/test-ssr', // TODO:  <<---error
-  '/test-use-client', //  TODO: <<---error
+  '/test-ssr', //  expected hydration error
+  '/test-use-client', //  TODO: <<---error, shouldn't be
   '/test-ssr-sp',
 ];
 
@@ -28,12 +28,12 @@ test.describe('main tests', () => {
 
   test('update state/url', async ({ page, baseURL }) => {
     for (const url of urls) {
-      // const errorLogs: unknown[] = [];
-      // page.on('console', (message) => {
-      //   if (message.type() === 'error') {
-      //     errorLogs.push({ text: message.text(), url });
-      //   }
-      // });
+      const errorLogs: unknown[] = [];
+      page.on('console', (message) => {
+        if (message.type() === 'error') {
+          errorLogs.push({ text: message.text(), url });
+        }
+      });
 
       await page.goto(url);
       await page.waitForSelector('button[name="Reload page"]');
@@ -68,20 +68,20 @@ test.describe('main tests', () => {
       await page.waitForTimeout(200);
       await expect(page.getByTestId('parsed')).toHaveText(expectedText);
 
-      // if (url !== '/test-ssr') {
-      // expect(errorLogs).toHaveLength(0);
-      // }
+      if (url === '/test-ssr-sp') {
+        expect(errorLogs).toHaveLength(0);
+      }
     }
   });
 
   test('load from URL', async ({ page, baseURL }) => {
     for (const url of urls) {
-      // const errorLogs: unknown[] = [];
-      // page.on('console', (message) => {
-      //   if (message.type() === 'error') {
-      //     errorLogs.push({ text: message.text(), url });
-      //   }
-      // });
+      const errorLogs: unknown[] = [];
+      page.on('console', (message) => {
+        if (message.type() === 'error') {
+          errorLogs.push({ text: message.text(), url });
+        }
+      });
 
       await page.goto(`${baseURL}${url}${expectedUrl}`);
       await page.waitForTimeout(200);
@@ -94,7 +94,12 @@ test.describe('main tests', () => {
         timeout: 1000,
       });
 
-      // expect(errorLogs).toHaveLength(0);
+      if (url === '/test-ssr-sp') {
+        expect(errorLogs).toHaveLength(0);
+      }
     }
   });
+
+  // TODO: ssr test that server side hook doesn't use objectMap
+  // change name, reload, no errors, reload, same, change, reload
 });
