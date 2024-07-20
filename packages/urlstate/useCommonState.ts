@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { stateMap, subscribers } from './subscribers';
-import { useUrlEncode } from './useUrlEncode';
 import {
   type DeepReadonly,
   isEqual,
@@ -9,14 +8,21 @@ import {
   type JSONCompatible,
 } from './utils';
 
-export function useState<T extends JSONCompatible>(defaultState: T) {
+// TODO: export as helper
+export function useCommonState<T extends JSONCompatible>(
+  defaultState: T,
+  _getInitial?: () => T,
+) {
   const stateShape = React.useRef(defaultState);
-  const { parse, stringify } = useUrlEncode(stateShape.current);
 
   const [state, _setState] = React.useState(() => {
+    if (isSSR()) {
+      return _getInitial?.() || stateShape.current;
+    }
+
     const val = stateMap.get(stateShape.current);
-    const newVal = parse(isSSR() ? '' : window.location.search);
     if (!val) {
+      const newVal = _getInitial?.() || stateShape.current;
       stateMap.set(stateShape.current, newVal);
       return newVal;
     }
@@ -56,18 +62,8 @@ export function useState<T extends JSONCompatible>(defaultState: T) {
     };
     const unsub = subscribers.add(stateShape.current, cb);
 
-    // for history navigation
-    const popCb = () => {
-      const newVal = parse(window.location.search);
-      setState(newVal);
-    };
-    const ev = 'popstate';
-    window.addEventListener(ev, popCb);
-
     return () => {
       unsub();
-
-      window.removeEventListener(ev, popCb);
     };
   }, [setState]);
 
@@ -76,5 +72,5 @@ export function useState<T extends JSONCompatible>(defaultState: T) {
     return stateMap.get(stateShape.current) || stateShape.current;
   }, []);
 
-  return { state, getState, setState, stringify };
+  return { state, getState, setState };
 }

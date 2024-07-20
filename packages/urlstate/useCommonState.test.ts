@@ -1,46 +1,64 @@
 import { act, renderHook } from '@testing-library/react';
 
-import { useState } from './state';
 import * as subscribers from './subscribers';
+import { useCommonState } from './useCommonState';
 
-describe('useState', () => {
+jest.mock('./utils.ts', () => ({
+  ...jest.requireActual('./utils.ts'),
+  isSSR: jest.fn(),
+}));
+
+import { isSSR } from './utils';
+
+describe('useCommonState', () => {
   beforeEach(() => {
     jest.resetModules();
     jest.restoreAllMocks();
   });
 
+  describe('initial value', () => {
+    const initial = {};
+    const getInitial = jest.fn().mockReturnValue(initial);
+
+    describe('getInitial', () => {
+      describe('on server', () => {
+        it('always use getInitial', () => {
+          const stateSpy = jest.spyOn(subscribers.stateMap, 'get');
+          jest.mocked(isSSR).mockReturnValue(true);
+          const state = { ...form };
+          const hook1 = renderHook(() => useCommonState(state, getInitial));
+
+          expect(hook1.result.current.state).toStrictEqual(initial);
+          expect(stateSpy).toHaveBeenCalledTimes(0);
+        });
+      });
+
+      describe('on client', () => {
+        it('when value empty return value from _getInitial', () => {
+          const stateMock = jest.fn() as unknown as void;
+          const stateSpy = jest
+            .spyOn(subscribers.stateMap, 'set')
+            .mockReturnValue(stateMock);
+
+          jest.mocked(isSSR).mockReturnValue(false);
+          const state = { ...form };
+          const hook1 = renderHook(() => useCommonState(state, getInitial));
+
+          expect(hook1.result.current.state).toStrictEqual(initial);
+          expect(stateSpy).toHaveBeenCalledTimes(1);
+          expect(stateSpy).toHaveBeenNthCalledWith(1, state, initial);
+        });
+      });
+    });
+  });
+
   it('should return state', () => {
     // need a new instance of state every test
     const state = { ...form };
-    const { result } = renderHook(() => useState(state));
+    const { result } = renderHook(() => useCommonState(state));
 
     expect(result.current.state).toStrictEqual(state);
     expect(result.current.getState()).toStrictEqual(state);
-  });
-
-  describe('with location.search', () => {
-    const original = window.location;
-    beforeEach(() => {
-      Object.defineProperty(window, 'location', {
-        value: {
-          ...original,
-          search: '?name=%E2%97%96MyName',
-        },
-      });
-    });
-    afterEach(() => {
-      Object.defineProperty(window, 'location', {
-        value: original,
-      });
-      jest.resetModules();
-      jest.restoreAllMocks();
-    });
-    it('works', () => {
-      const state = { ...form };
-      const { result } = renderHook(() => useState(state));
-
-      expect(result.current.state).toStrictEqual({ ...state, name: 'MyName' });
-    });
   });
 
   it('should set stateMap and subscribers', async () => {
@@ -53,7 +71,7 @@ describe('useState', () => {
       .spyOn(subscribers.stateMap, 'set')
       .mockReturnValue(stateMock);
     const state = { ...form };
-    const { unmount } = renderHook(() => useState(state));
+    const { unmount } = renderHook(() => useCommonState(state));
 
     expect(subSpy).toHaveBeenCalledTimes(1);
     expect(subSpy).toHaveBeenNthCalledWith(1, state, expect.any(Function));
@@ -69,7 +87,7 @@ describe('useState', () => {
   describe('getState', () => {
     it('should return same instance', () => {
       const state = { ...form };
-      const { result } = renderHook(() => useState(state));
+      const { result } = renderHook(() => useCommonState(state));
 
       const state1 = result.current.getState();
       const state2 = result.current.getState();
@@ -82,7 +100,7 @@ describe('useState', () => {
       const name = 'Name';
       const expected = { ...form, name };
       const state = { ...form };
-      const { result } = renderHook(() => useState(state));
+      const { result } = renderHook(() => useCommonState(state));
       act(() => {
         result.current.setState(expected);
       });
@@ -96,7 +114,7 @@ describe('useState', () => {
       const name = 'Name';
       const expected = { ...form, name };
       const state = { ...form };
-      const { result } = renderHook(() => useState(state));
+      const { result } = renderHook(() => useCommonState(state));
 
       act(() => {
         result.current.setState((curr) => ({ ...curr, name }));
@@ -105,6 +123,12 @@ describe('useState', () => {
       expect(result.current.state).toStrictEqual(expected);
       expect(result.current.getState()).toStrictEqual(expected);
       expect(result.current.state === result.current.getState()).toBeTruthy();
+    });
+  });
+
+  describe('few components', () => {
+    it('', () => {
+      expect(true).toBeTruthy();
     });
   });
 });

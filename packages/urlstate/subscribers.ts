@@ -28,6 +28,7 @@ export const stateMap = {
   get: function <T extends JSONCompatible>(objKey: T) {
     return _stateMap.get(objKey) as T;
   },
+  // TODO: compare isEqual here?
   set: function <T extends JSONCompatible>(objKey: T, value: T) {
     _stateMap.set(objKey, value);
   },

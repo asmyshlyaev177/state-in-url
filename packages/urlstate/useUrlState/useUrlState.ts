@@ -1,8 +1,9 @@
 import { useRouter } from 'next/navigation';
 import React from 'react';
 
+import { useUrlEncode } from '..';
 import { parseSsrQs } from '../encoder';
-import { useState } from '../state';
+import { useCommonState } from '../useCommonState';
 import { type DeepReadonly, isSSR, type JSONCompatible } from '../utils';
 
 /**
@@ -27,11 +28,28 @@ export function useUrlState<T extends JSONCompatible>(
   defaultState: T,
   searchParams?: object,
 ) {
-  const { state, getState, setState, stringify } = useState(
-    isSSR() ? parseSsrQs(searchParams, defaultState) : defaultState,
+  const { parse, stringify } = useUrlEncode(defaultState);
+  const { state, getState, setState } = useCommonState(defaultState, () =>
+    isSSR()
+      ? parseSsrQs(searchParams, defaultState)
+      : parse(window.location.search),
   );
 
   const router = useRouter();
+
+  React.useInsertionEffect(() => {
+    // for history navigation
+    const popCb = () => {
+      const newVal = parse(window.location.search);
+      setState(newVal);
+    };
+    const ev = 'popstate';
+    window.addEventListener(ev, popCb);
+
+    return () => {
+      window.removeEventListener(ev, popCb);
+    };
+  }, [setState]);
 
   const updateUrl = React.useCallback(
     (
