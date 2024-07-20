@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.0.2](https://github.com/asmyshlyaev177/state-in-url/compare/v1.0.1...v1.0.2) (2024-07-20)
+
+
+### Bug Fixes
+
+* fix value getting for SSR ([b1996a1](https://github.com/asmyshlyaev177/state-in-url/commit/b1996a1d360bf3c477f3c786d7b05500b25dbb83))
+
 ### [1.0.1](https://github.com/asmyshlyaev177/state-in-url/compare/v1.0.0...v1.0.1) (2024-07-17)
 
 ## [1.0.0](https://github.com/asmyshlyaev177/state-in-url/compare/v0.2.7...v1.0.0) (2024-07-14)
