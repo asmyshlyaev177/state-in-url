@@ -128,8 +128,38 @@ describe('useCommonState', () => {
     });
   });
 
-  describe('few components', () => {
-    it.todo('should works');
+  it('should notify subscribers when state changes', () => {
+    const defaultState = { count: 0 };
+    const { result } = renderHook(() => useCommonState(defaultState));
+    const mockSubscriber = jest.fn();
+
+    subscribers.subscribers.add(defaultState, mockSubscriber);
+
+    act(() => {
+      result.current.setState({ count: 5 });
+    });
+
+    expect(mockSubscriber).toHaveBeenCalledTimes(1);
+  });
+
+  it('few instances', () => {
+    const defaultState = { count: 0 };
+    const hook1 = renderHook(() => useCommonState(defaultState));
+    const hook2 = renderHook(() => useCommonState(defaultState));
+    const hook3 = renderHook(() => useCommonState(defaultState));
+
+    act(() => {
+      hook1.result.current.setState({ count: 5 });
+    });
+
+    const result = hook1.result.current.state;
+    expect(hook1.result.current.state).toStrictEqual(result);
+    expect(hook2.result.current.state).toStrictEqual(result);
+    expect(hook3.result.current.state).toStrictEqual(result);
+    expect(
+      hook1.result.current.state === hook2.result.current.state &&
+        hook1.result.current.state === hook3.result.current.state,
+    ).toBeTruthy();
   });
 });
 
