@@ -65,7 +65,7 @@ export function useCommonState<T extends JSONCompatible>(
     return () => {
       unsub();
     };
-  }, [setState]);
+  }, []);
 
   // get state without deps
   const getState = React.useCallback(() => {
