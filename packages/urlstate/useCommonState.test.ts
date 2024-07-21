@@ -24,12 +24,14 @@ describe('useCommonState', () => {
       describe('on server', () => {
         it('always use getInitial', () => {
           const stateSpy = jest.spyOn(subscribers.stateMap, 'get');
+          const stateSpySet = jest.spyOn(subscribers.stateMap, 'set');
           jest.mocked(isSSR).mockReturnValue(true);
           const state = { ...form };
           const hook1 = renderHook(() => useCommonState(state, getInitial));
 
           expect(hook1.result.current.state).toStrictEqual(initial);
           expect(stateSpy).toHaveBeenCalledTimes(0);
+          expect(stateSpySet).toHaveBeenCalledTimes(0);
         });
       });
 
@@ -127,9 +129,7 @@ describe('useCommonState', () => {
   });
 
   describe('few components', () => {
-    it('', () => {
-      expect(true).toBeTruthy();
-    });
+    it.todo('should works');
   });
 });
 
