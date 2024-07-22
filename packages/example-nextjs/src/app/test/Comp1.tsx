@@ -1,10 +1,11 @@
 'use client';
+import { usePathname, useRouter } from 'next/navigation';
 import React from 'react';
-import { useRouter, usePathname } from 'next/navigation';
-import { useUrlEncode } from '../../../../urlstate';
+import { useUrlEncode } from 'state-in-url';
+
+import { stateShape } from './state';
 import { Textarea } from './Textarea';
 import { fromJSON, toJSON } from './utils';
-import { stateShape } from './state';
 
 export const Comp1 = ({ className }: { className: string }) => {
   const router = useRouter();
