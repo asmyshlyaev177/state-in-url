@@ -1,6 +1,15 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // output: 'export',
+  webpack: (config) => {
+    const newConfig = {
+      ...config,
+    }
+    newConfig.module.rules.push({
+      test: /\.html$/,
+      type: 'asset/source'
+    })
+    return newConfig
+  },
   reactStrictMode: true,
   eslint: {
     ignoreDuringBuilds: true,

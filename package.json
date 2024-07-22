@@ -36,7 +36,8 @@
   },
   "workspaces": [
     "packages/urlstate",
-    "packages/example-nextjs"
+    "packages/example-nextjs",
+    "packages/example-react"
   ],
   "files": [
     "dist"
@@ -76,7 +77,7 @@
     "dev:nextjs": "wireit",
     "bump": "npx standard-version --no-verify",
     "build": "wireit",
-    "build:demo": "cd packages/example-nextjs && npm run build",
+    "build:demo": "wireit",
     "start:demo": "npm run build && cd packages/example-nextjs && npm run build && npm run start",
     "cleanup": "rm -rf dist",
     "setup": "playwright install --with-deps",
@@ -123,11 +124,34 @@
     },
     "dev:nextjs": {
       "command": "cd packages/example-nextjs && npm run dev",
+      "dependencies": [
+        "dev:react"
+      ],
       "service": {
         "readyWhen": {
           "lineMatches": "Ready in"
         }
       }
+    },
+    "build:demo": {
+      "dependencies": [
+        "example:react"
+      ],
+      "command": "cd packages/example-nextjs && npm run build"
+    },
+    "dev:react": {
+      "command": "cd packages/example-react && npm run dev",
+      "service": {
+        "readyWhen": {
+          "lineMatches": "✓ built in"
+        }
+      }
+    },
+    "example:react": {
+      "command": "cd packages/example-react && npm run build",
+      "dependencies": [
+        "build"
+      ]
     },
     "build": {
       "command": "rollup -c rollup.config.js",
