@@ -1,7 +1,6 @@
 'use client';
 
-// @ts-expect-error raw import
-import SubApp from 'example-react/dist/index.html';
+import SubApp from '../../../public/react.html';
 
 const ReactPage = () => {
   return <div dangerouslySetInnerHTML={{ __html: SubApp }}></div>;
