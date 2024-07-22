@@ -42,7 +42,8 @@ Add a ⭐️ to support the project!
 
   ## Why use state-in-url?
 
-`state-in-url` Simple state management with URL synchronization.
+`state-in-url` Simple state management with URL sync. Share complex states between unrelated React components, sync state to URL, TS-friendly, NextJS compatible.
+
 
 # Use cases
 
