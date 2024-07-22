@@ -1,0 +1,8 @@
+{
+  "name": "state-in-url",
+  "version": "1.0.0",
+  "private": true,
+  "description": "stub for using npm workspaces",
+  "author": "",
+  "license": "ISC"
+}

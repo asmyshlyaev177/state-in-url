@@ -75,7 +75,6 @@
     "dev:lib": "wireit",
     "dev:nextjs": "wireit",
     "bump": "npx standard-version --no-verify",
-    "bump:ex": "npm i state-in-url@latest --workspace=packages/example-nextjs",
     "build": "wireit",
     "build:demo": "cd packages/example-nextjs && npm run build",
     "start:demo": "npm run build && cd packages/example-nextjs && npm run build && npm run start",

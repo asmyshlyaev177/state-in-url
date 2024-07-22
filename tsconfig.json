@@ -1,32 +1,5 @@
 {
-  "compilerOptions": {
-    "target": "ES2022",
-    "outDir": "./dist",
-    "declaration": true,
-    "declarationDir": "./dist",
-    "declarationMap": true,
-    "sourceMap": true,
-    // "rootDir": "./packages",
-    "isolatedModules": true,
-    "removeComments": false,
-    "moduleResolution": "Bundler",
-    "types": [
-      "node",
-      "jest",
-      "@testing-library/dom",
-      "@testing-library/jest-dom",
-      "jest-environment-jsdom",
-      "@jest/globals"
-    ],
-    "lib": ["ES2023", "ES2021.String", "DOM", "DOM.Iterable"],
-    "jsx": "preserve",
-    "module": "ES2022",
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-    "allowSyntheticDefaultImports": true,
-    "strict": true,
-    "skipLibCheck": true
-  },
+  "extends": "./tsconfig.base.json",
   "include": ["packages/index.ts"],
   "exclude": ["node_modules", "tests/**/*"]
 }
