@@ -1,15 +1,33 @@
 import React from 'react';
 
-import { stateMap, subscribers } from './subscribers';
+import { stateMap, subscribers } from '../subscribers';
+import { useInsertionEffect } from '../useInsertionEffect';
 import {
   type DeepReadonly,
   isEqual,
   isSSR,
   type JSONCompatible,
-} from './utils';
+} from '../utils';
 
-// TODO: export as helper
-export function useCommonState<T extends JSONCompatible>(
+/**
+ * Custom React hook for sharing state between unrelated components.
+ *
+ * @param {T} defaultState - The default state object
+ * @param {() => T} [_getInitial] - Optional function to get initial state
+ * @returns {Object} Object containing `state`, `getState`, and `setState` functions
+ *
+ * * Example:
+ * ```ts
+ * export const form = { name: '' };
+ * const { state, setState } = useSharedState(form);
+ *
+ * setState({ name: 'test' });
+ * // OR
+ * setState(curr => ({ ...curr, name: 'test' }))
+ *  ```
+ *  * Github {@link https://github.com/asmyshlyaev177/state-in-url/tree/main/packages/urlstate/useSharedState}
+ */
+export function useSharedState<T extends JSONCompatible>(
   defaultState: T,
   _getInitial?: () => T,
 ) {
@@ -56,7 +74,7 @@ export function useCommonState<T extends JSONCompatible>(
     [],
   );
 
-  React.useInsertionEffect(() => {
+  useInsertionEffect(() => {
     const cb = () => {
       _setState(stateMap.get(stateShape.current) || stateShape.current);
     };
