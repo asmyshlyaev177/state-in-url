@@ -138,6 +138,9 @@
       }
     },
     "build:demo": {
+      "dependencies": [
+        "example:react"
+      ],
       "command": "cd packages/example-nextjs && npm run build"
     },
     "dev:react": {
