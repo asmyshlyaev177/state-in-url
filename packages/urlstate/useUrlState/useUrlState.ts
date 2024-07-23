@@ -1,9 +1,9 @@
 import { useRouter } from 'next/navigation';
 import React from 'react';
 
-import { useUrlEncode } from '..';
 import { parseSsrQs } from '../encoder';
 import { useSharedState } from '../useSharedState';
+import { useUrlEncode } from '../useUrlEncode';
 import { type DeepReadonly, isSSR, type JSONCompatible } from '../utils';
 
 // TODO: make a generic with `router` params
