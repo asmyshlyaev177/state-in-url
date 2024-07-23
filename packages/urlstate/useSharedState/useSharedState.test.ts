@@ -1,16 +1,16 @@
 import { act, renderHook } from '@testing-library/react';
 
-import * as subscribers from './subscribers';
-import { useCommonState } from './useCommonState';
+import { useSharedState } from '.';
+import * as subscribers from '../subscribers';
 
-jest.mock('./utils.ts', () => ({
-  ...jest.requireActual('./utils.ts'),
+jest.mock('../utils.ts', () => ({
+  ...jest.requireActual('../utils.ts'),
   isSSR: jest.fn(),
 }));
 
-import { isSSR } from './utils';
+import { isSSR } from '../utils';
 
-describe('useCommonState', () => {
+describe('useSharedState', () => {
   beforeEach(() => {
     jest.resetModules();
     jest.restoreAllMocks();
@@ -27,7 +27,7 @@ describe('useCommonState', () => {
           const stateSpySet = jest.spyOn(subscribers.stateMap, 'set');
           jest.mocked(isSSR).mockReturnValue(true);
           const state = { ...form };
-          const hook1 = renderHook(() => useCommonState(state, getInitial));
+          const hook1 = renderHook(() => useSharedState(state, getInitial));
 
           expect(hook1.result.current.state).toStrictEqual(initial);
           expect(stateSpy).toHaveBeenCalledTimes(0);
@@ -44,7 +44,7 @@ describe('useCommonState', () => {
 
           jest.mocked(isSSR).mockReturnValue(false);
           const state = { ...form };
-          const hook1 = renderHook(() => useCommonState(state, getInitial));
+          const hook1 = renderHook(() => useSharedState(state, getInitial));
 
           expect(hook1.result.current.state).toStrictEqual(initial);
           expect(stateSpy).toHaveBeenCalledTimes(1);
@@ -57,7 +57,7 @@ describe('useCommonState', () => {
   it('should return state', () => {
     // need a new instance of state every test
     const state = { ...form };
-    const { result } = renderHook(() => useCommonState(state));
+    const { result } = renderHook(() => useSharedState(state));
 
     expect(result.current.state).toStrictEqual(state);
     expect(result.current.getState()).toStrictEqual(state);
@@ -73,7 +73,7 @@ describe('useCommonState', () => {
       .spyOn(subscribers.stateMap, 'set')
       .mockReturnValue(stateMock);
     const state = { ...form };
-    const { unmount } = renderHook(() => useCommonState(state));
+    const { unmount } = renderHook(() => useSharedState(state));
 
     expect(subSpy).toHaveBeenCalledTimes(1);
     expect(subSpy).toHaveBeenNthCalledWith(1, state, expect.any(Function));
@@ -89,7 +89,7 @@ describe('useCommonState', () => {
   describe('getState', () => {
     it('should return same instance', () => {
       const state = { ...form };
-      const { result } = renderHook(() => useCommonState(state));
+      const { result } = renderHook(() => useSharedState(state));
 
       const state1 = result.current.getState();
       const state2 = result.current.getState();
@@ -102,7 +102,7 @@ describe('useCommonState', () => {
       const name = 'Name';
       const expected = { ...form, name };
       const state = { ...form };
-      const { result } = renderHook(() => useCommonState(state));
+      const { result } = renderHook(() => useSharedState(state));
       act(() => {
         result.current.setState(expected);
       });
@@ -116,7 +116,7 @@ describe('useCommonState', () => {
       const name = 'Name';
       const expected = { ...form, name };
       const state = { ...form };
-      const { result } = renderHook(() => useCommonState(state));
+      const { result } = renderHook(() => useSharedState(state));
 
       act(() => {
         result.current.setState((curr) => ({ ...curr, name }));
@@ -130,7 +130,7 @@ describe('useCommonState', () => {
 
   it('should notify subscribers when state changes', () => {
     const defaultState = { count: 0 };
-    const { result } = renderHook(() => useCommonState(defaultState));
+    const { result } = renderHook(() => useSharedState(defaultState));
     const mockSubscriber = jest.fn();
 
     subscribers.subscribers.add(defaultState, mockSubscriber);
@@ -144,9 +144,9 @@ describe('useCommonState', () => {
 
   it('few instances', () => {
     const defaultState = { count: 0 };
-    const hook1 = renderHook(() => useCommonState(defaultState));
-    const hook2 = renderHook(() => useCommonState(defaultState));
-    const hook3 = renderHook(() => useCommonState(defaultState));
+    const hook1 = renderHook(() => useSharedState(defaultState));
+    const hook2 = renderHook(() => useSharedState(defaultState));
+    const hook3 = renderHook(() => useSharedState(defaultState));
 
     act(() => {
       hook1.result.current.setState({ count: 5 });

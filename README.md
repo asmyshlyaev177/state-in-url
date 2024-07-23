@@ -67,6 +67,7 @@ Add a ⭐️ to support the project!
 
 - [Installation](#installation)
 - [`useUrlState` for Next.js](#useurlstate-hook-for-nextjs)
+- [`useSharedState` for React.js](#usesharedstate-hook-for-reactjs)
 - [`useUrlEncode` for React.js](#useurlencode-hook-for-reactjs)
 - [`encodeState` and `decodeState` for pure JS usage](#encodestate-and-decodestate-helpers)
 - [auto sync state with url](#auto-sync-state)
@@ -257,6 +258,22 @@ function SettingsComponent() {
   const { state, updateUrl, updateState } = useUrlState<object>(someObj);
 }
 ```
+
+## `useSharedState` hook for React.js
+Hook to share state between any React components, tested with Next.js and Vite.
+
+```typescript
+'use client'
+import { useSharedState } from 'state-in-url';
+
+export const someState = { name: '' };
+
+function SettingsComponent() {
+  const { state, setState } = useSharedState(someState);
+}
+```
+
+[Docs](packages/urlstate/useSharedState/README.md)
 
 ## `useUrlEncode` hook for React.js
 
