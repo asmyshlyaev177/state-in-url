@@ -7,7 +7,7 @@ import { useUrlEncode } from '../useUrlEncode';
 import { type DeepReadonly, isSSR, type JSONCompatible } from '../utils';
 
 // TODO: make a generic with `router` params
-// create separate hooks for nextjs/react-router
+// create separate hooks for nextjs and react-router
 
 /**
  * NextJS hook. Returns `state`, `updateState`, and `updateUrl` functions
