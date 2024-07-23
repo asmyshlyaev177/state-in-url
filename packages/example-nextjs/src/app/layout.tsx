@@ -25,9 +25,9 @@ export default function RootLayout({
 }
 
 const meta = {
-  title: 'state-in-url',
+  title: 'state-in-url state management',
   description:
-    'State management, client components communication and deep links',
+    'Easily share state between unrelated React components, with IDE autocomplete and TS validation. Without any hasssle or boilerplate.',
 };
 
 export const metadata: Metadata = {
