@@ -1,3 +1,4 @@
+import { File } from './components/File';
 import { GithubLink } from './components/GithubLink';
 import { Form } from './Form';
 import { Logo } from './Logo';
@@ -53,8 +54,81 @@ export default async function Home({ searchParams }: { searchParams: object }) {
               />
             </div>
           </div>
+
+          <div className="mt-14">
+            <CodeBlocks />
+          </div>
         </div>
       </div>
+
+      <footer className="text-gray-700 text-right mt-4">
+        © asmyshlyaev177 {new Date().getFullYear()}
+      </footer>
     </main>
   );
 }
+
+const CodeBlocks = () => {
+  return (
+    <div className="flex flex-col gap-4">
+      <h2 className="text-black text-center text-xl mt-2">
+        1. Define the state
+      </h2>
+      <File
+        name="state"
+        content={`export const form: Form = {
+  name: '',
+  age: undefined,
+  'agree to terms': false,
+  tags: [],
+};
+
+type Form = {
+  name: string;
+  age?: number;
+  'agree to terms': boolean;
+  tags: { id: string; value: { text: string; time: Date } }[];
+};`}
+      />
+
+      <h2 className="text-black text-center text-xl mt-2">
+        2. Use it in any components
+      </h2>
+      <File
+        name="ComponentA"
+        content={`'use client';
+import { useUrlState } from 'state-in-url';
+
+export const ComponentA = () => {
+  const { state, updateUrl } = useUrlState(form);
+
+  return <input
+    id="name"
+    value={state.name}
+    onChange={(ev) =>
+      updateUrl((curr) => ({
+        ...curr,
+        name: ev.target.value,
+      }))
+    }
+    />
+};`}
+      />
+      <File
+        name="ComponentB"
+        content={`'use client';
+import { useUrlState } from 'state-in-url';
+
+// for SSR
+// const Home = async ({ searchParams }: { searchParams: object }) => {
+// <ComponentB sp={searchParams} />
+
+export const ComponentB = ({ sp }: { sp?: object }) => {
+  const { state } = useUrlState(form, sp);
+
+  return <div>name: {state.name}</div>
+};`}
+      />
+    </div>
+  );
+};
