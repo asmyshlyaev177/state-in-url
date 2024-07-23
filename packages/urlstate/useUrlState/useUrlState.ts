@@ -3,8 +3,11 @@ import React from 'react';
 
 import { useUrlEncode } from '..';
 import { parseSsrQs } from '../encoder';
-import { useCommonState } from '../useCommonState';
+import { useSharedState } from '../useSharedState';
 import { type DeepReadonly, isSSR, type JSONCompatible } from '../utils';
+
+// TODO: make a generic with `router` params
+// create separate hooks for nextjs/react-router
 
 /**
  * NextJS hook. Returns `state`, `updateState`, and `updateUrl` functions
@@ -29,7 +32,7 @@ export function useUrlState<T extends JSONCompatible>(
   searchParams?: object,
 ) {
   const { parse, stringify } = useUrlEncode(defaultState);
-  const { state, getState, setState } = useCommonState(defaultState, () =>
+  const { state, getState, setState } = useSharedState(defaultState, () =>
     isSSR()
       ? parseSsrQs(searchParams, defaultState)
       : parse(window.location.search),

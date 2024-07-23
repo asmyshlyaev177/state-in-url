@@ -9314,12 +9314,76 @@ Error generating stack: ` +
         fs = dp;
       (tu.createRoot = fs.createRoot), (tu.hydrateRoot = fs.hydrateRoot);
       const pp = () => typeof window > 'u',
-        ds = (e, t) => JSON.stringify(e) === JSON.stringify(t);
-      var ps = { exports: {} },
-        Lc = {},
+        ds = (e, t) => JSON.stringify(e) === JSON.stringify(t),
+        ps = new WeakMap(),
+        wr = new WeakMap(),
+        Jl = {
+          get(e) {
+            return wr.get(e) || [];
+          },
+          add(e, t) {
+            const n = this.get(e);
+            return wr.set(e, n.concat(t)), () => this.remove(e, t);
+          },
+          remove(e, t) {
+            const r = this.get(e).filter((l) => l !== t);
+            r.length ? wr.set(e, r) : wr.delete(e);
+          },
+        },
+        yt = {
+          get: function (e) {
+            return ps.get(e);
+          },
+          set: function (e, t) {
+            ps.set(e, t);
+          },
+        },
+        mp = wt.useInsertionEffect || wt.useEffect;
+      function Lc(e, t) {
+        const n = wt.useRef(e),
+          [r, l] = wt.useState(() => {
+            if (pp()) return n.current;
+            const i = yt.get(n.current);
+            if (!i) {
+              const s = n.current;
+              return yt.set(n.current, s), s;
+            }
+            return i;
+          }),
+          u = wt.useCallback((i) => {
+            const s = yt.get(n.current) || n.current;
+            if (typeof i == 'function') {
+              const v = i(s);
+              if (ds(s, v)) return;
+              yt.set(n.current, v),
+                Jl.get(n.current).forEach((m) => {
+                  m();
+                });
+            } else {
+              if (ds(s, i)) return;
+              yt.set(n.current, i),
+                Jl.get(n.current).forEach((v) => {
+                  v();
+                });
+            }
+          }, []);
+        mp(() => {
+          const i = () => {
+              l(yt.get(n.current) || n.current);
+            },
+            s = Jl.add(n.current, i);
+          return () => {
+            s();
+          };
+        }, []);
+        const o = wt.useCallback(() => yt.get(n.current) || n.current, []);
+        return { state: r, getState: o, setState: u };
+      }
+      var ms = { exports: {} },
+        zc = {},
         Yu = {};
-      Yu._ = Yu._interop_require_default = mp;
-      function mp(e) {
+      Yu._ = Yu._interop_require_default = vp;
+      function vp(e) {
         return e && e.__esModule ? e : { default: e };
       }
       (function (e) {
@@ -9352,8 +9416,8 @@ Error generating stack: ` +
           o = r.default.createContext(null),
           i = r.default.createContext(null),
           s = r.default.createContext(new Set());
-      })(Lc);
-      var zc = {};
+      })(zc);
+      var Mc = {};
       (function (e) {
         'use client';
         Object.defineProperty(e, '__esModule', { value: !0 });
@@ -9376,7 +9440,7 @@ Error generating stack: ` +
           r = (0, n.createContext)(null),
           l = (0, n.createContext)(null),
           u = (0, n.createContext)(null);
-      })(zc);
+      })(Mc);
       var Xu = { exports: {} };
       (function (e, t) {
         Object.defineProperty(t, '__esModule', { value: !0 }),
@@ -9396,8 +9460,8 @@ Error generating stack: ` +
           Object.assign(t.default, t),
           (e.exports = t.default));
       })(Xu, Xu.exports);
-      var vp = Xu.exports,
-        Mc = {};
+      var hp = Xu.exports,
+        jc = {};
       (function (e) {
         Object.defineProperty(e, '__esModule', { value: !0 });
         function t(u, o) {
@@ -9420,7 +9484,7 @@ Error generating stack: ` +
         }
         const r = '__PAGE__',
           l = '__DEFAULT__';
-      })(Mc);
+      })(jc);
       var Zu = { exports: {} },
         qu = { exports: {} },
         Ju = { exports: {} },
@@ -9480,7 +9544,7 @@ Error generating stack: ` +
           Object.assign(t.default, t),
           (e.exports = t.default));
       })(bu, bu.exports);
-      var hp = bu.exports;
+      var yp = bu.exports;
       (function (e, t) {
         'TURBOPACK { transition: next-shared }';
         Object.defineProperty(t, '__esModule', { value: !0 });
@@ -9496,7 +9560,7 @@ Error generating stack: ` +
             return r.requestAsyncStorage;
           },
         });
-        const r = hp;
+        const r = yp;
         function l(u) {
           const o = r.requestAsyncStorage.getStore();
           if (o) return o;
@@ -9513,7 +9577,7 @@ Error generating stack: ` +
           Object.assign(t.default, t),
           (e.exports = t.default));
       })(Ju, Ju.exports);
-      var yp = Ju.exports,
+      var gp = Ju.exports,
         to = { exports: {} },
         no = { exports: {} };
       (function (e, t) {
@@ -9532,7 +9596,7 @@ Error generating stack: ` +
           Object.assign(t.default, t),
           (e.exports = t.default));
       })(no, no.exports);
-      var gp = no.exports;
+      var Sp = no.exports;
       (function (e, t) {
         'TURBOPACK { transition: next-shared }';
         Object.defineProperty(t, '__esModule', { value: !0 }),
@@ -9542,7 +9606,7 @@ Error generating stack: ` +
               return n.actionAsyncStorage;
             },
           });
-        const n = gp;
+        const n = Sp;
         (typeof t.default == 'function' ||
           (typeof t.default == 'object' && t.default !== null)) &&
           typeof t.default.__esModule > 'u' &&
@@ -9550,7 +9614,7 @@ Error generating stack: ` +
           Object.assign(t.default, t),
           (e.exports = t.default));
       })(to, to.exports);
-      var Sp = to.exports,
+      var wp = to.exports,
         ro = { exports: {} };
       (function (e, t) {
         Object.defineProperty(t, '__esModule', { value: !0 }),
@@ -9573,7 +9637,7 @@ Error generating stack: ` +
             Object.assign(t.default, t),
             (e.exports = t.default));
       })(ro, ro.exports);
-      var wp = ro.exports;
+      var _p = ro.exports;
       (function (e, t) {
         Object.defineProperty(t, '__esModule', { value: !0 });
         function n(y, N) {
@@ -9606,9 +9670,9 @@ Error generating stack: ` +
             return f;
           },
         });
-        const r = yp,
-          l = Sp,
-          u = wp,
+        const r = gp,
+          l = wp,
+          u = _p,
           o = 'NEXT_REDIRECT';
         var i;
         (function (y) {
@@ -9679,7 +9743,7 @@ Error generating stack: ` +
           Object.assign(t.default, t),
           (e.exports = t.default));
       })(qu, qu.exports);
-      var _p = qu.exports,
+      var kp = qu.exports,
         lo = { exports: {} };
       (function (e, t) {
         Object.defineProperty(t, '__esModule', { value: !0 });
@@ -9712,7 +9776,7 @@ Error generating stack: ` +
           Object.assign(t.default, t),
           (e.exports = t.default));
       })(lo, lo.exports);
-      var kp = lo.exports;
+      var Ep = lo.exports;
       (function (e, t) {
         Object.defineProperty(t, '__esModule', { value: !0 });
         function n(i, s) {
@@ -9736,8 +9800,8 @@ Error generating stack: ` +
             return r.redirect;
           },
         });
-        const r = _p,
-          l = kp;
+        const r = kp,
+          l = Ep;
         class u extends Error {
           constructor() {
             super(
@@ -9766,23 +9830,23 @@ Error generating stack: ` +
           Object.assign(t.default, t),
           (e.exports = t.default));
       })(Zu, Zu.exports);
-      var Ep = Zu.exports,
-        jc = {},
+      var Cp = Zu.exports,
+        Ic = {},
         uo = {};
-      function Ic(e) {
+      function Fc(e) {
         if (typeof WeakMap != 'function') return null;
         var t = new WeakMap(),
           n = new WeakMap();
-        return (Ic = function (r) {
+        return (Fc = function (r) {
           return r ? n : t;
         })(e);
       }
-      uo._ = uo._interop_require_wildcard = Cp;
-      function Cp(e, t) {
+      uo._ = uo._interop_require_wildcard = Pp;
+      function Pp(e, t) {
         if (!t && e && e.__esModule) return e;
         if (e === null || (typeof e != 'object' && typeof e != 'function'))
           return { default: e };
-        var n = Ic(t);
+        var n = Fc(t);
         if (n && n.has(e)) return n.get(e);
         var r = { __proto__: null },
           l = Object.defineProperty && Object.getOwnPropertyDescriptor;
@@ -9816,14 +9880,14 @@ Error generating stack: ` +
           const i = (0, r.useContext)(l);
           i && i(o);
         }
-      })(jc);
-      var wr = { exports: {} },
-        Jl = {},
-        ms;
-      function Pp() {
+      })(Ic);
+      var _r = { exports: {} },
+        bl = {},
+        vs;
+      function xp() {
         return (
-          ms ||
-            ((ms = 1),
+          vs ||
+            ((vs = 1),
             (function (e) {
               Object.defineProperty(e, '__esModule', { value: !0 });
               function t(u, o) {
@@ -9851,17 +9915,17 @@ Error generating stack: ` +
                   ? !1
                   : u.digest === n;
               }
-            })(Jl)),
-          Jl
+            })(bl)),
+          bl
         );
       }
-      var _r = { exports: {} },
-        kr = { exports: {} },
-        vs;
-      function xp() {
+      var kr = { exports: {} },
+        Er = { exports: {} },
+        hs;
+      function Np() {
         return (
-          vs ||
-            ((vs = 1),
+          hs ||
+            ((hs = 1),
             (function (e, t) {
               Object.defineProperty(t, '__esModule', { value: !0 }),
                 Object.defineProperty(t, 'staticGenerationAsyncStorage', {
@@ -9877,15 +9941,15 @@ Error generating stack: ` +
                 (Object.defineProperty(t.default, '__esModule', { value: !0 }),
                 Object.assign(t.default, t),
                 (e.exports = t.default));
-            })(kr, kr.exports)),
-          kr.exports
+            })(Er, Er.exports)),
+          Er.exports
         );
       }
-      var hs;
-      function Np() {
+      var ys;
+      function Rp() {
         return (
-          hs ||
-            ((hs = 1),
+          ys ||
+            ((ys = 1),
             (function (e, t) {
               'TURBOPACK { transition: next-shared }';
               Object.defineProperty(t, '__esModule', { value: !0 }),
@@ -9895,22 +9959,22 @@ Error generating stack: ` +
                     return n.staticGenerationAsyncStorage;
                   },
                 });
-              const n = xp();
+              const n = Np();
               (typeof t.default == 'function' ||
                 (typeof t.default == 'object' && t.default !== null)) &&
                 typeof t.default.__esModule > 'u' &&
                 (Object.defineProperty(t.default, '__esModule', { value: !0 }),
                 Object.assign(t.default, t),
                 (e.exports = t.default));
-            })(_r, _r.exports)),
-          _r.exports
+            })(kr, kr.exports)),
+          kr.exports
         );
       }
-      var ys;
-      function Rp() {
+      var gs;
+      function Tp() {
         return (
-          ys ||
-            ((ys = 1),
+          gs ||
+            ((gs = 1),
             (function (e, t) {
               Object.defineProperty(t, '__esModule', { value: !0 }),
                 Object.defineProperty(t, 'bailoutToClientRendering', {
@@ -9919,8 +9983,8 @@ Error generating stack: ` +
                     return l;
                   },
                 });
-              const n = Pp(),
-                r = Np();
+              const n = xp(),
+                r = Rp();
               function l(u) {
                 const o = r.staticGenerationAsyncStorage.getStore();
                 if (
@@ -9936,8 +10000,8 @@ Error generating stack: ` +
                 (Object.defineProperty(t.default, '__esModule', { value: !0 }),
                 Object.assign(t.default, t),
                 (e.exports = t.default));
-            })(wr, wr.exports)),
-          wr.exports
+            })(_r, _r.exports)),
+          _r.exports
         );
       }
       (function (e, t) {
@@ -9988,12 +10052,12 @@ Error generating stack: ` +
           },
         });
         const r = Lt,
-          l = Lc,
-          u = zc,
-          o = vp,
-          i = Mc,
-          s = Ep,
-          f = jc;
+          l = zc,
+          u = Mc,
+          o = hp,
+          i = jc,
+          s = Cp,
+          f = Ic;
         function v() {
           const c = (0, r.useContext)(u.SearchParamsContext),
             a = (0, r.useMemo)(
@@ -10001,7 +10065,7 @@ Error generating stack: ` +
               [c],
             );
           if (typeof window > 'u') {
-            const { bailoutToClientRendering: d } = Rp();
+            const { bailoutToClientRendering: d } = Tp();
             d('useSearchParams()');
           }
           return a;
@@ -10052,76 +10116,12 @@ Error generating stack: ` +
           (Object.defineProperty(t.default, '__esModule', { value: !0 }),
           Object.assign(t.default, t),
           (e.exports = t.default));
-      })(ps, ps.exports);
-      const gs = new WeakMap(),
-        Er = new WeakMap(),
-        bl = {
-          get(e) {
-            return Er.get(e) || [];
-          },
-          add(e, t) {
-            const n = this.get(e);
-            return Er.set(e, n.concat(t)), () => this.remove(e, t);
-          },
-          remove(e, t) {
-            const r = this.get(e).filter((l) => l !== t);
-            r.length ? Er.set(e, r) : Er.delete(e);
-          },
-        },
-        yt = {
-          get: function (e) {
-            return gs.get(e);
-          },
-          set: function (e, t) {
-            gs.set(e, t);
-          },
-        },
-        Tp = wt.useInsertionEffect || wt.useEffect;
-      function Fc(e, t) {
-        const n = wt.useRef(e),
-          [r, l] = wt.useState(() => {
-            if (pp()) return n.current;
-            const i = yt.get(n.current);
-            if (!i) {
-              const s = n.current;
-              return yt.set(n.current, s), s;
-            }
-            return i;
-          }),
-          u = wt.useCallback((i) => {
-            const s = yt.get(n.current) || n.current;
-            if (typeof i == 'function') {
-              const v = i(s);
-              if (ds(s, v)) return;
-              yt.set(n.current, v),
-                bl.get(n.current).forEach((m) => {
-                  m();
-                });
-            } else {
-              if (ds(s, i)) return;
-              yt.set(n.current, i),
-                bl.get(n.current).forEach((v) => {
-                  v();
-                });
-            }
-          }, []);
-        Tp(() => {
-          const i = () => {
-              l(yt.get(n.current) || n.current);
-            },
-            s = bl.add(n.current, i);
-          return () => {
-            s();
-          };
-        }, []);
-        const o = wt.useCallback(() => yt.get(n.current) || n.current, []);
-        return { state: r, getState: o, setState: u };
-      }
+      })(ms, ms.exports);
       function Op() {
         return F.jsxs('div', {
           className: 'p-8',
           children: [
-            F.jsx('h1', { children: 'useCommonState hook for React' }),
+            F.jsx('h1', { children: 'useSharedState hook for React' }),
             F.jsxs('div', {
               className: 'grid gap-4 grid-cols-2 w-full',
               children: [
@@ -10140,7 +10140,7 @@ Error generating stack: ` +
       }
       const Dc = { name: '', age: 0, agree: !1 },
         Lp = () => {
-          const { state: e, setState: t } = Fc(Dc);
+          const { state: e, setState: t } = Lc(Dc);
           return F.jsxs('div', {
             className: 'shadow-md h-full',
             children: [
@@ -10159,7 +10159,7 @@ Error generating stack: ` +
                   F.jsx(eu, { htmlFor: 'age', children: 'Age' }),
                   F.jsx(Fr, {
                     id: 'age',
-                    value: e.age,
+                    value: e.age || '',
                     type: 'number',
                     onChange: (n) => t((r) => ({ ...r, age: +n.target.value })),
                   }),
@@ -10181,7 +10181,7 @@ Error generating stack: ` +
           });
         },
         zp = () => {
-          const { state: e, setState: t } = Fc(Dc);
+          const { state: e, setState: t } = Lc(Dc);
           return F.jsxs(F.Fragment, {
             children: [
               F.jsx('pre', {
@@ -10191,6 +10191,7 @@ Error generating stack: ` +
               }),
               F.jsx(Fr, {
                 id: 'name',
+                'data-testid': 'name-input',
                 value: e.name,
                 onChange: (n) => t((r) => ({ ...r, name: n.target.value })),
               }),
@@ -10199,13 +10200,14 @@ Error generating stack: ` +
         },
         eu = (e) =>
           F.jsx('label', {
+            ...e,
             className: `mb-2 block select-none hover:cursor-pointer ${e.className}`,
             children: e.children,
           }),
         Fr = ({ className: e, value: t, ...n }) =>
           F.jsx('input', {
             className: `px-3 py-2 border border-gray-300 rounded-md
-         shadow-sm focus:ring-orange-500 focus:border-orange-500
+         shadow-sm focus:ring-orange-500 focus:border-orange-500 text-black
           ${e}
       ${n.type === 'checkbox' ? 'w-6 h-6 cursor-pointer' : 'w-full'}`,
             value: t ?? '',
@@ -10600,6 +10602,10 @@ Error generating stack: ` +
       .py-2 {
         padding-top: 0.5rem;
         padding-bottom: 0.5rem;
+      }
+      .text-black {
+        --tw-text-opacity: 1;
+        color: rgb(0 0 0 / var(--tw-text-opacity));
       }
       .shadow-md {
         --tw-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1),
