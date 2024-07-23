@@ -94,7 +94,7 @@ pnpm add state-in-url
 
 ### 2. Edit tsconfig.json
 
-set `"moduleResolution": "Node16"` or `"moduleResolution": "NodeNext"` in your `tsconfig.json`
+In `tsconfig.json` in `compilerOptions` set `"moduleResolution": "Node16"` or `"moduleResolution": "NodeNext"`
 
 ## useUrlState hook for Next.js
 
