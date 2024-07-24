@@ -71,4 +71,17 @@ describe('getParams', () => {
     expect(getParams(params).toString()).toStrictEqual(url);
     expect(getParams(params2).toString()).toStrictEqual(url);
   });
+
+  it('should extract query params from full path', () => {
+    const url1 = 'test=true';
+    const url2 = `/?${url1}`;
+    const url3 = `?${url1}`;
+    const url4 = `/somepage?${url1}`;
+    const url5 = `/somepage/other/?${url1}`;
+    expect(getParams(url1).toString()).toStrictEqual(url1);
+    expect(getParams(url2).toString()).toStrictEqual(url1);
+    expect(getParams(url3).toString()).toStrictEqual(url1);
+    expect(getParams(url4).toString()).toStrictEqual(url1);
+    expect(getParams(url5).toString()).toStrictEqual(url1);
+  });
 });

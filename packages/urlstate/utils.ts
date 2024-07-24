@@ -94,9 +94,11 @@ export type DeepReadonly<T> =
 export const getParams = (strOrSearchParams?: string | URLSearchParams) =>
   new URLSearchParams(
     typeof strOrSearchParams === 'string'
-      ? strOrSearchParams
+      ? getQueryFromHref(strOrSearchParams)
       : strOrSearchParams?.toString?.() || '',
   );
+
+const getQueryFromHref = (str: string) => str.split('?')?.[1] || str || '';
 
 export type UnknownObj = { [key: string]: unknown };
 
