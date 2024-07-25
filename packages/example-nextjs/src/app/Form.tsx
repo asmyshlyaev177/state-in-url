@@ -5,6 +5,7 @@ import { useUrlState } from 'state-in-url';
 
 import { Field } from './components/Field';
 import { Input } from './components/Input';
+import { SourceCodeBtn } from './components/SourceCodeBtn';
 import { Tag } from './components/Tag';
 import { form } from './form';
 import { RefreshButton } from './Refresh';
@@ -149,6 +150,11 @@ export const Form = ({
 
           <RefreshButton />
         </div>
+
+        <SourceCodeBtn
+          href="https://github.com/asmyshlyaev177/state-in-url/blob/main/packages/example-nextjs/src/app/Form.tsx"
+          className="self-end ml-auto mr-0 mt-4"
+        />
       </div>
     </div>
   );

@@ -11,7 +11,7 @@ export default async function Home({ searchParams }: { searchParams: object }) {
      from-orange-300 to-orange-500 p-4"
     >
       <div className="flex flex-col items-center container ml-auto mr-auto">
-        <div className="flex flex-col items-center bg-gradient-to-t from-stone-50 to-white w-full p-2 lg:max-w-[80%] lg:p-[4em] rounded-lg lg:pt-6">
+        <div className="flex flex-col items-center bg-gradient-to-t from-stone-50 to-white w-full p-2 xl:max-w-[80%] lg:p-[4em] rounded-lg lg:pt-6">
           <div className="text-center min-h-[35vh] md:min-h-[25vh] flex flex-col justify-center mb-8">
             <div className="flex flex-col md:flex-row items-center justify-center gap-1">
               <div className="text-center md:text-left ml-4 flex flex-col items-center min-[800px]:items-left min-[800px]:flex-row gap-6">
