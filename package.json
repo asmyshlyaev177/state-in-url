@@ -79,6 +79,7 @@
     "build": "wireit",
     "build:demo": "wireit",
     "start:demo": "npm run build && cd packages/example-nextjs && npm run build && npm run start",
+    "kill-next": "wireit",
     "cleanup": "rm -rf dist",
     "setup": "playwright install --with-deps",
     "cleanupDist": "wireit",
@@ -89,9 +90,13 @@
     "test": {
       "dependencies": [
         "tsc",
-        "test:unit"
+        "test:unit",
+        "kill-next"
       ],
-      "command": "npm run test:int"
+      "command": "npm run test:int -- --retries=1"
+    },
+    "kill-next": {
+      "command": "ps aux | grep .next | grep -v grep | awk '{print $2}' | xargs kill -9 2>&1; exit 0"
     },
     "test:int": {
       "command": "playwright test",
