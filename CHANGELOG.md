@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.2.0](https://github.com/asmyshlyaev177/state-in-url/compare/v1.0.2...v1.2.0) (2024-07-25)
+
+
+### Features
+
+* useSharedState hook for Next.js/React ([152e202](https://github.com/asmyshlyaev177/state-in-url/commit/152e2027bc2bbf3c66af3f53f2d4a5d7565b17d5))
+
+
+### Bug Fixes
+
+* edge cases in getParams ([a9eb116](https://github.com/asmyshlyaev177/state-in-url/commit/a9eb11674d4ead93dda8c6d1af909df5fc5d16da))
+* polished initial state logic in useSharedState ([8bd4b85](https://github.com/asmyshlyaev177/state-in-url/commit/8bd4b85bf981cae74fdf731c2762b7a82ca57a66))
+
 ## [1.1.0](https://github.com/asmyshlyaev177/state-in-url/compare/v1.0.2...v1.1.0) (2024-07-23)
 
 
