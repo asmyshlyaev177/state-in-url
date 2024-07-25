@@ -8,7 +8,7 @@ jest.mock('../utils.ts', () => ({
   isSSR: jest.fn(),
 }));
 
-import { isSSR } from '../utils';
+import { isSSR, JSONCompatible } from '../utils';
 
 describe('useSharedState', () => {
   beforeEach(() => {
@@ -49,6 +49,50 @@ describe('useSharedState', () => {
           expect(hook1.result.current.state).toStrictEqual(initial);
           expect(stateSpy).toHaveBeenCalledTimes(1);
           expect(stateSpy).toHaveBeenNthCalledWith(1, state, initial);
+        });
+
+        it('should get value from stateMap without getInitial', () => {
+          const stateMock = jest.fn() as unknown as void;
+          const init = { test: true };
+          const stateSpyGet = jest
+            .spyOn(subscribers.stateMap, 'get')
+            .mockReturnValue(init);
+          const stateSpySet = jest
+            .spyOn(subscribers.stateMap, 'set')
+            .mockReturnValue(stateMock);
+
+          jest.mocked(isSSR).mockReturnValue(false);
+          const state = { ...form };
+          const hook1 = renderHook(() => useSharedState(state));
+
+          expect(stateSpyGet).toHaveBeenCalledTimes(2);
+          expect(stateSpyGet).toHaveBeenNthCalledWith(1, state);
+          expect(stateSpyGet).toHaveBeenNthCalledWith(2, state);
+
+          expect(stateSpySet).toHaveBeenCalledTimes(0);
+          expect(hook1.result.current.state).toStrictEqual(init);
+        });
+
+        it('should set value if not in stateMap', () => {
+          const stateMock = jest.fn() as unknown as void;
+          const stateSpyGet = jest
+            .spyOn(subscribers.stateMap, 'get')
+            .mockReturnValue(undefined as unknown as JSONCompatible);
+          const stateSpySet = jest
+            .spyOn(subscribers.stateMap, 'set')
+            .mockReturnValue(stateMock);
+
+          jest.mocked(isSSR).mockReturnValue(false);
+          const state = { ...form };
+          const hook1 = renderHook(() => useSharedState(state));
+
+          expect(stateSpyGet).toHaveBeenCalledTimes(2);
+          expect(stateSpyGet).toHaveBeenNthCalledWith(1, state);
+          expect(stateSpyGet).toHaveBeenNthCalledWith(2, state);
+
+          expect(stateSpySet).toHaveBeenCalledTimes(1);
+          expect(stateSpySet).toHaveBeenNthCalledWith(1, state, state);
+          expect(hook1.result.current.state).toStrictEqual(state);
         });
       });
     });
@@ -142,24 +186,63 @@ describe('useSharedState', () => {
     expect(mockSubscriber).toHaveBeenCalledTimes(1);
   });
 
-  it('few instances', () => {
-    const defaultState = { count: 0 };
-    const hook1 = renderHook(() => useSharedState(defaultState));
-    const hook2 = renderHook(() => useSharedState(defaultState));
-    const hook3 = renderHook(() => useSharedState(defaultState));
+  describe('few instances', () => {
+    it('should set initial value only 1 time', () => {
+      const defaultState = { count: 0 };
+      const stateSpySet = jest.spyOn(subscribers.stateMap, 'set');
+      const hook1 = renderHook(() => useSharedState(defaultState));
+      const hook2 = renderHook(() => useSharedState(defaultState));
+      const hook3 = renderHook(() => useSharedState(defaultState));
 
-    act(() => {
-      hook1.result.current.setState({ count: 5 });
+      expect(stateSpySet).toHaveBeenCalledTimes(1);
+      expect(stateSpySet).toHaveBeenNthCalledWith(
+        1,
+        defaultState,
+        defaultState,
+      );
+
+      const result = hook1.result.current.state;
+
+      expect(hook1.result.current.state).toStrictEqual(result);
+      expect(hook2.result.current.state).toStrictEqual(result);
+      expect(hook3.result.current.state).toStrictEqual(result);
+      expect(
+        hook1.result.current.state === hook2.result.current.state &&
+          hook1.result.current.state === hook3.result.current.state,
+      ).toBeTruthy();
     });
 
-    const result = hook1.result.current.state;
-    expect(hook1.result.current.state).toStrictEqual(result);
-    expect(hook2.result.current.state).toStrictEqual(result);
-    expect(hook3.result.current.state).toStrictEqual(result);
-    expect(
-      hook1.result.current.state === hook2.result.current.state &&
-        hook1.result.current.state === hook3.result.current.state,
-    ).toBeTruthy();
+    it('should update value only 1 time', () => {
+      const defaultState = { count: 0 };
+      const stateSpySet = jest.spyOn(subscribers.stateMap, 'set');
+      const hook1 = renderHook(() => useSharedState(defaultState));
+      const hook2 = renderHook(() => useSharedState(defaultState));
+      const hook3 = renderHook(() => useSharedState(defaultState));
+
+      const newState = { count: 5 };
+      act(() => {
+        hook1.result.current.setState(newState);
+      });
+
+      expect(stateSpySet).toHaveBeenCalledTimes(2);
+      expect(stateSpySet).toHaveBeenNthCalledWith(
+        1,
+        defaultState,
+        defaultState,
+      );
+      expect(stateSpySet).toHaveBeenNthCalledWith(2, defaultState, newState);
+
+      const result = hook1.result.current.state;
+      expect(result).toStrictEqual(newState);
+
+      expect(hook1.result.current.state).toStrictEqual(result);
+      expect(hook2.result.current.state).toStrictEqual(result);
+      expect(hook3.result.current.state).toStrictEqual(result);
+      expect(
+        hook1.result.current.state === hook2.result.current.state &&
+          hook1.result.current.state === hook3.result.current.state,
+      ).toBeTruthy();
+    });
   });
 });
 

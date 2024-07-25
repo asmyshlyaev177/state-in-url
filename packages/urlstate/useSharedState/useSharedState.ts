@@ -35,14 +35,15 @@ export function useSharedState<T extends JSONCompatible>(
 
   const [state, _setState] = React.useState(() => {
     if (isSSR()) {
-      return _getInitial?.() || stateShape.current;
+      return _getInitial ? _getInitial?.() : stateShape.current;
     }
 
-    const val = stateMap.get(stateShape.current);
-    if (!val) {
-      const newVal = _getInitial?.() || stateShape.current;
-      stateMap.set(stateShape.current, newVal);
-      return newVal;
+    const val =
+      _getInitial?.() || stateMap.get(stateShape.current) || stateShape.current;
+
+    const currVal = stateMap.get(stateShape.current);
+    if (!isEqual(currVal, val)) {
+      stateMap.set(stateShape.current, val);
     }
     return val;
   });
@@ -53,7 +54,7 @@ export function useSharedState<T extends JSONCompatible>(
         | (T | DeepReadonly<T>)
         | ((currState: typeof stateShape.current) => typeof stateShape.current),
     ): void => {
-      const curr = stateMap.get(stateShape.current) || stateShape.current;
+      const curr = stateMap.get(stateShape.current);
       const isFunc = typeof value === 'function';
 
       if (isFunc) {
