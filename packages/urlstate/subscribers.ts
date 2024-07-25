@@ -3,6 +3,7 @@ import { type JSONCompatible } from './utils';
 const _stateMap = new WeakMap<JSONCompatible, JSONCompatible>();
 const _subscribers = new WeakMap<JSONCompatible, Cb[]>();
 
+// could use useSyncExternalStore, but better to support react 17 for now
 export const subscribers = {
   get(obj: JSONCompatible) {
     return _subscribers.get(obj) || [];
