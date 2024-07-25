@@ -46,24 +46,3 @@ const Wrapper = ({ className, sp }: { className?: string; sp?: object }) => {
 };
 
 export { Wrapper as Status };
-
-// TODO: move to main lib
-// function usePrevious<T>(value: T) {
-//   const ref = React.useRef(value);
-
-//   React.useEffect(() => {
-//     if (JSON.stringify(value) !== JSON.stringify(ref.current)) {
-//       ref.current = value;
-//     }
-//   }, [value]);
-
-//   return ref.current;
-// }
-
-// function useChangedValue<T>(value: T) {
-//   const valuePrev = usePrevious(value);
-
-//   return JSON.stringify(value) !== JSON.stringify(valuePrev)
-//     ? value
-//     : valuePrev;
-// }
