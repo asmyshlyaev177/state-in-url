@@ -2,6 +2,7 @@
 import React from 'react';
 import { useUrlState } from 'state-in-url';
 
+import { SourceCodeBtn } from './components/SourceCodeBtn';
 import { form } from './form';
 
 export const Status = ({
@@ -14,7 +15,7 @@ export const Status = ({
   const { state } = useUrlState(form, sp);
 
   return (
-    <div className={className}>
+    <div className={`flex relative ${className}`}>
       <div className="font-semibold mb-2 text-black">
         Other client component
       </div>
@@ -30,6 +31,10 @@ export const Status = ({
           {JSON.stringify(state, null, 2)}
         </pre>
       </div>
+      <SourceCodeBtn
+        href="https://github.com/asmyshlyaev177/state-in-url/blob/main/packages/example-nextjs/src/app/Status.tsx"
+        className="self-end ml-auto mr-1.5 mt-4 md:absolute bottom-2 right-2"
+      />
     </div>
   );
 };
