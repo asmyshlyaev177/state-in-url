@@ -1,13 +1,8 @@
 import { useRouter } from 'next/navigation';
 import React from 'react';
 
-import { parseSsrQs } from '../encoder';
-import { useSharedState } from '../useSharedState';
-import { useUrlEncode } from '../useUrlEncode';
-import { type DeepReadonly, isSSR, type JSONCompatible } from '../utils';
-
-// TODO: make a generic with `router` params
-// create separate hooks for nextjs and react-router
+import { useUrlStateBase } from '../useUrlStateBase';
+import { type DeepReadonly, type JSONCompatible } from '../utils';
 
 /**
  * NextJS hook. Returns `state`, `updateState`, and `updateUrl` functions
@@ -31,60 +26,22 @@ export function useUrlState<T extends JSONCompatible>(
   defaultState: T,
   searchParams?: object,
 ) {
-  const { parse, stringify } = useUrlEncode(defaultState);
-  const { state, getState, setState } = useSharedState(defaultState, () =>
-    isSSR()
-      ? parseSsrQs(searchParams, defaultState)
-      : parse(window.location.search),
-  );
-
   const router = useRouter();
-
-  React.useInsertionEffect(() => {
-    // for history navigation
-    const popCb = () => {
-      const newVal = parse(window.location.search);
-      setState(newVal);
-    };
-    const ev = 'popstate';
-    window.addEventListener(ev, popCb);
-
-    return () => {
-      window.removeEventListener(ev, popCb);
-    };
-  }, [setState]);
+  const {
+    state,
+    updateState,
+    updateUrl: updateUrlBase,
+    getState,
+  } = useUrlStateBase(defaultState, router, searchParams);
 
   const updateUrl = React.useCallback(
     (
       value?: (T | DeepReadonly<T>) | ((currState: T) => T),
       options?: Options,
     ) => {
-      const currSP = window.location.search;
-      const currUrl = `${window.location.pathname}${currSP.length && !currSP.includes('?') ? '?' : ''}${currSP}`;
-      const isFunc = typeof value === 'function';
-
-      let newVal: T | DeepReadonly<T>;
-      let qStr: string;
-      if (isFunc) {
-        newVal = value(getState());
-        qStr = stringify(newVal);
-      } else {
-        newVal = (value ?? getState()) as T;
-        qStr = stringify(newVal);
-      }
-      setState(newVal);
-
-      const newUrl = `${window.location.pathname}${qStr.length ? '?' : ''}${qStr}`;
-
-      if (currUrl !== newUrl) {
-        const { replace, ...rOptions } = options || {};
-        router[replace ? 'replace' : 'push'](newUrl, {
-          scroll: false,
-          ...rOptions,
-        });
-      }
+      updateUrlBase(value, { scroll: false, ...options } as Options);
     },
-    [router, stringify, getState],
+    [updateUrlBase],
   );
 
   return {
@@ -98,7 +55,7 @@ export function useUrlState<T extends JSONCompatible>(
      *
      *  * Github {@link https://github.com/asmyshlyaev177/state-in-url/tree/main/packages/urlstate/useUrlState#updatestate}
      */
-    updateState: setState,
+    updateState,
     /**
      * * Example:
      * ```ts
@@ -111,11 +68,14 @@ export function useUrlState<T extends JSONCompatible>(
      */
     updateUrl,
     state: state as DeepReadonly<typeof state>,
+    getState,
   };
 }
 
 type Router = ReturnType<typeof useRouter>;
-type RouterOptions = NonNullable<Parameters<Router['push']>[1]>;
+type RouterOptions = NonNullable<
+  Parameters<Router['push']>[1] | Parameters<Router['replace']>[1]
+>;
 
 interface Options extends RouterOptions {
   replace?: boolean;
