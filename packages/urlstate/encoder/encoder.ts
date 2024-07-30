@@ -104,6 +104,13 @@ export function parseJSON<T extends JSONCompatible>(
   }
 }
 
+/**
+ * Parses the Next.js server-side `searchParams` into an object.
+ *
+ * @param {object | undefined} sp - The server-side query string to parse.
+ * @param {T} defaults - The default values to use if parsing fails.
+ * @return {T} - The parsed object or the default values.
+ */
 export function parseSsrQs<T extends JSONCompatible>(
   sp: object | undefined,
   defaults: T,
