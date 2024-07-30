@@ -90,8 +90,7 @@
     "test": {
       "dependencies": [
         "tsc",
-        "test:unit",
-        "kill-next"
+        "test:unit"
       ],
       "command": "npm run test:int -- --retries=1"
     },
@@ -115,7 +114,8 @@
     },
     "dev": {
       "dependencies": [
-        "dev:lib"
+        "dev:lib",
+        "kill-next"
       ],
       "service": true,
       "command": "npm run dev:nextjs"
