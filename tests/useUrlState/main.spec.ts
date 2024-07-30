@@ -38,9 +38,11 @@ test.describe('main tests', () => {
       await page.goto(url);
       await page.waitForSelector('button[name="Reload page"]');
 
+      await page.getByLabel('name').focus();
       await page
         .getByLabel('name')
         .pressSequentially(values.name, { delay: 150 });
+      await page.getByLabel('age').focus();
       await page
         .getByLabel('age')
         .pressSequentially(values.age, { delay: 150 });
