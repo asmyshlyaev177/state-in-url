@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 
 const urls = ['/test-ssr', '/test-use-client', '/test-ssr-sp'];
 
@@ -7,6 +7,7 @@ test('sync', async ({ page, baseURL }) => {
     await page.goto(url);
     await page.waitForSelector('button[name="Reload page"]');
 
+    await page.getByLabel('name').focus();
     await page.getByLabel('name').pressSequentially('My Name', { delay: 150 });
     await page.getByText('React.js').click();
 
@@ -51,6 +52,7 @@ test('reset', async ({ page, baseURL }) => {
     await page.goto(url);
     await page.waitForSelector('button[name="Reload page"]');
 
+    await page.getByLabel('name').focus();
     await page.getByLabel('name').pressSequentially('My Name', { delay: 150 });
     await page.getByText('React.js').click();
 
@@ -90,6 +92,7 @@ test('update', async ({ page, baseURL }) => {
     await page.goto(url);
     await page.waitForSelector('button[name="Reload page"]');
 
+    await page.getByLabel('name').focus();
     await page.getByLabel('name').pressSequentially('My Name', { delay: 150 });
     await page.getByText('React.js').click();
 
