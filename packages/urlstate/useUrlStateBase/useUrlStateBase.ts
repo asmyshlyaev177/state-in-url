@@ -1,34 +1,35 @@
-import { useRouter } from 'next/navigation';
 import React from 'react';
 
 import { parseSsrQs } from '../encoder';
+import { useInsertionEffect } from '../useInsertionEffect';
 import { useSharedState } from '../useSharedState';
 import { useUrlEncode } from '../useUrlEncode';
 import { type DeepReadonly, isSSR, type JSONCompatible } from '../utils';
 
-// TODO: make a generic with `router` params
-// create separate hooks for nextjs and react-router
+type Router = {
+  push: (href: string, opts: object) => void;
+  replace: (href: string, opts: object) => void;
+};
 
 /**
- * NextJS hook. Returns `state`, `updateState`, and `updateUrl` functions
+ * Base hook to integrate it with different routers
  *
  * @param {JSONCompatible<T>} [defaultState] Fallback (default) values for state
+ * @param {Router} [router] Router object with `push` and `replace` methods
  * @param {?SearchParams<T>} [searchParams] searchParams from Next server component
  *
  * * Example:
  * ```ts
  * export const form = { name: '' };
- * const { state, updateState, updateUrl } = useUrlState(form);
- *
- * updateState({ name: 'test' });
- * // by default it's uses router.push with scroll: false
- * updateUrl({ name: 'test' }, { replace: true, scroll: true });
+ * const router = { push: () => {}, replace: () => {} };
+ * const { state, updateState, updateUrl } = useUrlStateBase(form, router, sp);
  *  ```
  *
- *  * Github {@link https://github.com/asmyshlyaev177/state-in-url/tree/main/packages/urlstate/useUrlState#api}
+ *  * Github {@link https://github.com/asmyshlyaev177/state-in-url/tree/integrations/packages/urlstate/useUrlStateBase#api}
  */
-export function useUrlState<T extends JSONCompatible>(
+export function useUrlStateBase<T extends JSONCompatible>(
   defaultState: T,
+  router: Router,
   searchParams?: object,
 ) {
   const { parse, stringify } = useUrlEncode(defaultState);
@@ -38,19 +39,19 @@ export function useUrlState<T extends JSONCompatible>(
       : parse(window.location.search),
   );
 
-  const router = useRouter();
+  // TODO: href ?
 
-  React.useInsertionEffect(() => {
+  useInsertionEffect(() => {
     // for history navigation
     const popCb = () => {
       const newVal = parse(window.location.search);
       setState(newVal);
     };
-    const ev = 'popstate';
-    window.addEventListener(ev, popCb);
+
+    window.addEventListener(popstateEv, popCb);
 
     return () => {
-      window.removeEventListener(ev, popCb);
+      window.removeEventListener(popstateEv, popCb);
     };
   }, [setState]);
 
@@ -79,7 +80,6 @@ export function useUrlState<T extends JSONCompatible>(
       if (currUrl !== newUrl) {
         const { replace, ...rOptions } = options || {};
         router[replace ? 'replace' : 'push'](newUrl, {
-          scroll: false,
           ...rOptions,
         });
       }
@@ -88,35 +88,16 @@ export function useUrlState<T extends JSONCompatible>(
   );
 
   return {
-    /**
-     * * Example:
-     * ```ts
-     * updateState({ name: 'test' });
-     * // or
-     * updateState(curr => ({ ...curr, name: 'test' }) );
-     *  ```
-     *
-     *  * Github {@link https://github.com/asmyshlyaev177/state-in-url/tree/main/packages/urlstate/useUrlState#updatestate}
-     */
     updateState: setState,
-    /**
-     * * Example:
-     * ```ts
-     * updateUrl({ name: 'test' });
-     * // or
-     * updateUrl(curr => ({ ...curr, name: 'test' }), { replace: true, scroll: false  } );
-     *  ```
-     *
-     *  * Github {@link https://github.com/asmyshlyaev177/state-in-url/tree/main/packages/urlstate/useUrlState#updateurl}
-     */
     updateUrl,
     state: state as DeepReadonly<typeof state>,
+    getState,
   };
 }
 
-type Router = ReturnType<typeof useRouter>;
-type RouterOptions = NonNullable<Parameters<Router['push']>[1]>;
+const popstateEv = 'popstate';
 
-interface Options extends RouterOptions {
+// eslint-disable-next-line @typescript-eslint/ban-types
+interface Options extends Object {
   replace?: boolean;
 }

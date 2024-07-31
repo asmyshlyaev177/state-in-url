@@ -1,4 +1,11 @@
-import { decode, decodePrimitive, encode, errorSym, parseJSON } from '.';
+import {
+  decode,
+  decodePrimitive,
+  encode,
+  errorSym,
+  parseJSON,
+  parseSsrQs,
+} from '.';
 import { type JSONCompatible } from '../utils';
 
 describe('encoder', () => {
@@ -231,5 +238,23 @@ describe('parseJSON', () => {
   it('should return fallback for invalid JSON', () => {
     expect(parseJSON('invalid', '' as unknown as JSONCompatible)).toEqual('');
     expect(parseJSON('invalid')).toEqual(undefined);
+  });
+});
+
+describe('parseSsrQs', () => {
+  const stateShape = { perPage: 10 };
+
+  it('should parse params to object', () => {
+    expect(parseSsrQs({}, stateShape)).toStrictEqual(stateShape);
+    expect(parseSsrQs({ perPage: '∓20' }, stateShape)).toStrictEqual({
+      perPage: 20,
+    });
+
+    expect(
+      parseSsrQs(undefined as unknown as object, stateShape),
+    ).toStrictEqual(stateShape);
+    expect(parseSsrQs(null as unknown as object, stateShape)).toStrictEqual(
+      stateShape,
+    );
   });
 });

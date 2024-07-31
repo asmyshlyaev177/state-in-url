@@ -15,6 +15,7 @@ test('go back/forward', async ({ page, baseURL }) => {
     await page.waitForSelector('button[name="Reload page"]');
 
     const name = 'My Name';
+    await page.getByLabel('name').focus();
     await page.getByLabel('name').pressSequentially(name, { delay: 150 });
 
     const expectedText = `{

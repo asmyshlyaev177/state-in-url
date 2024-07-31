@@ -1,39 +1,37 @@
 # API
 
-This module provides a custom React hook for managing state that is synchronized with URL search parameters in Next.js applications.
+This hook can be used as a base to create hooks for different routers
 
-## `useUrlState` hook
+## `useUrlStateBase` hook
 
-A custom React hook that manages state and synchronizes it with URL search parameters.
+A custom React hook to create custom `useUrlState` hooks.
 
 ### Parameters:
 
 - `defaultState: object` - An object representing the default state values.
+- `router: object` - Router object with `push` and `replace` methods
 - `sp?: object` - Optional search params object from Next.js server component.
 
 ### Returns:
 
 An object containing:
 - `state: object` - The current state (readonly).
+- `getState: Function` - Function to get state.
 - `updateState: Function` - Function to update the state without updating the URL.
 - `updateUrl: Function` - Function to update both the state and the URL.
 
 ### Example:
 
 ```typescript
-import { useUrlState } from 'state-in-url';
+import { useUrlStateBase } from 'state-in-url';
 
-const form = { name: '' };
-const { state, updateState, updateUrl } = useUrlState(form);
-
-// Update state without changing URL
-updateState({ name: 'test' });
-
-// API same as React.useState
-updateState(currVal => ({ ...currVal, name: 'test' }) );
-
-// Update state and URL
-updateUrl({ name: 'test' }, { replace: true, scroll: true });
+function useUrlStateCustom<T>(state: T) {
+  const router = React.useMemo({
+    push: (url: string) => window.history.pushState(url),
+    replace: (url: string) => window.history.replaceState(url)
+  }, []);
+  return useUrlState(state, router);
+}
 ```
 
 ## `updateState`

@@ -24,9 +24,11 @@ test.describe('main tests', () => {
       await page.goto(url);
       await page.waitForSelector('[data-testid="parsed"]');
 
+      await page.getByLabel('name').focus();
       await page
         .getByLabel('name')
         .pressSequentially(values.name, { delay: 150 });
+      await page.getByLabel('age').focus();
       await page
         .getByLabel('age')
         .pressSequentially(values.age, { delay: 150 });
@@ -35,15 +37,17 @@ test.describe('main tests', () => {
       await expect(page.getByTestId('parsed')).toHaveText(expectedText);
       await expect(page.getByTestId('name-input')).toHaveValue(values.name);
 
+      await page.getByTestId('name-input').focus();
       await page
         .getByTestId('name-input')
         .pressSequentially(' test ', { delay: 150 });
-      await expect(page.getByLabel('name')).toHaveValue(` test ${values.name}`);
+      const name = `${values.name} test `;
+      await expect(page.getByLabel('name')).toHaveValue(name);
       await expect(page.getByTestId('parsed')).toContainText(
-        `"name": " test ${values.name}",`,
+        `"name": "${name}",`,
       );
 
-      expect(
+      await expect(
         errorLogs.filter((err) => !err.includes('dangerouslySetInnerHTML')),
       ).toHaveLength(0);
     }

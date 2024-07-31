@@ -49,20 +49,6 @@ export type JSONCompatible = {
   [prop: string]: JSON | JSON[];
 };
 
-// export type Prettify<Type> = {
-//   [Key in keyof Type]: Type[Key];
-// } & {};
-
-// export type JSONCompatible<T> = {
-//   [P in keyof T]: T[P] extends JSON
-//   ? T[P]
-//   : Pick<T, P> extends Required<Pick<T, P>>
-//   ? never
-//   : T[P] extends (() => any) | undefined
-//   ? never
-//   : JSONCompatible<T[P]>;
-// };
-
 // TODO: or this https://github.com/ts-essentials/ts-essentials/tree/master/lib/deep-readonly
 // https://github.com/microsoft/TypeScript/issues/13923
 
@@ -75,21 +61,6 @@ export type DeepReadonly<T> =
       : T extends object
         ? { readonly [K in keyof T]: DeepReadonly<T[K]> }
         : T;
-
-// export type DeepReadonly<T> = Readonly<{
-//   [K in keyof T]: T[K] extends Date | object | null
-//     ? Readonly<T[K]>
-//     : Readonly<DeepReadonly<T[K]>>;
-// }>;
-
-// export type DeepReadonly<T> = Readonly<{
-//   readonly [P in keyof T]: DeepReadonly<T[P]>;
-// }>;
-
-// export type Prettify<T> = {
-//   [K in keyof T]: T[K];
-// // eslint-disable-next-line @typescript-eslint/ban-types
-// } & {};
 
 export const getParams = (strOrSearchParams?: string | URLSearchParams) =>
   new URLSearchParams(
