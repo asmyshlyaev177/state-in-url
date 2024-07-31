@@ -97,7 +97,7 @@ type Form = {
       <File
         name="ComponentA"
         content={`'use client';
-import { useUrlState } from 'state-in-url';
+import { useUrlState } from 'state-in-url/next';
 
 export const ComponentA = () => {
   const { state, updateUrl } = useUrlState(form);
@@ -117,7 +117,7 @@ export const ComponentA = () => {
       <File
         name="ComponentB"
         content={`'use client';
-import { useUrlState } from 'state-in-url';
+import { useUrlState } from 'state-in-url/next';
 
 // for SSR
 // const Home = async ({ searchParams }: { searchParams: object }) => {

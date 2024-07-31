@@ -47,7 +47,7 @@ test.describe('main tests', () => {
         `"name": "${name}",`,
       );
 
-      expect(
+      await expect(
         errorLogs.filter((err) => !err.includes('dangerouslySetInnerHTML')),
       ).toHaveLength(0);
     }
