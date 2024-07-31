@@ -44,21 +44,33 @@
   ],
   "main": "dist/index.mjs",
   "exports": {
-    "import": {
+    ".": {
       "types": "./dist/index.d.ts",
       "default": "./dist/index.mjs"
     },
-    "node": {
-      "types": "./dist/index.d.ts",
-      "default": "./dist/index.mjs"
+    "./next": {
+      "types": "./dist/next/useUrlState/index.d.ts",
+      "default": "./dist/next/useUrlState/useUrlState.mjs"
     },
-    "module": {
-      "types": "./dist/index.mjs",
-      "default": "./dist/index.d.ts"
+    "./encodeState": {
+      "types": "./dist/next/encodeState/index.d.ts",
+      "default": "./dist/next/encodeState/encodeState.mjs"
     },
-    "default": {
-      "types": "./dist/index.mjs",
-      "default": "./dist/index.d.ts"
+    "./encoder": {
+      "types": "./dist/next/encoder/index.d.ts",
+      "default": "./dist/next/encoder/encoder.mjs"
+    },
+    "./useSharedState": {
+      "types": "./dist/next/useSharedState/index.d.ts",
+      "default": "./dist/next/useSharedState/useSharedState.mjs"
+    },
+    "./useUrlEncode": {
+      "types": "./dist/next/useUrlEncode/index.d.ts",
+      "default": "./dist/next/useUrlEncode/useUrlEncode.mjs"
+    },
+    "./useUrlStateBase": {
+      "types": "./dist/next/useUrlStateBase/index.d.ts",
+      "default": "./dist/next/useUrlStateBase/useUrlStateBase.mjs"
     }
   },
   "types": "./dist/index.d.ts",
