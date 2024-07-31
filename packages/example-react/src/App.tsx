@@ -1,4 +1,4 @@
-import { useSharedState } from 'state-in-url'
+import { useSharedState } from 'state-in-url/useSharedState'
 
 function App() {
   return (
