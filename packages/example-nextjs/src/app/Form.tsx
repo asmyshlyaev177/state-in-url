@@ -1,7 +1,7 @@
 'use client';
 /* eslint-disable max-lines-per-function */
 import React from 'react';
-import { useUrlState } from 'state-in-url';
+import { useUrlState } from 'state-in-url/next';
 
 import { Field } from './components/Field';
 import { Input } from './components/Input';
@@ -17,6 +17,7 @@ export const Form = ({
   className?: string;
   sp?: object;
 }) => {
+  // const { state, updateState, updateUrl, getState } = useUrlState(form, sp);
   const { state, updateState, updateUrl } = useUrlState(form, sp);
   const [autoSync, setAutoSync] = React.useState(true);
 
@@ -36,6 +37,13 @@ export const Form = ({
       clearTimeout(timer.current);
     };
   }, [state, updateUrl, autoSync]);
+
+  // OR
+  // const handleSync = React.useCallback(() => {
+  //   clearTimeout(timer.current)
+  //   if (!autoSync) return false
+  //   timer.current = setTimeout(() => updateUrl(getState()), 1000)
+  // }, [updateUrl, getState, timer, autoSync])
 
   const onChangeAge = React.useCallback(
     (ev: React.ChangeEvent<HTMLInputElement>) => {
@@ -93,7 +101,12 @@ export const Form = ({
           First client component
         </div>
 
-        <div className="space-y-6">
+        <div
+          className="space-y-6 flex-col"
+          //   onBlur={handleSync}
+          //   onChange={handleSync}
+          //  onClick={handleSync}
+        >
           <Field id="name" text="Name">
             <Input id="name" value={state.name} onChange={onChangeName} />
           </Field>

@@ -19,7 +19,7 @@ export const SourceCodeBtn = ({
           className="w-4 mr-2"
         >
           <circle cx="0" cy="0" r="2.05" fill="#519aba" />
-          <g stroke="#519aba" stroke-width="1" fill="none">
+          <g stroke="#519aba" strokeWidth="1" fill="none">
             <ellipse rx="11" ry="4.2" />
             <ellipse rx="11" ry="4.2" transform="rotate(60)" />
             <ellipse rx="11" ry="4.2" transform="rotate(120)" />
