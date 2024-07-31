@@ -89,8 +89,8 @@
     "start:demo": "npm run build && cd packages/example-nextjs && npm run build && npm run start",
     "kill-next": "wireit",
     "cleanup": "rm -rf dist",
+    "reinstall": "rm -rf dist .wireit node_modules packages/example-nextjs/node_modules packages/example-nextjs/.next packages/example-react/node_modules && npm install",
     "setup": "playwright install --with-deps",
-    "cleanupDist": "wireit",
     "prepack": "npm run test:unit && npm run build && npm run build:demo",
     "prepare": "npx husky"
   },
