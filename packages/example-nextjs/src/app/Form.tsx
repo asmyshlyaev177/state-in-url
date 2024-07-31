@@ -1,7 +1,7 @@
 'use client';
 /* eslint-disable max-lines-per-function */
 import React from 'react';
-import { useUrlState } from 'state-in-url';
+import { useUrlState } from 'state-in-url/next';
 
 import { Field } from './components/Field';
 import { Input } from './components/Input';

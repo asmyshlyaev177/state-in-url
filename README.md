@@ -120,7 +120,7 @@ In `tsconfig.json` in `compilerOptions` set `"moduleResolution": "Node16"` or `"
 
 ```typescript
 'use client'
-import { useUrlState } from 'state-in-url';
+import { useUrlState } from 'state-in-url/next';
 
 import { countState } from './countState';
 
@@ -176,7 +176,7 @@ export const userSettings: UserSettings {
 
 ```typescript
 'use client'
-import { useUrlState } from 'state-in-url';
+import { useUrlState } from 'state-in-url/next';
 
 import { userSettings } from './userSettings';
 
@@ -250,7 +250,7 @@ function Component() {
 
 ```typescript
 'use client'
-import { useUrlState } from 'state-in-url';
+import { useUrlState } from 'state-in-url/next';
 
 const someObj = {};
 
@@ -264,7 +264,7 @@ Hook to share state between any React components, tested with Next.js and Vite.
 
 ```typescript
 'use client'
-import { useSharedState } from 'state-in-url';
+import { useSharedState } from 'state-in-url/next';
 
 export const someState = { name: '' };
 

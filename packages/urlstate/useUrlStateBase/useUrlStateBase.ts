@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { parseSsrQs } from '../encoder';
+import { useInsertionEffect } from '../useInsertionEffect';
 import { useSharedState } from '../useSharedState';
 import { useUrlEncode } from '../useUrlEncode';
 import { type DeepReadonly, isSSR, type JSONCompatible } from '../utils';
@@ -38,9 +39,9 @@ export function useUrlStateBase<T extends JSONCompatible>(
       : parse(window.location.search),
   );
 
-  // TODO: href
+  // TODO: href ?
 
-  React.useInsertionEffect(() => {
+  useInsertionEffect(() => {
     // for history navigation
     const popCb = () => {
       const newVal = parse(window.location.search);
