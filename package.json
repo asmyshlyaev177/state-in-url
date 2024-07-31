@@ -5,9 +5,12 @@
   "homepage": "https://github.com/asmyshlyaev177/state-in-url#readme",
   "keywords": [
     "state-management",
+    "state management",
     "Next.js",
     "client components communication",
+    "signals alternative",
     "query string",
+    "search params",
     "typescript",
     "react.js",
     "workflow",
