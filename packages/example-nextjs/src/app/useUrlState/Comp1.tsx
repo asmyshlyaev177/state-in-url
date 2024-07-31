@@ -1,17 +1,11 @@
 'use client';
 import React from 'react';
-import { isSSR } from 'state-in-url';
-import { decodeState } from 'state-in-url';
 import { useUrlState } from 'state-in-url/next';
 
 import { stateShape } from './state';
 
 export const Comp1 = ({ searchParams }: { searchParams?: object }) => {
-  // TODO: move this part inside the hook?
-  const sp = isSSR()
-    ? searchParams
-    : decodeState(window.location.search, stateShape);
-  const { state, updateUrl } = useUrlState(stateShape, sp);
+  const { state, updateUrl } = useUrlState(stateShape, searchParams);
 
   return (
     <div className="flex gap-2">

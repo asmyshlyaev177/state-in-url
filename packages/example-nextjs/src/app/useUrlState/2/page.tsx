@@ -1,16 +1,18 @@
 import Link from 'next/link';
 import { ParsedUrlQueryInput } from 'querystring';
+import React from 'react';
 
 import { Comp1 } from '../Comp1';
 import LinkClient from '../LinkClient';
 
-// TODO: note in Readme about sp leads to dynamic rendering
 export default async function Page({ searchParams }: { searchParams: object }) {
   return (
     <div className="flex flex-col gap-4" data-testid="wrapper">
       <h1>Page 2</h1>
 
-      <Comp1 searchParams={searchParams} />
+      <React.Suspense>
+        <Comp1 searchParams={searchParams} />
+      </React.Suspense>
 
       <Link href="1" className="text-lg" data-testid="link">
         To Page 1

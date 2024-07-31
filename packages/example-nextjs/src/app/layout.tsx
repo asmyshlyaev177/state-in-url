@@ -51,5 +51,4 @@ export const metadata: Metadata = {
   },
 };
 
-// TODO: docs
 export const runtime = 'edge';
