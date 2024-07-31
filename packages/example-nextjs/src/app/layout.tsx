@@ -50,3 +50,6 @@ export const metadata: Metadata = {
     type: 'website',
   },
 };
+
+// TODO: docs
+export const runtime = 'edge';

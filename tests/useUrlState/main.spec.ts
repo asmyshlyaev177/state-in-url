@@ -71,7 +71,7 @@ test.describe('main tests', () => {
       await expect(page.getByTestId('parsed')).toHaveText(expectedText);
 
       if (url === '/test-ssr-sp') {
-        expect(errorLogs).toHaveLength(0);
+        await expect(errorLogs).toHaveLength(0);
       }
     }
   });
@@ -97,11 +97,8 @@ test.describe('main tests', () => {
       });
 
       if (url === '/test-ssr-sp') {
-        expect(errorLogs).toHaveLength(0);
+        await expect(errorLogs).toHaveLength(0);
       }
     }
   });
-
-  // TODO: ssr test that server side hook doesn't use objectMap
-  // change name, reload, no errors, reload, same, change, reload
 });

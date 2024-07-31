@@ -35,7 +35,7 @@ test('Cross browser test', async ({ page, baseURL }) => {
     timeout: 25000,
   });
   const decoded = await page.getByTestId('parsed').inputValue();
-  expect(JSON.parse(decoded)).toStrictEqual(obj);
+  await expect(JSON.parse(decoded)).toStrictEqual(obj);
 
   // expect(errorLogs).toHaveLength(0);
 });
