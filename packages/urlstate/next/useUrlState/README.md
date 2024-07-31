@@ -21,7 +21,7 @@ An object containing:
 ### Example:
 
 ```typescript
-import { useUrlState } from 'state-in-url';
+import { useUrlState } from 'state-in-url/next';
 
 const form = { name: '' };
 const { state, updateState, updateUrl } = useUrlState(form);
