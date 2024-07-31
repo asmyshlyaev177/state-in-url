@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.0.0](https://github.com/asmyshlyaev177/state-in-url/compare/v1.2.0...v2.0.0) (2024-07-31)
+
+
+### ⚠ BREAKING CHANGES
+
+* move `useUrlState` to `/next` export
+* **export:** Ship only esm bundle, no cjs
+
+### build
+
+* **export:** keep es modules for transpilation, drop cjs ([17960ec](https://github.com/asmyshlyaev177/state-in-url/commit/17960ec6bdfd79e073d54912d8135fcded4312ec))
+
+
+* move `useUrlState` to `/next` export ([077818b](https://github.com/asmyshlyaev177/state-in-url/commit/077818b8891c5ddef25afc0c98d83e3ae4a957fb))
+
 ## [1.2.0](https://github.com/asmyshlyaev177/state-in-url/compare/v1.0.2...v1.2.0) (2024-07-25)
 
 
