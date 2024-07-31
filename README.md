@@ -98,7 +98,7 @@ In `tsconfig.json` in `compilerOptions` set `"moduleResolution": "Node16"` or `"
 
 ## useUrlState hook for Next.js
 
-[Docs](packages/urlstate/useUrlState/README.md)
+[Docs](ackages/urlstate/next/useUrlState#api)
 
 `useUrlState` is a custom React hook for Next.js applications that make communication between client components easy. It allows you to share any complex state and sync it with the URL search parameters, providing a way to persist state across page reloads and share application state via URLs.
 
@@ -246,6 +246,73 @@ function Component() {
   }, [state, updateUrl]);
 ```
 
+#### With server side rendering
+
+```typescript
+export default async function Home({ searchParams }: { searchParams: object }) {
+  return (
+    <Form sp={searchParams} />
+  )
+}
+
+// Form.tsx
+'use client'
+import React from 'react';
+import { useUrlState } from 'state-in-url/next';
+import { form } from './form';
+
+const Form = ({ sp }: { sp: object }) => {
+  const { state, updateState, updateUrl } = useUrlState(form, sp);
+}
+```
+
+#### Using hook in `layout` component
+
+That a tricky part, since nextjs with app router doesn't allow to access searchParams from server side. There is workaround with using middleware, but it isn't pretty and can stop working after nextjs update.
+
+```typescript
+// add to appropriate `layout.tsc`
+export const runtime = 'edge';
+
+// middleware.ts
+import type { NextRequest } from 'next/server';
+import { NextResponse } from 'next/server';
+
+export function middleware(request: NextRequest) {
+  const url = request.url?.includes('_next') ? null : request.url;
+  const sp = url?.split?.('?')?.[1] || '';
+
+  const response = NextResponse.next();
+
+  if (url !== null) {
+    response.headers.set('searchParams', sp);
+  }
+
+  return response;
+}
+
+// Target layout component
+import { headers } from 'next/headers';
+import { decodeState } from 'state-in-url/encodeState';
+
+export default async function Layout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  const sp = headers().get('searchParams') || '';
+
+  return (
+    <div>
+      <Comp1 searchParams={decodeState(sp, stateShape)} />
+      {children}
+    </div>
+  );
+}
+
+
+```
+
 #### With arbitrary state shape (not recommended)
 
 ```typescript
@@ -264,7 +331,7 @@ Hook to share state between any React components, tested with Next.js and Vite.
 
 ```typescript
 'use client'
-import { useSharedState } from 'state-in-url/next';
+import { useSharedState } from 'state-in-url';
 
 export const someState = { name: '' };
 
@@ -293,12 +360,14 @@ function SettingsComponent() {
 - Use TypeScript for enhanced type safety and autocomplete
 - Avoid storing sensitive information in URL parameters
 - Use `updateState` for frequent updates and `updateUrl` to sync changes to url
+- Use `Suspence` to wrap client components in Next.js
 - Use this [extension](https://marketplace.visualstudio.com/items?itemName=yoavbls.pretty-ts-errors) for readable TS errors
 
 ## Gothas
 
 1. Can pass only serializable values, `Function`, `BigInt` or `Symbol` won't work, probably things like `ArrayBuffer` neither.
 2. Vercel servers limit size of headers (query string and other stuff) to **14KB**, so keep your URL state under ~5000 words. https://vercel.com/docs/errors/URL_TOO_LONG
+3. Tested with `next.js` 14 with app router, no plans to support pages.
 
 ## Run locally
 
