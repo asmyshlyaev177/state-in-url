@@ -36,7 +36,7 @@ jobs:
         npx cross-env HOME=/root PLAYWRIGHT_BROWSERS_PATH=0 npx playwright install chromium firefox webkit
     - name: Run Playwright tests
       run: |
-        npx cross-env HOME=/root PLAYWRIGHT_BROWSERS_PATH=0 npm run test:int
+        npx cross-env HOME=/root PLAYWRIGHT_BROWSERS_PATH=0 npm run test:int:ci
     - uses: actions/upload-artifact@v3
       if: always()
       with:
