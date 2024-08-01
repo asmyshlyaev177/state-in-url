@@ -2,9 +2,8 @@ import { act, fireEvent, renderHook } from '@testing-library/react';
 
 import { useUrlStateBase } from '.';
 import * as sharedState from '../useSharedState';
+import * as urlEncode from '../useUrlEncode';
 import * as utils from '../utils';
-
-// TODO: playwright tests with 2 components on 2 pages
 
 type State = {
   str: string;
@@ -104,6 +103,50 @@ describe('useUrlStateBase', () => {
       );
       const fnArg = sharedStateSpy.mock.calls.slice(-1)[0][1];
       expect(fnArg?.()).toStrictEqual(stateShape);
+    });
+
+    describe('with existing queryParams', () => {
+      describe('state contains only fields from stateShape', () => {
+        it('ssr', () => {
+          jest.spyOn(utils, 'isSSR').mockReturnValue(true);
+          const sharedStateSpy = jest.spyOn(sharedState, 'useSharedState');
+          const { result } = renderHook(() =>
+            useUrlStateBase(stateShape, router, { key: 'value123' }),
+          );
+
+          expect(result.current.state).toStrictEqual(stateShape);
+
+          expect(sharedStateSpy).toHaveBeenCalledTimes(1);
+          expect(sharedStateSpy).toHaveBeenNthCalledWith(
+            1,
+            stateShape,
+            expect.any(Function),
+          );
+        });
+
+        it('client', () => {
+          jest.spyOn(utils, 'isSSR').mockReturnValue(false);
+          const search = '?key=value123';
+          const originalLocation = window.location;
+          jest.spyOn(window, 'location', 'get').mockImplementation(() => ({
+            ...originalLocation,
+            search,
+          }));
+          const sharedStateSpy = jest.spyOn(sharedState, 'useSharedState');
+          const { result } = renderHook(() =>
+            useUrlStateBase(stateShape, router),
+          );
+
+          expect(result.current.state).toStrictEqual(stateShape);
+
+          expect(sharedStateSpy).toHaveBeenCalledTimes(1);
+          expect(sharedStateSpy).toHaveBeenNthCalledWith(
+            1,
+            stateShape,
+            expect.any(Function),
+          );
+        });
+      });
     });
   });
 
@@ -230,6 +273,39 @@ describe('useUrlStateBase', () => {
       expect(router.replace).toHaveBeenNthCalledWith(1, '/?num=%E2%88%9350', {
         scroll: true,
         someOpt: 123,
+      });
+    });
+
+    describe('with existing queryParams', () => {
+      it('should only update fields from stateShape', () => {
+        jest.spyOn(utils, 'isSSR').mockReturnValue(false);
+        const sp = 'key=value123';
+        const search = `?${sp}`;
+        const originalLocation = window.location;
+        jest.spyOn(window, 'location', 'get').mockImplementation(() => ({
+          ...originalLocation,
+          search,
+        }));
+        const stringify = jest.fn().mockReturnValue('');
+        jest.spyOn(urlEncode, 'useUrlEncode').mockImplementation(
+          jest.fn().mockReturnValue({
+            parse: () => stateShape,
+            stringify,
+          }),
+        );
+        const { result } = renderHook(() =>
+          useUrlStateBase(stateShape, router),
+        );
+
+        const newState = { ...stateShape, num: 30 };
+        act(() => {
+          result.current.updateUrl(newState);
+        });
+
+        expect(stringify).toHaveBeenCalledTimes(1);
+        const call = stringify.mock.calls[0];
+        expect(call[0]).toStrictEqual(newState);
+        expect(call[1].toString()).toStrictEqual(sp);
       });
     });
   });
