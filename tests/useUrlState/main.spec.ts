@@ -1,5 +1,7 @@
 import { expect, test } from '@playwright/test';
 
+import { toHaveUrl } from '../testUtils';
+
 // TODO: useIsMounted to deal with hydration errors?
 const urls = [
   '/test-ssr', //  expected hydration error
@@ -26,7 +28,7 @@ test.describe('main tests', () => {
     }`;
   const values = { name: 'My Name', age: '33' };
 
-  test('update state/url', async ({ page, baseURL }) => {
+  test('update state/url', async ({ page }) => {
     for (const url of urls) {
       const errorLogs: unknown[] = [];
       page.on('console', (message) => {
@@ -50,17 +52,15 @@ test.describe('main tests', () => {
       await page.getByText('React.js').click();
 
       await page.waitForFunction(() => window.location.href.includes('?name='));
-      await expect(page).toHaveURL(`${baseURL}${url}${expectedUrl}`, {
-        timeout: 1000,
-      });
+      await toHaveUrl(page, `${url}${expectedUrl}`);
+
       await expect(page.getByTestId('parsed')).toHaveText(expectedText);
 
       await page.getByRole('button', { name: 'Reload page' }).click();
       await page.waitForSelector('button[name="Reload page"]');
 
-      await expect(page).toHaveURL(`${baseURL}${url}${expectedUrl}`, {
-        timeout: 1000,
-      });
+      await toHaveUrl(page, `${url}${expectedUrl}`);
+
       await expect(page.getByTestId('parsed')).toHaveText(expectedText);
       await expect(page.getByLabel('name')).toHaveValue(values.name);
       await expect(page.getByLabel('age')).toHaveValue(values.age);
@@ -76,7 +76,7 @@ test.describe('main tests', () => {
     }
   });
 
-  test('load from URL', async ({ page, baseURL }) => {
+  test('load from URL', async ({ page }) => {
     for (const url of urls) {
       const errorLogs: unknown[] = [];
       page.on('console', (message) => {
@@ -85,16 +85,14 @@ test.describe('main tests', () => {
         }
       });
 
-      await page.goto(`${baseURL}${url}${expectedUrl}`);
+      await page.goto(`${url}${expectedUrl}`);
       await page.waitForTimeout(200);
 
       await expect(page.getByTestId('parsed')).toHaveText(expectedText);
       await expect(page.getByLabel('name')).toHaveValue(values.name);
       await expect(page.getByLabel('age')).toHaveValue(values.age);
 
-      await expect(page).toHaveURL(`${baseURL}${url}${expectedUrl}`, {
-        timeout: 1000,
-      });
+      await toHaveUrl(page, `${url}${expectedUrl}`);
 
       if (url === '/test-ssr-sp') {
         await expect(errorLogs).toHaveLength(0);

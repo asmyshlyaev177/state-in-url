@@ -11,7 +11,7 @@ import { RefreshButton } from './Refresh';
 export const Form = ({
   className,
   sp,
-  delay = 500,
+  delay = 800,
 }: {
   className?: string;
   sp?: object;
