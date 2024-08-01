@@ -33,13 +33,12 @@ export function useUrlStateBase<T extends JSONCompatible>(
   searchParams?: object,
 ) {
   const { parse, stringify } = useUrlEncode(defaultState);
+  // TODO: pass this block from useUrlState ?
   const { state, getState, setState } = useSharedState(defaultState, () =>
     isSSR()
-      ? parseSsrQs(searchParams, defaultState)
-      : parse(window.location.search),
+      ? parseSsrQs(filterSsrSP(defaultState, searchParams), defaultState)
+      : parse(filterClientSP(defaultState)),
   );
-
-  // TODO: href ?
 
   useInsertionEffect(() => {
     // for history navigation
@@ -62,15 +61,16 @@ export function useUrlStateBase<T extends JSONCompatible>(
     ) => {
       const currUrl = `${window.location.pathname}${window.location.search}${window.location.hash}`;
       const isFunc = typeof value === 'function';
+      const otherParams = getOtherParams(defaultState);
 
       let newVal: T | DeepReadonly<T>;
       let qStr: string;
       if (isFunc) {
         newVal = value(getState());
-        qStr = stringify(newVal);
+        qStr = stringify(newVal, otherParams);
       } else {
         newVal = (value ?? getState()) as T;
-        qStr = stringify(newVal);
+        qStr = stringify(newVal, otherParams);
       }
       setState(newVal);
 
@@ -92,6 +92,42 @@ export function useUrlStateBase<T extends JSONCompatible>(
     state: state as DeepReadonly<typeof state>,
     getState,
   };
+}
+
+// need to use only common fields between shape and params, ignore undeclared SP
+function filterClientSP<T extends object>(shape: T) {
+  const params = new URLSearchParams(window.location.search);
+  const shapeKeys = Object.keys(shape);
+
+  const shapeParams = new URLSearchParams();
+  [...params.entries()]
+    .filter(([key]) => shapeKeys.includes(key))
+    .forEach(([key, value]) => shapeParams.set(key, value));
+
+  return shapeParams.toString();
+}
+
+function filterSsrSP<T extends object>(shape: T, searchParams?: object) {
+  const shapeKeys = Object.keys(shape);
+
+  const result = Object.fromEntries(
+    Object.entries(searchParams || {}).filter(([key]) =>
+      shapeKeys.includes(key),
+    ),
+  );
+  return result as T;
+}
+
+function getOtherParams<T extends object>(shape: T) {
+  const shapeKeys = Object.keys(shape);
+  const search = window.location.search;
+  const allParams = new URLSearchParams(search);
+  const params = new URLSearchParams();
+
+  allParams.forEach(
+    (value, key) => !shapeKeys.includes(key) && params.set(key, value),
+  );
+  return params;
 }
 
 const popstateEv = 'popstate';

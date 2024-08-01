@@ -49,11 +49,12 @@ export function useUrlState<T extends JSONCompatible>(
   );
 
   const sp = useSearchParams();
-
   React.useEffect(() => {
-    updateState(
-      parseSsrQs(Object.fromEntries([...sp.entries()]), defaultState),
+    const shapeKeys = Object.keys(defaultState);
+    const _sp = Object.fromEntries(
+      [...sp.entries()].filter(([key]) => shapeKeys.includes(key)),
     );
+    updateState(parseSsrQs(_sp, defaultState));
   }, [sp]);
 
   return {
