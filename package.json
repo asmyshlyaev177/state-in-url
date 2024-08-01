@@ -84,7 +84,6 @@
   "scripts": {
     "test:unit": "wireit",
     "test:int": "wireit",
-    "test:int:watch": "npx chokidar-cli 'packages/**/*.ts' 'packages/**/*.tsx' -i '.next' -t 500 -c 'npx playwright test -j 2 --project=chromium'",
     "test": "wireit",
     "tsc": "wireit",
     "dev": "wireit",
@@ -107,7 +106,7 @@
         "tsc",
         "test:unit"
       ],
-      "command": "npm run test:int -- --retries=2"
+      "command": "npm run test:int -- --retries=2 --project=chromium"
     },
     "kill-next": {
       "command": "ps aux | grep .next | grep -v grep | awk '{print $2}' | xargs kill -9 2>&1; exit 0"
@@ -227,7 +226,6 @@
     "@types/node": "^20.11.24",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
-    "chokidar-cli": "^3.0.0",
     "commitizen": "^4.3.0",
     "cross-env": "^7.0.3",
     "cz": "^1.8.2",
