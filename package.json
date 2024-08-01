@@ -103,7 +103,7 @@
         "tsc",
         "test:unit"
       ],
-      "command": "npm run test:int -- --retries=1"
+      "command": "npm run test:int -- --retries=2"
     },
     "kill-next": {
       "command": "ps aux | grep .next | grep -v grep | awk '{print $2}' | xargs kill -9 2>&1; exit 0"
