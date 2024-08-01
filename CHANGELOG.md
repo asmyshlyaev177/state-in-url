@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.0.2](https://github.com/asmyshlyaev177/state-in-url/compare/v2.0.1...v2.0.2) (2024-08-01)
+
+
+### Bug Fixes
+
+* **useurlstate:** ignore/preserve sp not defined in stateShape ([502c4e3](https://github.com/asmyshlyaev177/state-in-url/commit/502c4e3d58b30d6ac65c98fe881156ab677f7f66))
+
 ### [2.0.1](https://github.com/asmyshlyaev177/state-in-url/compare/v2.0.0...v2.0.1) (2024-08-01)
 
 
