@@ -187,6 +187,31 @@ describe('useUrlStateBase', () => {
       expect(router.push).not.toHaveBeenCalled();
     });
 
+    it('should preserve hash', () => {
+      jest.spyOn(utils, 'isSSR').mockReturnValue(false);
+      const hash = '#test123';
+      const originalLocation = window.location;
+      jest.spyOn(window, 'location', 'get').mockImplementation(() => ({
+        ...originalLocation,
+        hash,
+      }));
+      const { result } = renderHook(() => useUrlStateBase(stateShape, router));
+
+      expect(result.current.state).toStrictEqual(stateShape);
+
+      const newState = { ...stateShape, num: 55 };
+      act(() => {
+        result.current.updateUrl(newState);
+      });
+
+      expect(router.push).toHaveBeenCalledTimes(1);
+      expect(router.push).toHaveBeenNthCalledWith(
+        1,
+        `/?num=%E2%88%9355${hash}`,
+        {},
+      );
+    });
+
     it('replace and options', () => {
       jest.spyOn(utils, 'isSSR').mockReturnValue(false);
       const { result } = renderHook(() => useUrlStateBase(stateShape, router));

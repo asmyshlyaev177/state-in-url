@@ -60,8 +60,7 @@ export function useUrlStateBase<T extends JSONCompatible>(
       value?: (T | DeepReadonly<T>) | ((currState: T) => T),
       options?: Options,
     ) => {
-      const currSP = window.location.search;
-      const currUrl = `${window.location.pathname}${currSP.length && !currSP.includes('?') ? '?' : ''}${currSP}`;
+      const currUrl = `${window.location.pathname}${window.location.search}${window.location.hash}`;
       const isFunc = typeof value === 'function';
 
       let newVal: T | DeepReadonly<T>;
@@ -75,7 +74,7 @@ export function useUrlStateBase<T extends JSONCompatible>(
       }
       setState(newVal);
 
-      const newUrl = `${window.location.pathname}${qStr.length ? '?' : ''}${qStr}`;
+      const newUrl = `${window.location.pathname}${qStr.length ? '?' : ''}${qStr}${window.location.hash}`;
 
       if (currUrl !== newUrl) {
         const { replace, ...rOptions } = options || {};
