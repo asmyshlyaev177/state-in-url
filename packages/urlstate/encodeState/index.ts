@@ -1,1 +1,1 @@
-export * from './encodeState';
+export { decodeState, encodeState } from './encodeState';

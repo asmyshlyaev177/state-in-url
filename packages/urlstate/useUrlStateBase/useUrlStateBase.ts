@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { parseSsrQs } from '../encoder';
+import { parseSsrQs } from '../next/parseSsrQs';
 import { useInsertionEffect } from '../useInsertionEffect';
 import { useSharedState } from '../useSharedState';
 import { useUrlEncode } from '../useUrlEncode';

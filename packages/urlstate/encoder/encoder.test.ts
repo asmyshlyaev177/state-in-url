@@ -4,8 +4,8 @@ import {
   encode,
   errorSym,
   parseJSON,
-  parseSsrQs,
-} from '.';
+} from './encoder';
+import { parseSsrQs } from '../next';
 import { type JSONCompatible } from '../utils';
 
 describe('encoder', () => {

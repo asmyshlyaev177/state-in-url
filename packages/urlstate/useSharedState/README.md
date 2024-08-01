@@ -21,7 +21,7 @@ An object containing:
 ### Example:
 
 ```typescript
-import { useSharedState } from 'state-in-url';
+import { useSharedState } from 'state-in-url/useSharedState';
 
 const form = { name: '' };
 const { state, getState, setState } = useSharedState(form);

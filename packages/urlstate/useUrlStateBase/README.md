@@ -23,7 +23,7 @@ An object containing:
 ### Example:
 
 ```typescript
-import { useUrlStateBase } from 'state-in-url';
+import { useUrlStateBase } from 'state-in-url/useUrlStateBase';
 
 function useUrlStateCustom<T>(state: T) {
   const router = React.useMemo({

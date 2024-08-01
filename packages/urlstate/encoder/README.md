@@ -15,7 +15,7 @@ An encoded string
 ### Example
 
 ```typescript
-import { encode } from 'state-in-url';
+import { encode } from 'state-in-url/encoder';
 
 // to params
 const params = new URLSearchParams();
@@ -41,7 +41,7 @@ A decoded object
 ### Example
 
 ```typescript
-import { decode } from 'state-in-url';
+import { decode } from 'state-in-url/encoder';
 
 // from params
 const obj = Object.fromEntries(
@@ -70,7 +70,7 @@ A decoded object.
 ### Example
 
 ```typescript
-import { parseSsrQs } from 'state-in-url';
+import { parseSsrQs } from 'state-in-url/encoder';
 
 export async function Home({ searchParams }: { searchParams: object }) {
   <ClientComponent sp={searchParams} />

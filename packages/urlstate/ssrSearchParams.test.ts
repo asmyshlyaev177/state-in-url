@@ -1,4 +1,4 @@
-import { parseSsrQs } from './encoder';
+import { parseSsrQs } from './next';
 
 describe('should decode server components searchParams', () => {
   it('without errors', () => {
