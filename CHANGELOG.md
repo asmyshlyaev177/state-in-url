@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.0.1](https://github.com/asmyshlyaev177/state-in-url/compare/v2.0.0...v2.0.1) (2024-08-01)
+
+
+### Bug Fixes
+
+* fix exports ([0d5f672](https://github.com/asmyshlyaev177/state-in-url/commit/0d5f672cad6e1e13d85106f9ee4c2916231cdd45))
+* preserve location.href ([cb070db](https://github.com/asmyshlyaev177/state-in-url/commit/cb070db0fc8b8bcc356115668f07ae6a5edf5ff2))
+
 ## [2.0.0](https://github.com/asmyshlyaev177/state-in-url/compare/v1.2.0...v2.0.0) (2024-07-31)
 
 
