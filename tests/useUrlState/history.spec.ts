@@ -1,8 +1,10 @@
 import { expect, test } from '@playwright/test';
 
+import { toHaveUrl } from '../testUtils';
+
 const urls = ['/test-ssr', '/test-use-client', '/test-ssr-sp'];
 
-test('go back/forward', async ({ page, baseURL }) => {
+test('go back/forward', async ({ page }) => {
   for (const url of urls) {
     // const errorLogs: unknown[] = [];
     // page.on('console', (message) => {
@@ -26,9 +28,8 @@ test('go back/forward', async ({ page, baseURL }) => {
 
     await page.waitForFunction(() => window.location.href.includes('?name='));
     const expectedUrl = `?name=%E2%97%96My%2520Name`;
-    await expect(page).toHaveURL(`${baseURL}${url}${expectedUrl}`, {
-      timeout: 1000,
-    });
+    await toHaveUrl(page, `${url}${expectedUrl}`);
+
     await expect(page.getByTestId('parsed')).toHaveText(expectedText);
 
     // click back
@@ -40,16 +41,12 @@ test('go back/forward', async ({ page, baseURL }) => {
       "agree to terms": false,
       "tags": []
     }`);
-    await expect(page).toHaveURL(`${baseURL}${url}`, {
-      timeout: 1000,
-    });
+    await toHaveUrl(page, url);
 
     // click forward
     await page.goForward();
     await page.waitForFunction(() => window.location.href.includes('?name='));
-    await expect(page).toHaveURL(`${baseURL}${url}${expectedUrl}`, {
-      timeout: 1000,
-    });
+    await toHaveUrl(page, `${url}${expectedUrl}`);
 
     // expect(errorLogs).toHaveLength(0);
   }
