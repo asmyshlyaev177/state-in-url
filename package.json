@@ -84,6 +84,7 @@
   "scripts": {
     "test:unit": "wireit",
     "test:int": "wireit",
+    "test:int:ci": "wireit",
     "test": "wireit",
     "tsc": "wireit",
     "dev": "wireit",
@@ -106,13 +107,19 @@
         "tsc",
         "test:unit"
       ],
-      "command": "npm run test:int -- --retries=2 --project=chromium"
+      "command": "npm run test:int"
     },
     "kill-next": {
       "command": "ps aux | grep .next | grep -v grep | awk '{print $2}' | xargs kill -9 2>&1; exit 0"
     },
-    "test:int": {
+    "test:int:ci": {
       "command": "playwright test",
+      "dependencies": [
+        "example:react"
+      ]
+    },
+    "test:int": {
+      "command": "playwright test -j 3 --project=chromium --retries=2",
       "dependencies": [
         "example:react"
       ]
