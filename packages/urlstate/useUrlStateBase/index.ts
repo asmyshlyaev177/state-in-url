@@ -1,1 +1,1 @@
-export * from './useUrlStateBase';
+export { useUrlStateBase } from './useUrlStateBase';

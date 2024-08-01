@@ -52,28 +52,32 @@
       "default": "./dist/index.mjs"
     },
     "./next": {
-      "types": "./dist/next/useUrlState/index.d.ts",
-      "default": "./dist/next/useUrlState/useUrlState.mjs"
+      "types": "./dist/next/index.d.ts",
+      "default": "./dist/next/index.mjs"
     },
     "./encodeState": {
-      "types": "./dist/next/encodeState/index.d.ts",
-      "default": "./dist/next/encodeState/encodeState.mjs"
+      "types": "./dist/encodeState/index.d.ts",
+      "default": "./dist/encodeState/index.mjs"
     },
     "./encoder": {
-      "types": "./dist/next/encoder/index.d.ts",
-      "default": "./dist/next/encoder/encoder.mjs"
+      "types": "./dist/encoder/index.d.ts",
+      "default": "./dist/encoder/index.mjs"
     },
     "./useSharedState": {
-      "types": "./dist/next/useSharedState/index.d.ts",
-      "default": "./dist/next/useSharedState/useSharedState.mjs"
+      "types": "./dist/useSharedState/index.d.ts",
+      "default": "./dist/useSharedState/index.mjs"
     },
     "./useUrlEncode": {
-      "types": "./dist/next/useUrlEncode/index.d.ts",
-      "default": "./dist/next/useUrlEncode/useUrlEncode.mjs"
+      "types": "./dist/useUrlEncode/index.d.ts",
+      "default": "./dist/useUrlEncode/index.mjs"
     },
     "./useUrlStateBase": {
-      "types": "./dist/next/useUrlStateBase/index.d.ts",
-      "default": "./dist/next/useUrlStateBase/useUrlStateBase.mjs"
+      "types": "./dist/useUrlStateBase/index.d.ts",
+      "default": "./dist/useUrlStateBase/index.mjs"
+    },
+    "./utils": {
+      "types": "./dist/utils.d.ts",
+      "default": "./dist/utils.mjs"
     }
   },
   "types": "./dist/index.d.ts",
@@ -218,6 +222,7 @@
     "@testing-library/jest-dom": "^6.4.2",
     "@testing-library/react": "^16.0.0",
     "@testing-library/react-hooks": "^8.0.1",
+    "@types/glob": "^8.1.0",
     "@types/jest": "^29.5.12",
     "@types/node": "^20.11.24",
     "@types/react": "^18.3.3",

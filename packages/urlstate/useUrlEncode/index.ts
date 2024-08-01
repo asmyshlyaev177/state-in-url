@@ -1,1 +1,1 @@
-export * from './useUrlEncode';
+export { useUrlEncode } from './useUrlEncode';

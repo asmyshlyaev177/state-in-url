@@ -1,1 +1,1 @@
-export * from './encoder';
+export { decode, encode } from './encoder';

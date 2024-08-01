@@ -3,8 +3,7 @@ import terser from '@rollup/plugin-terser';
 import sourcemaps from 'rollup-plugin-sourcemaps';
 import typescript from '@rollup/plugin-typescript';
 import filesize from 'rollup-plugin-filesize';
-
-const input = 'packages/urlstate/index.ts';
+import { glob } from 'glob'
 
 const isProduction = !process.env.IS_DEVELOPMENT;
 const sourcemap = !isProduction;
@@ -30,7 +29,7 @@ const plugins = [
 
 export default [
   {
-    input,
+    input: glob.sync("packages/urlstate/**/index.ts"),
     plugins,
     external,
     output: [{

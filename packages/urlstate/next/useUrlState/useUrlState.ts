@@ -2,7 +2,7 @@ import { useRouter } from 'next/navigation';
 import { useSearchParams } from 'next/navigation';
 import React from 'react';
 
-import { parseSsrQs } from '../../encoder';
+import { parseSsrQs } from '../parseSsrQs';
 import { useUrlStateBase } from '../../useUrlStateBase';
 import { type DeepReadonly, type JSONCompatible } from '../../utils';
 

@@ -21,7 +21,7 @@ An object containing two functions:
 ### Example
 
 ```typescript
-import { useUrlEncode } from 'state-in-url';
+import { useUrlEncode } from 'state-in-url/useUrlEncode';
 
 const form = { name: '' };
 const { parse, stringify } = useUrlEncode(form);
