@@ -6,11 +6,6 @@ import { useSharedState } from '../useSharedState';
 import { useUrlEncode } from '../useUrlEncode';
 import { type DeepReadonly, isSSR, type JSONCompatible } from '../utils';
 
-type Router = {
-  push: (href: string, opts: object) => void;
-  replace: (href: string, opts: object) => void;
-};
-
 /**
  * Base hook to integrate it with different routers
  *
@@ -136,3 +131,8 @@ const popstateEv = 'popstate';
 interface Options extends Object {
   replace?: boolean;
 }
+
+type Router = {
+  push: (href: string, opts: object) => void;
+  replace: (href: string, opts: object) => void;
+};
