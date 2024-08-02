@@ -85,6 +85,7 @@
     "test:unit": "wireit",
     "test:int": "wireit",
     "test:int:ci": "wireit",
+    "test:exports": "npx babel-node --extensions .js,.mjs,.ts,.mts --config-file ./babel.config.json -- ./packages/urlstate/exportsTest.ts",
     "test": "wireit",
     "tsc": "wireit",
     "dev": "wireit",
@@ -184,7 +185,7 @@
       ]
     },
     "build": {
-      "command": "rollup -c rollup.config.js",
+      "command": "rollup -c rollup.config.js && npm run test:exports",
       "dependencies": [
         "cleanup"
       ]
@@ -218,6 +219,10 @@
     ]
   },
   "devDependencies": {
+    "@babel/core": "^7.25.2",
+    "@babel/node": "^7.25.0",
+    "@babel/preset-env": "^7.25.3",
+    "@babel/preset-typescript": "^7.24.7",
     "@commitlint/cli": "^19.0.3",
     "@commitlint/config-conventional": "^19.0.3",
     "@playwright/test": "^1.45.1",
@@ -233,6 +238,7 @@
     "@types/node": "^20.11.24",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
+    "babel-plugin-module-resolver": "^5.0.2",
     "commitizen": "^4.3.0",
     "cross-env": "^7.0.3",
     "cz": "^1.8.2",
