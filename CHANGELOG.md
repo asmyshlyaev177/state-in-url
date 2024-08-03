@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.1.0](https://github.com/asmyshlyaev177/state-in-url/compare/v2.0.2...v2.1.0) (2024-08-03)
+
+
+### Features
+
+* allow to use partial value for updateState/updateUrl ([1e0ede3](https://github.com/asmyshlyaev177/state-in-url/commit/1e0ede342499c4e902252dbc09d9b2120addbd38))
+
 ### [2.0.2](https://github.com/asmyshlyaev177/state-in-url/compare/v2.0.1...v2.0.2) (2024-08-01)
 
 
