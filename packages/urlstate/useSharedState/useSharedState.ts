@@ -18,7 +18,7 @@ import {
  *
  * * Example:
  * ```ts
- * export const form = { name: '' };
+ * export const form = { name: '', age: 0 };
  * const { state, setState } = useSharedState(form);
  *
  * setState({ name: 'test' });
@@ -51,7 +51,7 @@ export function useSharedState<T extends JSONCompatible>(
   const setState = React.useCallback(
     (
       value:
-        | (T | DeepReadonly<T>)
+        | (Partial<T> | Partial<DeepReadonly<T>>)
         | ((currState: typeof stateShape.current) => typeof stateShape.current),
     ): void => {
       const curr = stateMap.get(stateShape.current);
@@ -65,8 +65,9 @@ export function useSharedState<T extends JSONCompatible>(
           sub();
         });
       } else {
-        if (isEqual(curr, value)) return void 0;
-        stateMap.set(stateShape.current, value as T);
+        const newVal = { ...curr, ...value };
+        if (isEqual(curr, newVal)) return void 0;
+        stateMap.set(stateShape.current, newVal);
         subscribers.get(stateShape.current).forEach((sub) => {
           sub();
         });

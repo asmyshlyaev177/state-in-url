@@ -50,24 +50,31 @@ export function useUrlStateBase<T extends JSONCompatible>(
   }, [setState]);
 
   const updateUrl = React.useCallback(
-    (
-      value?: (T | DeepReadonly<T>) | ((currState: T) => T),
-      options?: Options,
-    ) => {
+    (value?: Parameters<typeof setState>[0], options?: Options) => {
       const currUrl = `${window.location.pathname}${window.location.search}${window.location.hash}`;
       const isFunc = typeof value === 'function';
       const otherParams = getOtherParams(defaultState);
 
-      let newVal: T | DeepReadonly<T>;
+      // https://github.com/microsoft/TypeScript/issues/43349
+      let newVal!: T | DeepReadonly<T>;
       let qStr: string;
       if (isFunc) {
         newVal = value(getState());
         qStr = stringify(newVal, otherParams);
+        setState(newVal);
       } else {
-        newVal = (value ?? getState()) as T;
-        qStr = stringify(newVal, otherParams);
+        setState((curr) => {
+          if (value) {
+            const _newVal = { ...curr, ...value };
+            newVal = _newVal;
+            return _newVal;
+          } else {
+            newVal = curr;
+            return curr;
+          }
+        });
+        qStr = stringify(newVal as T, otherParams);
       }
-      setState(newVal);
 
       const newUrl = `${window.location.pathname}${qStr.length ? '?' : ''}${qStr}${window.location.hash}`;
 

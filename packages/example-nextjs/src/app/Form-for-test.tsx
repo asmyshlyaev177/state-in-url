@@ -34,7 +34,7 @@ export const Form = ({
     return () => {
       clearTimeout(timer.current);
     };
-  }, [state, updateUrl, delay]);
+  }, [state, updateUrl, delay, timer]);
 
   // Just to test ts types
   React.useEffect(() => {
@@ -53,42 +53,28 @@ export const Form = ({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
   const onChangeAge = React.useCallback(
     (ev: React.ChangeEvent<HTMLInputElement>) => {
       const val = +ev.target.value;
-      updateState((curr) => {
-        return {
-          ...curr,
-          age: val ? val : undefined,
-        };
-      });
+      updateState({ age: val ? val : undefined });
     },
     [updateState],
   );
 
   const onChangeName = React.useCallback(
     (ev: React.ChangeEvent<HTMLInputElement>) => {
-      updateState((curr) => {
-        return {
-          ...curr,
-          name: ev.target.value,
-        };
-      });
+      updateState({ name: ev.target.value });
     },
     [updateState],
   );
 
   const onChangeTerms = React.useCallback(
     (ev: React.ChangeEvent<HTMLInputElement>) => {
-      updateState((curr) => {
-        return {
-          ...curr,
-          'agree to terms': !!ev.target.checked,
-        };
-      });
+      clearTimeout(timer.current);
+      console.log('onChangeTerms');
+      updateUrl({ 'agree to terms': ev.target.checked });
     },
-    [updateState],
+    [updateUrl, timer],
   );
 
   const onChangeTags = React.useCallback(
