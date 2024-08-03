@@ -49,9 +49,14 @@ test.describe('main tests', () => {
         .getByLabel('age')
         .pressSequentially(values.age, { delay: 150 });
       await page.getByRole('checkbox', { name: 'agree to terms' }).click();
+      await page.waitForTimeout(200);
       await page.getByText('React.js').click();
 
-      await page.waitForFunction(() => window.location.href.includes('?name='));
+      await page.waitForFunction(
+        () => window.location.href.includes('tags='),
+        null,
+        { timeout: 5000 },
+      );
       await toHaveUrl(page, `${url}${expectedUrl}`);
 
       await expect(page.getByTestId('parsed')).toHaveText(expectedText);

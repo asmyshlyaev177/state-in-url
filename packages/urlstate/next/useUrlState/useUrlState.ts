@@ -14,7 +14,7 @@ import { type DeepReadonly, type JSONCompatible } from '../../utils';
  *
  * * Example:
  * ```ts
- * export const form = { name: '' };
+ * export const form = { name: '', age: 0 };
  * const { state, updateState, updateUrl } = useUrlState(form);
  * // for nextjs seerver components
  * // const { state, updateState, updateUrl } = useUrlState(form, searchParams);
@@ -22,6 +22,8 @@ import { type DeepReadonly, type JSONCompatible } from '../../utils';
  * updateState({ name: 'test' });
  * // by default it's uses router.push with scroll: false
  * updateUrl({ name: 'test' }, { replace: true, scroll: true });
+ * // similar to React.useState
+ * updateUrl(curr => ({ ...curr, name: 'test' }), { replace: true, scroll: true });
  *  ```
  *
  *  * Github {@link https://github.com/asmyshlyaev177/state-in-url/tree/main/packages/urlstate/next/useUrlState#api}
@@ -39,10 +41,7 @@ export function useUrlState<T extends JSONCompatible>(
   } = useUrlStateBase(defaultState, router, searchParams);
 
   const updateUrl = React.useCallback(
-    (
-      value?: (T | DeepReadonly<T>) | ((currState: T) => T),
-      options?: Options,
-    ) => {
+    (value?: Parameters<typeof updateUrlBase>[0], options?: Options) => {
       updateUrlBase(value, { scroll: false, ...options } as Options);
     },
     [updateUrlBase],

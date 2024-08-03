@@ -26,7 +26,11 @@ test('go back/forward', async ({ page }) => {
       "tags": []
     }`;
 
-    await page.waitForFunction(() => window.location.href.includes('?name='));
+    await page.waitForFunction(
+      () => window.location.href.includes('?name='),
+      null,
+      { timeout: 5000 },
+    );
     const expectedUrl = `?name=%E2%97%96My%2520Name`;
     await toHaveUrl(page, `${url}${expectedUrl}`);
 
@@ -34,7 +38,11 @@ test('go back/forward', async ({ page }) => {
 
     // click back
     await page.goBack();
-    await page.waitForFunction(() => !window.location.href.includes('?name='));
+    await page.waitForFunction(
+      () => !window.location.href.includes('?name='),
+      null,
+      { timeout: 5000 },
+    );
 
     await expect(page.getByTestId('parsed')).toHaveText(`{
       "name": "",
@@ -45,7 +53,11 @@ test('go back/forward', async ({ page }) => {
 
     // click forward
     await page.goForward();
-    await page.waitForFunction(() => window.location.href.includes('?name='));
+    await page.waitForFunction(
+      () => window.location.href.includes('?name='),
+      null,
+      { timeout: 5000 },
+    );
     await toHaveUrl(page, `${url}${expectedUrl}`);
 
     // expect(errorLogs).toHaveLength(0);

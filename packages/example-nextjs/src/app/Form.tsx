@@ -48,38 +48,23 @@ export const Form = ({
   const onChangeAge = React.useCallback(
     (ev: React.ChangeEvent<HTMLInputElement>) => {
       const val = +ev.target.value;
-      updateState((curr) => {
-        return {
-          ...curr,
-          age: val ? val : undefined,
-        };
-      });
+      updateState({ age: val ? val : undefined });
     },
     [updateState],
   );
 
   const onChangeName = React.useCallback(
     (ev: React.ChangeEvent<HTMLInputElement>) => {
-      updateState((curr) => {
-        return {
-          ...curr,
-          name: ev.target.value,
-        };
-      });
+      updateState({ name: ev.target.value });
     },
     [updateState],
   );
 
   const onChangeTerms = React.useCallback(
     (ev: React.ChangeEvent<HTMLInputElement>) => {
-      updateState((curr) => {
-        return {
-          ...curr,
-          'agree to terms': ev.target.checked,
-        };
-      });
+      updateUrl({ 'agree to terms': ev.target.checked });
     },
-    [updateState],
+    [updateUrl],
   );
 
   const onChangeTags = React.useCallback(

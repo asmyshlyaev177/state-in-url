@@ -16,14 +16,14 @@ A custom React hook that manages shared state across components.
 An object containing:
 - `state: T` - The current state (readonly).
 - `getState: () => T` - Function to get the current state.
-- `setState: T | (T) => void` - Function to update the state.
+- `setState: T | Partial<T> | (T) => void` - Function to update the state.
 
 ### Example:
 
 ```typescript
 import { useSharedState } from 'state-in-url/useSharedState';
 
-const form = { name: '' };
+const form = { name: '', age: 0 };
 const { state, getState, setState } = useSharedState(form);
 
 // Update state

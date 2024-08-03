@@ -192,17 +192,54 @@ describe('useUrlStateBase', () => {
   });
 
   describe('updateUrl', () => {
-    it('update url', () => {
-      jest.spyOn(utils, 'isSSR').mockReturnValue(false);
-      const { result } = renderHook(() => useUrlStateBase(stateShape, router));
+    describe('object', () => {
+      it('full shape', () => {
+        jest.spyOn(utils, 'isSSR').mockReturnValue(false);
+        const { result } = renderHook(() =>
+          useUrlStateBase(stateShape, router),
+        );
 
-      act(() => {
-        result.current.updateUrl({ ...stateShape, num: 50 });
+        act(() => {
+          result.current.updateUrl({ ...stateShape, num: 50 });
+        });
+
+        expect(result.current.state).toStrictEqual({ ...stateShape, num: 50 });
+        expect(router.push).toHaveBeenCalledTimes(1);
+        expect(router.push).toHaveBeenNthCalledWith(1, '/?num=%E2%88%9350', {});
       });
 
-      expect(result.current.state).toStrictEqual({ ...stateShape, num: 50 });
-      expect(router.push).toHaveBeenCalledTimes(1);
-      expect(router.push).toHaveBeenNthCalledWith(1, '/?num=%E2%88%9350', {});
+      it('partial shape', () => {
+        jest.spyOn(utils, 'isSSR').mockReturnValue(false);
+        const { result } = renderHook(() =>
+          useUrlStateBase(stateShape, router),
+        );
+
+        act(() => {
+          result.current.updateUrl({ num: 50 });
+        });
+
+        expect(result.current.state).toStrictEqual({ ...stateShape, num: 50 });
+        expect(router.push).toHaveBeenCalledTimes(1);
+        expect(router.push).toHaveBeenNthCalledWith(1, '/?num=%E2%88%9350', {});
+      });
+
+      it('no arg, should reset', () => {
+        jest.spyOn(utils, 'isSSR').mockReturnValue(false);
+        const { result } = renderHook(() =>
+          useUrlStateBase(stateShape, router),
+        );
+
+        act(() => {
+          result.current.updateState({ num: 50 });
+        });
+        act(() => {
+          result.current.updateUrl();
+        });
+
+        expect(result.current.state).toStrictEqual({ ...stateShape, num: 50 });
+        expect(router.push).toHaveBeenCalledTimes(1);
+        expect(router.push).toHaveBeenNthCalledWith(1, '/?num=%E2%88%9350', {});
+      });
     });
 
     it('update url with function', () => {

@@ -142,18 +142,34 @@ describe('useSharedState', () => {
   });
 
   describe('setState', () => {
-    it('simple value', () => {
-      const name = 'Name';
-      const expected = { ...form, name };
-      const state = { ...form };
-      const { result } = renderHook(() => useSharedState(state));
-      act(() => {
-        result.current.setState(expected);
+    describe('simple value', () => {
+      it('full shape', () => {
+        const name = 'Name';
+        const expected = { ...form, name };
+        const state = { ...form };
+        const { result } = renderHook(() => useSharedState(state));
+        act(() => {
+          result.current.setState(expected);
+        });
+
+        expect(result.current.state).toStrictEqual(expected);
+        expect(result.current.getState()).toStrictEqual(expected);
+        expect(result.current.state === result.current.getState()).toBeTruthy();
       });
 
-      expect(result.current.state).toStrictEqual(expected);
-      expect(result.current.getState()).toStrictEqual(expected);
-      expect(result.current.state === result.current.getState()).toBeTruthy();
+      it('partial shape', () => {
+        const name = 'Name';
+        const expected = { ...form, name };
+        const state = { ...form };
+        const { result } = renderHook(() => useSharedState(state));
+        act(() => {
+          result.current.setState({ name });
+        });
+
+        expect(result.current.state).toStrictEqual(expected);
+        expect(result.current.getState()).toStrictEqual(expected);
+        expect(result.current.state === result.current.getState()).toBeTruthy();
+      });
     });
 
     it('function', () => {

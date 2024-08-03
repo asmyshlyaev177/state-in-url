@@ -105,12 +105,7 @@ export const ComponentA = () => {
   return <input
     id="name"
     value={state.name}
-    onChange={(ev) =>
-      updateUrl((curr) => ({
-        ...curr,
-        name: ev.target.value,
-      }))
-    }
+    onChange={(ev) => updateUrl({ name: ev.target.value }) }
     />
 };`}
       />
