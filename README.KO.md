@@ -98,7 +98,7 @@ pnpm add state-in-url
 
 ## Next.js용 useUrlState 훅
 
-[문서](ackages/urlstate/next/useUrlState#api)
+[문서](packages/urlstate/next/useUrlState#api)
 
 `useUrlState`는 Next.js 애플리케이션을 위한 사용자 정의 React 훅으로, 클라이언트 컴포넌트 간의 통신을 쉽게 만듭니다. 복잡한 상태를 공유하고 URL 검색 매개변수와 동기화할 수 있게 해주어, 페이지 새로고침 시 상태를 유지하고 URL을 통해 애플리케이션 상태를 공유할 수 있습니다.
 
