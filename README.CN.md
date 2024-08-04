@@ -91,7 +91,7 @@ pnpm add state-in-url
 
 ## Next.js的useUrlState钩子
 
-[文档](ackages/urlstate/next/useUrlState#api)
+[文档](packages/urlstate/next/useUrlState#api)
 
 `useUrlState`是一个为Next.js应用程序设计的自定义React钩子，使客户端组件之间的通信变得简单。它允许你共享任何复杂的状态并将其与URL搜索参数同步，提供了一种在页面重新加载之间持久化状态并通过URL共享应用程序状态的方法。
 

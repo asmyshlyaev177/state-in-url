@@ -100,7 +100,7 @@ In `tsconfig.json` in `compilerOptions` set `"moduleResolution": "Node16"` or `"
 
 ## useUrlState hook for Next.js
 
-[Docs](ackages/urlstate/next/useUrlState#api)
+[Docs](packages/urlstate/next/useUrlState#api)
 
 `useUrlState` is a custom React hook for Next.js applications that make communication between client components easy. It allows you to share any complex state and sync it with the URL search parameters, providing a way to persist state across page reloads and share application state via URLs.
 
