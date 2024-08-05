@@ -30,11 +30,14 @@ describe('useUrlStateBase', () => {
     push: jest.fn(),
     replace: jest.fn(),
   };
+  let shape: typeof stateShape;
+
   beforeEach(() => {
     jest.restoreAllMocks();
     jest.resetModules();
     router.push.mockReset();
     router.replace.mockReset();
+    shape = { ...stateShape };
   });
 
   describe('pass state to useSharedState', () => {
@@ -42,31 +45,31 @@ describe('useUrlStateBase', () => {
       jest.spyOn(utils, 'isSSR').mockReturnValue(true);
       const sharedStateSpy = jest.spyOn(sharedState, 'useSharedState');
       const sp = { num: '∓55' };
-      renderHook(() => useUrlStateBase(stateShape, router, sp));
+      renderHook(() => useUrlStateBase(shape, router, sp));
 
       expect(sharedStateSpy).toHaveBeenCalledTimes(1);
       expect(sharedStateSpy).toHaveBeenNthCalledWith(
         1,
-        stateShape,
+        shape,
         expect.any(Function),
       );
       const fnArg = sharedStateSpy.mock.calls.slice(-1)[0][1];
-      expect(fnArg?.()).toStrictEqual({ ...stateShape, num: 55 });
+      expect(fnArg?.()).toStrictEqual({ ...shape, num: 55 });
     });
 
     it('ssr without searchParams', () => {
       jest.spyOn(utils, 'isSSR').mockReturnValue(true);
       const sharedStateSpy = jest.spyOn(sharedState, 'useSharedState');
-      renderHook(() => useUrlStateBase(stateShape, router));
+      renderHook(() => useUrlStateBase(shape, router));
 
       expect(sharedStateSpy).toHaveBeenCalledTimes(1);
       expect(sharedStateSpy).toHaveBeenNthCalledWith(
         1,
-        stateShape,
+        shape,
         expect.any(Function),
       );
       const fnArg = sharedStateSpy.mock.calls.slice(-1)[0][1];
-      expect(fnArg?.()).toStrictEqual(stateShape);
+      expect(fnArg?.()).toStrictEqual(shape);
     });
 
     it('client with location.search', () => {
@@ -78,31 +81,31 @@ describe('useUrlStateBase', () => {
         search,
       }));
       const sharedStateSpy = jest.spyOn(sharedState, 'useSharedState');
-      renderHook(() => useUrlStateBase(stateShape, router));
+      renderHook(() => useUrlStateBase(shape, router));
 
       expect(sharedStateSpy).toHaveBeenCalledTimes(1);
       expect(sharedStateSpy).toHaveBeenNthCalledWith(
         1,
-        stateShape,
+        shape,
         expect.any(Function),
       );
       const fnArg = sharedStateSpy.mock.calls.slice(-1)[0][1];
-      expect(fnArg?.()).toStrictEqual({ ...stateShape, num: 55 });
+      expect(fnArg?.()).toStrictEqual({ ...shape, num: 55 });
     });
 
     it('client empty state', () => {
       jest.spyOn(utils, 'isSSR').mockReturnValue(false);
       const sharedStateSpy = jest.spyOn(sharedState, 'useSharedState');
-      renderHook(() => useUrlStateBase(stateShape, router));
+      renderHook(() => useUrlStateBase(shape, router));
 
       expect(sharedStateSpy).toHaveBeenCalledTimes(1);
       expect(sharedStateSpy).toHaveBeenNthCalledWith(
         1,
-        stateShape,
+        shape,
         expect.any(Function),
       );
       const fnArg = sharedStateSpy.mock.calls.slice(-1)[0][1];
-      expect(fnArg?.()).toStrictEqual(stateShape);
+      expect(fnArg?.()).toStrictEqual(shape);
     });
 
     describe('with existing queryParams', () => {
@@ -111,15 +114,15 @@ describe('useUrlStateBase', () => {
           jest.spyOn(utils, 'isSSR').mockReturnValue(true);
           const sharedStateSpy = jest.spyOn(sharedState, 'useSharedState');
           const { result } = renderHook(() =>
-            useUrlStateBase(stateShape, router, { key: 'value123' }),
+            useUrlStateBase(shape, router, { key: 'value123' }),
           );
 
-          expect(result.current.state).toStrictEqual(stateShape);
+          expect(result.current.state).toStrictEqual(shape);
 
           expect(sharedStateSpy).toHaveBeenCalledTimes(1);
           expect(sharedStateSpy).toHaveBeenNthCalledWith(
             1,
-            stateShape,
+            shape,
             expect.any(Function),
           );
         });
@@ -133,16 +136,14 @@ describe('useUrlStateBase', () => {
             search,
           }));
           const sharedStateSpy = jest.spyOn(sharedState, 'useSharedState');
-          const { result } = renderHook(() =>
-            useUrlStateBase(stateShape, router),
-          );
+          const { result } = renderHook(() => useUrlStateBase(shape, router));
 
-          expect(result.current.state).toStrictEqual(stateShape);
+          expect(result.current.state).toStrictEqual(shape);
 
           expect(sharedStateSpy).toHaveBeenCalledTimes(1);
           expect(sharedStateSpy).toHaveBeenNthCalledWith(
             1,
-            stateShape,
+            shape,
             expect.any(Function),
           );
         });
@@ -154,26 +155,24 @@ describe('useUrlStateBase', () => {
     it('ssr with sp', () => {
       jest.spyOn(utils, 'isSSR').mockReturnValue(true);
       const sp = { num: '∓55' };
-      const { result } = renderHook(() =>
-        useUrlStateBase(stateShape, router, sp),
-      );
+      const { result } = renderHook(() => useUrlStateBase(shape, router, sp));
 
-      const expected = { ...stateShape, num: 55 };
+      const expected = { ...shape, num: 55 };
       expect(result.current.state).toStrictEqual(expected);
     });
 
     it('ssr', () => {
       jest.spyOn(utils, 'isSSR').mockReturnValue(true);
-      const { result } = renderHook(() => useUrlStateBase(stateShape, router));
+      const { result } = renderHook(() => useUrlStateBase(shape, router));
 
-      expect(result.current.state).toStrictEqual(stateShape);
+      expect(result.current.state).toStrictEqual(shape);
     });
 
     it('client', () => {
       jest.spyOn(utils, 'isSSR').mockReturnValue(false);
-      const { result } = renderHook(() => useUrlStateBase(stateShape, router));
+      const { result } = renderHook(() => useUrlStateBase(shape, router));
 
-      expect(result.current.state).toStrictEqual(stateShape);
+      expect(result.current.state).toStrictEqual(shape);
     });
 
     it('client with query params', () => {
@@ -184,9 +183,9 @@ describe('useUrlStateBase', () => {
         search,
       }));
       jest.spyOn(utils, 'isSSR').mockReturnValue(false);
-      const { result } = renderHook(() => useUrlStateBase(stateShape, router));
+      const { result } = renderHook(() => useUrlStateBase(shape, router));
 
-      const expected = { ...stateShape, num: 55 };
+      const expected = { ...shape, num: 55 };
       expect(result.current.state).toStrictEqual(expected);
     });
   });
@@ -195,39 +194,33 @@ describe('useUrlStateBase', () => {
     describe('object', () => {
       it('full shape', () => {
         jest.spyOn(utils, 'isSSR').mockReturnValue(false);
-        const { result } = renderHook(() =>
-          useUrlStateBase(stateShape, router),
-        );
+        const { result } = renderHook(() => useUrlStateBase(shape, router));
 
         act(() => {
-          result.current.updateUrl({ ...stateShape, num: 50 });
+          result.current.updateUrl({ ...shape, num: 50 });
         });
 
-        expect(result.current.state).toStrictEqual({ ...stateShape, num: 50 });
+        expect(result.current.state).toStrictEqual({ ...shape, num: 50 });
         expect(router.push).toHaveBeenCalledTimes(1);
         expect(router.push).toHaveBeenNthCalledWith(1, '/?num=%E2%88%9350', {});
       });
 
       it('partial shape', () => {
         jest.spyOn(utils, 'isSSR').mockReturnValue(false);
-        const { result } = renderHook(() =>
-          useUrlStateBase(stateShape, router),
-        );
+        const { result } = renderHook(() => useUrlStateBase(shape, router));
 
         act(() => {
           result.current.updateUrl({ num: 50 });
         });
 
-        expect(result.current.state).toStrictEqual({ ...stateShape, num: 50 });
+        expect(result.current.state).toStrictEqual({ ...shape, num: 50 });
         expect(router.push).toHaveBeenCalledTimes(1);
         expect(router.push).toHaveBeenNthCalledWith(1, '/?num=%E2%88%9350', {});
       });
 
       it('no arg, should reset', () => {
         jest.spyOn(utils, 'isSSR').mockReturnValue(false);
-        const { result } = renderHook(() =>
-          useUrlStateBase(stateShape, router),
-        );
+        const { result } = renderHook(() => useUrlStateBase(shape, router));
 
         act(() => {
           result.current.updateState({ num: 50 });
@@ -236,7 +229,7 @@ describe('useUrlStateBase', () => {
           result.current.updateUrl();
         });
 
-        expect(result.current.state).toStrictEqual({ ...stateShape, num: 50 });
+        expect(result.current.state).toStrictEqual({ ...shape, num: 50 });
         expect(router.push).toHaveBeenCalledTimes(1);
         expect(router.push).toHaveBeenNthCalledWith(1, '/?num=%E2%88%9350', {});
       });
@@ -244,22 +237,21 @@ describe('useUrlStateBase', () => {
 
     it('update url with function', () => {
       jest.spyOn(utils, 'isSSR').mockReturnValue(false);
-      const { result } = renderHook(() => useUrlStateBase(stateShape, router));
+      const { result } = renderHook(() => useUrlStateBase(shape, router));
 
       act(() => {
         result.current.updateUrl((curr) => ({ ...curr, num: 50 }));
       });
 
-      expect(result.current.state).toStrictEqual({ ...stateShape, num: 50 });
+      expect(result.current.state).toStrictEqual({ ...shape, num: 50 });
       expect(router.push).toHaveBeenCalledTimes(1);
       expect(router.push).toHaveBeenNthCalledWith(1, '/?num=%E2%88%9350', {});
     });
 
     it('do not update if url same', () => {
       jest.spyOn(utils, 'isSSR').mockReturnValue(false);
-      const { result } = renderHook(() => useUrlStateBase(stateShape, router));
-
-      const newState = { ...stateShape };
+      const { result } = renderHook(() => useUrlStateBase(shape, router));
+      const newState = { ...shape };
       act(() => {
         result.current.updateUrl(newState);
       });
@@ -275,11 +267,11 @@ describe('useUrlStateBase', () => {
         ...originalLocation,
         hash,
       }));
-      const { result } = renderHook(() => useUrlStateBase(stateShape, router));
+      const { result } = renderHook(() => useUrlStateBase(shape, router));
 
-      expect(result.current.state).toStrictEqual(stateShape);
+      expect(result.current.state).toStrictEqual(shape);
 
-      const newState = { ...stateShape, num: 55 };
+      const newState = { ...shape, num: 55 };
       act(() => {
         result.current.updateUrl(newState);
       });
@@ -294,9 +286,9 @@ describe('useUrlStateBase', () => {
 
     it('replace and options', () => {
       jest.spyOn(utils, 'isSSR').mockReturnValue(false);
-      const { result } = renderHook(() => useUrlStateBase(stateShape, router));
+      const { result } = renderHook(() => useUrlStateBase(shape, router));
 
-      const newState = { ...stateShape, num: 50 };
+      const newState = { ...shape, num: 50 };
       act(() => {
         result.current.updateUrl(
           newState,
@@ -326,15 +318,13 @@ describe('useUrlStateBase', () => {
         const stringify = jest.fn().mockReturnValue('');
         jest.spyOn(urlEncode, 'useUrlEncode').mockImplementation(
           jest.fn().mockReturnValue({
-            parse: () => stateShape,
+            parse: () => ({ ...shape }),
             stringify,
           }),
         );
-        const { result } = renderHook(() =>
-          useUrlStateBase(stateShape, router),
-        );
+        const { result } = renderHook(() => useUrlStateBase(shape, router));
 
-        const newState = { ...stateShape, num: 30 };
+        const newState = { ...shape, num: 30 };
         act(() => {
           result.current.updateUrl(newState);
         });
@@ -352,13 +342,13 @@ describe('useUrlStateBase', () => {
       jest.spyOn(utils, 'isSSR').mockReturnValue(false);
       const setState = jest.fn();
       jest.spyOn(sharedState, 'useSharedState').mockReturnValue({
-        state: stateShape,
-        getState: () => stateShape,
+        state: shape,
+        getState: () => shape,
         setState,
       });
-      const { result } = renderHook(() => useUrlStateBase(stateShape, router));
+      const { result } = renderHook(() => useUrlStateBase(shape, router));
 
-      const newState = { ...stateShape, num: 30 };
+      const newState = { ...shape, num: 30 };
       act(() => {
         result.current.updateState(newState);
       });
@@ -382,14 +372,14 @@ describe('useUrlStateBase', () => {
           ...originalLocation,
           search,
         }));
-      const { result } = renderHook(() => useUrlStateBase(stateShape, router));
+      const { result } = renderHook(() => useUrlStateBase(shape, router));
 
-      expect(result.current.state).toStrictEqual(stateShape);
+      expect(result.current.state).toStrictEqual(shape);
 
       act(() => {
         fireEvent.popState(window);
       });
-      expect(result.current.state).toStrictEqual({ ...stateShape, num: 55 });
+      expect(result.current.state).toStrictEqual({ ...shape, num: 55 });
     });
   });
 });

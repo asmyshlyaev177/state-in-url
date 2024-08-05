@@ -11,9 +11,11 @@ jest.mock('../utils.ts', () => ({
 import { isSSR, JSONCompatible } from '../utils';
 
 describe('useSharedState', () => {
+  let state: typeof form;
   beforeEach(() => {
     jest.resetModules();
     jest.restoreAllMocks();
+    state = { ...form };
   });
 
   describe('initial value', () => {
@@ -26,7 +28,6 @@ describe('useSharedState', () => {
           const stateSpy = jest.spyOn(subscribers.stateMap, 'get');
           const stateSpySet = jest.spyOn(subscribers.stateMap, 'set');
           jest.mocked(isSSR).mockReturnValue(true);
-          const state = { ...form };
           const hook1 = renderHook(() => useSharedState(state, getInitial));
 
           expect(hook1.result.current.state).toStrictEqual(initial);
@@ -43,7 +44,6 @@ describe('useSharedState', () => {
             .mockReturnValue(stateMock);
 
           jest.mocked(isSSR).mockReturnValue(false);
-          const state = { ...form };
           const hook1 = renderHook(() => useSharedState(state, getInitial));
 
           expect(hook1.result.current.state).toStrictEqual(initial);
@@ -62,7 +62,6 @@ describe('useSharedState', () => {
             .mockReturnValue(stateMock);
 
           jest.mocked(isSSR).mockReturnValue(false);
-          const state = { ...form };
           const hook1 = renderHook(() => useSharedState(state));
 
           expect(stateSpyGet).toHaveBeenCalledTimes(2);
@@ -83,7 +82,6 @@ describe('useSharedState', () => {
             .mockReturnValue(stateMock);
 
           jest.mocked(isSSR).mockReturnValue(false);
-          const state = { ...form };
           const hook1 = renderHook(() => useSharedState(state));
 
           expect(stateSpyGet).toHaveBeenCalledTimes(2);
@@ -100,7 +98,6 @@ describe('useSharedState', () => {
 
   it('should return state', () => {
     // need a new instance of state every test
-    const state = { ...form };
     const { result } = renderHook(() => useSharedState(state));
 
     expect(result.current.state).toStrictEqual(state);
@@ -116,7 +113,6 @@ describe('useSharedState', () => {
     const stateSpy = jest
       .spyOn(subscribers.stateMap, 'set')
       .mockReturnValue(stateMock);
-    const state = { ...form };
     const { unmount } = renderHook(() => useSharedState(state));
 
     expect(subSpy).toHaveBeenCalledTimes(1);
@@ -132,7 +128,6 @@ describe('useSharedState', () => {
 
   describe('getState', () => {
     it('should return same instance', () => {
-      const state = { ...form };
       const { result } = renderHook(() => useSharedState(state));
 
       const state1 = result.current.getState();
@@ -146,7 +141,6 @@ describe('useSharedState', () => {
       it('full shape', () => {
         const name = 'Name';
         const expected = { ...form, name };
-        const state = { ...form };
         const { result } = renderHook(() => useSharedState(state));
         act(() => {
           result.current.setState(expected);
@@ -160,7 +154,6 @@ describe('useSharedState', () => {
       it('partial shape', () => {
         const name = 'Name';
         const expected = { ...form, name };
-        const state = { ...form };
         const { result } = renderHook(() => useSharedState(state));
         act(() => {
           result.current.setState({ name });
@@ -175,7 +168,6 @@ describe('useSharedState', () => {
     it('function', () => {
       const name = 'Name';
       const expected = { ...form, name };
-      const state = { ...form };
       const { result } = renderHook(() => useSharedState(state));
 
       act(() => {
