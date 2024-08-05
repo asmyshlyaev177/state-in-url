@@ -10,6 +10,8 @@ assignees: ''
 **Describe the bug**
 A clear and concise description of what the bug is.
 
+**You can omit some fields, just give enough information to understand and reproduce the bug.**
+
 **To Reproduce**
 Steps to reproduce the behavior:
 1. Go to '...'
