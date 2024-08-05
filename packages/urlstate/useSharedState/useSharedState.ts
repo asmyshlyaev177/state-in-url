@@ -38,14 +38,14 @@ export function useSharedState<T extends JSONCompatible>(
       return _getInitial ? _getInitial?.() : stateShape.current;
     }
 
-    const val =
-      _getInitial?.() || stateMap.get(stateShape.current) || stateShape.current;
-
     const currVal = stateMap.get(stateShape.current);
-    if (!isEqual(currVal, val)) {
+    if (!currVal) {
+      const val = _getInitial?.() || stateShape.current;
       stateMap.set(stateShape.current, val);
+      return val;
+    } else {
+      return currVal;
     }
-    return val;
   });
 
   const setState = React.useCallback(
