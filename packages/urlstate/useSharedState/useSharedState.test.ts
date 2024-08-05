@@ -64,9 +64,8 @@ describe('useSharedState', () => {
           jest.mocked(isSSR).mockReturnValue(false);
           const hook1 = renderHook(() => useSharedState(state));
 
-          expect(stateSpyGet).toHaveBeenCalledTimes(2);
+          expect(stateSpyGet).toHaveBeenCalledTimes(1);
           expect(stateSpyGet).toHaveBeenNthCalledWith(1, state);
-          expect(stateSpyGet).toHaveBeenNthCalledWith(2, state);
 
           expect(stateSpySet).toHaveBeenCalledTimes(0);
           expect(hook1.result.current.state).toStrictEqual(init);
@@ -84,9 +83,8 @@ describe('useSharedState', () => {
           jest.mocked(isSSR).mockReturnValue(false);
           const hook1 = renderHook(() => useSharedState(state));
 
-          expect(stateSpyGet).toHaveBeenCalledTimes(2);
+          expect(stateSpyGet).toHaveBeenCalledTimes(1);
           expect(stateSpyGet).toHaveBeenNthCalledWith(1, state);
-          expect(stateSpyGet).toHaveBeenNthCalledWith(2, state);
 
           expect(stateSpySet).toHaveBeenCalledTimes(1);
           expect(stateSpySet).toHaveBeenNthCalledWith(1, state, state);
