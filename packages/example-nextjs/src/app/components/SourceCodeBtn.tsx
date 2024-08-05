@@ -6,11 +6,11 @@ export const SourceCodeBtn = ({
   className?: string;
 }) => {
   return (
-    <div className="flex">
+    <div className={`flex w-auto h-auto relative ${className}`}>
       <a
         href={href}
         rel="noopener nofollow"
-        className={`inline-flex p-2 flex-nowrap justify-between items-center mr-3 px-3 text-xs font-medium text-gray-900 bg-white border border-gray-200 rounded-lg focus:outline-none hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-gray-300 dark:focus:ring-gray-500 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700 ${className}`}
+        className={`inline-flex p-2 flex-nowrap justify-between items-center mr-3 px-3 text-xs font-medium text-gray-900 bg-white border border-gray-200 rounded-lg focus:outline-none hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-gray-300 dark:focus:ring-gray-500 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700`}
         target="_blank"
       >
         <svg

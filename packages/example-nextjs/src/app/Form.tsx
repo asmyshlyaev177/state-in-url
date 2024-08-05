@@ -81,7 +81,7 @@ export const Form = ({
 
   return (
     <div className={className}>
-      <div className="flex-1 border border-grey rounded-md p-4 shadow-md">
+      <div className="flex flex-1 flex-col border border-grey rounded-md p-4 shadow-md">
         <div className="font-semibold text-black mb-4">
           First client component
         </div>
@@ -151,7 +151,7 @@ export const Form = ({
 
         <SourceCodeBtn
           href="https://github.com/asmyshlyaev177/state-in-url/blob/main/packages/example-nextjs/src/app/Form.tsx"
-          className="self-end ml-auto mr-0 mt-4"
+          className="self-end ml-auto mt-4"
         />
       </div>
     </div>

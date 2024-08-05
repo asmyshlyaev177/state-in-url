@@ -21,7 +21,7 @@ export const Status = ({
       </div>
       <h3 className="text-black">Types and structure of data are presered</h3>
 
-      <div className="flex-none  ">
+      <div className="flex-none">
         <pre
           className="h-[330px] text-sm overflow-y-scroll
          text-gray-600 bg-white p-4 rounded-md shadow-inner
@@ -33,7 +33,7 @@ export const Status = ({
       </div>
       <SourceCodeBtn
         href="https://github.com/asmyshlyaev177/state-in-url/blob/main/packages/example-nextjs/src/app/Status.tsx"
-        className="self-end ml-auto mr-1.5 mt-4 md:absolute bottom-2 right-2"
+        className="self-end ml-auto mt-4 md:mt-auto"
       />
     </div>
   );

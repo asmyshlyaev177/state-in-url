@@ -1,5 +1,6 @@
 import { File } from './components/File';
 import { GithubLink } from './components/GithubLink';
+import { UrlBox } from './components/UrlBox';
 import { Form } from './Form';
 import { Logo } from './Logo';
 import { Status } from './Status';
@@ -34,22 +35,26 @@ export default async function Home({ searchParams }: { searchParams: object }) {
           </div>
 
           <div className="bg-white rounded-lg shadow-xl p-8 max-w-4xl w-full">
-            <header className="mb-8 flex justify-between items-center flex-wrap gap-2">
+            <header className="mb-2 flex justify-between items-center flex-wrap gap-2">
               <h2 className="text-3xl font-bold text-gray-800">
                 Demo with Next.js
               </h2>
               <GithubLink className="ml-auto" />
             </header>
 
-            <div className="flex flex-col md:flex-row gap-8">
+            <div className="mb-3">
+              <UrlBox />
+            </div>
+
+            <div className="flex flex-col md:flex-row gap-8 relative">
               <Form
                 className="flex max-h-[550px] flex-col md:flex-row gap-8 basis-1/2"
                 sp={searchParams}
               />
               <Status
-                className="flex-1 max-h-[550px] bg-gray-100
+                className="flex-1 w-full max-h-[550px] bg-gray-100
              rounded-lg p-4 flex flex-col shadow-md border border-grey
-              basis-1/2 grow-0"
+              basis-1/2 grow-1"
                 sp={searchParams}
               />
             </div>
