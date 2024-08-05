@@ -55,26 +55,13 @@ export function useUrlStateBase<T extends JSONCompatible>(
       const isFunc = typeof value === 'function';
       const otherParams = getOtherParams(defaultState);
 
-      // https://github.com/microsoft/TypeScript/issues/43349
-      let newVal!: T | DeepReadonly<T>;
-      let qStr: string;
-      if (isFunc) {
-        newVal = value(getState());
-        qStr = stringify(newVal, otherParams);
-        setState(newVal);
-      } else {
-        setState((curr) => {
-          if (value) {
-            const _newVal = { ...curr, ...value };
-            newVal = _newVal;
-            return _newVal;
-          } else {
-            newVal = curr;
-            return curr;
-          }
-        });
-        qStr = stringify(newVal as T, otherParams);
-      }
+      const newVal = isFunc
+        ? value(getState())
+        : value
+          ? { ...getState(), ...value }
+          : getState();
+      const qStr = stringify(newVal, otherParams);
+      setState(newVal);
 
       const newUrl = `${window.location.pathname}${qStr.length ? '?' : ''}${qStr}${window.location.hash}`;
 
