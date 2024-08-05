@@ -62,6 +62,7 @@ export const Form = ({
 
   const onChangeTerms = React.useCallback(
     (ev: React.ChangeEvent<HTMLInputElement>) => {
+      clearTimeout(timer.current);
       updateUrl({ 'agree to terms': ev.target.checked });
     },
     [updateUrl],
