@@ -49,7 +49,7 @@ test.describe('main tests', () => {
         .getByLabel('age')
         .pressSequentially(values.age, { delay: 150 });
       await page.getByRole('checkbox', { name: 'agree to terms' }).click();
-      await page.waitForTimeout(200);
+      await page.waitForTimeout(400);
       await page.getByText('React.js').click();
 
       await page.waitForFunction(

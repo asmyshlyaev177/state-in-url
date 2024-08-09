@@ -12,13 +12,16 @@ import { RefreshButton } from './Refresh';
 
 export const Form = ({
   className,
-  sp,
+  searchParams,
 }: {
   className?: string;
-  sp?: object;
+  searchParams?: object;
 }) => {
-  // const { state, updateState, updateUrl, getState } = useUrlState(form, sp);
-  const { state, updateState, updateUrl } = useUrlState(form, sp);
+  // const { state, updateState, updateUrl } = useUrlState(form, searchParams);
+  const { state, updateState, updateUrl } = useUrlState({
+    defaultState: form,
+    searchParams,
+  });
   const [autoSync, setAutoSync] = React.useState(true);
 
   // set URI when state change

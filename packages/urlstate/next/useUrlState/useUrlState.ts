@@ -7,6 +7,8 @@ import { useUrlStateBase } from '../../useUrlStateBase';
 import { type DeepReadonly, type JSONCompatible } from '../../utils';
 
 /**
+ * @deprecated Pass arguments in a object `useUrlState({ defaultState: form, searchParams })`
+ *
  * NextJS hook. Returns `state`, `updateState`, and `updateUrl` functions
  *
  * @param {JSONCompatible<T>} [defaultState] Fallback (default) values for state
@@ -31,29 +33,90 @@ import { type DeepReadonly, type JSONCompatible } from '../../utils';
 export function useUrlState<T extends JSONCompatible>(
   defaultState: T,
   searchParams?: object,
+): {
+  state: DeepReadonly<T>;
+  updateState: (
+    value: Partial<T> | Partial<DeepReadonly<T>> | ((currState: T) => T),
+  ) => void;
+  updateUrl: (
+    value?: Partial<T> | Partial<DeepReadonly<T>> | ((currState: T) => T),
+  ) => void;
+  getState: () => DeepReadonly<T>;
+};
+/**
+ * NextJS hook. Returns `state`, `updateState`, and `updateUrl` functions
+ *
+ * @param {JSONCompatible<T>} [defaultState] Fallback (default) values for state
+ * @param {?SearchParams<T>} [searchParams] searchParams from Next server component
+ *
+ * * Example:
+ * ```ts
+ * export const form = { name: '', age: 0 };
+ * const { state, updateState, updateUrl } = useUrlState({ defaultState: form });
+ * // for nextjs seerver components
+ * // const { state, updateState, updateUrl } = useUrlState({ defaultState: form, searchParams });
+ *
+ * updateState({ name: 'test' });
+ * // by default it's uses router.push with scroll: false
+ * updateUrl({ name: 'test' }, { replace: true, scroll: true });
+ * // similar to React.useState
+ * updateUrl(curr => ({ ...curr, name: 'test' }), { replace: true, scroll: true });
+ *  ```
+ *
+ *  * Github {@link https://github.com/asmyshlyaev177/state-in-url/tree/main/packages/urlstate/next/useUrlState#api}
+ */
+export function useUrlState<T extends JSONCompatible>({
+  defaultState,
+  searchParams,
+}: {
+  defaultState: T;
+  searchParams?: object;
+  replace?: boolean;
+}): {
+  state: DeepReadonly<T>;
+  updateState: (
+    value: Partial<T> | Partial<DeepReadonly<T>> | ((currState: T) => T),
+  ) => void;
+  updateUrl: (
+    value?: Partial<T> | Partial<DeepReadonly<T>> | ((currState: T) => T),
+  ) => void;
+  getState: () => DeepReadonly<T>;
+};
+
+export function useUrlState<T extends JSONCompatible>(
+  defaultState:
+    | T
+    | { defaultState: T; searchParams?: object; replace?: boolean },
+  searchParams?: object,
 ) {
+  const { _defaultState, _searchParams, _replace } = getArgs(
+    defaultState,
+    searchParams,
+  );
+
   const router = useRouter();
   const {
     state,
     updateState,
     updateUrl: updateUrlBase,
     getState,
-  } = useUrlStateBase(defaultState, router, searchParams);
+  } = useUrlStateBase(_defaultState, router, _searchParams);
 
   const updateUrl = React.useCallback(
     (value?: Parameters<typeof updateUrlBase>[0], options?: Options) => {
-      updateUrlBase(value, { scroll: false, ...options } as Options);
+      const opts = { scroll: false, replace: _replace, ...options };
+      updateUrlBase(value, opts);
     },
-    [updateUrlBase],
+    [updateUrlBase, _replace],
   );
 
   const sp = useSearchParams();
   React.useEffect(() => {
-    const shapeKeys = Object.keys(defaultState);
+    const shapeKeys = Object.keys(_defaultState);
     const _sp = Object.fromEntries(
       [...sp.entries()].filter(([key]) => shapeKeys.includes(key)),
     );
-    updateState(parseSsrQs(_sp, defaultState));
+    updateState(parseSsrQs(_sp, _defaultState));
   }, [sp]);
 
   return {
@@ -91,4 +154,23 @@ type RouterOptions = NonNullable<
 
 interface Options extends RouterOptions {
   replace?: boolean;
+}
+
+function getArgs<T extends JSONCompatible>(
+  obj: T | { defaultState: T; searchParams?: object; replace?: boolean },
+  searchParams?: object,
+) {
+  const _defaultState = ('defaultState' in obj ? obj.defaultState : obj) as T;
+  const _searchParams = (
+    'defaultState' in obj ? obj.searchParams : searchParams
+  ) as object | undefined;
+  const _replace = (
+    'defaultState' in obj ? obj.replace ?? true : false
+  ) as boolean;
+
+  return {
+    _defaultState,
+    _searchParams,
+    _replace,
+  };
 }

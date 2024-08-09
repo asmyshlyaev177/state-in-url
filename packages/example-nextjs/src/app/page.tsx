@@ -49,7 +49,7 @@ export default async function Home({ searchParams }: { searchParams: object }) {
             <div className="flex flex-col md:flex-row gap-8 relative">
               <Form
                 className="flex max-h-[550px] flex-col md:flex-row gap-8 basis-1/2"
-                sp={searchParams}
+                searchParams={searchParams}
               />
               <Status
                 className="flex-1 w-full max-h-[550px] bg-gray-100
@@ -105,7 +105,7 @@ type Form = {
 import { useUrlState } from 'state-in-url/next';
 
 export const ComponentA = () => {
-  const { state, updateUrl } = useUrlState(form);
+  const { state, updateUrl } = useUrlState({ defaultState: form });
 
   return <input
     id="name"
@@ -121,10 +121,10 @@ import { useUrlState } from 'state-in-url/next';
 
 // for SSR
 // const Home = async ({ searchParams }: { searchParams: object }) => {
-// <ComponentB sp={searchParams} />
+// <ComponentB searchParams={searchParams} />
 
-export const ComponentB = ({ sp }: { sp?: object }) => {
-  const { state } = useUrlState(form, sp);
+export const ComponentB = ({ searchParams }: { searchParams?: object }) => {
+  const { state } = useUrlState({ defaultState: form, searchParams });
 
   return <div>name: {state.name}</div>
 };`}

@@ -13,7 +13,8 @@ test('go back/forward', async ({ page }) => {
     //   }
     // });
 
-    await page.goto(url);
+    const _url = `${url}?replace=false`;
+    await page.goto(_url);
     await page.waitForSelector('button[name="Reload page"]');
 
     const name = 'My Name';
@@ -26,7 +27,7 @@ test('go back/forward', async ({ page }) => {
       "tags": []
     }`;
 
-    const expectedUrl = `?name=%E2%97%96My%2520Name`;
+    const expectedUrl = `?replace=false&name=%E2%97%96My%2520Name`;
     await toHaveUrl(page, `${url}${expectedUrl}`);
 
     await expect(page.getByTestId('parsed')).toHaveText(expectedText);
@@ -39,7 +40,7 @@ test('go back/forward', async ({ page }) => {
       "agree to terms": false,
       "tags": []
     }`);
-    await toHaveUrl(page, url);
+    await toHaveUrl(page, _url);
 
     // click forward
     await page.goForward();
