@@ -1,4 +1,5 @@
 'use client';
+import { useSearchParams } from 'next/navigation';
 import React from 'react';
 import { useUrlState } from 'state-in-url/next';
 
@@ -10,14 +11,23 @@ import { RefreshButton } from './Refresh';
 
 export const Form = ({
   className,
-  sp,
+  searchParams,
   delay = 800,
 }: {
   className?: string;
-  sp?: object;
+  searchParams?: object;
   delay?: number;
 }) => {
-  const { state, updateState, updateUrl } = useUrlState(form, sp);
+  const sp = useSearchParams();
+  const { state, updateState, updateUrl } = useUrlState({
+    defaultState: form,
+    searchParams,
+    replace: !sp.get('replace')
+      ? undefined
+      : sp.get('replace') === 'true'
+        ? true
+        : false,
+  });
 
   // set URI when state change
   const timer = React.useRef(0 as unknown as NodeJS.Timeout);
@@ -159,6 +169,18 @@ export const Form = ({
           >
             Sync state object
           </Button>
+          {/* <Field
+            id="replace"
+            text="replace"
+            className="flex gap-2"
+          >
+            <Input
+              id="replace"
+              type="checkbox"
+              checked={replace}
+              onChange={ev => setReplace(ev.target.checked)}
+            />
+          </Field> */}
 
           <RefreshButton />
         </div>

@@ -41,7 +41,7 @@ export default defineConfig({
 
     {
       name: 'firefox',
-      use: { ...devices['Desktop Firefox'] },
+      use: { ...devices['Desktop Firefox'], launchOptions: { firefoxUserPrefs: { "fission.webContentIsolationStrategy": 1, "accessibility.force_disabled" : 1} } },
     },
 
     {

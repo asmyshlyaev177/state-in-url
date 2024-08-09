@@ -121,8 +121,10 @@ import { countState } from './countState';
 function MyComponent() {
   // for use searchParams from server component
   // e.g. export default async function Home({ searchParams }: { searchParams: object }) {
-  // const { state, updateState, updateUrl } = useUrlState(countState, searchParams);
-  const { state, updateState, updateUrl } = useUrlState(countState);
+  // const { state, updateState, updateUrl } = useUrlState({ defaultState: countState, searchParams });
+  // can pass `replace` arg, it's control will `updateUrl` will use `rounter.push` or `router.replace`, default replace=true
+  // const { state, updateState, updateUrl } = useUrlState({ defaultState: countState, searchParams, replace: false });
+  const { state, updateState, updateUrl } = useUrlState({ defaultState: countState });
 
   // won't let you to accidently mutate state directly, requires TS
   // state.count = 2 // <- error
@@ -176,7 +178,7 @@ import { userSettings } from './userSettings';
 
 function SettingsComponent() {
   // `state` will infer from UserSettings type!
-  const { state, updateUrl } = useUrlState(userSettings);
+  const { state, updateUrl } = useUrlState({ defaultState: userSettings });
 
   const toggleTheme = () => {
     updateUrl(current => ({
@@ -213,7 +215,7 @@ function SettingsComponent() {
 
 // Other component
 function Component() {
-  const { state } = useUrlState(defaultSettings);
+  const { state } = useUrlState({ defaultState: defaultSettings });
 
   return (
     <div>
@@ -251,7 +253,7 @@ Syncing state `onBlur` will be more aligned with real world usage.
 ```typescript
 export default async function Home({ searchParams }: { searchParams: object }) {
   return (
-    <Form sp={searchParams} />
+    <Form searchParams={searchParams} />
   )
 }
 
@@ -261,8 +263,8 @@ import React from 'react';
 import { useUrlState } from 'state-in-url/next';
 import { form } from './form';
 
-const Form = ({ sp }: { sp: object }) => {
-  const { state, updateState, updateUrl } = useUrlState(form, sp);
+const Form = ({ searchParams }: { searchParams: object }) => {
+  const { state, updateState, updateUrl } = useUrlState({ defaultState: form, searchParams });
 }
 ```
 

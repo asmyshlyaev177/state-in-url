@@ -15,9 +15,9 @@ export default async function Home() {
         </header>
 
         <div className="flex flex-col md:flex-row gap-8">
-          <Form className="flex max-h-[450px] flex-col md:flex-row gap-8 basis-1/2" />
+          <Form className="flex max-h-[650px] flex-col md:flex-row gap-8 basis-1/2" />
           <Status
-            className="flex-1 max-h-[450px] bg-gray-100
+            className="flex-1 max-h-[650px] bg-gray-100
              rounded-lg p-4 flex flex-col shadow-md border border-grey
               basis-1/2 grow-0"
           />

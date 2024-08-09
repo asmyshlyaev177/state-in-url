@@ -10,6 +10,7 @@ A custom React hook that manages state and synchronizes it with URL search param
 
 - `defaultState: object` - An object representing the default state values.
 - `sp?: object` - Optional search params object from Next.js server component.
+- `replace?: boolean` - Control will `updateUrl` use `replace` or `push` methods on router, default replace=true, can override by `updateUrl(stateObj, { replace: false })`
 
 ### Returns:
 
@@ -33,7 +34,7 @@ updateState({ name: 'test' });
 updateState(currVal => ({ ...currVal, name: 'test' }) );
 
 // Update state and URL
-updateUrl({ name: 'test' }, { replace: true, scroll: true });
+updateUrl({ name: 'test' }, { replace: false, scroll: true });
 ```
 
 ## `updateState`
@@ -51,5 +52,5 @@ Updates both the state and the URL.
 ### Parameters:
 
 - `value?: T | Partial<T> | (currState: T) => T` - Optional new state value or a function that receives the current state and returns the new state.
-- `options?: Options` - Optional options object. When `replace` is true it will use router.replace. Other nextjs native options for `router`'s push/replace.
+- `options?: Options` - Optional options object. When `replace` is true it will use router.replace. Nextjs `scroll` is `false` by default.
 
