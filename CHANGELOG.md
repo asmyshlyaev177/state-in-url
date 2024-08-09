@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.2.0](https://github.com/asmyshlyaev177/state-in-url/compare/v2.1.1...v2.2.0) (2024-08-09)
+
+
+### Features
+
+* **useurlstate:** replace=true by default, object args ([b531063](https://github.com/asmyshlyaev177/state-in-url/commit/b53106380efb38f318259ad103d15fb0433dc367))
+
+
+### Bug Fixes
+
+* ignore undeclared params for history navigation ([0992974](https://github.com/asmyshlyaev177/state-in-url/commit/0992974c0ce50efb9c8e416b45e5b3e096baa076))
+
 ### [2.1.1](https://github.com/asmyshlyaev177/state-in-url/compare/v2.1.0...v2.1.1) (2024-08-05)
 
 ## [2.1.0](https://github.com/asmyshlyaev177/state-in-url/compare/v2.0.2...v2.1.0) (2024-08-03)
