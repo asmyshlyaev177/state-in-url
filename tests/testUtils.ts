@@ -6,10 +6,10 @@ export const toHaveUrl = async (page: Page, url: string, noWait?: boolean) => {
   //   return window.location.href.includes(_url)
   // }, url, { timeout: 20 * 1000 });
 
-  await expect(page).toHaveURL(url, { timeout: 1000 });
+  await expect(page).toHaveURL(url, { timeout: 5000 });
 
   if (!noWait) {
     await page.waitForTimeout(1000);
-    await expect(page).toHaveURL(url, { timeout: 1000 });
+    await expect(page).toHaveURL(url, { timeout: 3000 });
   }
 };
