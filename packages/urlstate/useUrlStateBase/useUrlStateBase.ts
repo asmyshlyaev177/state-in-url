@@ -38,7 +38,7 @@ export function useUrlStateBase<T extends JSONCompatible>(
   useInsertionEffect(() => {
     // for history navigation
     const popCb = () => {
-      const newVal = parse(window.location.search);
+      const newVal = parse(filterClientSP(defaultState));
       setState(newVal);
     };
 
@@ -67,6 +67,10 @@ export function useUrlStateBase<T extends JSONCompatible>(
 
       if (currUrl !== newUrl) {
         const { replace, ...rOptions } = options || {};
+        console.log('updateUrl', {
+          replace,
+          r: router[replace ? 'replace' : 'push'],
+        });
         router[replace ? 'replace' : 'push'](newUrl, {
           ...rOptions,
         });
