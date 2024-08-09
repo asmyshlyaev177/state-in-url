@@ -120,7 +120,7 @@
       ]
     },
     "test:int": {
-      "command": "playwright test -j 3 --project=chromium --retries=2",
+      "command": "playwright test --project=chromium --retries=2",
       "dependencies": [
         "example:react"
       ]
