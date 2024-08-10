@@ -105,12 +105,13 @@ type Form = {
 import { useUrlState } from 'state-in-url/next';
 
 export const ComponentA = () => {
-  const { state, updateUrl } = useUrlState({ defaultState: form });
+  const { state, updateUrl, updateState } = useUrlState({ defaultState: form });
 
   return <input
     id="name"
     value={state.name}
-    onChange={(ev) => updateUrl({ name: ev.target.value }) }
+    onChange={(ev) => updateState({ name: ev.target.value })}
+    onBlur={() => updateUrl()}
     />
 };`}
       />
