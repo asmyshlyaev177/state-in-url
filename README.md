@@ -50,10 +50,10 @@ Add a ⭐️ to support the project!
 
 # Features
 
-- 🧩 **Simple**: No providers, reducers, boilerplate or new concepts
-- 📘 **Typescript support and type Safety**: Preserves data types and structure, enhances developer experience with IDE suggestions, strong typing and JSDoc comments
+- 🧩 **Simple**: No providers, reducers, boilerplate or new concepts, API similar to React.useState
+- 📘 **Typescript support and type Safety**: Preserves data types and structure, good developer experience with IDE suggestions, strong typing and JSDoc comments
 - ⚛️ **Framework Flexibility**: Separate hooks for Next.js and React.js applications, and functions for pure JS
-- ⚙ **Well tested**: Unit tests and Playwright tests
+- ⚙ **Well tested**: Unit tests and Playwright tests, high quality and support
 - ⚡ **Fast**: Minimal rerenders
 - 🪶 **Lightweight**: Zero dependencies for a smaller footprint
 
@@ -103,11 +103,11 @@ In `tsconfig.json` in `compilerOptions` set `"moduleResolution": "Node16"` or `"
 1. Define state shape
 
    ```typescript
-   // countState.ts
+   // userState.ts
    // State shape should be stored in a constant, don't pass an object directly
-   export const countState: CountState = { count: 0 }
+   export const userState: UserState = { name: '', age: 0 }
 
-   type CountState = { count: number }
+   type UserState = { name: string, age: number }
    ```
 
 2. Import it and use
@@ -116,39 +116,37 @@ In `tsconfig.json` in `compilerOptions` set `"moduleResolution": "Node16"` or `"
 'use client'
 import { useUrlState } from 'state-in-url/next';
 
-import { countState } from './countState';
+import { userState } from './userState';
 
 function MyComponent() {
-  // for use searchParams from server component
-  // e.g. export default async function Home({ searchParams }: { searchParams: object }) {
-  // const { state, updateState, updateUrl } = useUrlState({ defaultState: countState, searchParams });
   // can pass `replace` arg, it's control will `updateUrl` will use `rounter.push` or `router.replace`, default replace=true
-  // const { state, updateState, updateUrl } = useUrlState({ defaultState: countState, searchParams, replace: false });
-  const { state, updateState, updateUrl } = useUrlState({ defaultState: countState });
+  // const { state, updateState, updateUrl } = useUrlState({ defaultState: userState, searchParams, replace: false });
+  const { state, updateState, updateUrl } = useUrlState({ defaultState: userState });
 
   // won't let you to accidently mutate state directly, requires TS
-  // state.count = 2 // <- error
+  // state.name = 'John' // <- error
 
   return (
     <div>
-      <p>Count: {state.count}</p>
+      <input value={state.name}
+        onChange={(ev) => { updateState({ name: ev.target.value }) }}
+        onBlur={() => updateUrl()}
+      />
+      <input value={state.age}
+        onChange={(ev) => { updateState({ age: +ev.target.value }) }}
+        onBlur={() => updateUrl()}
+      />
 
-      <button onClick={() => updateUrl({ count: state.count + 1 }), { replace: true }}>
-        Increment (Update URL)
-      </button>
-
-        // same api as React.useState
-      <button onClick={() => updateState(currState => ({...currState, count: currState.count + 1 }) )}>
-        Increment (Local Only)
-      </button>
-      <button onClick={() => updateUrl()}>
-        Sync changes to url
-        // Or don't sync it and just share state
-      </button>
+      // same api as React.useState
+      <input value={state.name}
+        onChange={(ev) => { updateState(curr => ({ ...curr, name: ev.target.value })) }}
+        onBlur={() => updateUrl()}
+      />
 
       <button onClick={() => updateUrl(state)}>
         Reset
       </button>
+
     </div>
   )
 }
@@ -186,20 +184,6 @@ function SettingsComponent() {
       theme: current.theme === 'light' ? 'dark' : 'light',
     }));
   };
-
-  // sync state to url when idle
-  const timer = React.useRef(0 as unknown as NodeJS.Timeout);
-  React.useEffect(() => {
-    clearTimeout(timer.current);
-    timer.current = setTimeout(() => {
-      // will compare state by content not by reference and fire update only for new values
-      updateUrl(state);
-    }, 500);
-
-    return () => {
-      clearTimeout(timer.current);
-    };
-  }, [state, updateUrl]);
 
   return (
     <div>

@@ -17,36 +17,10 @@ export const Form = ({
   className?: string;
   searchParams?: object;
 }) => {
-  // const { state, updateState, updateUrl } = useUrlState(form, searchParams);
   const { state, updateState, updateUrl } = useUrlState({
     defaultState: form,
     searchParams,
   });
-  const [autoSync, setAutoSync] = React.useState(true);
-
-  // set URI when state change
-  const timer = React.useRef(0 as unknown as NodeJS.Timeout);
-  React.useEffect(() => {
-    if (!autoSync) {
-      return () => {};
-    }
-
-    clearTimeout(timer.current);
-    timer.current = setTimeout(() => {
-      updateUrl(state);
-    }, 1000);
-
-    return () => {
-      clearTimeout(timer.current);
-    };
-  }, [state, updateUrl, autoSync]);
-
-  // OR
-  // const handleSync = React.useCallback(() => {
-  //   clearTimeout(timer.current)
-  //   if (!autoSync) return false
-  //   timer.current = setTimeout(() => updateUrl(getState()), 1000)
-  // }, [updateUrl, getState, timer, autoSync])
 
   const onChangeAge = React.useCallback(
     (ev: React.ChangeEvent<HTMLInputElement>) => {
@@ -65,7 +39,6 @@ export const Form = ({
 
   const onChangeTerms = React.useCallback(
     (ev: React.ChangeEvent<HTMLInputElement>) => {
-      clearTimeout(timer.current);
       updateUrl({ 'agree to terms': ev.target.checked });
     },
     [updateUrl],
@@ -73,15 +46,17 @@ export const Form = ({
 
   const onChangeTags = React.useCallback(
     (tag: (typeof tags)[number]) => {
-      updateState((curr) => ({
+      updateUrl((curr) => ({
         ...curr,
         tags: curr.tags.find((t) => t.id === tag.id)
           ? curr.tags.filter((t) => t.id !== tag.id)
           : curr.tags.concat(tag),
       }));
     },
-    [updateState],
+    [updateUrl],
   );
+
+  const doSync = React.useCallback(() => updateUrl(), [updateUrl]);
 
   return (
     <div className={className}>
@@ -90,14 +65,14 @@ export const Form = ({
           First client component
         </div>
 
-        <div
-          className="space-y-6 flex-col"
-          //   onBlur={handleSync}
-          //   onChange={handleSync}
-          //  onClick={handleSync}
-        >
+        <div className="space-y-6 flex-col">
           <Field id="name" text="Name">
-            <Input id="name" value={state.name} onChange={onChangeName} />
+            <Input
+              id="name"
+              value={state.name}
+              onChange={onChangeName}
+              onBlur={doSync}
+            />
           </Field>
 
           <Field id="age" text="Age">
@@ -106,6 +81,7 @@ export const Form = ({
               type="number"
               value={state.age}
               onChange={onChangeAge}
+              onBlur={doSync}
             />
           </Field>
 
@@ -120,20 +96,6 @@ export const Form = ({
               className="max-w-[24px]"
               checked={state['agree to terms']}
               onChange={onChangeTerms}
-            />
-          </Field>
-
-          <Field
-            id="auto sync"
-            text="Auto sync"
-            className="flex gap-2 max-w-[150px] min-w-[150px] flex-row justify-between"
-          >
-            <Input
-              id="auto sync"
-              type="checkbox"
-              className="max-w-[24px]"
-              checked={autoSync}
-              onChange={(ev) => setAutoSync(ev.target.checked)}
             />
           </Field>
 
