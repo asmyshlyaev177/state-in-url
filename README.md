@@ -143,7 +143,7 @@ function MyComponent() {
         onBlur={() => updateUrl()}
       />
 
-      <button onClick={() => updateUrl(state)}>
+      <button onClick={() => updateUrl(userState)}>
         Reset
       </button>
 
