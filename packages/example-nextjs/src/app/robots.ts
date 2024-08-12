@@ -1,5 +1,7 @@
 import { MetadataRoute } from 'next';
 
+import { siteUrl } from './domain';
+
 export default function robots(): MetadataRoute.Robots {
   return {
     rules: {
@@ -17,6 +19,6 @@ export default function robots(): MetadataRoute.Robots {
         '/useUrlState/2/',
       ],
     },
-    sitemap: 'https://state-in-url-asmyshlyaev177.vercel.app/sitemap.xml',
+    sitemap: `${siteUrl}/sitemap.xml`,
   };
 }
