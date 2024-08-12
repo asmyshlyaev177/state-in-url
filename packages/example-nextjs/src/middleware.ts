@@ -14,3 +14,8 @@ export function middleware(request: NextRequest) {
 
   return response;
 }
+
+// issue with using shiki, because can't load wasm
+export const config = {
+  matcher: ['/useUrlState/:path*'],
+};
