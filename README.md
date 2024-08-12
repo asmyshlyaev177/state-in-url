@@ -20,7 +20,7 @@ English | [한국어](./README.KO.md) | [简体中文](./README.CN.md)
 
 <div align="center">
 
-<h4 align="center">Don't hesitate to open an issue if you found a bug</h4>
+<h4 align="center">Don't hesitate to open an issue if you found a bug, or for requesting features</h4>
 
 ![Demo-gif](https://github.com/asmyshlyaev177/state-in-url/assets/19854148/c9802601-4d42-4362-b3e4-37ff87c3b97f)
 
