@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.2.1](https://github.com/asmyshlyaev177/state-in-url/compare/v2.2.0...v2.2.1) (2024-08-12)
+
+
+### Bug Fixes
+
+* fix whitespaces in variable names bug ([5f9232d](https://github.com/asmyshlyaev177/state-in-url/commit/5f9232d21e51a4db49f073a4b384a106559681ac))
+
 ## [2.2.0](https://github.com/asmyshlyaev177/state-in-url/compare/v2.1.1...v2.2.0) (2024-08-09)
 
 
