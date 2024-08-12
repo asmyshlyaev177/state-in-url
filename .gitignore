@@ -6,3 +6,4 @@ dist
 /playwright/.cache/
 .wireit
 /packages/example-nextjs/public/react.html
+.vercel
