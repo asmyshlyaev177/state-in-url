@@ -12,6 +12,7 @@ type State = {
   bool1: boolean;
   bool2: boolean;
   obj: { test: number };
+  'with space': boolean;
   arr: number[];
 };
 
@@ -22,6 +23,7 @@ const stateShape: State = {
   bool1: false,
   bool2: false,
   obj: { test: 0 },
+  'with space': false,
   arr: [],
 };
 
@@ -44,7 +46,7 @@ describe('useUrlStateBase', () => {
     it('ssr with searchParams', () => {
       jest.spyOn(utils, 'isSSR').mockReturnValue(true);
       const sharedStateSpy = jest.spyOn(sharedState, 'useSharedState');
-      const sp = { num: '∓55' };
+      const sp = { num: '∓55', 'with space': true };
       renderHook(() => useUrlStateBase(shape, router, sp));
 
       expect(sharedStateSpy).toHaveBeenCalledTimes(1);
@@ -54,7 +56,11 @@ describe('useUrlStateBase', () => {
         expect.any(Function),
       );
       const fnArg = sharedStateSpy.mock.calls.slice(-1)[0][1];
-      expect(fnArg?.()).toStrictEqual({ ...shape, num: 55 });
+      expect(fnArg?.()).toStrictEqual({
+        ...shape,
+        num: 55,
+        'with space': true,
+      });
     });
 
     it('ssr without searchParams', () => {
@@ -74,7 +80,7 @@ describe('useUrlStateBase', () => {
 
     it('client with location.search', () => {
       jest.spyOn(utils, 'isSSR').mockReturnValue(false);
-      const search = '?num=∓55';
+      const search = '?num=∓55&with+space=true';
       const originalLocation = window.location;
       jest.spyOn(window, 'location', 'get').mockImplementation(() => ({
         ...originalLocation,
@@ -90,7 +96,11 @@ describe('useUrlStateBase', () => {
         expect.any(Function),
       );
       const fnArg = sharedStateSpy.mock.calls.slice(-1)[0][1];
-      expect(fnArg?.()).toStrictEqual({ ...shape, num: 55 });
+      expect(fnArg?.()).toStrictEqual({
+        ...shape,
+        num: 55,
+        'with space': true,
+      });
     });
 
     it('client empty state', () => {
