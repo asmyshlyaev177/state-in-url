@@ -100,9 +100,11 @@ function filterSsrSP<T extends object>(shape: T, searchParams?: object) {
   const shapeKeys = Object.keys(shape);
 
   const result = Object.fromEntries(
-    Object.entries(searchParams || {}).filter(([key]) =>
-      shapeKeys.includes(key),
-    ),
+    Object.entries(searchParams || {})
+      .map(([key, val]) => [key.replaceAll('+', ' '), val])
+      .filter(([key]) => {
+        return shapeKeys.includes(key);
+      }),
   );
   return result as T;
 }
