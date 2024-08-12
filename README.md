@@ -155,59 +155,79 @@ function MyComponent() {
 #### With complex state shape
 
 ```typescript
-interface UserSettings {
-  theme: 'light' | 'dark';
-  fontSize: number;
-  notifications: boolean;
-}
+export const form: Form = {
+  name: '',
+  age: undefined,
+  'agree to terms': false,
+  tags: [],
+};
 
-export const userSettings: UserSettings {
-  theme: 'light',
-  fontSize: 16,
-  notifications: true,
-}
+type Form = {
+  name: string;
+  age?: number;
+  'agree to terms': boolean;
+  tags: { id: string; value: { text: string; time: Date } }[];
+};
+
 ```
 
 ```typescript
 'use client'
 import { useUrlState } from 'state-in-url/next';
 
-import { userSettings } from './userSettings';
+import { form } from './form';
 
-function SettingsComponent() {
-  // `state` will infer from UserSettings type!
-  const { state, updateUrl } = useUrlState({ defaultState: userSettings });
+function TagsComponent() {
+  // `state` will infer from Form type!
+  const { state, updateUrl } = useUrlState({ defaultState: form });
 
-  const toggleTheme = () => {
-    updateUrl(current => ({
-      ...current,
-      theme: current.theme === 'light' ? 'dark' : 'light',
-    }));
-  };
+  const onChangeTags = React.useCallback(
+    (tag: (typeof tags)[number]) => {
+      updateUrl((curr) => ({
+        ...curr,
+        tags: curr.tags.find((t) => t.id === tag.id)
+          ? curr.tags.filter((t) => t.id !== tag.id)
+          : curr.tags.concat(tag),
+      }));
+    },
+    [updateUrl],
+  );
 
   return (
     <div>
-      <h2>User Settings</h2>
-      <p>Theme: {state.theme}</p>
-      <p>Font Size: {state.fontSize}px</p>
-      <button onClick={toggleTheme}>Toggle Theme</button>
-      {/* Other UI elements to update other settings */}
+      <Field text="Tags">
+        <div className="flex flex-wrap gap-2">
+          {tags.map((tag) => (
+            <Tag
+              active={!!state.tags.find((t) => t.id === tag.id)}
+              text={tag.value.text}
+              onClick={() => onChangeTags(tag)}
+              key={tag.id}
+            />
+          ))}
+        </div>
+      </Field>
     </div>
   );
 }
-...
 
-// Other component
-function Component() {
-  const { state } = useUrlState({ defaultState: defaultSettings });
-
-  return (
-    <div>
-      <p>Notifications is {state.notifications ? 'On' : 'Off'}</p>
-    </div>
-  )
-}
+const tags = [
+  {
+    id: '1',
+    value: { text: 'React.js', time: new Date('2024-07-17T04:53:17.000Z') },
+  },
+  {
+    id: '2',
+    value: { text: 'Next.js', time: new Date('2024-07-18T04:53:17.000Z') },
+  },
+  {
+    id: '3',
+    value: { text: 'TailwindCSS', time: new Date('2024-07-19T04:53:17.000Z') },
+  },
+];
 ```
+
+[Demo page example code](https://github.com/asmyshlyaev177/state-in-url/blob/main/packages/example-nextjs/src/app/Form.tsx)
 
 #### Auto sync state
 
