@@ -1,11 +1,13 @@
 import { MetadataRoute } from 'next';
 
+import { siteUrl } from './domain';
+
 export default function sitemap(): MetadataRoute.Sitemap {
   return [
     {
-      url: 'https://state-in-url-asmyshlyaev177.vercel.app/',
+      url: siteUrl,
       lastModified: new Date(),
-      changeFrequency: 'yearly',
+      changeFrequency: 'daily',
       priority: 1,
     },
   ];
