@@ -2,7 +2,19 @@ import {
   transformerNotationHighlight,
   transformerNotationWordHighlight,
 } from '@shikijs/transformers';
-import { codeToHtml } from 'shiki';
+import { createHighlighterCore } from 'shiki/core';
+import tsLang from 'shiki/langs/typescript.mjs';
+import githubTheme from 'shiki/themes/github-dark.mjs';
+import getWasm from 'shiki/wasm';
+
+const createHighlighter = async () =>
+  await createHighlighterCore({
+    themes: [githubTheme],
+    langs: [tsLang],
+    loadWasm: getWasm,
+  });
+
+let highlighter: Awaited<ReturnType<typeof createHighlighter>>;
 
 export const File = async ({
   name,
@@ -11,7 +23,10 @@ export const File = async ({
   name: string;
   content: string;
 }) => {
-  const html = await codeToHtml(content, {
+  if (!highlighter) {
+    highlighter = await createHighlighter();
+  }
+  const html = await highlighter.codeToHtml(content, {
     lang: 'typescript',
     theme: 'github-dark',
     transformers: [
