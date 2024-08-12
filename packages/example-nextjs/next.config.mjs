@@ -15,6 +15,13 @@ const nextConfig = {
     ignoreDuringBuilds: true,
   },
   basePath: '',
+  experimental: {
+    // asyncWebAssembly: true,
+    // importAsync: true,
+    outputFileTracingIncludes: {
+      "**": ["./node_modules/shiki/**/*"],
+    },
+  }
   // images: {
   //   unoptimized: true
   // }

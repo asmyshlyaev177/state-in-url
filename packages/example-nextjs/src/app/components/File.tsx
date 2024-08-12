@@ -1,39 +1,16 @@
-import {
-  transformerNotationHighlight,
-  transformerNotationWordHighlight,
-} from '@shikijs/transformers';
-import { createHighlighterCore } from 'shiki/core';
-import tsLang from 'shiki/langs/typescript.mjs';
-import githubTheme from 'shiki/themes/github-dark.mjs';
-import getWasm from 'shiki/wasm';
+'use client';
+import React from 'react';
 
-const createHighlighter = async () =>
-  await createHighlighterCore({
-    themes: [githubTheme],
-    langs: [tsLang],
-    loadWasm: getWasm,
-  });
+import { init } from '../highlighter';
 
-let highlighter: Awaited<ReturnType<typeof createHighlighter>>;
+export const File = ({ name, content }: { name: string; content: string }) => {
+  const [html, setHtml] = React.useState('');
 
-export const File = async ({
-  name,
-  content,
-}: {
-  name: string;
-  content: string;
-}) => {
-  if (!highlighter) {
-    highlighter = await createHighlighter();
-  }
-  const html = await highlighter.codeToHtml(content, {
-    lang: 'typescript',
-    theme: 'github-dark',
-    transformers: [
-      transformerNotationHighlight(),
-      transformerNotationWordHighlight(),
-    ],
-  });
+  React.useInsertionEffect(() => {
+    init().then((highlight) => {
+      setHtml(highlight(content));
+    });
+  }, [content]);
 
   return (
     <noindex>
