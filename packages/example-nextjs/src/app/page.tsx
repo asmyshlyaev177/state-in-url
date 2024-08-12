@@ -102,14 +102,15 @@ type Form = {
       <File
         name="ComponentA"
         content={`'use client';
-import { useUrlState } from 'state-in-url/next';
+
+import { useUrlState } from 'state-in-url/next';// [!code highlight:1]
 
 export const ComponentA = () => {
-  const { state, updateUrl, updateState } = useUrlState({ defaultState: form });
+  const { state, updateUrl, updateState } = useUrlState({ defaultState: form });// [!code highlight:1]
 
   return <input
     id="name"
-    value={state.name}
+    value={state.name} // [!code highlight:3]
     onChange={(ev) => updateState({ name: ev.target.value })}
     onBlur={() => updateUrl()}
     />
@@ -118,15 +119,13 @@ export const ComponentA = () => {
       <File
         name="ComponentB"
         content={`'use client';
-import { useUrlState } from 'state-in-url/next';
+import { useUrlState } from 'state-in-url/next';// [!code highlight:1]
 
-// for SSR
-// const Home = async ({ searchParams }: { searchParams: object }) => {
-// <ComponentB searchParams={searchParams} />
-
+// [!code word:searchParams:1] // "searchParams" used to pass params from Server Components
 export const ComponentB = ({ searchParams }: { searchParams?: object }) => {
-  const { state } = useUrlState({ defaultState: form, searchParams });
+  const { state } = useUrlState({ defaultState: form, searchParams });// [!code highlight:1]
 
+// [!code word:state]
   return <div>name: {state.name}</div>
 };`}
       />
