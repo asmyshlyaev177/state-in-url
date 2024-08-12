@@ -31,3 +31,19 @@ body {
     text-wrap: balance;
   }
 }
+
+.codeblock {
+  .shiki {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+
+  .line.highlighted {
+    background-color: rgba(148, 148, 148, 0.28);
+  }
+
+  .highlighted-word {
+    border-radius: 8%;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+  }
+}
