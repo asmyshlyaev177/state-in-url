@@ -88,7 +88,8 @@ pnpm add state-in-url
 
 ### 2. Edit tsconfig.json
 
-In `tsconfig.json` in `compilerOptions` set `"moduleResolution": "Node16"` or `"moduleResolution": "NodeNext"`
+In `tsconfig.json` in `compilerOptions` set `"moduleResolution": "Bundler"`, or`"moduleResolution": "Node16"`, or `"moduleResolution": "NodeNext"`.
+Possibly need to set `"module": "ES2022"`, or `"module": "ESNext"`
 
 ## useUrlState hook for Next.js
 
