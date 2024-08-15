@@ -21,7 +21,7 @@ import { type JSONCompatible, typeOf } from '../utils';
  * parse('name=Tom');
  *  ```
  *
- * * Github {@link https://github.com/asmyshlyaev177/state-in-url/tree/main/packages/urlstate/useUrlEncode#api}
+ * * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/main/packages/urlstate/useUrlEncode#api}
  */
 export function useUrlEncode<T extends JSONCompatible>(stateShape: T) {
   const stringify = React.useCallback(
@@ -52,7 +52,7 @@ const state = parse('name=◖Tom');
 console.log(state); // Output: { name: 'Tom' }
  *  ```
  *
- *  * Github {@link https://github.com/asmyshlyaev177/state-in-url/tree/main/packages/urlstate/useUrlEncode#parse}
+ *  * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/main/packages/urlstate/useUrlEncode#parse}
  */
     parse,
     /**
@@ -63,7 +63,7 @@ const queryString = stringify({ name: 'John' }, 'someExistingParamToKeep=123');
 console.log(queryString); // Output: name=◖John&someExistingParamToKeep=123
 *  ```
 *
-*  * Github {@link https://github.com/asmyshlyaev177/state-in-url/tree/main/packages/urlstate/useUrlEncode#stringify}
+*  * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/main/packages/urlstate/useUrlEncode#stringify}
 */
     stringify,
   };
