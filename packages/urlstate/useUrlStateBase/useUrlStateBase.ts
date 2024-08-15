@@ -20,7 +20,7 @@ import { type DeepReadonly, isSSR, type JSONCompatible } from '../utils';
  * const { state, updateState, updateUrl } = useUrlStateBase(form, router, sp);
  *  ```
  *
- *  * Github {@link https://github.com/asmyshlyaev177/state-in-url/tree/integrations/packages/urlstate/useUrlStateBase#api}
+ *  * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/integrations/packages/urlstate/useUrlStateBase#api}
  */
 export function useUrlStateBase<T extends JSONCompatible>(
   defaultState: T,

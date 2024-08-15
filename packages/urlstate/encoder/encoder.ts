@@ -7,7 +7,7 @@ import { type JSONCompatible, typeOf } from '../utils';
  * @param {unknown} payload any value to serialize
  * @returns {string} URLSearchParams compatible value string
  *
- *  * Github {@link https://github.com/asmyshlyaev177/state-in-url/tree/main/packages/urlstate/encoder#encode}
+ *  * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/main/packages/urlstate/encoder#encode}
  */
 export function encode(payload: unknown): string {
   if (isEncoded(payload)) {
@@ -74,7 +74,7 @@ export type Primitive = Exclude<
  * @param {any} fallback optional fallback value
  * @returns {unknown} decoded object
  *
- *  * Github {@link https://github.com/asmyshlyaev177/state-in-url/tree/main/packages/urlstate/encoder#decode}
+ *  * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/main/packages/urlstate/encoder#decode}
  */
 export function decode<T>(payload: string, fallback?: T) {
   return parseJSON(payload.replaceAll("'", '"'), fallback as JSONCompatible);
@@ -111,7 +111,7 @@ export const reviver = (_key: string, value: unknown) => {
  * @param {T} [fallbackValue] - The fallback value to use if parsing fails.
  * @return {T | Primitive | undefined} - The parsed object or a primitive value, or undefined if parsing fails.
  *
- *  * Github {@link https://github.com/asmyshlyaev177/state-in-url}
+ *  * Docs {@link https://github.com/asmyshlyaev177/state-in-url}
  */
 export function parseJSON<T extends JSONCompatible>(
   jsonString: string,
