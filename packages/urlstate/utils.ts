@@ -19,19 +19,19 @@ export type Type =
  * `number`, `bigint`, `undefined`, `null`, `object`,
  * `function`, `symbol`, `array`
  */
-// eslint-disable-next-line complexity
 export const typeOf = (val: unknown): Type => {
+  const nativeType = typeof val;
   const isNull = val === null;
   const isArray = Array.isArray(val);
   const isDate = val instanceof Date;
-  const isObject = !isNull && !isDate && !isArray && typeof val === 'object';
+  const isObject = !isNull && !isDate && !isArray && nativeType === 'object';
 
   return (
     (isNull && 'null') ||
     (isDate && 'date') ||
     (isArray && 'array') ||
     (isObject && 'object') ||
-    typeof val
+    nativeType
   );
 };
 

@@ -5,7 +5,7 @@ import { useUrlState } from 'state-in-url/next';
 import { form } from './form';
 
 const Status = ({ className, sp }: { className?: string; sp?: object }) => {
-  const { state } = useUrlState(form, sp);
+  const { state } = useUrlState({ defaultState: form, searchParams: sp });
 
   return (
     <div className={className}>

@@ -10,6 +10,10 @@ import { type JSONCompatible, typeOf } from '../utils';
  *  * Github {@link https://github.com/asmyshlyaev177/state-in-url/tree/main/packages/urlstate/encoder#encode}
  */
 export function encode(payload: unknown): string {
+  if (isEncoded(payload)) {
+    return String(payload);
+  }
+
   const type = typeOf(payload);
 
   switch (type) {
@@ -17,7 +21,7 @@ export function encode(payload: unknown): string {
     case 'symbol':
       return '';
     case 'date':
-      return SYMBOLS.date + (payload as Date).toISOString();
+      return encodeDate(payload as Date);
     case 'string':
       return `${SYMBOLS.string}${encodeURIComponent(payload as string)}`;
     case 'number':
@@ -36,6 +40,33 @@ export function encode(payload: unknown): string {
   }
 }
 
+export const replacer = (_key: string, value: unknown) => {
+  const type = typeOf(value);
+
+  let _value = structuredClone(value);
+
+  if (type === 'object' || type === 'array') {
+    _value = _value as object | Array<unknown>;
+    Object.keys(_value as object | Array<unknown>).forEach((_key) => {
+      const val = (_value as { [key: string]: unknown })[_key] as Date;
+
+      if (typeOf(val) === 'date') {
+        (_value as { [key: string]: unknown })[_key] = encodeDate(val);
+      }
+    });
+  }
+  return type !== 'object' && type !== 'array' ? encode(_value) : _value;
+};
+
+function encodeDate(val: Date) {
+  return SYMBOLS.date + new Date(val).toISOString();
+}
+
+export type Primitive = Exclude<
+  ReturnType<typeof decodePrimitive>,
+  typeof errorSym
+>;
+
 /**
  * Decode value part of URLSearchParams back to JS value
  *
@@ -48,16 +79,6 @@ export function encode(payload: unknown): string {
 export function decode<T>(payload: string, fallback?: T) {
   return parseJSON(payload.replaceAll("'", '"'), fallback as JSONCompatible);
 }
-
-export const replacer = (key: string, value: unknown) => {
-  const type = typeOf(value);
-  return key && type !== 'object' && type !== 'array' ? encode(value) : value;
-};
-
-export type Primitive = Exclude<
-  ReturnType<typeof decodePrimitive>,
-  typeof errorSym
->;
 
 export const decodePrimitive = (str: string) => {
   if (str === SYMBOLS.null) return null;
@@ -76,11 +97,11 @@ export const decodePrimitive = (str: string) => {
 
 export const errorSym = Symbol('isError');
 
-export const reviver = (key: string, value: unknown) => {
+export const reviver = (_key: string, value: unknown) => {
   const isStr = typeof value === 'string';
   const decoded = isStr && decodePrimitive(value);
   if (decoded === errorSym) return value;
-  return key && isStr ? decoded : value;
+  return isStr ? decoded : value;
 };
 
 /**
@@ -103,3 +124,8 @@ export function parseJSON<T extends JSONCompatible>(
     return decodedValue !== errorSym ? decodedValue : fallbackValue;
   }
 }
+
+const isEncoded = (val: unknown) =>
+  new RegExp(
+    `^(${SYMBOLS.string}|${SYMBOLS.boolean}|${SYMBOLS.null}|${SYMBOLS.undefined}|${SYMBOLS.number}|${SYMBOLS.date})`,
+  ).test(String(val));

@@ -46,8 +46,25 @@ export const Form = ({
     };
   }, [state, updateUrl, delay, timer]);
 
-  // Just to test ts types
   React.useEffect(() => {
+    if (state?.tags?.length) {
+      const dateObj = state.tags.find((t) => t?.value?.time);
+      if (dateObj) {
+        console.assert(
+          dateObj?.value?.time instanceof Date,
+          'Date should be a Date instance!',
+        );
+      }
+      const isoDate = state.tags.find((t) => t?.value?.iso);
+      if (isoDate) {
+        console.assert(
+          typeof isoDate?.value?.iso === 'string',
+          'iso should be a string!',
+        );
+      }
+    }
+
+    // Just to test ts types
     if (state?.tags?.length === 10) {
       // @ts-expect-error should be readonly
       state.age = 18;
@@ -200,7 +217,11 @@ const tags = [
   },
   {
     id: '3',
-    value: { text: 'TailwindCSS', time: new Date('2024-07-19T04:53:17.000Z') },
+    value: {
+      text: 'TailwindCSS',
+      time: new Date('2024-07-19T04:53:17.000Z'),
+      iso: '2020-07-19T04:53:17.000Z',
+    },
   },
 ];
 
