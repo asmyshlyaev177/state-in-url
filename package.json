@@ -197,7 +197,7 @@
     "last 5 Firefox versions",
     "last 5 FirefoxAndroid versions",
     "Firefox ESR",
-    "last 3 Safari major versions",
+    "last 2 Safari major versions",
     "last 2 iOS major versions"
   ],
   "lint-staged": {
