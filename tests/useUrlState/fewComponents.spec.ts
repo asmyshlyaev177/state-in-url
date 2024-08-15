@@ -5,9 +5,6 @@ import { toHaveUrl } from '../testUtils';
 const URL1 = '/useUrlState/1';
 const URL2 = '/useUrlState/2';
 
-// TODO: test with 2 different states
-// TODO: test with existing queryParams
-
 test.describe('few components tests', () => {
   const link = 'link';
   const linkQs = 'link-sp';

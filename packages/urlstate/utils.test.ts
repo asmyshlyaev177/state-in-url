@@ -7,9 +7,16 @@ describe('typeOf', () => {
     expect(typeOf('5')).toEqual('string');
   });
 
-  it('date', () => {
-    const d = new Date();
-    expect(typeOf(d)).toEqual('date');
+  describe('date', () => {
+    it('instance', () => {
+      const d = new Date();
+      expect(typeOf(d)).toEqual('date');
+    });
+
+    it('iso string (from JSON.stringify replacer)', () => {
+      const d = new Date();
+      expect(typeOf(d.toISOString())).toEqual('string');
+    });
   });
 
   it('number', () => {

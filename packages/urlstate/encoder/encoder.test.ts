@@ -9,15 +9,28 @@ import { parseSsrQs } from '../next';
 import { type JSONCompatible } from '../utils';
 
 describe('encoder', () => {
+  it('should return payload if it already encoded', () => {
+    expect(encode('◖test')).toStrictEqual('◖test');
+    expect(encode('🗵false')).toStrictEqual('🗵false');
+    expect(encode('∙null')).toStrictEqual('∙null');
+    expect(encode('∙undefined')).toStrictEqual('∙undefined');
+    expect(encode('∓-3.14')).toStrictEqual('∓-3.14');
+    expect(encode('◖test')).toStrictEqual('◖test');
+    expect(encode('⏲2024-06-28T09:10:38.763Z')).toStrictEqual(
+      '⏲2024-06-28T09:10:38.763Z',
+    );
+  });
+
   describe('string', () => {
     it('simple', () => {
       expect('').toStrictEqual(decode(encode('')));
-      expect('test').toStrictEqual(decode(encode('test')));
+      expect(encode('')).toStrictEqual('◖');
+      expect(decode(encode('test'))).toStrictEqual('test');
     });
 
     it('special characters', () => {
       const str = '"test #?\t=\n[]{}()%.';
-      expect(str).toStrictEqual(decode(encode(str)));
+      expect(decode(encode(str))).toStrictEqual(str);
     });
   });
 
@@ -32,33 +45,41 @@ describe('encoder', () => {
     });
   });
 
-  it('date', () => {
-    const d = new Date('2024-06-28T09:10:38.763Z');
-    expect(d).toStrictEqual(decode(encode(d)));
-    expect(encode(d)).toStrictEqual('⏲2024-06-28T09:10:38.763Z');
+  describe('date', () => {
+    it('instance', () => {
+      const d = new Date('2024-06-28T09:10:38.763Z');
+      expect(decode(encode(d))).toStrictEqual(d);
+      expect(encode(d)).toStrictEqual('⏲2024-06-28T09:10:38.763Z');
+    });
+
+    it('iso string', () => {
+      const d = '2024-06-28T09:10:38.763Z';
+      expect(encode(d)).toStrictEqual('◖2024-06-28T09%3A10%3A38.763Z');
+      expect(decode(encode(d))).toStrictEqual(d);
+    });
   });
 
   it('boolean', () => {
-    expect(true).toStrictEqual(decode(encode(true)));
-    expect(false).toStrictEqual(decode(encode(false)));
+    expect(decode(encode(true))).toStrictEqual(true);
+    expect(decode(encode(false))).toStrictEqual(false);
     expect(encode(true)).toStrictEqual('🗵true');
     expect(encode(false)).toStrictEqual('🗵false');
   });
 
   it('null', () => {
-    expect(null).toStrictEqual(decode(encode(null)));
+    expect(decode(encode(null))).toStrictEqual(null);
     expect(encode(null)).toStrictEqual('∙null');
   });
 
   it('undefined', () => {
-    expect(undefined).toStrictEqual(decode(encode(undefined)));
+    expect(decode(encode(undefined))).toStrictEqual(undefined);
     expect(encode(undefined)).toStrictEqual('∙undefined');
   });
 
   describe('object', () => {
     it('simple', () => {
       const obj = { num: 123, float: 1.55, bool1: false };
-      expect(obj).toStrictEqual(decode(encode(obj)));
+      expect(decode(encode(obj))).toStrictEqual(obj);
       expect(encode(obj)).toStrictEqual(
         "{'num':'∓123','float':'∓1.55','bool1':'🗵false'}",
       );
@@ -72,12 +93,30 @@ describe('encoder', () => {
         b2: false,
         str: 'test string',
         n: null,
-        obj1: { obj2: { str: 'my_str' } },
+        obj1: {
+          obj2: {
+            str: 'my_str',
+            n: 123,
+            n2: -12.3,
+            b: false,
+            b1: true,
+            // FIXME: can't test dates conversion in jsdom, have weird e2e tests with useEffect in Status-for-test
+            // date: new Date('2019-01-01T00:00:00.000Z'),
+            dateIso: '2020-01-01T00:00:00.000Z',
+          },
+        },
+        dateIso: '2022-01-01T00:00:00.000Z',
       };
-      expect(obj).toStrictEqual(decode(encode(obj)));
+      expect(decode(encode(obj))).toStrictEqual(obj);
+
       expect(encode(obj)).toStrictEqual(
-        "{'num':'∓123','num2':'∓3.14','b1':'🗵true','b2':'🗵false','str':'◖test%20string','n':'∙null','obj1':{'obj2':{'str':'◖my_str'}}}",
+        "{'num':'∓123','num2':'∓3.14','b1':'🗵true','b2':'🗵false','str':'◖test%20string','n':'∙null','obj1':{'obj2':{'str':'◖my_str','n':'∓123','n2':'∓-12.3','b':'🗵false','b1':'🗵true','dateIso':'◖2020-01-01T00%3A00%3A00.000Z'}},'dateIso':'◖2022-01-01T00%3A00%3A00.000Z'}",
       );
+      expect(
+        decode(
+          "{'num':'∓123','num2':'∓3.14','b1':'🗵true','b2':'🗵false','str':'◖test%20string','n':'∙null','obj1':{'obj2':{'str':'◖my_str','n':'∓123','n2':'∓-12.3','b':'🗵false','b1':'🗵true','dateIso':'◖2020-01-01T00%3A00%3A00.000Z'}},'dateIso':'◖2022-01-01T00%3A00%3A00.000Z'}",
+        ),
+      ).toStrictEqual(obj);
     });
   });
 
@@ -85,13 +124,13 @@ describe('encoder', () => {
     it('simple', () => {
       const obj = [123, 1.55, false];
       const expected = "['∓123','∓1.55','🗵false']";
-      expect(obj).toStrictEqual(decode(expected));
+      expect(decode(expected)).toStrictEqual(obj);
       expect(encode(obj)).toStrictEqual(expected);
     });
 
     it('nested', () => {
       const obj = [123, [45, true, { arr: [1, 2, { test: true }, null] }]];
-      expect(obj).toStrictEqual(decode(encode(obj)));
+      expect(decode(encode(obj))).toStrictEqual(obj);
       expect(encode(obj)).toStrictEqual(
         "['∓123',['∓45','🗵true',{'arr':['∓1','∓2',{'test':'🗵true'},'∙null']}]]",
       );
@@ -152,12 +191,13 @@ describe('real life example', () => {
     },
     preference: { language: 'en-us' },
   };
+
   it('encode/decode', () => {
     const a1 = performance.now();
     const result = decode(encode(bigObj));
     const a2 = performance.now();
     console.log('encode time', a2 - a1 + ' milliseconds');
-    expect(bigObj).toStrictEqual(result);
+    expect(result).toStrictEqual(bigObj);
   });
 });
 
