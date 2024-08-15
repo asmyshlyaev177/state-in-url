@@ -1,6 +1,6 @@
 import { act, fireEvent, renderHook } from '@testing-library/react';
 
-import { useUrlStateBase } from '.';
+import { useUrlStateBase } from './useUrlStateBase';
 import * as sharedState from '../useSharedState';
 import * as urlEncode from '../useUrlEncode';
 import * as utils from '../utils';

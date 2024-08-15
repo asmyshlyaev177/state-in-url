@@ -1,6 +1,6 @@
 import { renderHook } from '@testing-library/react';
 
-import { useUrlEncode } from '.';
+import { useUrlEncode } from './useUrlEncode';
 
 type State = {
   str: string;

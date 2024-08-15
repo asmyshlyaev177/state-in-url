@@ -1,6 +1,6 @@
 import { act, renderHook } from '@testing-library/react';
 
-import { useSharedState } from '.';
+import { useSharedState } from './useSharedState';
 import * as subscribers from '../subscribers';
 
 jest.mock('../utils.ts', () => ({
