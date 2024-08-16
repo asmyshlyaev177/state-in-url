@@ -30,7 +30,7 @@ English | [한국어](./README.KO.md) | [简体中文](./README.CN.md)
 
 <hr />
 
-Add a ⭐️ to support the project!
+Add a ⭐️ and <a href="https://github.com/asmyshlyaev177" target="_blank">foloow me</a> to support the project!
 
   <hr />
 
