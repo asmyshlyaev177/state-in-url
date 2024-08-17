@@ -68,6 +68,7 @@ Add a ⭐️ and <a href="https://github.com/asmyshlyaev177" target="_blank">fol
 - [Low-level `encode` and `decode` functions](#encode-and-decode-helpers)
 - [Best practices](#best-practices)
 - [Gothas](#gothas)
+- [Roadmap](#roadmap)
 - [Contact & Support](#contact--support)
 - [Changelog](#changelog)
 - [License](#license)
