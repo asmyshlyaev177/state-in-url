@@ -387,6 +387,11 @@ npm run dev
 
 Go to [localhost:3000](http://localhost:3000)
 
+## Roadmap
+ - [x] hook for `Next.js`
+ - [ ] hook for 'react-router`
+ - [ ] hook for store state in hash ?
+
 ## Contact & Support
 
 - Create a [GitHub issue](https://github.com/asmyshlyaev177/state-in-url/issues) for bug reports, feature requests, or questions
