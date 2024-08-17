@@ -1,6 +1,5 @@
 import React from 'react';
 
-/* eslint-disable max-len */
 export const GithubLink = (
   props: React.DetailedHTMLProps<
     React.AnchorHTMLAttributes<HTMLAnchorElement>,

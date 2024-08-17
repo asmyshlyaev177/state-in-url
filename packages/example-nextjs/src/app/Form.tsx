@@ -1,5 +1,4 @@
 'use client';
-/* eslint-disable max-lines-per-function */
 import React from 'react';
 import { useUrlState } from 'state-in-url/next';
 
