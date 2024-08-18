@@ -1,4 +1,4 @@
-import { parseSsrQs } from './next';
+import { parseSPObj } from './next';
 
 describe('should decode server components searchParams', () => {
   it('without errors', () => {
@@ -17,7 +17,7 @@ describe('should decode server components searchParams', () => {
       ],
     };
 
-    expect(parseSsrQs(sp, form)).toStrictEqual(expected);
+    expect(parseSPObj(sp, form)).toStrictEqual(expected);
   });
 
   it('invalid string', () => {
@@ -31,7 +31,7 @@ describe('should decode server components searchParams', () => {
       tags: [],
     };
 
-    expect(parseSsrQs(sp, form)).toStrictEqual(expected);
+    expect(parseSPObj(sp, form)).toStrictEqual(expected);
   });
 });
 

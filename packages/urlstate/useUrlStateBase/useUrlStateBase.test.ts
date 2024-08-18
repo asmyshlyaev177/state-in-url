@@ -1,6 +1,7 @@
 import { act, fireEvent, renderHook } from '@testing-library/react';
 
 import { useUrlStateBase } from './useUrlStateBase';
+import { parseSPObj } from '../next/parseSPObj';
 import * as sharedState from '../useSharedState';
 import * as urlEncode from '../useUrlEncode';
 import * as utils from '../utils';
@@ -46,8 +47,12 @@ describe('useUrlStateBase', () => {
     it('ssr with searchParams', () => {
       jest.spyOn(utils, 'isSSR').mockReturnValue(true);
       const sharedStateSpy = jest.spyOn(sharedState, 'useSharedState');
-      const sp = { num: '∓55', 'with space': true };
-      renderHook(() => useUrlStateBase(shape, router, sp));
+      const sp = { num: 55, 'with space': true };
+      renderHook(() =>
+        useUrlStateBase(shape, router, () =>
+          utils.isSSR() ? { ...shape, ...sp } : shape,
+        ),
+      );
 
       expect(sharedStateSpy).toHaveBeenCalledTimes(1);
       expect(sharedStateSpy).toHaveBeenNthCalledWith(
@@ -87,7 +92,11 @@ describe('useUrlStateBase', () => {
         search,
       }));
       const sharedStateSpy = jest.spyOn(sharedState, 'useSharedState');
-      renderHook(() => useUrlStateBase(shape, router));
+      renderHook(() =>
+        useUrlStateBase(shape, router, ({ parse }) =>
+          parse(window.location.search),
+        ),
+      );
 
       expect(sharedStateSpy).toHaveBeenCalledTimes(1);
       expect(sharedStateSpy).toHaveBeenNthCalledWith(
@@ -123,9 +132,7 @@ describe('useUrlStateBase', () => {
         it('ssr', () => {
           jest.spyOn(utils, 'isSSR').mockReturnValue(true);
           const sharedStateSpy = jest.spyOn(sharedState, 'useSharedState');
-          const { result } = renderHook(() =>
-            useUrlStateBase(shape, router, { key: 'value123' }),
-          );
+          const { result } = renderHook(() => useUrlStateBase(shape, router));
 
           expect(result.current.state).toStrictEqual(shape);
 
@@ -165,7 +172,11 @@ describe('useUrlStateBase', () => {
     it('ssr with sp', () => {
       jest.spyOn(utils, 'isSSR').mockReturnValue(true);
       const sp = { num: '∓55' };
-      const { result } = renderHook(() => useUrlStateBase(shape, router, sp));
+      const { result } = renderHook(() =>
+        useUrlStateBase(shape, router, () =>
+          utils.isSSR() ? parseSPObj(sp, shape) : shape,
+        ),
+      );
 
       const expected = { ...shape, num: 55 };
       expect(result.current.state).toStrictEqual(expected);
@@ -193,7 +204,11 @@ describe('useUrlStateBase', () => {
         search,
       }));
       jest.spyOn(utils, 'isSSR').mockReturnValue(false);
-      const { result } = renderHook(() => useUrlStateBase(shape, router));
+      const { result } = renderHook(() =>
+        useUrlStateBase(shape, router, ({ parse }) =>
+          parse(window.location.search),
+        ),
+      );
 
       const expected = { ...shape, num: 55 };
       expect(result.current.state).toStrictEqual(expected);
@@ -382,7 +397,11 @@ describe('useUrlStateBase', () => {
           ...originalLocation,
           search,
         }));
-      const { result } = renderHook(() => useUrlStateBase(shape, router));
+      const { result } = renderHook(() =>
+        useUrlStateBase(shape, router, ({ parse }) =>
+          parse(window.location.search),
+        ),
+      );
 
       expect(result.current.state).toStrictEqual(shape);
 

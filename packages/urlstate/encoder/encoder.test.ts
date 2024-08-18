@@ -5,7 +5,7 @@ import {
   errorSym,
   parseJSON,
 } from './encoder';
-import { parseSsrQs } from '../next';
+import { parseSPObj } from '../next';
 import { type JSONCompatible } from '../utils';
 
 describe('encoder', () => {
@@ -281,19 +281,19 @@ describe('parseJSON', () => {
   });
 });
 
-describe('parseSsrQs', () => {
+describe('parseSPObj', () => {
   const stateShape = { perPage: 10 };
 
   it('should parse params to object', () => {
-    expect(parseSsrQs({}, stateShape)).toStrictEqual(stateShape);
-    expect(parseSsrQs({ perPage: '∓20' }, stateShape)).toStrictEqual({
+    expect(parseSPObj({}, stateShape)).toStrictEqual(stateShape);
+    expect(parseSPObj({ perPage: '∓20' }, stateShape)).toStrictEqual({
       perPage: 20,
     });
 
     expect(
-      parseSsrQs(undefined as unknown as object, stateShape),
+      parseSPObj(undefined as unknown as object, stateShape),
     ).toStrictEqual(stateShape);
-    expect(parseSsrQs(null as unknown as object, stateShape)).toStrictEqual(
+    expect(parseSPObj(null as unknown as object, stateShape)).toStrictEqual(
       stateShape,
     );
   });

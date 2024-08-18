@@ -2,9 +2,14 @@ import { useRouter } from 'next/navigation';
 import { useSearchParams } from 'next/navigation';
 import React from 'react';
 
-import { parseSsrQs } from '../parseSsrQs';
+import { parseSPObj } from '../parseSPObj';
 import { useUrlStateBase } from '../../useUrlStateBase';
-import { type DeepReadonly, type JSONCompatible } from '../../utils';
+import {
+  type DeepReadonly,
+  filterUnknownParamsClient,
+  isSSR,
+  type JSONCompatible,
+} from '../../utils';
 
 /**
  * @deprecated Pass arguments in a object `useUrlState({ defaultState: form, searchParams })`
@@ -100,7 +105,14 @@ export function useUrlState<T extends JSONCompatible>(
     updateState,
     updateUrl: updateUrlBase,
     getState,
-  } = useUrlStateBase(_defaultState, router, _searchParams);
+  } = useUrlStateBase(_defaultState, router, ({ parse }) =>
+    isSSR()
+      ? parseSPObj(
+          filterUnknownParams(_defaultState, _searchParams),
+          _defaultState,
+        )
+      : parse(filterUnknownParamsClient(_defaultState)),
+  );
 
   const updateUrl = React.useCallback(
     (value?: Parameters<typeof updateUrlBase>[0], options?: Options) => {
@@ -116,7 +128,7 @@ export function useUrlState<T extends JSONCompatible>(
     const _sp = Object.fromEntries(
       [...sp.entries()].filter(([key]) => shapeKeys.includes(key)),
     );
-    updateState(parseSsrQs(_sp, _defaultState));
+    updateState(parseSPObj(_sp, _defaultState));
   }, [sp]);
 
   return {
@@ -173,4 +185,20 @@ function getArgs<T extends JSONCompatible>(
     _searchParams,
     _replace,
   };
+}
+
+function filterUnknownParams<T extends object>(
+  shape: T,
+  searchParams?: object,
+) {
+  const shapeKeys = Object.keys(shape);
+
+  const result = Object.fromEntries(
+    Object.entries(searchParams || {})
+      .map(([key, val]) => [key.replaceAll('+', ' '), val])
+      .filter(([key]) => {
+        return shapeKeys.includes(key);
+      }),
+  );
+  return result as T;
 }
