@@ -10,7 +10,7 @@ A custom React hook to create custom `useUrlState` hooks.
 
 - `defaultState: object` - An object representing the default state values.
 - `router: object` - Router object with `push` and `replace` methods
-- `sp?: object` - Optional search params object from Next.js server component.
+- `getInitialState?: function` - Optional function that return initial state.
 
 ### Returns:
 

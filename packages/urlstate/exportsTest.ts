@@ -2,7 +2,7 @@ import assert from 'assert';
 
 import { decode, encode } from '../../dist/encoder';
 import { decodeState, encodeState } from '../../dist/encodeState';
-import { parseSsrQs, useUrlState } from '../../dist/next';
+import { parseSPObj, useUrlState } from '../../dist/next';
 import { useSharedState } from '../../dist/useSharedState';
 import { useUrlEncode } from '../../dist/useUrlEncode';
 import { useUrlStateBase } from '../../dist/useUrlStateBase';
@@ -12,7 +12,7 @@ const errorMsg =
 
 // Nextjs
 assert.ok(useUrlState, errorMsg);
-assert.ok(parseSsrQs, errorMsg);
+assert.ok(parseSPObj, errorMsg);
 
 // React
 assert.ok(useUrlStateBase, errorMsg);

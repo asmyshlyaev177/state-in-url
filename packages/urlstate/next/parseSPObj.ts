@@ -13,7 +13,8 @@ import { type JSONCompatible } from '../utils';
  * @param {T} defaults - The default values to use if parsing fails.
  * @return {T} - The parsed object or the default values.
  */
-export function parseSsrQs<T extends JSONCompatible>(
+// for Next.js searchParams object
+export function parseSPObj<T extends JSONCompatible>(
   sp: object | undefined,
   defaults: T,
 ) {
@@ -28,14 +29,14 @@ function parseJSONSsr<T extends JSONCompatible>(
   fallbackValue?: T,
 ): T | Primitive | undefined {
   try {
-    return JSON.parse(jsonString, reviverSsrQs) as T;
+    return JSON.parse(jsonString, reviverSPSsr) as T;
   } catch {
     const decodedValue = decodePrimitive(jsonString);
     return decodedValue !== errorSym ? decodedValue : fallbackValue;
   }
 }
 
-const reviverSsrQs = (key: string, value: unknown) => {
+const reviverSPSsr = (key: string, value: unknown) => {
   const isStr = typeof value === 'string';
   const decoded = isStr && decode(value?.replaceAll?.("'", '"'));
   return key && isStr ? decoded : value;

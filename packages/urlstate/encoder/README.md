@@ -54,7 +54,7 @@ const obj = Object.fromEntries(
 
 ```
 
-## `parseSsrQs` for Server-Side Rendering (SSR) Query String Parsing
+## `parseSPObj` for Server-Side Rendering (SSR) Query String Parsing
 
 To parse encoded object passed from server component `searchParams`
 
@@ -70,7 +70,7 @@ A decoded object.
 ### Example
 
 ```typescript
-import { parseSsrQs } from 'state-in-url/encoder';
+import { parseSPObj } from 'state-in-url/encoder';
 
 export async function Home({ searchParams }: { searchParams: object }) {
   <ClientComponent sp={searchParams} />
@@ -79,6 +79,6 @@ export async function Home({ searchParams }: { searchParams: object }) {
 /// in ClientComponent
 // sp is { name: '◖John Doe' };
 const defaults = { name: '', age: 0, isActive: false };
-const parsed = parseSsrQs(sp, defaults);
+const parsed = parseSPObj(sp, defaults);
 console.log(parsed); // { name: 'John Doe', age: 0, isActive: false }
 ```
