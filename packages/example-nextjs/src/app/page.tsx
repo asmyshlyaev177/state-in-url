@@ -67,7 +67,10 @@ export default async function Home({ searchParams }: { searchParams: object }) {
       </div>
 
       <footer className="text-gray-700 text-right mt-4">
-        © asmyshlyaev177 {new Date().getFullYear()}
+        ©{' '}
+        <a href="https://github.com/asmyshlyaev177" target="_blank">
+          asmyshlyaev177 {new Date().getFullYear()}
+        </a>
       </footer>
     </main>
   );
