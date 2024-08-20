@@ -1,9 +1,7 @@
 English | [한국어](./README.KO.md) | [简体中文](./README.CN.md)
 
-<h1 align="center">state-in-url</h1>
-
 <div align="center">
-  <img src="/assets/logo.svg?raw=true" alt="Library logo"/>
+  <img src="/assets/Logo_big.png?raw=true" alt="state-in-url logo"/>
 
   <div>Easily share state between unrelated React components, with IDE autocomplete and TS validation. Without any hasssle or boilerplate. </div>
 </div>
