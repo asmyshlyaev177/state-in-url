@@ -9,7 +9,7 @@ export default async function Home({ searchParams }: { searchParams: object }) {
   return (
     <main
       className="min-h-screen bg-gradient-to-b
-     from-orange-300 to-orange-500 p-4"
+     from-orange-200 to-orange-400 p-4"
     >
       <div className="flex flex-col items-center container ml-auto mr-auto">
         <div className="flex flex-col items-center bg-gradient-to-t from-stone-50 to-white w-full p-2 xl:max-w-[80%] lg:p-[4em] rounded-lg lg:pt-6">
