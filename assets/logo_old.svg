@@ -1,9 +1,0 @@
-<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-  <!-- Background circle -->
-  <circle cx="100" cy="100" r="90" fill="#f0f0f0"/>
-
-  <!-- JS object symbol -->
-  <text x="40" y="135" font-family="monospace" font-size="120" fill="#f97316" text-anchor="middle">{</text>
-    <text x="100" y="125" font-family="monospace" font-size="72"  text-anchor="middle">🔗</text>
-      <text x="160" y="135" font-family="monospace" font-size="120" fill="#f97316" text-anchor="middle">}</text>
-</svg>

@@ -15,7 +15,7 @@ export const File = ({ name, content }: { name: string; content: string }) => {
   return (
     <noindex>
       <div
-        className="codeblock shadow-md bg-white border border-gray-200 rounded-lg dark:bg-gray-800 dark:border-gray-700 p-4"
+        className="codeblock shadow-md hover:shadow-2xl bg-white border border-gray-200 rounded-lg dark:bg-gray-800 dark:border-gray-700 p-4"
         data-nosnippet="true"
       >
         <div className="font-mono text-sm pb-2 select-none">{name}</div>

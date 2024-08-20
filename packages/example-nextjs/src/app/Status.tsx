@@ -15,7 +15,7 @@ export const Status = ({
   const { state } = useUrlState(form, sp);
 
   return (
-    <div className={`flex relative ${className}`}>
+    <div className={`flex relative shadow-md hover:shadow-lg ${className} `}>
       <div className="font-semibold mb-2 text-black">
         Other client component
       </div>
