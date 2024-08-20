@@ -1,9 +1,7 @@
 [English](./README.md) | [한국어](./README.KO.md) | 简体中文
 
-<h1 align="center">state-in-url</h1>
-
 <div align="center">
-  <img src="/assets/logo.svg?raw=true" alt="库标志"/>
+  <img src="/assets/Logo_big.png?raw=true" alt="state-in-url logo"/>
 
   <div>轻松在不相关的React组件之间共享状态，具有IDE自动完成和TS验证功能。无需任何麻烦或样板代码。</div>
 </div>

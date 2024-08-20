@@ -1,10 +1,8 @@
 [English] | 한국어 | [简体中文](./README.CN.md)
 
-<h1 align="center">state-in-url</h1>
-
 
 <div align="center">
-  <img src="/assets/logo.svg?raw=true" alt="라이브러리 로고"/>
+  <img src="/assets/Logo_big.png?raw=true" alt="state-in-url logo"/>
 
   <div>IDE 자동 완성 및 TS 검증과 함께 관련 없는 React 컴포넌트 간에 상태를 쉽게 공유할 수 있습니다. 번거로움이나 보일러플레이트 없이 사용 가능합니다.</div>
 </div>
