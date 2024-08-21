@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.2.5](https://github.com/asmyshlyaev177/state-in-url/compare/v2.2.4...v2.2.5) (2024-08-21)
+
 ### [2.2.4](https://github.com/asmyshlyaev177/state-in-url/compare/v2.2.3...v2.2.4) (2024-08-18)
 
 ### [2.2.3](https://github.com/asmyshlyaev177/state-in-url/compare/v2.2.2...v2.2.3) (2024-08-15)
