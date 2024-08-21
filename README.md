@@ -36,7 +36,7 @@ Add a ⭐️ and <a href="https://github.com/asmyshlyaev177" target="_blank">fol
 
 ## Why use state-in-url?
 
-`state-in-url` Simple state management with optional URL sync. Share complex states between unrelated React components, TS-friendly, NextJS compatible.
+`state-in-url` Simple state management with optional URL sync. Share complex states between unrelated React components, TS-friendly, NextJS compatible. Most of users don't care about URL, so, can use it to store your app state.
 
 # Use cases
 
