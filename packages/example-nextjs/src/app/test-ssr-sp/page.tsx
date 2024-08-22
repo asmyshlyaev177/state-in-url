@@ -31,3 +31,5 @@ export default async function Home({ searchParams }: { searchParams: object }) {
     </main>
   );
 }
+
+export const runtime = 'edge';

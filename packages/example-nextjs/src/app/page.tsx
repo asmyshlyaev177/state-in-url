@@ -12,11 +12,11 @@ export default async function Home({ searchParams }: { searchParams: object }) {
      from-orange-200 to-orange-400 p-4"
     >
       <div className="flex flex-col items-center container ml-auto mr-auto">
-        <div className="flex flex-col items-center bg-gradient-to-t from-stone-50 to-white w-full p-2 xl:max-w-[80%] lg:p-[4em] rounded-lg lg:pt-6">
+        <div className="flex flex-col items-center bg-gradient-to-t from-stone-50 to-white w-full p-2 pt-8 xl:max-w-[80%] lg:p-[4em] rounded-lg lg:pt-6">
           <div className="text-center min-h-[35vh] md:min-h-[25vh] flex flex-col justify-center mb-8">
             <div className="flex flex-col md:flex-row items-center justify-center gap-1">
               <div className="text-center md:text-left ml-4 flex flex-col items-center min-[800px]:items-left min-[800px]:flex-row gap-6">
-                <Logo className="relative block min-w-[200px] max-w-[200px] drop-shadow-xl hover:drop-shadow-2xl transition ease-in duration-150" />
+                <Logo className="relative block min-w-[150px] max-w-[150px] drop-shadow-xl hover:drop-shadow-2xl transition ease-in duration-150" />
 
                 <div>
                   <h1 className="text-6xl font-semibold tracking-wide text-neutral-700 mb-2 drop-shadow-sm">
