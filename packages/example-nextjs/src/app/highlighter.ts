@@ -17,19 +17,18 @@ export const createHighlighter = async () =>
 
 export let highlighter: HighlighterCore;
 
-export const highlight = (content: string) =>
-  highlighter?.codeToHtml?.(content, {
-    lang: 'typescript',
-    theme: 'github-dark',
-    transformers: [
-      transformerNotationHighlight(),
-      transformerNotationWordHighlight(),
-    ],
-  });
-
-export const init = async () => {
+export const highlight = async (content: string) => {
   if (!highlighter) {
     highlighter = await createHighlighter();
   }
-  return highlight;
+  return (
+    highlighter?.codeToHtml?.(content, {
+      lang: 'typescript',
+      theme: 'github-dark',
+      transformers: [
+        transformerNotationHighlight(),
+        transformerNotationWordHighlight(),
+      ],
+    }) || ''
+  );
 };
