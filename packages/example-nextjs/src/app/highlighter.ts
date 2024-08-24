@@ -10,7 +10,29 @@ import getWasm from 'shiki/wasm';
 
 export const createHighlighter = async () =>
   await createHighlighterCore({
-    themes: [githubTheme],
+    themes: [
+      {
+        ...githubTheme,
+        settings: [
+          ...(githubTheme.tokenColors || []),
+          {
+            scope: [
+              'comment',
+              'punctuation.definition.comment',
+              'string.comment',
+            ],
+            settings: {
+              // use `rgb`, `hsl`, `hsla`,
+              // or any anything supported by your renderer
+              foreground: 'white',
+            },
+          },
+        ],
+        // Background and foreground colors
+        bg: 'var(--code-bg)',
+        fg: 'var(--code-fg)',
+      },
+    ],
     langs: [tsLang],
     loadWasm: getWasm,
   });

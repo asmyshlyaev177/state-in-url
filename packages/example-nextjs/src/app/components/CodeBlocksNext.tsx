@@ -48,6 +48,7 @@ export const ComponentA = () => {
         content={`'use client';
 import { useUrlState } from 'state-in-url/next';// [!code highlight:1]
 
+// "searchParams" used to pass params from Server Components
 export const ComponentB = ({ searchParams }: { searchParams?: object }) => {
   const { state } = useUrlState({ defaultState: form, searchParams });// [!code highlight:1]
 
