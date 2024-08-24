@@ -29,7 +29,7 @@ export const File = async ({
       <code>
         <pre
           dangerouslySetInnerHTML={{ __html: text }}
-          className=" dark:bg-gray-800 text-sm font-mono p-5"
+          className=" dark:bg-gray-900 text-sm font-mono p-5"
         ></pre>
       </code>
     </div>

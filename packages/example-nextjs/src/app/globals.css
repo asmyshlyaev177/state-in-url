@@ -38,12 +38,16 @@ body {
     word-wrap: break-word;
   }
 
+  .github-dark {
+    background-color: transparent !important;
+  }
+
   .line.highlighted {
-    background-color: rgba(148, 148, 148, 0.28);
+    background-color: rgba(148, 148, 148, 0.15);
   }
 
   .highlighted-word {
     border-radius: 8%;
-    border: 1px solid rgba(255, 255, 255, 0.25);
+    border: 1px solid rgba(255, 255, 255, 0.2);
   }
 }
