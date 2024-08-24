@@ -1,4 +1,3 @@
-'use client';
 import Image from 'next/image';
 
 export const Logo = (props: { className: string }) => (
@@ -8,5 +7,6 @@ export const Logo = (props: { className: string }) => (
     width="200"
     height="200"
     className={props.className}
+    priority={true}
   />
 );
