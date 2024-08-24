@@ -4,14 +4,12 @@ import { Roboto } from 'next/font/google';
 
 import './globals.css';
 
-import { netifyUrl, vercelUrl } from './domain';
+import { isVercel, netifyUrl, vercelUrl } from './domain';
 const roboto = Roboto({
   subsets: ['latin'],
   weight: '400',
   variable: '--font-roboto',
 });
-
-const isDev = process.env.NODE_ENV === 'development';
 
 export default function RootLayout({
   children,
@@ -24,7 +22,7 @@ export default function RootLayout({
       <link rel="canonical" href={vercelUrl}></link>
       <link rel="alternate" href={netifyUrl}></link>
       <body className={roboto.className}>{children}</body>
-      {isDev ? null : <Analytics />}
+      {isVercel ? <Analytics /> : null}
     </html>
   );
 }
