@@ -4,7 +4,7 @@ import React from 'react';
 
 export const UrlBox = () => {
   const sp = useSearchParams();
-  const [url, setUrl] = React.useState('');
+  const [url, setUrl] = React.useState('/');
 
   React.useEffect(() => {
     setUrl(
