@@ -13,11 +13,14 @@ export const UrlBox = () => {
   }, [sp]);
 
   return (
-    <input
-      id="url"
-      readOnly
-      className="w-full bg-slate-100 rounded-sm text-gray-700 font-mono"
-      value={`url=${url}`}
-    />
+    <form>
+      <input
+        id="url"
+        readOnly
+        className="w-full bg-slate-100 rounded-sm text-gray-700 font-mono"
+        value={`url=${url}`}
+        aria-label="URL"
+      />
+    </form>
   );
 };

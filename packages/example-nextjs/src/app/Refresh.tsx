@@ -1,4 +1,6 @@
 'use client';
+import { twMerge } from 'tailwind-merge';
+
 import { Button } from './components/Button';
 
 export const RefreshButton = ({ className }: { className?: string }) => {
@@ -7,7 +9,7 @@ export const RefreshButton = ({ className }: { className?: string }) => {
       onClick={() => {
         window.location.reload();
       }}
-      className={className}
+      className={twMerge(`font-extrabold bg-orange-700 text-lg `, className)}
       name="Reload page"
     >
       Reload page
