@@ -1,0 +1,17 @@
+{
+  "recommendations": [
+    "formulahendry.auto-rename-tag",
+    "naumovs.color-highlight",
+    "mikestead.dotenv",
+    "editorconfig.editorconfig",
+    "dbaeumer.vscode-eslint",
+    "drknoxy.eslint-disable-snippets",
+    "bierner.jsdoc-markdown-highlighting",
+    "unifiedjs.vscode-mdx",
+    "christian-kohler.path-intellisense",
+    "yoavbls.pretty-ts-errors",
+    "bradlc.vscode-tailwindcss",
+    "stivo.tailwind-fold",
+    "gruntfuggly.todo-tree"
+  ]
+}
