@@ -7,12 +7,17 @@ const config: Config = {
     './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
     './src/components/**/*.{js,ts,jsx,tsx,mdx}',
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
-    './node_modules/@nextui-org/theme/dist/components/[object Object].js',
   ],
   theme: {
     extend: {
       fontFamily: {
-        sans: ['var(--font-roboto)'],
+        sans: [
+          'var(--font-roboto)',
+          // 'var(--font-open-sans)',
+          'Helvetica',
+          'Arial',
+          'sans-serif',
+        ],
       },
     },
   },
