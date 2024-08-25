@@ -21,10 +21,10 @@ const nextConfig = {
     outputFileTracingIncludes: {
       "**": ["./node_modules/shiki/**/*"],
     },
+  },
+  images: {
+    minimumCacheTTL: 60 * 60 * 24 * 15
   }
-  // images: {
-  //   unoptimized: true
-  // }
 };
 
 export default nextConfig;
