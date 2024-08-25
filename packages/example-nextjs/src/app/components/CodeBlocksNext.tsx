@@ -31,6 +31,7 @@ type Form = {
         content={`'use client';
 
 import { useUrlState } from 'state-in-url/next';// [!code highlight:1]
+import { form } from './form';
 
 export const ComponentA = () => {
   const { state, updateUrl, updateState } = useUrlState({ defaultState: form });// [!code highlight:1]
@@ -47,6 +48,7 @@ export const ComponentA = () => {
         name="ComponentB"
         content={`'use client';
 import { useUrlState } from 'state-in-url/next';// [!code highlight:1]
+import { form } from './form';
 
 // "searchParams" used to pass params from Server Components
 export const ComponentB = ({ searchParams }: { searchParams?: object }) => {
