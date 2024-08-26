@@ -12,6 +12,7 @@
     "yoavbls.pretty-ts-errors",
     "bradlc.vscode-tailwindcss",
     "stivo.tailwind-fold",
-    "gruntfuggly.todo-tree"
+    "gruntfuggly.todo-tree",
+    "csstools.postcss"
   ]
 }
