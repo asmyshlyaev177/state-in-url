@@ -10,16 +10,7 @@ const roboto = Roboto({
   weight: '400',
   variable: '--font-roboto',
   display: 'swap',
-  // adjustFontFallback: true
 });
-
-// const openSans = Open_Sans({
-//   subsets: ['latin'],
-//   weight: '400',
-//   variable: '--font-open-sans',
-//   display: 'swap',
-//   // adjustFontFallback: true
-// });
 
 export default function RootLayout({
   children,
@@ -33,7 +24,7 @@ export default function RootLayout({
       {/* TODO: https://github.com/vercel/next.js/discussions/53540 */}
       <link rel="canonical" href={vercelUrl}></link>
       <link rel="alternate" href={netifyUrl}></link>
-      <body className={`${roboto.variable}`}>{children}</body>
+      <body className={`${roboto.className}`}>{children}</body>
       {isVercel ? <Analytics /> : null}
     </html>
   );
