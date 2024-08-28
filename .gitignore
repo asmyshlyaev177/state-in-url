@@ -6,8 +6,11 @@ dist
 /playwright/.cache/
 .wireit
 /packages/example-nextjs/public/react.html
+/packages/example-nextjs/public/react-router.html
 .vercel
 coverage-reports
 .nyc_output
 nyc_coverage
 results
+
+.env

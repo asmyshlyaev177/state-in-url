@@ -10,9 +10,11 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@fingerprintjs/fingerprintjs-pro-react": "^2.6.3",
     "@nextui-org/skeleton": "^2.0.31",
     "@shikijs/transformers": "^1.12.1",
     "@vercel/analytics": "^1.3.1",
+    "@vercel/kv": "^2.0.0",
     "next": "14.2.4",
     "react": "^18",
     "react-dom": "^18",
