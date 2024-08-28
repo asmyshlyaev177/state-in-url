@@ -5,11 +5,11 @@ import React from 'react';
 
 import { isVercel } from './domain';
 
+const getArg1 = { extendedResult: true };
+const getArg2 = { immediate: false };
+
 export const Stats = () => {
-  const { getData } = useVisitorData(
-    { extendedResult: true },
-    { immediate: false },
-  );
+  const { getData } = useVisitorData(getArg1, getArg2);
 
   React.useEffect(() => {
     if (isVercel) {
