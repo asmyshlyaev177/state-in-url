@@ -58,12 +58,14 @@ export default async function Home({ searchParams }: { searchParams: object }) {
               </div>
             </div>
 
-            <div className="bg-white rounded-lg shadow-xl p-8 max-w-4xl w-full">
-              <header className="mb-2 flex justify-between items-center flex-wrap gap-2">
+            <div className="bg-white rounded-lg shadow-xl p-2 sm:p-8 max-w-4xl w-full">
+              <header className="mb-2 flex justify-between items-center max-[450px]:flex-wrap gap-2">
                 <h2 className="text-3xl font-bold text-gray-800">
                   Demo with Next.js
                 </h2>
-                <GithubLink className="ml-auto" />
+                <div className="order-first min-[450px]:order-last max-[450px]:basis-full flex justify-end">
+                  <GithubLink className="" />
+                </div>
               </header>
 
               <div className="mb-3">
