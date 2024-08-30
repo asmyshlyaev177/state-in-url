@@ -37,7 +37,7 @@ export default async function Home({ searchParams }: { searchParams: object }) {
       >
         <div className="flex flex-col items-center container ml-auto mr-auto">
           <div className="flex flex-col items-center bg-gradient-to-t from-stone-50 to-white w-full p-2 pt-8 xl:max-w-[80%] lg:p-[4em] rounded-lg lg:pt-6">
-            <div className="text-center min-h-[35vh] md:min-h-[25vh] flex flex-col justify-center mb-8">
+            <header className="text-center min-h-[35vh] md:min-h-[25vh] flex flex-col justify-center mb-8">
               <div className="flex flex-col md:flex-row items-center justify-center gap-1">
                 <div className="text-center md:text-left ml-4 flex flex-col items-center min-[800px]:items-left min-[800px]:flex-row gap-6">
                   <Logo className="relative block min-w-[150px] max-w-[150px] drop-shadow-xl hover:drop-shadow-2xl transition ease-in duration-150" />
@@ -56,9 +56,9 @@ export default async function Home({ searchParams }: { searchParams: object }) {
                   </div>
                 </div>
               </div>
-            </div>
+            </header>
 
-            <div className="bg-white rounded-lg shadow-xl p-2 sm:p-8 max-w-4xl w-full">
+            <section className="bg-white rounded-lg shadow-xl p-2 sm:p-8 max-w-4xl w-full">
               <header className="mb-2 flex justify-between items-center max-[450px]:flex-wrap gap-2">
                 <h2 className="text-3xl font-bold text-gray-800">
                   Demo with Next.js
@@ -72,7 +72,7 @@ export default async function Home({ searchParams }: { searchParams: object }) {
                 <UrlBox />
               </div>
 
-              <div className="flex flex-col md:flex-row gap-8 relative">
+              <section className="flex flex-col md:flex-row gap-8 relative">
                 <Form
                   className="flex max-h-[550px] flex-col md:flex-row gap-8 basis-1/2"
                   searchParams={searchParams}
@@ -83,12 +83,12 @@ export default async function Home({ searchParams }: { searchParams: object }) {
               basis-1/2 grow-1"
                   sp={searchParams}
                 />
-              </div>
-            </div>
+              </section>
+            </section>
 
-            <div className="mt-14">
+            <section className="mt-14">
               <CodeBlocks />
-            </div>
+            </section>
           </div>
         </div>
 
