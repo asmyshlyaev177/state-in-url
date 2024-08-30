@@ -59,7 +59,8 @@ Add a ⭐️ and <a href="https://github.com/asmyshlyaev177" target="_blank">fol
 
 - [Installation](#installation)
 - [`useUrlState` for Next.js](#useurlstate-hook-for-nextjs)
-- [`useSharedState` for React.js](#usesharedstate-hook-for-reactjs)
+- [`useUrlStateBase` for other routers](#useurlstatebase-hook-for-others-routers)
+- [`useSharedState` hook for React.js/Next.js](#usesharedstate-hook-for-reactjs)
 - [`useUrlEncode` for React.js](#useurlencode-hook-for-reactjs)
 - [`encodeState` and `decodeState` for pure JS usage](#encodestate-and-decodestate-helpers)
 - [auto sync state with url](#auto-sync-state)
@@ -331,6 +332,12 @@ function SettingsComponent() {
   const { state, updateUrl, updateState } = useUrlState<object>(someObj);
 }
 ```
+
+## `useUrlStateBase` hook for others routers
+
+Hooks to create your own `useUrlState` hooks with other routers, e.g. react-router or tanstack router. 
+
+[Docs](packages/urlstate/useUrlStateBase)
 
 ## `useSharedState` hook for React.js
 
