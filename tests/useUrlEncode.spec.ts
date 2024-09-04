@@ -2,15 +2,15 @@ import { expect, test } from '@playwright/test';
 
 import { toHaveUrl } from './testUtils';
 
-test('Cross browser test', async ({ page }) => {
-  // const errorLogs: unknown[] = [];
-  // page.on('console', (message) => {
-  //   if (message.type() === 'error') {
-  //     errorLogs.push(message.text());
-  //   }
-  // });
+test('useUrlEncode', async ({ page }) => {
+  const errorLogs: unknown[] = [];
+  page.on('console', (message) => {
+    if (message.type() === 'error') {
+      errorLogs.push(message.text());
+    }
+  });
 
-  const url = '/test';
+  const url = '/useUrlEncode';
   const obj = {
     str: 'some string !%^{}>?',
     bool: true,
@@ -37,5 +37,5 @@ test('Cross browser test', async ({ page }) => {
   const decoded = await page.getByTestId('parsed').inputValue();
   await expect(JSON.parse(decoded)).toStrictEqual(obj);
 
-  // expect(errorLogs).toHaveLength(0);
+  expect(errorLogs).toHaveLength(0);
 });

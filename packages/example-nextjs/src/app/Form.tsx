@@ -1,13 +1,11 @@
 'use client';
 import React from 'react';
+import { Field, Input, RefreshButton } from 'shared/components';
+import { form } from 'shared/form';
 import { useUrlState } from 'state-in-url/next';
 
-import { Field } from './components/Field';
-import { Input } from './components/Input';
 import { SourceCodeBtn } from './components/SourceCodeBtn';
 import { Tag } from './components/Tag';
-import { form } from './form';
-import { RefreshButton } from './Refresh';
 
 export const Form = ({
   className,
@@ -87,7 +85,7 @@ export const Form = ({
           <Field
             id="agree to terms"
             text="Agree to terms"
-            className="flex gap-2 max-w-[150px] min-w-[150px] flex-row justify-between"
+            className="flex flex-row justify-between gap-2 max-w-[150px] min-w-[150px]"
           >
             <Input
               id="agree to terms"

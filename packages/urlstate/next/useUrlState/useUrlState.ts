@@ -172,13 +172,12 @@ function getArgs<T extends JSONCompatible>(
   obj: T | { defaultState: T; searchParams?: object; replace?: boolean },
   searchParams?: object,
 ) {
-  const _defaultState = ('defaultState' in obj ? obj.defaultState : obj) as T;
-  const _searchParams = (
-    'defaultState' in obj ? obj.searchParams : searchParams
-  ) as object | undefined;
-  const _replace = (
-    'defaultState' in obj ? obj.replace ?? true : false
-  ) as boolean;
+  const isObjParam = 'defaultState' in obj;
+  const _defaultState = (isObjParam ? obj.defaultState : obj) as T;
+  const _searchParams = (isObjParam ? obj.searchParams : searchParams) as
+    | object
+    | undefined;
+  const _replace = (isObjParam ? obj.replace ?? true : false) as boolean;
 
   return {
     _defaultState,
@@ -196,9 +195,7 @@ function filterUnknownParams<T extends object>(
   const result = Object.fromEntries(
     Object.entries(searchParams || {})
       .map(([key, val]) => [key.replaceAll('+', ' '), val])
-      .filter(([key]) => {
-        return shapeKeys.includes(key);
-      }),
+      .filter(([key]) => shapeKeys.includes(key)),
   );
   return result as T;
 }

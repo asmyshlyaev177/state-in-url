@@ -1,12 +1,13 @@
 {
   "compilerOptions": {
-    "target": "ES2022",
+    "target": "ES2023",
     "outDir": "./dist",
     "declaration": true,
     "declarationDir": "./dist",
     "declarationMap": true,
     "sourceMap": true,
     // "rootDir": "./packages",
+    "baseUrl": ".",
     "isolatedModules": true,
     "removeComments": false,
     "moduleResolution": "Bundler",
@@ -18,14 +19,26 @@
       "jest-environment-jsdom",
       "@jest/globals"
     ],
-    "lib": ["ES2023", "ES2021.String", "DOM", "DOM.Iterable"],
+    "lib": ["ES2023", "ES2021.String", "DOM", "DOM.Iterable", "ESNext"],
     "jsx": "preserve",
-    "module": "ES2022",
+    "module": "ESNext",
+    "incremental": true,
+    "resolveJsonModule": true,
+    "allowJs": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "allowSyntheticDefaultImports": true,
     "strict": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "paths": {
+      "shared/tailwind": ["packages/shared/tailwind.ts"],
+      "shared/styles.css": ["packages/shared/styles.css"],
+      "shared/vite-config": ["packages/shared/vite-config.ts"],
+      "shared/components/*": ["packages/shared/components/*"],
+      "shared/components": ["packages/shared/components/index.ts"],
+      "shared/*": ["packages/shared/*"]
+    }
   },
-  "exclude": ["node_modules", "tests/**/*"]
+  "include": ["packages/example-react/vite.config.ts"],
+  "exclude": ["node_modules", "tests/**/*", ".next/**/*"]
 }

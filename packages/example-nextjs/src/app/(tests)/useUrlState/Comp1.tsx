@@ -5,7 +5,11 @@ import { useUrlState } from 'state-in-url/next';
 import { stateShape } from './state';
 
 export const Comp1 = ({ searchParams }: { searchParams?: object }) => {
-  const { state, updateUrl } = useUrlState(stateShape, searchParams);
+  const { state, updateUrl } = useUrlState({
+    defaultState: stateShape,
+    searchParams,
+    replace: false,
+  });
 
   return (
     <div className="flex gap-2">
