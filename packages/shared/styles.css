@@ -18,7 +18,6 @@
 
 @layer base {
   body {
-    /* @apply var(--font-roboto); */
     color: rgb(var(--foreground-rgb));
     background: linear-gradient(
         to bottom,
@@ -32,5 +31,120 @@
 @layer utilities {
   .text-balance {
     text-wrap: balance;
+  }
+}
+
+@layer components {
+  .page-main {
+    @apply bg-gradient-to-b
+     from-orange-200 to-orange-400 p-4;
+
+    & > .wrapper {
+      @apply flex flex-col items-center container ml-auto mr-auto  bg-gradient-to-t from-stone-50 to-white w-full p-2 py-8  xl:max-w-[1100px] lg:px-[4em] rounded-lg lg:pt-6;
+
+      & > .header {
+        @apply min-h-[35vh] md:min-h-[25vh] flex flex-col items-center mb-8;
+
+        .wrapper {
+          @apply text-center min-[452px]:px-8 flex flex-col items-center lg:w-[784px] gap-6 rounded-lg;
+
+          .branding {
+            @apply flex flex-col items-center mx-auto min-[800px]:flex-row min-[800px]:gap-4;
+
+            .logo {
+              @apply relative p-0 block min-w-[150px] min-h-[150px] max-w-[150px] drop-shadow-xl hover:drop-shadow-2xl transition ease-in duration-150;
+            }
+
+            .text {
+              @apply flex flex-col h-full min-h-[150px] justify-evenly;
+
+              .title {
+                @apply text-6xl font-semibold tracking-wide text-neutral-700 mb-2 drop-shadow-sm max-[384px]:text-5xl;
+              }
+
+              .subtitle {
+                @apply text-2xl max-w-[700px] font-light text-neutral-700 mb-2 drop-shadow-sm;
+              }
+            }
+          }
+
+          .desc {
+            @apply text-3xl tracking-wide text-neutral-800 max-w-[700px] mt-2  drop-shadow-sm;
+          }
+        }
+      }
+
+      .demo {
+        @apply bg-white rounded-lg shadow-xl p-2 sm:p-8 max-w-4xl w-full;
+
+        & .header {
+          @apply mb-2;
+
+          & .wrapper {
+            @apply flex justify-between items-center max-[450px]:flex-wrap gap-2;
+
+            .title {
+              @apply text-3xl font-bold text-gray-800;
+            }
+
+            .github-link {
+              @apply order-first min-[450px]:order-last max-[450px]:basis-full flex justify-end;
+            }
+          }
+
+          .urlBox {
+            @apply my-3;
+          }
+        }
+
+        .form-components {
+          @apply flex flex-col md:flex-row gap-8 relative;
+
+          & > .form {
+            @apply flex max-h-[550px] flex-col md:flex-row gap-8 basis-1/2;
+          }
+
+          & > .status {
+            @apply flex-1 w-full max-h-[550px] bg-gray-100 rounded-lg p-4 flex flex-col shadow-md border basis-1/2;
+          }
+        }
+      }
+
+      .codeBlock-wrapper {
+        @apply mt-14;
+      }
+
+      .codeBlock-loader {
+        @apply bg-white min-h-[1466px] min-[384px]:min-h-[1366px] sm:min-h-[1186px] md:min-h-[1126px];
+      }
+    }
+  }
+
+  .codeblock {
+    .shiki {
+      white-space: pre-wrap;
+      word-wrap: break-word;
+    }
+
+    .github-dark {
+      background-color: transparent !important;
+    }
+
+    .line.highlighted {
+      background-color: rgba(148, 148, 148, 0.15);
+      transition: all 0.15s ease-in-out;
+    }
+    &:hover .line.highlighted {
+      background-color: rgba(148, 148, 148, 0.3);
+    }
+
+    .highlighted-word {
+      border-radius: 8%;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      transition: all 0.15s ease-in-out;
+    }
+    &:hover .highlighted-word {
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
   }
 }

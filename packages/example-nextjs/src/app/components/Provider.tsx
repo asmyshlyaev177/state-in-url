@@ -1,7 +1,7 @@
 import { FpjsProvider } from '@fingerprintjs/fingerprintjs-pro-react';
 import React from 'react';
 
-import { isVercel } from './domain';
+import { isVercel } from '../domain';
 
 export const Provider = ({ children }: { children: React.ReactNode }) => {
   return !isVercel ? (

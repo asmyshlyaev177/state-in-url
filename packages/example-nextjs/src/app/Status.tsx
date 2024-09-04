@@ -1,9 +1,9 @@
 'use client';
 import React from 'react';
+import { form } from 'shared/form';
 import { useUrlState } from 'state-in-url/next';
 
 import { SourceCodeBtn } from './components/SourceCodeBtn';
-import { form } from './form';
 
 export const Status = ({
   className,
@@ -12,7 +12,11 @@ export const Status = ({
   className?: string;
   sp?: object;
 }) => {
-  const { state } = useUrlState(form, sp);
+  const { state } = useUrlState({
+    defaultState: form,
+    searchParams: sp,
+    replace: false,
+  });
 
   return (
     <div className={`flex relative shadow-md hover:shadow-lg ${className} `}>
