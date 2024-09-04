@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test';
 
-const urls = ['/react-useSharedState', '/useSharedState'];
+const urls = ['http://localhost:5180', '/useSharedState'];
 
 test.describe('main tests', () => {
   const expectedText = `

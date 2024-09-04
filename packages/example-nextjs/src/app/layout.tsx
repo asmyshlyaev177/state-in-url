@@ -2,7 +2,7 @@ import { Analytics } from '@vercel/analytics/react';
 import type { Metadata } from 'next';
 import { Roboto } from 'next/font/google';
 
-import './globals.css';
+import '../../../shared/styles.css';
 
 import { isVercel, netifyUrl, vercelUrl } from './domain';
 const roboto = Roboto({
@@ -12,7 +12,7 @@ const roboto = Roboto({
   display: 'swap',
 });
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -36,7 +36,7 @@ const meta = {
     'Easily share state between unrelated React components, with IDE autocomplete and TS validation. Without any hasssle or boilerplate.',
 };
 
-export const metadata: Metadata = {
+export const metadata = {
   title: meta.title,
   description: meta.description,
   openGraph: {
@@ -55,4 +55,4 @@ export const metadata: Metadata = {
     locale: 'en_US',
     type: 'website',
   },
-};
+} as Metadata;

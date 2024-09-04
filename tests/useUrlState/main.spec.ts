@@ -2,11 +2,11 @@ import { expect, test } from '@playwright/test';
 
 import { toHaveUrl } from '../testUtils';
 
-// TODO: useIsMounted to deal with hydration errors?
 const urls = [
   '/test-ssr', //  expected hydration error
   '/test-use-client', //  TODO: <<---error, shouldn't be ?
   '/test-ssr-sp',
+  // 'http://localhost:5179', // TODO:
 ];
 
 test.describe('main tests', () => {

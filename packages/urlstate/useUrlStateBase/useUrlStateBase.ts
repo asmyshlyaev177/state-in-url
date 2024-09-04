@@ -112,7 +112,7 @@ function getOtherParams<T extends object>(shape: T) {
 const popstateEv = 'popstate';
 
 // eslint-disable-next-line @typescript-eslint/ban-types
-interface Options extends Object {
+export interface Options extends Object {
   replace?: boolean;
 }
 
