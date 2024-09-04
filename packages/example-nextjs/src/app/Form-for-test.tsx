@@ -1,13 +1,11 @@
 'use client';
 import { useSearchParams } from 'next/navigation';
 import React from 'react';
+import { Field, Input, Tag } from 'shared/components';
+import { form } from 'shared/form';
 import { useUrlState } from 'state-in-url/next';
 
-import { Field } from './components/Field';
-import { Input } from './components/Input';
-import { Tag } from './components/Tag';
-import { form } from './form';
-import { RefreshButton } from './Refresh';
+import { RefreshButton } from './components/Refresh';
 
 export const Form = ({
   className,
@@ -22,11 +20,7 @@ export const Form = ({
   const { state, updateState, updateUrl } = useUrlState({
     defaultState: form,
     searchParams,
-    replace: !sp.get('replace')
-      ? undefined
-      : sp.get('replace') === 'true'
-        ? true
-        : false,
+    replace: sp.get('replace') === 'false' ? false : true,
   });
 
   // set URI when state change
@@ -136,11 +130,7 @@ export const Form = ({
             />
           </Field>
 
-          <Field
-            id="agree to terms"
-            text="Agree to terms"
-            className="flex gap-2"
-          >
+          <Field id="agree to terms" text="Agree to terms">
             <Input
               id="agree to terms"
               type="checkbox"

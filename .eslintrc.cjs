@@ -16,6 +16,12 @@ module.exports = {
       "rules": {
         "max-lines-per-function": ["error", 200]
       }
+    },
+    {
+      "files": ["packages/example-react-router6/**/*"],
+      "rules": {
+        "@typescript-eslint/no-unused-vars": "warn"
+      }
     }
   ]
 

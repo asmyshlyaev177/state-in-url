@@ -1,13 +1,15 @@
+import React from 'react';
+
 export const Field = ({
-  className,
   children,
   text,
   id,
+  className,
 }: {
   children: React.ReactNode;
-  className?: string;
   text: string;
   id: string;
+  className?: string;
 }) => {
   return (
     <div

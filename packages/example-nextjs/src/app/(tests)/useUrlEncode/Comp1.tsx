@@ -4,8 +4,8 @@ import React from 'react';
 import { useUrlEncode } from 'state-in-url';
 
 import { stateShape } from './state';
-import { Textarea } from './Textarea';
 import { fromJSON, toJSON } from './utils';
+import { Textarea } from '../../components/Textarea';
 
 export const Comp1 = ({ className }: { className: string }) => {
   const router = useRouter();

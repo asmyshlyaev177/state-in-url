@@ -97,11 +97,13 @@
     "build:demo": "wireit",
     "start:demo": "npm run build && cd packages/example-nextjs && npm run build && npm run start",
     "kill-next": "wireit",
+    "kill-vite": "wireit",
     "cleanup": "rm -rf dist",
     "reinstall": "rm -rf dist .wireit node_modules packages/example-nextjs/node_modules packages/example-nextjs/.next packages/example-react/node_modules && npm install",
     "setup": "playwright install --with-deps",
     "prepack": "npm run test:unit && npm run build && npm run build:demo",
-    "prepare": "npx husky"
+    "prepare": "npx husky",
+    "preinstall": "npx only-allow npm"
   },
   "wireit": {
     "test": {
@@ -114,16 +116,19 @@
     "kill-next": {
       "command": "ps aux | grep .next | grep -v grep | awk '{print $2}' | xargs kill -9 2>&1; exit 0"
     },
+    "kill-vite": {
+      "command": "ps aux | grep '.bin/vite' | grep -v grep | awk '{print $2}' | xargs kill -9 2>&1; exit 0"
+    },
     "test:int:ci": {
       "command": "playwright test",
       "dependencies": [
-        "example:react"
+        "dev:react"
       ]
     },
     "test:int": {
       "command": "playwright test --project=chromium --retries=2",
       "dependencies": [
-        "example:react"
+        "dev:react"
       ]
     },
     "tsc": {
@@ -166,24 +171,15 @@
       }
     },
     "build:demo": {
-      "dependencies": [
-        "example:react"
-      ],
       "command": "cd packages/example-nextjs && npm run build"
     },
     "dev:react": {
       "command": "cd packages/example-react && npm run dev",
       "service": {
         "readyWhen": {
-          "lineMatches": "✓ built in"
+          "lineMatches": "ready in"
         }
       }
-    },
-    "example:react": {
-      "command": "cd packages/example-react && npm run build",
-      "dependencies": [
-        "build"
-      ]
     },
     "build": {
       "command": "rollup -c rollup.config.js && npm run test:exports",
@@ -262,9 +258,6 @@
     "wireit": "^0.14.4"
   },
   "dependencies": {
-    "@nextui-org/skeleton": "^2.0.31",
-    "@nextui-org/system": "^2.2.5",
-    "@nextui-org/theme": "^2.2.9",
     "framer-motion": "^11.3.30",
     "tailwindcss": "^3.4.10"
   }

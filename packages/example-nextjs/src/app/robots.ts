@@ -8,11 +8,10 @@ export default function robots(): MetadataRoute.Robots {
       userAgent: '*',
       allow: '/',
       disallow: [
-        '/test/',
+        '/useUrlEncode/',
         '/test-ssr/',
         '/test-ssr-sp/',
         '/test-use-client/',
-        '/react-useSharedState/',
         '/useSharedState/',
         '/useUrlState/',
         '/useUrlState/1/',

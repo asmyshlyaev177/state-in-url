@@ -5,19 +5,10 @@
   "type": "module",
   "main": "./src/main.tsx",
   "scripts": {
-    "dev": "npm-watch build",
-    "dev2": "vite --port 5179",
-    "build": "vite build && cp ./dist/index.html ../example-nextjs/public/react.html",
+    "dev": "vite --port 5180",
+    "build": "vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
-  },
-  "watch": {
-    "build": {
-      "patterns": [
-        "src"
-      ],
-      "extensions": "tsx,ts,js,jsx,html,scss,css"
-    }
   },
   "dependencies": {
     "react": "^18.3.1",
@@ -33,11 +24,9 @@
     "eslint": "^8.57.0",
     "eslint-plugin-react-hooks": "^4.6.2",
     "eslint-plugin-react-refresh": "^0.4.7",
-    "npm-watch": "^0.13.0",
     "postcss": "^8.4.39",
     "tailwindcss": "^3.4.6",
     "typescript": "^5.2.2",
-    "vite": "^5.3.4",
-    "vite-plugin-singlefile": "^2.0.2"
+    "vite": "^5.3.4"
   }
 }

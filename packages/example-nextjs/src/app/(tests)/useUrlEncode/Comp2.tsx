@@ -4,8 +4,8 @@ import React from 'react';
 import { useUrlEncode } from 'state-in-url';
 
 import { stateShape } from './state';
-import { Textarea } from './Textarea';
 import { toJSON } from './utils';
+import { Textarea } from '../../components/Textarea';
 
 export const Comp2 = ({ className }: { className: string }) => {
   const searchParams = useSearchParams();

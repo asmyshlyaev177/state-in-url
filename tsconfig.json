@@ -1,5 +1,5 @@
 {
   "extends": "./tsconfig.base.json",
-  "include": ["packages/urlstate/index.ts"],
+  "include": ["packages/urlstate/index.ts", "packages/shared"],
   "exclude": ["node_modules", "tests/**/*"]
 }
