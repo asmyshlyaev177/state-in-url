@@ -125,7 +125,7 @@ export function parseJSON<T extends JSONCompatible>(
   }
 }
 
-const isEncoded = (val: unknown) =>
-  new RegExp(
-    `^(${SYMBOLS.string}|${SYMBOLS.boolean}|${SYMBOLS.null}|${SYMBOLS.undefined}|${SYMBOLS.number}|${SYMBOLS.date})`,
-  ).test(String(val));
+const encReg = new RegExp(
+  `^(${SYMBOLS.string}|${SYMBOLS.boolean}|${SYMBOLS.null}|${SYMBOLS.undefined}|${SYMBOLS.number}|${SYMBOLS.date})`,
+);
+const isEncoded = (val: unknown) => encReg.test(String(val));

@@ -1,9 +1,10 @@
 'use client';
 import React from 'react';
-import { Field, Input, RefreshButton } from 'shared/components';
+import { Field, Input } from 'shared/components';
 import { form } from 'shared/form';
 import { useUrlState } from 'state-in-url/next';
 
+import { RefreshButton } from './components/Refresh';
 import { SourceCodeBtn } from './components/SourceCodeBtn';
 import { Tag } from './components/Tag';
 
