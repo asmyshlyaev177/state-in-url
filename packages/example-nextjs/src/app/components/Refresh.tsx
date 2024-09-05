@@ -1,7 +1,17 @@
 'use client';
 
-import { RefreshButton as ButtonBase } from 'shared/components/Refresh';
+import { Button } from 'shared/components/Button';
 
 export const RefreshButton = ({ className }: { className?: string }) => {
-  return <ButtonBase className={className} />;
+  return (
+    <Button
+      onClick={() => {
+        window.location.reload();
+      }}
+      className={`font-extrabold bg-orange-700 text-lg justify-center ${className}`}
+      name="Reload page"
+    >
+      Reload page
+    </Button>
+  );
 };
