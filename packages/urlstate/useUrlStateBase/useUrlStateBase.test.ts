@@ -227,7 +227,7 @@ describe('useUrlStateBase', () => {
 
         expect(result.current.state).toStrictEqual({ ...shape, num: 50 });
         expect(router.push).toHaveBeenCalledTimes(1);
-        expect(router.push).toHaveBeenNthCalledWith(1, '/?num=%E2%88%9350', {});
+        expect(router.push).toHaveBeenNthCalledWith(1, '/?num=50', {});
       });
 
       it('partial shape', () => {
@@ -240,7 +240,7 @@ describe('useUrlStateBase', () => {
 
         expect(result.current.state).toStrictEqual({ ...shape, num: 50 });
         expect(router.push).toHaveBeenCalledTimes(1);
-        expect(router.push).toHaveBeenNthCalledWith(1, '/?num=%E2%88%9350', {});
+        expect(router.push).toHaveBeenNthCalledWith(1, '/?num=50', {});
       });
 
       it('no arg, should reset', () => {
@@ -256,7 +256,7 @@ describe('useUrlStateBase', () => {
 
         expect(result.current.state).toStrictEqual({ ...shape, num: 50 });
         expect(router.push).toHaveBeenCalledTimes(1);
-        expect(router.push).toHaveBeenNthCalledWith(1, '/?num=%E2%88%9350', {});
+        expect(router.push).toHaveBeenNthCalledWith(1, '/?num=50', {});
       });
     });
 
@@ -270,7 +270,7 @@ describe('useUrlStateBase', () => {
 
       expect(result.current.state).toStrictEqual({ ...shape, num: 50 });
       expect(router.push).toHaveBeenCalledTimes(1);
-      expect(router.push).toHaveBeenNthCalledWith(1, '/?num=%E2%88%9350', {});
+      expect(router.push).toHaveBeenNthCalledWith(1, '/?num=50', {});
     });
 
     it('do not update if url same', () => {
@@ -302,11 +302,7 @@ describe('useUrlStateBase', () => {
       });
 
       expect(router.push).toHaveBeenCalledTimes(1);
-      expect(router.push).toHaveBeenNthCalledWith(
-        1,
-        `/?num=%E2%88%9355${hash}`,
-        {},
-      );
+      expect(router.push).toHaveBeenNthCalledWith(1, `/?num=55${hash}`, {});
     });
 
     it('replace and options', () => {
@@ -324,7 +320,7 @@ describe('useUrlStateBase', () => {
 
       expect(result.current.state).toStrictEqual(newState);
       expect(router.replace).toHaveBeenCalledTimes(1);
-      expect(router.replace).toHaveBeenNthCalledWith(1, '/?num=%E2%88%9350', {
+      expect(router.replace).toHaveBeenNthCalledWith(1, '/?num=50', {
         scroll: true,
         someOpt: 123,
       });

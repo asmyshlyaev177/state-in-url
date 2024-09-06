@@ -4,7 +4,7 @@ import { type JSONCompatible } from '../utils';
 describe('encodeState', () => {
   it('should encode a simple state object', () => {
     const state = { str: 'test', num: 123, bool: true };
-    const expected = 'str=%E2%97%96test&num=%E2%88%93123&bool=%F0%9F%97%B5true';
+    const expected = 'str=%27test%27&num=123&bool=true';
     expect(state).toStrictEqual(decodeState(encodeState(state)));
     expect(encodeState(state)).toEqual(expected);
   });
@@ -15,24 +15,28 @@ describe('encodeState', () => {
       num: 123,
       nested: { bool: true, arr: [1, 2, 3] },
     };
-    const expected =
-      'str=%E2%97%96test&num=%E2%88%93123&nested=%7B%27bool%27%3A%27%F0%9F%97%B5true%27%2C%27arr%27%3A%5B%27%E2%88%931%27%2C%27%E2%88%932%27%2C%27%E2%88%933%27%5D%7D';
     expect(state).toStrictEqual(decodeState(encodeState(state)));
+
+    const expected =
+      'str=%27test%27&num=123&nested=%7B%27bool%27%3Atrue%2C%27arr%27%3A%5B1%2C2%2C3%5D%7D';
     expect(encodeState(state)).toEqual(expected);
   });
 
   it('should encode a state object with default values', () => {
     const state = { str: 'test', num: 123, bool: true, arr: [111, 'str'] };
     const defaults = { str: '', num: 0, bool: false };
-    const expected =
-      'str=%E2%97%96test&num=%E2%88%93123&bool=%F0%9F%97%B5true&arr=%5B%27%E2%88%93111%27%2C%27%E2%97%96str%27%5D';
 
-    expect(encodeState(state, defaults)).toEqual(expected);
+    expect(decodeState(encodeState(state, defaults))).toEqual(state);
+
+    const expected =
+      'str=%27test%27&num=123&bool=true&arr=%5B111%2C%27str%27%5D';
+    expect(encodeState(state, defaults)).toStrictEqual(expected);
+
     expect(encodeState({ ...state, bool: false }, defaults)).toEqual(
-      'str=%E2%97%96test&num=%E2%88%93123&arr=%5B%27%E2%88%93111%27%2C%27%E2%97%96str%27%5D',
+      'str=%27test%27&num=123&arr=%5B111%2C%27str%27%5D',
     );
     expect(encodeState({ ...state, bool: false, str: '' }, defaults)).toEqual(
-      'num=%E2%88%93123&arr=%5B%27%E2%88%93111%27%2C%27%E2%97%96str%27%5D',
+      'num=123&arr=%5B111%2C%27str%27%5D',
     );
   });
 
@@ -42,16 +46,14 @@ describe('encodeState', () => {
     const defaults = { str: '', num: 0, bool: false };
 
     expect(encodeState(state, defaults, existing)).toEqual(
-      'key1=value1&key2=value2&str=%E2%97%96test&num=%E2%88%93123&bool=%F0%9F%97%B5true',
+      'key1=value1&key2=value2&str=%27test%27&num=123&bool=true',
     );
     expect(
       encodeState(state, null as unknown as typeof state, existing),
-    ).toEqual(
-      'key1=value1&key2=value2&str=%E2%97%96test&num=%E2%88%93123&bool=%F0%9F%97%B5true',
-    );
+    ).toEqual('key1=value1&key2=value2&str=%27test%27&num=123&bool=true');
     expect(
       encodeState(state, defaults, null as unknown as URLSearchParams),
-    ).toEqual('str=%E2%97%96test&num=%E2%88%93123&bool=%F0%9F%97%B5true');
+    ).toEqual('str=%27test%27&num=123&bool=true');
   });
 
   it('should return an empty string for an empty state object', () => {
@@ -71,7 +73,7 @@ describe('decodeState', () => {
 
   it('should decode a state object with nested values', () => {
     const uriString =
-      'key1=%E2%97%96value1&key2={"nestedKey":"%E2%97%96nestedValue"}';
+      'key1=%27value1%27&key2=%7B%27nestedKey%27%3A%27nestedValue%27%7D';
     const expected = { key1: 'value1', key2: { nestedKey: 'nestedValue' } };
     const result = decodeState<typeof expected>(uriString);
     expect(result).toEqual(expected);
@@ -92,7 +94,7 @@ describe('decodeState', () => {
     const defaults2 = { str: '', num: 0, bool: false, arr: [0, ''] };
     expect(
       decodeState(
-        'str=%E2%97%96test&num=%E2%88%93123&bool=%F0%9F%97%B5true&arr=%5B%27%E2%88%931%27%2C%27str%27%5D',
+        'str=%27test%27&num=123&bool=true&arr=%5B1%2C%27str%27%5D',
         defaults2,
       ),
     ).toStrictEqual(state);
@@ -102,22 +104,18 @@ describe('decodeState', () => {
     it('when one nested value invalid and replace with defaults', () => {
       const state = { str: 'test', num: 123, bool: true, arr: [1, 'str'] };
       const defaults2 = { str: '', num: 0, bool: false, arr: [0, ''] };
+
       expect(
-        decodeState(
-          'str=%E2%97%96test&num=%E2%88%93123&bool=%F0%9F%97%B5true&arr=%57str%27%5D',
-          defaults2,
-        ),
+        decodeState('str=%27test%27&num=123&bool=true&arr=%5B1%2', defaults2),
       ).toStrictEqual({ ...state, arr: defaults2.arr });
     });
 
     it('when 2 values invalid and replace with defaults', () => {
       const state = { str: 'test', num: 123, bool: true, arr: [1, 'str'] };
       const defaults2 = { str: '', num: 0, bool: false, arr: [0, ''] };
+
       expect(
-        decodeState(
-          'str=%E2%97%96test&num=%E23123&bool=%F0%9F%97%B5true&arr=%57str%27%5D',
-          defaults2,
-        ),
+        decodeState('str=%27test%27&bool=true&arr=%5B1%2C%2&num=', defaults2),
       ).toStrictEqual({ ...state, arr: defaults2.arr, num: defaults2.num });
     });
   });

@@ -58,7 +58,7 @@ describe('useUrlEncode', () => {
     };
     // no bool1 here because it is false here and in stateShape
     const stateStr =
-      'str=%E2%97%96string1&num=%E2%88%933333&float=%E2%88%933.14&bool2=%F0%9F%97%B5true&obj=%7B%27test%27%3A%27%E2%88%93123%27%7D&arr=%5B%27%E2%88%931%27%2C%27%E2%88%932%27%2C%27%E2%88%933%27%5D';
+      'str=%27string1%27&num=3333&float=3.14&bool2=true&obj=%7B%27test%27%3A123%7D&arr=%5B1%2C2%2C3%5D';
 
     describe('stringify', () => {
       it('should return nothing if initial state not changed', () => {
@@ -70,10 +70,14 @@ describe('useUrlEncode', () => {
       it('should return stringify changed keys', () => {
         const { result } = renderHook(() => useUrlEncode(stateShape));
 
+        expect(result.current.parse(result.current.stringify(state))).toEqual(
+          state,
+        );
+
         expect(result.current.stringify(state)).toEqual(stateStr);
         expect(
           result.current.stringify({ ...stateShape, str: 'my string %' }),
-        ).toEqual('str=%E2%97%96my%2520string%2520%2525');
+        ).toEqual('str=%27my+string+%25%27');
       });
     });
 
@@ -103,7 +107,7 @@ describe('useUrlEncode', () => {
       params.set('key', 'value');
       const { result } = renderHook(() => useUrlEncode(stateShape));
 
-      const expected = 'key=value&str=%E2%97%96some%2520string';
+      const expected = 'key=value&str=%27some+string%27';
       expect(
         result.current.stringify({ ...stateShape, str: 'some string' }, params),
       ).toEqual(expected);
