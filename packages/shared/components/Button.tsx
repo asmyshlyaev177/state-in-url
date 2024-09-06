@@ -1,3 +1,8 @@
+import { clsx } from 'clsx';
+
+// @ts-expect-error ccs module
+import styles from './Button.module.css';
+
 export const Button = ({
   className,
   children,
@@ -8,10 +13,7 @@ export const Button = ({
   return (
     <button
       disabled={disabled}
-      className={`w-full flex justify-center py-2 px-4 border border-transparent
-         rounded-md shadow-sm text-sm font-medium text-white bg-orange-600
-          hover:bg-orange-800 focus:outline-none focus:ring-2
-           focus:ring-offset-2 focus:ring-orange-500 ${className}`}
+      className={clsx(styles.button, className)}
       name={name}
       {...props}
     >

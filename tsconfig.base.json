@@ -39,6 +39,10 @@
       "shared/*": ["packages/shared/*"]
     }
   },
-  "include": ["packages/example-react/vite.config.ts"],
+  "include": [
+    "packages/example-react/vite.config.ts",
+    "typings.d.ts",
+    "packages/shared"
+  ],
   "exclude": ["node_modules", "tests/**/*", ".next/**/*"]
 }

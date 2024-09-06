@@ -1,12 +1,10 @@
 'use client';
 import React from 'react';
-import { Field, Input } from 'shared/components';
+import { Field, Input, RefreshButton, Tag } from 'shared/components';
 import { form } from 'shared/form';
 import { useUrlState } from 'state-in-url/next';
 
-import { RefreshButton } from './components/Refresh';
 import { SourceCodeBtn } from './components/SourceCodeBtn';
-import { Tag } from './components/Tag';
 
 export const Form = ({
   className,
