@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.3.0](https://github.com/asmyshlyaev177/state-in-url/compare/v2.2.5...v2.3.0) (2024-09-06)
+
+
+### Features
+
+* improve encoder algo, smaller URI strings and less complexity ([193e8c7](https://github.com/asmyshlyaev177/state-in-url/commit/193e8c74da74cfde4032c5b7beecfff5b1e4a487))
+
 ### [2.2.5](https://github.com/asmyshlyaev177/state-in-url/compare/v2.2.4...v2.2.5) (2024-08-21)
 
 ### [2.2.4](https://github.com/asmyshlyaev177/state-in-url/compare/v2.2.3...v2.2.4) (2024-08-18)

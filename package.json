@@ -1,6 +1,6 @@
 {
   "name": "state-in-url",
-  "version": "2.2.5",
+  "version": "2.3.0",
   "description": "Library to store state in browser URL, includes hook for NextJS, hook for pure React, and low level helpers. https://state-in-url-asmyshlyaev177.vercel.app/",
   "homepage": "https://github.com/asmyshlyaev177/state-in-url#readme",
   "keywords": [
@@ -158,6 +158,14 @@
       "dependencies": [
         "cleanup"
       ]
+    },
+    "dev:react-router": {
+      "command": "cd packages/example-react-router6 && npm run dev",
+      "service": {
+        "readyWhen": {
+          "lineMatches": "ready in"
+        }
+      }
     },
     "dev:nextjs": {
       "command": "cd packages/example-nextjs && npm run dev",
