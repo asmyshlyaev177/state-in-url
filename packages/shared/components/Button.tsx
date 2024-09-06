@@ -1,6 +1,7 @@
 import { clsx } from 'clsx';
 
-// @ts-expect-error ccs module
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 import styles from './Button.module.css';
 
 export const Button = ({
