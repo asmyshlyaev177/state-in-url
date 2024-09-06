@@ -4,6 +4,7 @@ import sourcemaps from 'rollup-plugin-sourcemaps';
 import typescript from '@rollup/plugin-typescript';
 import filesize from 'rollup-plugin-filesize';
 import { glob } from 'glob'
+import config from './tsconfig.json'
 
 const isProduction = !process.env.IS_DEVELOPMENT;
 const sourcemap = !isProduction;
@@ -19,7 +20,7 @@ const plugins = [
   }),
   typescript({
     tsconfig: './tsconfig.json',
-    compilerOptions: { sourceMap: sourcemap, declarationMap: sourcemap },
+    compilerOptions: { ...config.compilerOptions, sourceMap: sourcemap, declarationMap: sourcemap },
   }),
 
   !isProduction && sourcemaps(),

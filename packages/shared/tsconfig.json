@@ -2,12 +2,7 @@
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "noEmit": true,
-    "plugins": [
-      {
-        "name": "next"
-      },
-      { "name": "typescript-plugin-css-modules" }
-    ]
+    "plugins": [{ "name": "typescript-plugin-css-modules" }]
   },
   "include": [
     "next-env.d.ts",
@@ -15,7 +10,7 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "../shared/form.ts",
-    "./global.d.ts"
+    "./typings.d.ts"
   ],
   "exclude": ["node_modules"]
 }

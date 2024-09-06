@@ -1,3 +1,8 @@
+import { clsx } from 'clsx';
+
+// @ts-expect-error ccs module
+import styles from './Tag.module.css';
+
 export const Tag = ({
   text,
   onClick,
@@ -10,15 +15,7 @@ export const Tag = ({
   return (
     <button
       onClick={onClick}
-      className={`px-3 py-1 text-grey-600 rounded-full
-        text-sm font-medium
-        focus:outline-none focus:ring-2 focus:ring-offset-2
-        focus:ring-orange-500
-        ${
-          active
-            ? `bg-orange-100 text-orange-800 hover:text-white hover:bg-[#ad6400] `
-            : `bg-gray-300 hover:bg-orange-100`
-        }`}
+      className={clsx(styles.tag, active && styles.active)}
     >
       {text}
     </button>
