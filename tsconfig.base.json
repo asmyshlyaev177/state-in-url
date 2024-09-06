@@ -40,9 +40,9 @@
     }
   },
   "include": [
-    "packages/example-react/vite.config.ts",
-    "typings.d.ts",
-    "packages/shared"
+    "./packages/example-react/vite.config.ts",
+    "./typings.d.ts",
+    "./packages/shared"
   ],
   "exclude": ["node_modules", "tests/**/*", ".next/**/*"]
 }
