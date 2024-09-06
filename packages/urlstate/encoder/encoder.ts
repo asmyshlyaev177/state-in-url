@@ -11,52 +11,21 @@ import { type JSONCompatible, typeOf } from '../utils';
  */
 export function encode(payload: unknown): string {
   if (isEncoded(payload)) {
-    return String(payload);
+    return payload as string;
   }
 
-  const type = typeOf(payload);
-
-  switch (type) {
+  switch (typeOf(payload)) {
     case 'function':
     case 'symbol':
       return '';
     case 'date':
       return encodeDate(payload as Date);
-    case 'string':
-      return `${SYMBOLS.string}${encodeURIComponent(payload as string)}`;
-    case 'number':
-      return SYMBOLS.number + String(payload as number);
-    case 'boolean':
-      return SYMBOLS.boolean + String(payload as boolean);
-    case 'object':
-    case 'array':
-      return JSON.stringify(payload as object, replacer).replaceAll('"', "'");
-    case 'null':
-      return SYMBOLS.null;
     case 'undefined':
       return SYMBOLS.undefined;
     default:
-      return String(payload);
+      return JSON.stringify(payload).replaceAll('"', "'");
   }
 }
-
-export const replacer = (_key: string, value: unknown) => {
-  const type = typeOf(value);
-
-  let _value = structuredClone(value);
-
-  if (type === 'object' || type === 'array') {
-    _value = _value as object | Array<unknown>;
-    Object.keys(_value as object | Array<unknown>).forEach((_key) => {
-      const val = (_value as { [key: string]: unknown })[_key] as Date;
-
-      if (typeOf(val) === 'date') {
-        (_value as { [key: string]: unknown })[_key] = encodeDate(val);
-      }
-    });
-  }
-  return type !== 'object' && type !== 'array' ? encode(_value) : _value;
-};
 
 function encodeDate(val: Date) {
   return SYMBOLS.date + new Date(val).toISOString();
@@ -81,14 +50,16 @@ export function decode<T>(payload: string, fallback?: T) {
 }
 
 export const decodePrimitive = (str: string) => {
-  if (str === SYMBOLS.null) return null;
   if (str === SYMBOLS.undefined) return undefined;
+  if (str?.startsWith?.(SYMBOLS.date)) return new Date(str.slice(1));
+
+  // For backward compatibility
+  // TODO: remove
+  if (str === SYMBOLS.null) return null;
   if (str?.startsWith?.(SYMBOLS.number))
     return Number.parseFloat(str.replace(SYMBOLS.number, ''));
   if (str?.startsWith?.(SYMBOLS.boolean))
     return str.includes('true') ? true : false;
-  if (str?.startsWith?.(SYMBOLS.date)) return new Date(str.slice(1));
-
   if (str?.startsWith?.(SYMBOLS.string))
     return decodeURIComponent(str).replace(/^◖/, '');
 

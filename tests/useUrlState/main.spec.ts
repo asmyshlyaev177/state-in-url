@@ -11,7 +11,7 @@ const urls = [
 
 test.describe('main tests', () => {
   const expectedUrl =
-    '?name=%E2%97%96My%2520Name&age=%E2%88%9333&agree+to+terms=%F0%9F%97%B5true&tags=%5B%7B%27id%27%3A%27%E2%97%961%27%2C%27value%27%3A%7B%27text%27%3A%27%E2%97%96React.js%27%2C%27time%27%3A%27%E2%8F%B22024-07-17T04%3A53%3A17.000Z%27%7D%7D%5D';
+    '?name=%27My+Name%27&age=33&agree+to+terms=true&tags=%5B%7B%27id%27%3A%271%27%2C%27value%27%3A%7B%27text%27%3A%27React.js%27%2C%27time%27%3A%272024-07-17T04%3A53%3A17.000Z%27%7D%7D%5D';
   const expectedText = `{
       "name": "My Name",
       "age": 33,

@@ -24,7 +24,6 @@ describe('encoder', () => {
   describe('string', () => {
     it('simple', () => {
       expect('').toStrictEqual(decode(encode('')));
-      expect(encode('')).toStrictEqual('◖');
       expect(decode(encode('test'))).toStrictEqual('test');
     });
 
@@ -40,8 +39,8 @@ describe('encoder', () => {
       const num2 = 5.55;
       expect(num1).toStrictEqual(decode(encode(num1)));
       expect(num2).toStrictEqual(decode(encode(num2)));
-      expect(encode(num1)).toStrictEqual('∓5');
-      expect(encode(num2)).toStrictEqual('∓5.55');
+      expect(encode(num1)).toStrictEqual('5');
+      expect(encode(num2)).toStrictEqual('5.55');
     });
   });
 
@@ -54,7 +53,7 @@ describe('encoder', () => {
 
     it('iso string', () => {
       const d = '2024-06-28T09:10:38.763Z';
-      expect(encode(d)).toStrictEqual('◖2024-06-28T09%3A10%3A38.763Z');
+      expect(encode(d)).toStrictEqual("'2024-06-28T09:10:38.763Z'");
       expect(decode(encode(d))).toStrictEqual(d);
     });
   });
@@ -62,13 +61,13 @@ describe('encoder', () => {
   it('boolean', () => {
     expect(decode(encode(true))).toStrictEqual(true);
     expect(decode(encode(false))).toStrictEqual(false);
-    expect(encode(true)).toStrictEqual('🗵true');
-    expect(encode(false)).toStrictEqual('🗵false');
+    expect(encode(true)).toStrictEqual('true');
+    expect(encode(false)).toStrictEqual('false');
   });
 
   it('null', () => {
     expect(decode(encode(null))).toStrictEqual(null);
-    expect(encode(null)).toStrictEqual('∙null');
+    expect(encode(null)).toStrictEqual('null');
   });
 
   it('undefined', () => {
@@ -81,7 +80,7 @@ describe('encoder', () => {
       const obj = { num: 123, float: 1.55, bool1: false };
       expect(decode(encode(obj))).toStrictEqual(obj);
       expect(encode(obj)).toStrictEqual(
-        "{'num':'∓123','float':'∓1.55','bool1':'🗵false'}",
+        "{'num':123,'float':1.55,'bool1':false}",
       );
     });
 
@@ -110,7 +109,7 @@ describe('encoder', () => {
       expect(decode(encode(obj))).toStrictEqual(obj);
 
       expect(encode(obj)).toStrictEqual(
-        "{'num':'∓123','num2':'∓3.14','b1':'🗵true','b2':'🗵false','str':'◖test%20string','n':'∙null','obj1':{'obj2':{'str':'◖my_str','n':'∓123','n2':'∓-12.3','b':'🗵false','b1':'🗵true','dateIso':'◖2020-01-01T00%3A00%3A00.000Z'}},'dateIso':'◖2022-01-01T00%3A00%3A00.000Z'}",
+        "{'num':123,'num2':3.14,'b1':true,'b2':false,'str':'test string','n':null,'obj1':{'obj2':{'str':'my_str','n':123,'n2':-12.3,'b':false,'b1':true,'dateIso':'2020-01-01T00:00:00.000Z'}},'dateIso':'2022-01-01T00:00:00.000Z'}",
       );
       expect(
         decode(
@@ -123,23 +122,26 @@ describe('encoder', () => {
   describe('array', () => {
     it('simple', () => {
       const obj = [123, 1.55, false];
-      const expected = "['∓123','∓1.55','🗵false']";
+      const expected = '[123,1.55,false]';
+      expect(decode(encode(obj))).toStrictEqual(obj);
       expect(decode(expected)).toStrictEqual(obj);
       expect(encode(obj)).toStrictEqual(expected);
     });
 
     it('nested', () => {
       const obj = [123, [45, true, { arr: [1, 2, { test: true }, null] }]];
+
       expect(decode(encode(obj))).toStrictEqual(obj);
       expect(encode(obj)).toStrictEqual(
-        "['∓123',['∓45','🗵true',{'arr':['∓1','∓2',{'test':'🗵true'},'∙null']}]]",
+        "[123,[45,true,{'arr':[1,2,{'test':true},null]}]]",
       );
     });
 
     it('array with invalid value', () => {
       const expected = [1, 'str'];
-      expect(decode("['∓1','str']", expected)).toStrictEqual(expected);
-      expect(decode("['∓1','str']")).toStrictEqual(expected);
+      expect(decode(encode(expected))).toStrictEqual(expected);
+      expect(decode("[1,'str']", expected)).toStrictEqual(expected);
+      expect(decode("[1,'str']")).toStrictEqual(expected);
     });
   });
 

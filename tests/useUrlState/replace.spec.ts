@@ -21,7 +21,7 @@ test('replace arg === true', async ({ page }) => {
     await page.getByLabel('name').focus();
     await page.getByLabel('name').pressSequentially(name, { delay: 150 });
 
-    const expectedUrl = `?replace=true&name=%E2%97%96My%2520Name`;
+    const expectedUrl = `?replace=true&name=%27My+Name%27`;
     await toHaveUrl(page, `${url}${expectedUrl}`);
 
     // click back
@@ -54,7 +54,7 @@ test('replace arg === false', async ({ page }) => {
     await page.getByLabel('name').focus();
     await page.getByLabel('name').pressSequentially(name, { delay: 150 });
 
-    const expectedUrl = `?replace=false&name=%E2%97%96My%2520Name`;
+    const expectedUrl = `?replace=false&name=%27My+Name%27`;
     await toHaveUrl(page, `${url}${expectedUrl}`);
 
     // click back
@@ -87,7 +87,7 @@ test('replace arg true by default', async ({ page }) => {
     await page.getByLabel('name').focus();
     await page.getByLabel('name').pressSequentially(name, { delay: 150 });
 
-    const expectedUrl = `?name=%E2%97%96My%2520Name`;
+    const expectedUrl = `?name=%27My+Name%27`;
     await toHaveUrl(page, `${url}${expectedUrl}`);
 
     // click back

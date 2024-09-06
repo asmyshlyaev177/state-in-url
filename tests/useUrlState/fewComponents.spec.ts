@@ -17,7 +17,7 @@ test.describe('few components tests', () => {
         errorLogs.push({ text: message.text() });
       }
     });
-    const url = `${URL1}?perPage=∓20`;
+    const url = `${URL1}?perPage=20`;
     await page.goto(url);
     await page.waitForSelector('[data-testid="link"]');
 
@@ -46,7 +46,7 @@ test.describe('few components tests', () => {
       await expect(page.getByTestId('select').nth(0)).toHaveValue('30');
       await expect(page.getByTestId('select').nth(1)).toHaveValue('30');
 
-      await toHaveUrl(page, `${url}?perPage=∓30`);
+      await toHaveUrl(page, `${url}?perPage=30`);
 
       await expect(errorLogs).toHaveLength(0);
     });
@@ -67,7 +67,7 @@ test.describe('few components tests', () => {
       await expect(page.getByTestId('select').nth(0)).toHaveValue('30');
       await expect(page.getByTestId('select').nth(1)).toHaveValue('30');
 
-      await toHaveUrl(page, `${url}?perPage=∓30`);
+      await toHaveUrl(page, `${url}?perPage=30`);
 
       await expect(errorLogs).toHaveLength(0);
     });
@@ -86,7 +86,7 @@ test.describe('few components tests', () => {
 
     await page.getByTestId('select').nth(0).selectOption('30');
 
-    await toHaveUrl(page, `${url}?perPage=∓30`);
+    await toHaveUrl(page, `${url}?perPage=30`);
 
     await expect(page.getByTestId('select').nth(0)).toHaveValue('30');
     await expect(page.getByTestId('select').nth(1)).toHaveValue('30');
@@ -97,7 +97,7 @@ test.describe('few components tests', () => {
     await expect(page.getByTestId('select').nth(1)).toHaveValue('10');
 
     await page.goForward();
-    await toHaveUrl(page, `${url}?perPage=∓30`);
+    await toHaveUrl(page, `${url}?perPage=30`);
 
     await expect(page.getByTestId('select').nth(0)).toHaveValue('30');
     await expect(page.getByTestId('select').nth(1)).toHaveValue('30');
@@ -113,7 +113,7 @@ test.describe('few components tests', () => {
           errorLogs.push({ text: message.text() });
         }
       });
-      const url1 = `${URL1}?perPage=∓30`;
+      const url1 = `${URL1}?perPage=30`;
       await page.goto(url1);
       await page.waitForSelector(`[data-testid="${link}"]`);
 
@@ -138,8 +138,8 @@ test.describe('few components tests', () => {
           errorLogs.push({ text: message.text() });
         }
       });
-      const url1 = `${URL1}?perPage=∓30`;
-      const url2 = `${URL2}?perPage=∓30`;
+      const url1 = `${URL1}?perPage=30`;
+      const url2 = `${URL2}?perPage=30`;
       await page.goto(url1);
       await page.waitForSelector(`[data-testid="${linkQs}"]`);
 
@@ -164,8 +164,8 @@ test.describe('few components tests', () => {
           errorLogs.push({ text: message.text() });
         }
       });
-      const url1 = `${URL1}?perPage=∓30`;
-      const url2 = `${URL2}?perPage=∓30`;
+      const url1 = `${URL1}?perPage=30`;
+      const url2 = `${URL2}?perPage=30`;
       await page.goto(url1);
       await page.waitForSelector(`[data-testid="${linkQsClient}"]`);
 

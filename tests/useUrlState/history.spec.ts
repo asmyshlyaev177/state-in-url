@@ -6,12 +6,12 @@ const urls = ['/test-ssr', '/test-use-client', '/test-ssr-sp'];
 
 test('go back/forward', async ({ page }) => {
   for (const url of urls) {
-    // const errorLogs: unknown[] = [];
-    // page.on('console', (message) => {
-    //   if (message.type() === 'error') {
-    //     errorLogs.push(message.text());
-    //   }
-    // });
+    const errorLogs: unknown[] = [];
+    page.on('console', (message) => {
+      if (message.type() === 'error') {
+        errorLogs.push(message.text());
+      }
+    });
 
     const _url = `${url}?replace=false`;
     await page.goto(_url);
@@ -27,7 +27,7 @@ test('go back/forward', async ({ page }) => {
       "tags": []
     }`;
 
-    const expectedUrl = `?replace=false&name=%E2%97%96My%2520Name`;
+    const expectedUrl = `?replace=false&name=%27My+Name%27`;
     await toHaveUrl(page, `${url}${expectedUrl}`);
 
     await expect(page.getByTestId('parsed')).toHaveText(expectedText);
@@ -46,6 +46,6 @@ test('go back/forward', async ({ page }) => {
     await page.goForward();
     await toHaveUrl(page, `${url}${expectedUrl}`);
 
-    // expect(errorLogs).toHaveLength(0);
+    expect(errorLogs).toHaveLength(0);
   }
 });

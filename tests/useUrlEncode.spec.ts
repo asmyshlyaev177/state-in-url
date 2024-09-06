@@ -28,7 +28,7 @@ test('useUrlEncode', async ({ page }) => {
 
   await page.waitForURL(/\?str=/);
 
-  const expectedUrl = `?str=%E2%97%96some%2520string%2520%21%2525%255E%257B%257D%253E%253F&bool=%F0%9F%97%B5true&numb1=%E2%88%933&numb2=%E2%88%933.141414&arr=%5B%27%E2%88%931%27%2C%27%E2%97%962%27%2C%27%E2%97%96str%27%5D&obj=%7B%27prop%27%3A%5B%27%E2%88%935%27%2C%27%E2%88%936%27%2C%27%E2%88%937%27%5D%7D`;
+  const expectedUrl = `?str=%27some+string+%21%25%5E%7B%7D%3E%3F%27&bool=true&numb1=3&numb2=3.141414&arr=%5B1%2C%272%27%2C%27str%27%5D&obj=%7B%27prop%27%3A%5B5%2C6%2C7%5D%7D`;
   await toHaveUrl(page, `${url}${expectedUrl}`);
 
   await expect(await page.getByTestId('parsed')).toHaveText(encoded, {
