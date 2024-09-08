@@ -1,3 +1,16 @@
+# Changelog
+
+All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+
+## [2.4.0](https://github.com/asmyshlyaev177/state-in-url/compare/v2.2.5...v2.4.0) (2024-09-08)
+
+
+### Features
+
+* improve encoder algo, smaller URI strings and less complexity ([193e8c7](https://github.com/asmyshlyaev177/state-in-url/commit/193e8c74da74cfde4032c5b7beecfff5b1e4a487))
+* semantic release ([235b422](https://github.com/asmyshlyaev177/state-in-url/commit/235b422023e55597a8520a016135d6106806589d))
+* test release ([8c56246](https://github.com/asmyshlyaev177/state-in-url/commit/8c56246e08fd15fe7b71260336555a2764ebe5bf))
+
 ### Changelog
 
 All notable changes to this project will be documented in this file. Dates are displayed in UTC.
