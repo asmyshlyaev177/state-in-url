@@ -1,9 +1,9 @@
-name: Tests
+name: Release
 on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+  # push:
+  #   branches: [ main ]
+  # pull_request:
+  #   branches: [ main ]
   workflow_dispatch:
     branches: [ main ]
   repository_dispatch:
@@ -41,15 +41,7 @@ jobs:
         cache: 'npm'
         cache-dependency-path: 'package-lock.json'
     - name: Install dependencies
-      run: npm clean-install && npx cross-env HOME=/root PLAYWRIGHT_BROWSERS_PATH=0 npx playwright install chromium firefox webkit
-    - name: Unit tests
-      run: npm run test:unit
-    - name: Run codacy-coverage-reporter
-      uses: codacy/codacy-coverage-reporter-action@v1.3.0
-      continue-on-error: true
-      with:
-        project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
-        coverage-reports: coverage-reports/lcov.info
+      run: npm clean-install
     - name: Cache dependencies
       id: cache
       uses: actions/cache/save@v4
@@ -59,21 +51,26 @@ jobs:
           ./node_modules
         key: modules-${{ hashFiles('package-lock.json') }}
 
-  testint:
+  release:
+    name: release
     needs: [installtest]
-    name: testint
+    timeout-minutes: 60
     runs-on: ubuntu-22.04
     container:
       image: mcr.microsoft.com/playwright:v1.45.0-jammy
-    strategy:
-      fail-fast: false
-      matrix:
-        shardIndex: [1, 2]
-        shardTotal: [2]
+    permissions:
+      contents: write # to be able to publish a GitHub release
+      issues: write # to be able to comment on released issues
+      pull-requests: write # to be able to comment on released pull requests
+      id-token: write # to enable use of OIDC for npm provenance
     steps:
     - uses: actions/checkout@v4
+      # with:
+      #   persist-credentials: false
+    - uses: actions/setup-node@v4
       with:
-        persist-credentials: false
+        node-version: '20.x'
+        registry-url: 'https://registry.npmjs.org'
     - uses: actions/cache/restore@v4
       id: cache
       with:
@@ -82,15 +79,35 @@ jobs:
         key: modules-${{ hashFiles('package-lock.json') }}
     - name: Install dependencies
       if: steps.cache.outputs.cache-hit != 'true'
-      run: npm clean-install && npx cross-env HOME=/root PLAYWRIGHT_BROWSERS_PATH=0 npx playwright install chromium firefox webkit
-    # - name: Run Playwright tests
-    #   run: |
-    #     npx cross-env HOME=/root PLAYWRIGHT_BROWSERS_PATH=0 npm run test:int:ci
-    - name: Run Playwright tests
-      run: npx cross-env HOME=/root PLAYWRIGHT_BROWSERS_PATH=0 npx playwright test --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }}
-    - uses: actions/upload-artifact@v4
-      if: always()
+      run: npm clean-install
+    - name: build
+      run: npm run build
+    - name: Verify the integrity of provenance attestations and registry signatures for installed dependencies
+      run: npm audit signatures
+    # - name: Debug
+    #   run: echo `pwd` && echo `ls -a`
+
+    - name: git config
+      run: git config --global --add safe.directory /__w/state-in-url/state-in-url
+    - name: Initialize Git user
+      run: |
+          git config --global user.email "github-release-bot@example.com"
+          git config --global user.name "Release Workflow"
+    - name: Initialise the NPM config
+      run: npm config set //registry.npmjs.org/:_authToken $NPM_TOKEN
+      env:
+        NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+    - run: npm run bump && npm run build
+    - name: github push
+      run: git push --follow-tags
+    - uses: JS-DevTools/npm-publish@v3
+      id: publish
       with:
-        name: blob-report-${{ matrix.shardIndex }}
-        path: blob-report
-        retention-days: 5
+        token: ${{ secrets.NPM_TOKEN }}
+        GH_TOKEN: ${{ secrets.GH_TOKEN }}
+        provenance: true
+
+    - if: ${{ steps.publish.outputs.type }}
+      run: echo "Version changed!"
+
