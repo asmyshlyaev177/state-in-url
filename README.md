@@ -336,7 +336,7 @@ function SettingsComponent() {
 
 ## `useUrlStateBase` hook for others routers
 
-Hooks to create your own `useUrlState` hooks with other routers, e.g. react-router or tanstack router. 
+Hooks to create your own `useUrlState` hooks with other routers, e.g. react-router or tanstack router.
 
 [Docs](packages/urlstate/useUrlStateBase)
 
@@ -373,7 +373,7 @@ function SettingsComponent() {
 
 - Define your state shape as a constant to ensure consistency
 - Use TypeScript for enhanced type safety and autocomplete
-- Avoid storing sensitive information in URL parameters
+- Avoid storing sensitive information in URL parameters (SSN, API keys etc)
 - Use `updateState` for frequent updates and `updateUrl` to sync changes to url
 - Use `Suspence` to wrap client components in Next.js
 - Use this [extension](https://marketplace.visualstudio.com/items?itemName=yoavbls.pretty-ts-errors) for readable TS errors

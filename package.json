@@ -23,12 +23,17 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/asmyshlyaev177/state-in-url.git"
+    "url": "https://github.com/asmyshlyaev177/state-in-url.git"
   },
   "author": {
     "name": "asmyshlyaev177",
     "email": "asmyshlyaev177@gmail.com",
     "url": "https://www.linkedin.com/in/asmyshlyaev177/"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/",
+    "tag": "latest",
+    "provenance": true
   },
   "license": "MIT",
   "funding": {
@@ -234,6 +239,12 @@
     "@rollup/plugin-node-resolve": "^15.2.3",
     "@rollup/plugin-terser": "^0.4.4",
     "@rollup/plugin-typescript": "^11.1.6",
+    "@semantic-release/commit-analyzer": "^13.0.0",
+    "@semantic-release/exec": "^6.0.3",
+    "@semantic-release/git": "^10.0.1",
+    "@semantic-release/github": "^10.3.3",
+    "@semantic-release/npm": "^12.0.1",
+    "@semantic-release/release-notes-generator": "^14.0.1",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.4.8",
     "@testing-library/react": "^16.0.0",
@@ -259,6 +270,7 @@
     "rollup": "^2.79.1",
     "rollup-plugin-filesize": "^10.0.0",
     "rollup-plugin-sourcemaps": "^0.6.3",
+    "semantic-release": "^24.1.0",
     "standard-version": "^9.5.0",
     "ts-jest": "^29.1.5",
     "ts-node": "^10.9.2",
