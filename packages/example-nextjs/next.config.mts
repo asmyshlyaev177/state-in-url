@@ -20,6 +20,7 @@ const nextConfig = {
   },
   images: {
     minimumCacheTTL: 60 * 60 * 24 * 15,
+    formats: ['image/webp', 'image/png']
   },
   env: {
     VERCEL: process.env.VERCEL,
