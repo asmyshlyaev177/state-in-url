@@ -1,5 +1,1 @@
-jest.config.*
-test.env.*
-playwright.config.*
-rollup.config.*
 typings.d.ts
