@@ -4,10 +4,11 @@ export const Logo = (props: { className: string }) => (
   <Image
     src="/Logo_symbol.png"
     alt="Logo"
-    width="200"
-    height="200"
+    width="150"
+    height="150"
     className={props.className}
+    quality={1}
     priority={true}
-    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+    sizes="150px"
   />
 );
