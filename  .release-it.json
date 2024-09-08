@@ -1,0 +1,30 @@
+{
+  "$schema": "https://unpkg.com/release-it@17/schema/release-it.json",
+  "git": {
+    "commitMessage": "chore: release v${version}",
+    "requireBranch": "main",
+    "pushRepo": "https://github.com/asmyshlyaev177/state-in-url.git"
+  },
+  "plugins": {
+    "@release-it/conventional-changelog": {
+      "preset": {
+        "addUnreleased": true,
+        "name": "angular"
+      },
+      "infile": "CHANGELOG.md"
+    }
+  },
+  "github": {
+    "release": true
+  },
+  "npm": {
+    "publish": true,
+    "publishArgs": ["--provenance"],
+    "skipChecks": true
+  },
+  "hooks": {
+    "after:bump": "npx auto-changelog -p",
+    "after:git:release": "echo After git push, before github release",
+    "after:release": "echo Successfully released ${name} v${version} to ${repo.repository}."
+  }
+}
