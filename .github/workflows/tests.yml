@@ -159,16 +159,14 @@ jobs:
     #     NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
     #     GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
 
+    - run: npm run build
+    - uses: JS-DevTools/npm-publish@v3
+      with:
+        token: ${{ secrets.NPM_TOKEN }}
+        provenance: true
+
+    - if: ${{ steps.publish.outputs.type }}
+      run: echo "Version changed!"
+        # TODO: just use some cli to detect if bump and release needed
 # - run: npm publish --provenance --access public
 
-
-    - name: Run release.mjs
-      run: npx zx ./release.mjs
-      env:
-        VERBOSE: ${{ secrets.VERBOSE }}
-        GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-        NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-        NPM_PROVENANCE: true
-        GIT_COMMITTER_NAME: ${{ secrets.GIT_COMMITTER_NAME }}
-        GIT_COMMITTER_EMAIL: ${{ secrets.GIT_COMMITTER_EMAIL }}
-        PUSH_MAJOR_TAG: true
