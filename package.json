@@ -23,7 +23,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/asmyshlyaev177/state-in-url.git"
+    "url": "git+https://github.com/asmyshlyaev177/state-in-url.git"
   },
   "author": {
     "name": "asmyshlyaev177",
@@ -88,6 +88,8 @@
   },
   "types": "./dist/index.d.ts",
   "scripts": {
+    "start": "npm install && npm run start:demo",
+    "release": "release-it --ci -V",
     "test:unit": "wireit",
     "test:int": "wireit",
     "test:int:ci": "wireit",
@@ -106,7 +108,7 @@
     "cleanup": "rm -rf dist",
     "reinstall": "rm -rf dist .wireit node_modules packages/example-nextjs/node_modules packages/example-nextjs/.next packages/example-react/node_modules && npm install",
     "setup": "playwright install --with-deps",
-    "prepack": "npm run test:unit && npm run build && npm run build:demo",
+    "prepack": "npm run build && cp package.json dist/package.json && npm run build:demo",
     "prepare": "npx husky",
     "preinstall": "npx only-allow npm"
   },
@@ -236,15 +238,11 @@
     "@commitlint/cli": "^19.0.3",
     "@commitlint/config-conventional": "^19.0.3",
     "@playwright/test": "^1.45.3",
+    "@release-it/bumper": "^6.0.1",
+    "@release-it/conventional-changelog": "^8.0.1",
     "@rollup/plugin-node-resolve": "^15.2.3",
     "@rollup/plugin-terser": "^0.4.4",
     "@rollup/plugin-typescript": "^11.1.6",
-    "@semantic-release/commit-analyzer": "^13.0.0",
-    "@semantic-release/exec": "^6.0.3",
-    "@semantic-release/git": "^10.0.1",
-    "@semantic-release/github": "^10.3.3",
-    "@semantic-release/npm": "^12.0.1",
-    "@semantic-release/release-notes-generator": "^14.0.1",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.4.8",
     "@testing-library/react": "^16.0.0",
@@ -254,6 +252,7 @@
     "@types/node": "^20.11.24",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
+    "auto-changelog": "^2.4.0",
     "babel-plugin-module-resolver": "^5.0.2",
     "commitizen": "^4.3.0",
     "cross-env": "^7.0.3",
@@ -267,6 +266,7 @@
     "lint-staged": "^15.2.9",
     "playwright": "^1.45.3",
     "prettier": "^3.2.5",
+    "release-it": "^17.6.0",
     "rollup": "^2.79.1",
     "rollup-plugin-filesize": "^10.0.0",
     "rollup-plugin-sourcemaps": "^0.6.3",
@@ -275,7 +275,8 @@
     "ts-jest": "^29.1.5",
     "ts-node": "^10.9.2",
     "typescript": "^5.3.3",
-    "wireit": "^0.14.4"
+    "wireit": "^0.14.4",
+    "zx": "^8.1.5"
   },
   "dependencies": {
     "framer-motion": "^11.3.30",
