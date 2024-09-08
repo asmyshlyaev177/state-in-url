@@ -154,6 +154,4 @@ jobs:
 
     - if: ${{ steps.publish.outputs.type }}
       run: echo "Version changed!"
-        # TODO: just use some cli to detect if bump and release needed
-# - run: npm publish --provenance --access public
 
