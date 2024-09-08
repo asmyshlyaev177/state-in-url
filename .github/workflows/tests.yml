@@ -149,6 +149,9 @@ jobs:
         token: ${{ secrets.NPM_TOKEN }}
         provenance: true
 
+    - name: github push
+      run: git push --follow-tags
+
     - if: ${{ steps.publish.outputs.type }}
       run: echo "Version changed!"
         # TODO: just use some cli to detect if bump and release needed
