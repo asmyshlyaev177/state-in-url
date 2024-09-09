@@ -6,11 +6,11 @@ module.exports = {
     project: './tsconfig.eslint.json',
     tsconfigRootDir: __dirname,
   },
-  ignores: [
-    "*.config.*",
-    "*.env.",
-    "*.env.*",
-  ],
+  // ignores: [
+  //   "*.config.*",
+  //   "*.env.",
+  //   "*.env.*",
+  // ],
   rules: {
     "max-len": "off",
     "complexity": ["error", 12],
