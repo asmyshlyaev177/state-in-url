@@ -83,9 +83,6 @@ jobs:
     - name: Install dependencies
       if: steps.cache.outputs.cache-hit != 'true'
       run: npm clean-install && npx cross-env HOME=/root PLAYWRIGHT_BROWSERS_PATH=0 npx playwright install chromium firefox webkit
-    # - name: Run Playwright tests
-    #   run: |
-    #     npx cross-env HOME=/root PLAYWRIGHT_BROWSERS_PATH=0 npm run test:int:ci
     - name: Run Playwright tests
       run: npx cross-env HOME=/root PLAYWRIGHT_BROWSERS_PATH=0 npx playwright test --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }}
     - uses: actions/upload-artifact@v4
