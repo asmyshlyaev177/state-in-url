@@ -5,6 +5,13 @@
 
 * semantic-release config ([659e605](https://github.com/asmyshlyaev177/state-in-url/commit/659e6050d89dd38cb6cfa952d5c1d746e69d7c56))
 
+## [2.5.1](https://github.com/asmyshlyaev177/state-in-url/compare/v2.5.0...v2.5.1) (2024-09-09)
+
+
+### Bug Fixes
+
+* semantic-release config ([659e605](https://github.com/asmyshlyaev177/state-in-url/commit/659e6050d89dd38cb6cfa952d5c1d746e69d7c56))
+
 # Changelog
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
