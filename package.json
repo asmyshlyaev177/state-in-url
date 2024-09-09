@@ -1,6 +1,6 @@
 {
   "name": "state-in-url",
-  "version": "2.4.1",
+  "version": "2.5.1",
   "description": "Library to store state in browser URL, includes hook for NextJS, hook for pure React, and low level helpers. https://state-in-url-asmyshlyaev177.vercel.app/",
   "homepage": "https://github.com/asmyshlyaev177/state-in-url#readme",
   "keywords": [
@@ -228,7 +228,14 @@
   "commitlint": {
     "extends": [
       "@commitlint/config-conventional"
-    ]
+    ],
+    "rules": {
+      "body-max-line-length": [
+        0,
+        "always",
+        "Infinity"
+      ]
+    }
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
@@ -244,6 +251,7 @@
     "@semantic-release/changelog": "^6.0.3",
     "@semantic-release/commit-analyzer": "^13.0.0",
     "@semantic-release/git": "^10.0.1",
+    "@semantic-release/npm": "^12.0.1",
     "@semantic-release/release-notes-generator": "^14.0.1",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.4.8",
