@@ -1,3 +1,10 @@
+## [2.5.2](https://github.com/asmyshlyaev177/state-in-url/compare/v2.5.1...v2.5.2) (2024-09-09)
+
+
+### Bug Fixes
+
+* trigger release ([db2eea1](https://github.com/asmyshlyaev177/state-in-url/commit/db2eea12dad8f9d8ef03fb5619862e01bdafd309))
+
 ## [2.5.1](https://github.com/asmyshlyaev177/state-in-url/compare/v2.5.0...v2.5.1) (2024-09-09)
 
 
