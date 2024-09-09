@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### 2.4.2 (2024-09-09)
+
 ### [2.4.1](https://github.com/asmyshlyaev177/state-in-url/compare/v2.2.5...v2.4.1) (2024-09-08)
 
 
