@@ -54,7 +54,7 @@ export const decodePrimitive = (str: string) => {
   if (str?.startsWith?.(SYMBOLS.date)) return new Date(str.slice(1));
 
   // For backward compatibility
-  // TODO: remove later
+  // TODO: remove
   if (str === SYMBOLS.null) return null;
   if (str?.startsWith?.(SYMBOLS.number))
     return Number.parseFloat(str.replace(SYMBOLS.number, ''));
