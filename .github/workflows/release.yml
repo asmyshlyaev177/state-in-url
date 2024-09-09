@@ -80,8 +80,6 @@ jobs:
     - name: Install dependencies
       if: steps.cache.outputs.cache-hit != 'true'
       run: npm clean-install
-    # - name: build
-    #   run: npm run build
     - name: Verify the integrity of provenance attestations and registry signatures for installed dependencies
       run: npm audit signatures
     # - name: Debug
@@ -98,8 +96,6 @@ jobs:
       env:
         NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-    # - run: npm run bump && npm run build
-    - run: npm run build
     # - name: github push
     #   run: git push --follow-tags
     # - uses: JS-DevTools/npm-publish@v3
