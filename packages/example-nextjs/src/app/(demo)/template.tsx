@@ -9,7 +9,11 @@ const Footer = dynamic(
   { loading: () => <div className="min-h-[48px]"></div> },
 );
 
-export default function Template({ children }: { children: React.ReactNode }) {
+export default async function Template({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <main className="page-main">
       <div className="wrapper">

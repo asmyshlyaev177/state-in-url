@@ -17,6 +17,7 @@ const nextConfig = {
   basePath: '',
   experimental: {
     externalDir: true,
+    ppr: true
   },
   images: {
     minimumCacheTTL: 60 * 60 * 24 * 15,
