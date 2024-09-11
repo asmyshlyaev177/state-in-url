@@ -22,7 +22,7 @@ permissions:
 jobs:
   installtest:
     name: installtest
-    timeout-minutes: 60
+    timeout-minutes: 20
     runs-on: ubuntu-22.04
     container:
       image: mcr.microsoft.com/playwright:v1.45.0-jammy
@@ -63,6 +63,7 @@ jobs:
     needs: [installtest]
     name: testint
     runs-on: ubuntu-22.04
+    timeout-minutes: 30
     container:
       image: mcr.microsoft.com/playwright:v1.45.0-jammy
     strategy:
@@ -96,7 +97,7 @@ jobs:
     name: release
     needs: [testint]
     if: github.ref == 'refs/heads/main'
-    timeout-minutes: 60
+    timeout-minutes: 20
     runs-on: ubuntu-22.04
     container:
       image: mcr.microsoft.com/playwright:v1.45.0-jammy
