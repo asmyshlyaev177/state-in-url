@@ -13,7 +13,7 @@ const Status = ({ className, sp }: { className?: string; sp?: object }) => {
       </div>
       <h3 className="text-black">Types and structure of data are presered</h3>
 
-      <div className="flex-none  ">
+      <div className="flex-none">
         <pre
           className="h-[330px] text-sm overflow-y-scroll
          text-gray-600 bg-white p-4 rounded-md shadow-inner

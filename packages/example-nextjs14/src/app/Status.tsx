@@ -36,7 +36,7 @@ export const Status = ({
         </pre>
       </div>
       <SourceCodeBtn
-        href="https://github.com/asmyshlyaev177/state-in-url/blob/main/packages/example-nextjs/src/app/Status.tsx"
+        href="https://github.com/asmyshlyaev177/state-in-url/blob/main/packages/example-nextjs14/src/app/Status.tsx"
         className="self-end ml-auto mt-4 md:mt-auto"
       />
     </div>

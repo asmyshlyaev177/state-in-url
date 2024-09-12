@@ -5,8 +5,8 @@ dist
 /blob-report/
 /playwright/.cache/
 .wireit
-/packages/example-nextjs/public/react.html
-/packages/example-nextjs/public/react-router.html
+/packages/example-nextjs14/public/react.html
+/packages/example-nextjs14/public/react-router.html
 .vercel
 coverage-reports
 .nyc_output
