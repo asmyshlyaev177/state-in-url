@@ -7,4 +7,4 @@ standard - https://url.spec.whatwg.org/
 https://github.com/FormidableLabs/prism-react-renderer?tab=readme-ov-file#usage
 
 NOTE:
-npm i state-in-url@latest --workspace=packages/example-nextjs
+npm i state-in-url@latest --workspace=packages/example-nextjs14

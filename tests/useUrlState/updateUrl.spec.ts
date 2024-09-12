@@ -2,7 +2,14 @@ import { expect, test } from '@playwright/test';
 
 import { toHaveUrl } from '../testUtils';
 
-const urls = ['/test-ssr', '/test-use-client', '/test-ssr-sp'];
+const urls = [
+  '/test-ssr',
+  '/test-use-client',
+  '/test-ssr-sp',
+  'http://localhost:3001/test-ssr',
+  'http://localhost:3001/test-use-client',
+  'http://localhost:3001/test-ssr-sp',
+];
 
 test('sync', async ({ page }) => {
   for (const url of urls) {

@@ -1,3 +1,4 @@
+import { clsx } from 'clsx';
 import React from 'react';
 
 export const Field = ({
@@ -13,7 +14,10 @@ export const Field = ({
 }) => {
   return (
     <div
-      className={`block text-sm font-medium text-gray-700 mb-1 whitespace-nowrap ${className}`}
+      className={clsx(
+        `block text-sm font-medium text-gray-700 mb-1 whitespace-nowrap`,
+        className,
+      )}
     >
       <label
         className="mb-2 block select-none hover:cursor-pointer"

@@ -6,6 +6,9 @@ const urls = [
   '/test-ssr', //  expected hydration error
   '/test-use-client', //  TODO: <<---error, shouldn't be ?
   '/test-ssr-sp',
+  'http://localhost:3001/test-ssr',
+  'http://localhost:3001/test-use-client',
+  'http://localhost:3001/test-ssr-sp',
   // 'http://localhost:5179', // TODO:
 ];
 

@@ -17,7 +17,7 @@ module.exports = {
   },
   overrides: [
     {
-      "files": ["packages/example-nextjs14/src/app/Form-for-test.tsx"],
+      "files": ["packages/example-nextjs14/src/app/Form-for-test.tsx", "packages/example-nextjs15/src/app/Form-for-test.tsx"],
       "rules": {
         "max-lines-per-function": ["error", 200]
       }
