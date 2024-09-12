@@ -89,8 +89,6 @@
   },
   "types": "./dist/index.d.ts",
   "scripts": {
-    "start": "npm install && npm run start:demo",
-    "release": "release-it --ci -V",
     "test:unit": "wireit",
     "test:int": "wireit",
     "test:int:ci": "wireit",
@@ -103,9 +101,16 @@
     "bump": "npx standard-version --no-verify",
     "build": "wireit",
     "build:demo": "wireit",
-    "start:demo": "npm run build && cd packages/example-nextjs14 && npm run build && npm run start",
+    "start:demo": "wireit",
+    "build:packages": "wireit",
+    "start:demo15": "wireit",
+    "start:demo15:ci": "wireit",
+    "start:react": "wireit",
+    "start": "wireit",
+    "start:ci": "wireit",
     "kill-next": "wireit",
     "kill-vite": "wireit",
+    "kill": "wireit",
     "cleanup": "rm -rf dist",
     "reinstall": "rm -rf dist .wireit node_modules packages/example-nextjs14/node_modules packages/example-nextjs14/.next packages/example-react/node_modules && npm install",
     "setup": "playwright install --with-deps",
@@ -127,17 +132,22 @@
     "kill-vite": {
       "command": "ps aux | grep '.bin/vite' | grep -v grep | awk '{print $2}' | xargs kill -9 2>&1; exit 0"
     },
-    "test:int:ci": {
-      "command": "playwright test",
+    "kill-wireit": {
+      "command": "ps axu | grep wireit | awk '{print $2}' | xargs kill -9"
+    },
+    "kill": {
+      "command": "killed",
       "dependencies": [
-        "dev:react"
+        "kill-next",
+        "kill-vite",
+        "kill-wireit"
       ]
     },
+    "test:int:ci": {
+      "command": "npx cross-env HOME=/root PLAYWRIGHT_BROWSERS_PATH=0 playwright test"
+    },
     "test:int": {
-      "command": "playwright test --project=chromium --retries=2",
-      "dependencies": [
-        "dev:react"
-      ]
+      "command": "playwright test --project=chromium --retries=2"
     },
     "tsc": {
       "command": "npx tsc --noEmit"
@@ -154,7 +164,11 @@
         "kill-next",
         "dev:nextjs15"
       ],
-      "service": true,
+      "service": {
+        "readyWhen": {
+          "lineMatches": "http://localhost:3000"
+        }
+      },
       "command": "npm run dev:nextjs14"
     },
     "dev:lib": {
@@ -170,41 +184,94 @@
     },
     "dev:react-router": {
       "command": "cd packages/example-react-router6 && npm run dev",
-      "service": {
-        "readyWhen": {
-          "lineMatches": "ready in"
-        }
-      }
+      "service": true
     },
     "dev:nextjs14": {
       "command": "cd packages/example-nextjs14 && npm run dev",
       "dependencies": [
         "dev:react"
       ],
-      "service": {
-        "readyWhen": {
-          "lineMatches": "Ready in"
-        }
-      }
+      "service": true
     },
     "dev:nextjs15": {
       "command": "cd packages/example-nextjs15 && npm run dev",
-      "service": {
-        "readyWhen": {
-          "lineMatches": "Ready in"
-        }
-      }
+      "service": true
+    },
+    "build:next15": {
+      "command": "cd packages/example-nextjs15 && npm run build",
+      "dependencies": [
+        "build"
+      ]
     },
     "build:demo": {
+      "dependencies": [
+        "build"
+      ],
       "command": "cd packages/example-nextjs14 && npm run build"
+    },
+    "start:demo": {
+      "dependencies": [
+        "build:demo"
+      ],
+      "command": "npx next@14 start packages/example-nextjs14 --port 3000",
+      "service": true
+    },
+    "start:demo:ci": {
+      "command": "npx next@14 start packages/example-nextjs14 --port 3000",
+      "service": true
+    },
+    "start:react": {
+      "command": "npx vite preview --port 5180 packages/example-react",
+      "dependencies": [
+        "build:react"
+      ],
+      "service": true
+    },
+    "start:react:ci": {
+      "command": "npx vite preview --port 5180 packages/example-react",
+      "service": true
+    },
+    "start:demo15": {
+      "dependencies": [
+        "build:next15"
+      ],
+      "command": "npx next@rc start packages/example-nextjs15 --port 3001",
+      "service": true
+    },
+    "start:demo15:ci": {
+      "command": "npx next@rc start packages/example-nextjs15 --port 3001",
+      "service": true
+    },
+    "start": {
+      "command": "npm run start:demo15",
+      "dependencies": [
+        "start:demo",
+        "start:react"
+      ],
+      "service": true
+    },
+    "start:ci": {
+      "command": "npm run start:demo15:ci",
+      "dependencies": [
+        "start:demo:ci",
+        "start:react:ci"
+      ],
+      "service": true
     },
     "dev:react": {
       "command": "cd packages/example-react && npm run dev",
-      "service": {
-        "readyWhen": {
-          "lineMatches": "ready in"
-        }
-      }
+      "service": true
+    },
+    "build:packages": {
+      "dependencies": [
+        "build",
+        "build:react",
+        "build:demo",
+        "build:next15"
+      ]
+    },
+    "build:react": {
+      "command": "cd packages/example-react && npm run build"
     },
     "build": {
       "command": "rollup -c rollup.config.js && npm run test:exports",
@@ -296,7 +363,8 @@
     "ts-jest": "^29.1.5",
     "ts-node": "^10.9.2",
     "typescript": "^5.3.3",
-    "wireit": "^0.14.4",
+    "wait-on": "^8.0.1",
+    "wireit": "^0.14.9",
     "zx": "^8.1.5"
   }
 }

@@ -32,6 +32,7 @@ jobs:
       pull-requests: write # to be able to comment on released pull requests
       id-token: write # to enable use of OIDC for npm provenance
     steps:
+    # - uses: google/wireit@setup-github-actions-caching/v2
     - uses: actions/checkout@v4
       with:
         persist-credentials: false
@@ -40,8 +41,16 @@ jobs:
         node-version-file: '.nvmrc'
         cache: 'npm'
         cache-dependency-path: 'package-lock.json'
+    - uses: actions/cache/restore@v4
+      id: cache-node-modules
+      with:
+        path: |
+          ./node_modules
+        key: modules-1-${{ hashFiles('package-lock.json') }}
     - name: Install dependencies
+      if: steps.cache.outputs.cache-hit != 'true'
       run: npm clean-install && npx cross-env HOME=/root PLAYWRIGHT_BROWSERS_PATH=0 npx playwright install chromium firefox webkit
+
     - name: Unit tests
       run: npm run test:unit
     - name: Run codacy-coverage-reporter
@@ -59,8 +68,54 @@ jobs:
           ./node_modules
         key: modules-1-${{ hashFiles('package-lock.json') }}
 
-  testint:
+  build:
+    name: build
     needs: [installtest]
+    timeout-minutes: 20
+    runs-on: ubuntu-22.04
+    container:
+      image: mcr.microsoft.com/playwright:v1.45.0-jammy
+    permissions:
+      contents: write # to be able to publish a GitHub release
+      issues: write # to be able to comment on released issues
+      pull-requests: write # to be able to comment on released pull requests
+      id-token: write # to enable use of OIDC for npm provenance
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        persist-credentials: false
+    - uses: actions/cache/restore@v4
+      id: cache-node-modules
+      with:
+        path: |
+          ./node_modules
+        key: modules-1-${{ hashFiles('package-lock.json') }}
+
+    - name: Install dependencies
+      if: steps.cache.outputs.cache-hit != 'true'
+      run: npm clean-install && npx cross-env HOME=/root PLAYWRIGHT_BROWSERS_PATH=0 npx playwright install chromium firefox webkit
+
+    - name: build packages
+      run: npm run build:packages
+
+    - name: Cache dependencies
+      id: cache
+      uses: actions/cache/save@v4
+      if: always()
+      with:
+        path: |
+          ./node_modules
+          ./dist
+          ./packages/example-react/dist
+          ./packages/example-react/package.json
+          ./packages/example-nextjs14/package.json
+          ./packages/example-nextjs14/.next
+          ./packages/example-nextjs15/package.json
+          ./packages/example-nextjs15/.next
+        key: modules-2-${{ github.head_ref }}
+
+  testint:
+    needs: [build]
     name: testint
     runs-on: ubuntu-22.04
     timeout-minutes: 30
@@ -80,12 +135,21 @@ jobs:
       with:
         path: |
           ./node_modules
-        key: modules-1-${{ hashFiles('package-lock.json') }}
-    - name: Install dependencies
-      if: steps.cache.outputs.cache-hit != 'true'
-      run: npm clean-install && npx cross-env HOME=/root PLAYWRIGHT_BROWSERS_PATH=0 npx playwright install chromium firefox webkit
+          ./dist
+          ./packages/example-react/dist
+          ./packages/example-react/package.json
+          ./packages/example-nextjs14/package.json
+          ./packages/example-nextjs14/.next
+          ./packages/example-nextjs15/package.json
+          ./packages/example-nextjs15/.next
+        key: modules-2-${{ github.head_ref }}
+
     - name: Run Playwright tests
-      run: npx cross-env HOME=/root PLAYWRIGHT_BROWSERS_PATH=0 npx playwright test --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }}
+      run: |
+        npm run start:ci & \
+        npx wait-on http://localhost:3000 && \
+        npx wait-on http://localhost:3001 && \
+        npm run test:int:ci -- --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }}
     - uses: actions/upload-artifact@v4
       if: always()
       with:
@@ -119,10 +183,15 @@ jobs:
       with:
         path: |
           ./node_modules
-        key: modules-1-${{ hashFiles('package-lock.json') }}
-    - name: Install dependencies
-      if: steps.cache.outputs.cache-hit != 'true'
-      run: npm clean-install && npx cross-env HOME=/root PLAYWRIGHT_BROWSERS_PATH=0 npx playwright install chromium firefox webkit
+          ./dist
+          ./packages/example-react/dist
+          ./packages/example-react/package.json
+          ./packages/example-nextjs14/package.json
+          ./packages/example-nextjs14/.next
+          ./packages/example-nextjs15/package.json
+          ./packages/example-nextjs15/.next
+        key: modules-2-${{ github.head_ref }}
+
     - name: Verify the integrity of provenance attestations and registry signatures for installed dependencies
       run: npm audit signatures
     # - name: Debug
