@@ -46,6 +46,7 @@
   "workspaces": [
     "packages/urlstate",
     "packages/example-nextjs14",
+    "packages/example-nextjs15",
     "packages/example-react"
   ],
   "files": [
@@ -98,7 +99,7 @@
     "tsc": "wireit",
     "dev": "wireit",
     "dev:lib": "wireit",
-    "dev:nextjs": "wireit",
+    "dev:nextjs14": "wireit",
     "bump": "npx standard-version --no-verify",
     "build": "wireit",
     "build:demo": "wireit",
@@ -150,10 +151,11 @@
     "dev": {
       "dependencies": [
         "dev:lib",
-        "kill-next"
+        "kill-next",
+        "dev:nextjs15"
       ],
       "service": true,
-      "command": "npm run dev:nextjs"
+      "command": "npm run dev:nextjs14"
     },
     "dev:lib": {
       "command": "cross-env IS_DEVELOPMENT=true rollup -c rollup.config.js -w",
@@ -174,11 +176,19 @@
         }
       }
     },
-    "dev:nextjs": {
+    "dev:nextjs14": {
       "command": "cd packages/example-nextjs14 && npm run dev",
       "dependencies": [
         "dev:react"
       ],
+      "service": {
+        "readyWhen": {
+          "lineMatches": "Ready in"
+        }
+      }
+    },
+    "dev:nextjs15": {
+      "command": "cd packages/example-nextjs15 && npm run dev",
       "service": {
         "readyWhen": {
           "lineMatches": "Ready in"

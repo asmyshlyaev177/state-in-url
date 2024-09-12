@@ -1,6 +1,10 @@
 import { expect, test } from '@playwright/test';
 
-const urls = ['http://localhost:5180', '/useSharedState'];
+const urls = [
+  'http://localhost:5180',
+  '/useSharedState',
+  'http://localhost:3001/useSharedState',
+];
 
 test.describe('main tests', () => {
   const expectedText = `
