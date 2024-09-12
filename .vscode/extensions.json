@@ -13,6 +13,7 @@
     "bradlc.vscode-tailwindcss",
     "stivo.tailwind-fold",
     "gruntfuggly.todo-tree",
-    "csstools.postcss"
+    "csstools.postcss",
+    "google.wireit"
   ]
 }

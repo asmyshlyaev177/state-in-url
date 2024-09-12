@@ -13,7 +13,7 @@ test('replace arg === true', async ({ page }) => {
       }
     });
 
-    await page.goto(`about:blank`);
+    await page.goto(`${url}?replace=false`);
     await page.goto(`${url}?replace=true`);
     await page.waitForSelector('button[name="Reload page"]');
 
@@ -27,7 +27,7 @@ test('replace arg === true', async ({ page }) => {
     // click back
     await page.goBack();
 
-    await toHaveUrl(page, 'about:blank');
+    await toHaveUrl(page, `${url}?replace=false`);
 
     // click forward
     await page.goForward();
@@ -46,7 +46,7 @@ test('replace arg === false', async ({ page }) => {
       }
     });
 
-    await page.goto(`about:blank`);
+    await page.goto(`${url}?replace=true`);
     await page.goto(`${url}?replace=false`);
     await page.waitForSelector('button[name="Reload page"]');
 
@@ -79,7 +79,7 @@ test('replace arg true by default', async ({ page }) => {
       }
     });
 
-    await page.goto(`about:blank`);
+    await page.goto(`${url}?replace=true`);
     await page.goto(`${url}`);
     await page.waitForSelector('button[name="Reload page"]');
 
@@ -93,7 +93,7 @@ test('replace arg true by default', async ({ page }) => {
     // click back
     await page.goBack();
 
-    await toHaveUrl(page, 'about:blank');
+    await toHaveUrl(page, `${url}?replace=true`);
 
     // click forward
     await page.goForward();

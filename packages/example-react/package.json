@@ -8,7 +8,7 @@
     "dev": "vite --port 5180",
     "build": "vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "start": "vite preview --port 5180"
   },
   "dependencies": {
     "react": "^18.3.1",
@@ -27,6 +27,6 @@
     "postcss": "^8.4.39",
     "tailwindcss": "^3.4.6",
     "typescript": "^5.2.2",
-    "vite": "^5.3.4"
+    "vite": "^5.4.4"
   }
 }
