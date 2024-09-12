@@ -45,7 +45,7 @@
   },
   "workspaces": [
     "packages/urlstate",
-    "packages/example-nextjs",
+    "packages/example-nextjs14",
     "packages/example-react"
   ],
   "files": [
@@ -102,11 +102,11 @@
     "bump": "npx standard-version --no-verify",
     "build": "wireit",
     "build:demo": "wireit",
-    "start:demo": "npm run build && cd packages/example-nextjs && npm run build && npm run start",
+    "start:demo": "npm run build && cd packages/example-nextjs14 && npm run build && npm run start",
     "kill-next": "wireit",
     "kill-vite": "wireit",
     "cleanup": "rm -rf dist",
-    "reinstall": "rm -rf dist .wireit node_modules packages/example-nextjs/node_modules packages/example-nextjs/.next packages/example-react/node_modules && npm install",
+    "reinstall": "rm -rf dist .wireit node_modules packages/example-nextjs14/node_modules packages/example-nextjs14/.next packages/example-react/node_modules && npm install",
     "setup": "playwright install --with-deps",
     "prepack": "npm run build && cp package.json dist/package.json && npm run build:demo",
     "prepare": "npx husky",
@@ -175,7 +175,7 @@
       }
     },
     "dev:nextjs": {
-      "command": "cd packages/example-nextjs && npm run dev",
+      "command": "cd packages/example-nextjs14 && npm run dev",
       "dependencies": [
         "dev:react"
       ],
@@ -186,7 +186,7 @@
       }
     },
     "build:demo": {
-      "command": "cd packages/example-nextjs && npm run build"
+      "command": "cd packages/example-nextjs14 && npm run build"
     },
     "dev:react": {
       "command": "cd packages/example-react && npm run dev",

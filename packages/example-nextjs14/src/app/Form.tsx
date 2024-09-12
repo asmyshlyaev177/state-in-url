@@ -112,7 +112,7 @@ export const Form = ({
         </div>
 
         <SourceCodeBtn
-          href="https://github.com/asmyshlyaev177/state-in-url/blob/main/packages/example-nextjs/src/app/Form.tsx"
+          href="https://github.com/asmyshlyaev177/state-in-url/blob/main/packages/example-nextjs14/src/app/Form.tsx"
           className="self-end ml-auto mt-4"
         />
       </div>

@@ -4,10 +4,10 @@ languages:
   css:
     enabled: false
 exclude_paths:
-  - "packages/example-nextjs"
-  - "packages/example-nextjs/*"
-  - "packages/example-nextjs/**"
-  - "packages/example-nextjs/**/*"
+  - "packages/example-nextjs14"
+  - "packages/example-nextjs14/*"
+  - "packages/example-nextjs14/**"
+  - "packages/example-nextjs14/**/*"
   - "packages/example-react"
   - "packages/example-react/*"
   - "packages/example-react/**"

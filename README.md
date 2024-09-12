@@ -229,7 +229,7 @@ const tags = [
 ];
 ```
 
-[Demo page example code](https://github.com/asmyshlyaev177/state-in-url/blob/main/packages/example-nextjs/src/app/Form.tsx)
+[Demo page example code](https://github.com/asmyshlyaev177/state-in-url/blob/main/packages/example-nextjs14/src/app/Form.tsx)
 
 #### Auto sync state
 
