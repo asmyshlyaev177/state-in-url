@@ -122,7 +122,8 @@
     "test": {
       "dependencies": [
         "tsc",
-        "test:unit"
+        "test:unit",
+        "build:packages"
       ],
       "command": "npm run test:int"
     },
