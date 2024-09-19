@@ -39,14 +39,12 @@ jobs:
     - uses: actions/setup-node@v4
       with:
         node-version-file: '.nvmrc'
-        cache: 'npm'
-        cache-dependency-path: 'package-lock.json'
     - uses: actions/cache/restore@v4
       id: cache-node-modules
       with:
         path: |
           ./node_modules
-        key: modules-1-${{ hashFiles('./package-lock.json','./package.json') }}
+        key: modules-1-${{ hashFiles('./package-lock.json') }}
     - name: Install dependencies
       if: steps.cache-node-modules.outputs.cache-hit != 'true'
       run: npm clean-install && npx cross-env HOME=/root PLAYWRIGHT_BROWSERS_PATH=0 npx playwright install chromium firefox webkit
@@ -61,11 +59,11 @@ jobs:
         coverage-reports: coverage-reports/lcov.info
     - name: Cache dependencies
       uses: actions/cache/save@v4
-      if: always()
+      if: steps.cache-node-modules.outputs.cache-hit != 'true'
       with:
         path: |
           ./node_modules
-        key: modules-1-${{ hashFiles('./package-lock.json','./package.json') }}
+        key: modules-1-${{ hashFiles('./package-lock.json') }}
 
   build:
     name: build
@@ -88,7 +86,7 @@ jobs:
       with:
         path: |
           ./node_modules
-        key: modules-1-${{ hashFiles('./package-lock.json','./package.json') }}
+        key: modules-1-${{ hashFiles('./package-lock.json') }}
 
     - name: Install dependencies
       if: steps.cache-node-modules.outputs.cache-hit != 'true'
@@ -111,7 +109,7 @@ jobs:
           ./packages/example-nextjs14/.next
           ./packages/example-nextjs15/package.json
           ./packages/example-nextjs15/.next
-        key: modules-2-${{ github.head_ref }}
+        key: modules-2-${{ github.sha }}
 
   testint:
     needs: [build]
@@ -141,7 +139,7 @@ jobs:
           ./packages/example-nextjs14/.next
           ./packages/example-nextjs15/package.json
           ./packages/example-nextjs15/.next
-        key: modules-2-${{ github.head_ref }}
+        key: modules-2-${{ github.sha }}
 
     - name: Run Playwright tests
       run: |
@@ -189,7 +187,7 @@ jobs:
           ./packages/example-nextjs14/.next
           ./packages/example-nextjs15/package.json
           ./packages/example-nextjs15/.next
-        key: modules-2-${{ github.head_ref }}
+        key: modules-2-${{ github.sha }}
 
     - name: Verify the integrity of provenance attestations and registry signatures for installed dependencies
       run: npm audit signatures
@@ -212,3 +210,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
         NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
       run: npx semantic-release
+
+    - name: clear cache
+      run: gh cache delete modules-2-${{ github.sha }} --confirm
