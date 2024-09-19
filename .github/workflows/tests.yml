@@ -109,7 +109,7 @@ jobs:
           ./packages/example-nextjs14/.next
           ./packages/example-nextjs15/package.json
           ./packages/example-nextjs15/.next
-        key: modules-2-${{ github.sha }}
+        key: modules-2-${{ github.sha }}-${{ github.run_id }}
 
   testint:
     needs: [build]
@@ -139,7 +139,7 @@ jobs:
           ./packages/example-nextjs14/.next
           ./packages/example-nextjs15/package.json
           ./packages/example-nextjs15/.next
-        key: modules-2-${{ github.sha }}
+        key: modules-2-${{ github.sha }}-${{ github.run_id }}
 
     - name: Run Playwright tests
       run: |
@@ -187,7 +187,7 @@ jobs:
           ./packages/example-nextjs14/.next
           ./packages/example-nextjs15/package.json
           ./packages/example-nextjs15/.next
-        key: modules-2-${{ github.sha }}
+        key: modules-2-${{ github.sha }}-${{ github.run_id }}
 
     - name: Verify the integrity of provenance attestations and registry signatures for installed dependencies
       run: npm audit signatures
@@ -211,11 +211,11 @@ jobs:
         NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
       run: npx semantic-release
 
-    - name: clear cache
+    # - name: clear cache
       # run: gh cache delete modules-2-${{ github.sha }} --confirm
-      run: |
-        curl \
-        -X DELETE \
-        -H "Accept: application/vnd.github.v3+json" \
-        -H "Authorization: token ${{ secrets.GH_TOKEN }}" \
-        https://api.github.com/repos/asmyshlyaev177/state-in-url/actions/caches/modules-2-${{ github.sha }}
+      # run: |
+      #   curl \
+      #   -X DELETE \
+      #   -H "Accept: application/vnd.github.v3+json" \
+      #   -H "Authorization: token ${{ secrets.GH_TOKEN }}" \
+      #   https://api.github.com/repos/asmyshlyaev177/state-in-url/actions/caches/modules-2-${{ github.sha }}
