@@ -1,0 +1,1 @@
+import t from"react";import{encodeState as r,decodeState as e}from"../encodeState/encodeState.mjs";import{typeOf as o}from"../utils.mjs";function n(n){const c=t.useCallback((function(t,e){return"object"===o(t)?r(t,n,e):""}),[n]);return{parse:t.useCallback((function(t){return e(t,n)}),[n]),stringify:c}}export{n as useUrlEncode};
