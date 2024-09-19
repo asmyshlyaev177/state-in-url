@@ -11,8 +11,8 @@
   "dependencies": {
     "babel-plugin-react-compiler": "^0.0.0-experimental-fe484b5-20240911",
     "next": "^15.0.0-rc.0",
-    "react": "^19.0.0-rc-d6cb4e77-20240911",
-    "react-dom": "^19.0.0-rc-d6cb4e77-20240911"
+    "react": "^19.0.0-rc-5dcb0097-20240918",
+    "react-dom": "^19.0.0-rc-5dcb0097-20240918"
   },
   "devDependencies": {
     "@types/node": "^20",

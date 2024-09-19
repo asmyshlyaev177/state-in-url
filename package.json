@@ -215,11 +215,11 @@
       "dependencies": [
         "build:demo"
       ],
-      "command": "npx next@14 start packages/example-nextjs14 --port 3000",
+      "command": "cd packages/example-nextjs14 && npm run start",
       "service": true
     },
     "start:demo:ci": {
-      "command": "npx next@14 start packages/example-nextjs14 --port 3000",
+      "command": "cd packages/example-nextjs14 && npm run start",
       "service": true
     },
     "start:react": {
@@ -237,11 +237,11 @@
       "dependencies": [
         "build:next15"
       ],
-      "command": "npx next@rc start packages/example-nextjs15 --port 3001",
+      "command": "cd packages/example-nextjs15 && npm run start",
       "service": true
     },
     "start:demo15:ci": {
-      "command": "npx next@rc start packages/example-nextjs15 --port 3001",
+      "command": "cd packages/example-nextjs15 && npm run start",
       "service": true
     },
     "start": {
