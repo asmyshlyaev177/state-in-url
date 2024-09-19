@@ -1,10 +1,3 @@
-# [2.6.0](https://github.com/asmyshlyaev177/state-in-url/compare/v2.5.2...v2.6.0) (2024-09-19)
-
-
-### Features
-
-* keywords update ([4d5db66](https://github.com/asmyshlyaev177/state-in-url/commit/4d5db66b368f2716a2e30d0a4269542c9715b4c8))
-
 ## [2.5.2](https://github.com/asmyshlyaev177/state-in-url/compare/v2.5.1...v2.5.2) (2024-09-09)
 
 
