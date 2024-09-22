@@ -3,7 +3,7 @@ English | [한국어](./README.KO.md) | [简体中文](./README.CN.md)
 <div align="center">
   <img src="/assets/Logo_big.png?raw=true" alt="state-in-url logo"/>
 
-  <div>Easily share state between unrelated React components, with IDE autocomplete and TS validation. Without any hasssle or boilerplate. </div>
+  <div>Easily share complex state between unrelated React components, with IDE autocomplete and TS validation. Without any hasssle or boilerplate. </div>
 </div>
 
 <div align="center">
@@ -22,7 +22,6 @@ English | [한국어](./README.KO.md) | [简体中文](./README.CN.md)
 <h4 align="center">Don't hesitate to open an issue if you found a bug, or for requesting features</h4>
 
 ![Demo-gif](https://github.com/asmyshlyaev177/state-in-url/blob/main/assets/Demo-gif.gif)
-
 
 <a href="https://state-in-url-asmyshlyaev177.vercel.app/" target="_blank">DEMO</a> |
 <a href="https://state-in-url.netlify.app/" target="_blank">DEMO2</a> |
@@ -45,7 +44,7 @@ Add a ⭐️ and <a href="https://github.com/asmyshlyaev177" target="_blank">fol
 - 🧮 Store unsaved user forms in URL
 - 🙃 Share the state between different components without changing url, good as alternative to signals and other state management tools
 - 🧠 Sync data between unrelated client components
-- 🔗 Shareable URLs with full application state
+- 🔗 Shareable URLs with application state
 - 🔄 Easy state persistence across page reloads
 
 # Features
@@ -372,7 +371,7 @@ function SettingsComponent() {
 
 ## Best Practices
 
-- Define your state shape as a constant to ensure consistency
+- Define your state shape as a constant
 - Use TypeScript for enhanced type safety and autocomplete
 - Avoid storing sensitive information in URL parameters (SSN, API keys etc)
 - Use `updateState` for frequent updates and `updateUrl` to sync changes to url
@@ -381,9 +380,9 @@ function SettingsComponent() {
 
 ## Gothas
 
-1. Can pass only serializable values, `Function`, `BigInt` or `Symbol` won't work, probably things like `ArrayBuffer` neither.
+1. Can pass only serializable values, `Function`, `BigInt` or `Symbol` won't work, probably things like `ArrayBuffer` neither. Everything that can be serialized to JSON will work.
 2. Vercel servers limit size of headers (query string and other stuff) to **14KB**, so keep your URL state under ~5000 words. <https://vercel.com/docs/errors/URL_TOO_LONG>
-3. Tested with `next.js` 14 with app router, no plans to support pages.
+3. Tested with `next.js` 14/15  with app router, no plans to support pages.
 
 ## Run locally
 
@@ -396,9 +395,11 @@ npm run dev
 Go to [localhost:3000](http://localhost:3000)
 
 ## Roadmap
- - [x] hook for `Next.js`
- - [ ] hook for 'react-router`
- - [ ] hook for store state in hash ?
+
+- [x] hook for `Next.js`
+- [ ] hook for 'react-router`
+- [ ] hook for 'remix`
+- [ ] hook for store state in hash ?
 
 ## Contact & Support
 

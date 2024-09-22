@@ -20,7 +20,7 @@ const jsonLd: WithContext<SoftwareApplication> = {
   '@type': 'SoftwareApplication',
   name: 'state-in-url',
   description:
-    'NPM Library to store state in browser URL, includes hook for NextJS, hook for pure React, and low level helpers.',
+    'NPM Library to store complex state in browser URL, includes hook for NextJS, hook for pure React, and low level helpers.',
   accessibilityControl: 'textual',
   accessMode: 'textual',
   author: {
