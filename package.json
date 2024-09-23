@@ -48,7 +48,8 @@
     "packages/urlstate",
     "packages/example-nextjs14",
     "packages/example-nextjs15",
-    "packages/example-react"
+    "packages/example-react",
+    "packages/example-react-router6"
   ],
   "files": [
     "dist"
@@ -163,7 +164,8 @@
     "dev": {
       "dependencies": [
         "dev:lib",
-        "kill-next",
+        "dev:react",
+        "dev:router6",
         "dev:nextjs15"
       ],
       "service": {
@@ -184,15 +186,12 @@
         "cleanup"
       ]
     },
-    "dev:react-router": {
+    "dev:router6": {
       "command": "cd packages/example-react-router6 && npm run dev",
       "service": true
     },
     "dev:nextjs14": {
       "command": "cd packages/example-nextjs14 && npm run dev",
-      "dependencies": [
-        "dev:react"
-      ],
       "service": true
     },
     "dev:nextjs15": {
@@ -201,6 +200,12 @@
     },
     "build:next15": {
       "command": "cd packages/example-nextjs15 && npm run build",
+      "dependencies": [
+        "build"
+      ]
+    },
+    "build:router6": {
+      "command": "cd packages/example-react-router6 && npm run build",
       "dependencies": [
         "build"
       ]
@@ -233,6 +238,17 @@
       "command": "npx vite preview --port 5180 packages/example-react",
       "service": true
     },
+    "start:router6": {
+      "command": "npx vite preview --port 5181 packages/example-react-router6",
+      "dependencies": [
+        "build:router6"
+      ],
+      "service": true
+    },
+    "start:router6:ci": {
+      "command": "npx vite preview --port 5181 packages/example-react-router6",
+      "service": true
+    },
     "start:demo15": {
       "dependencies": [
         "build:next15"
@@ -248,7 +264,8 @@
       "command": "npm run start:demo15",
       "dependencies": [
         "start:demo",
-        "start:react"
+        "start:react",
+        "start:router6"
       ],
       "service": true
     },
@@ -256,7 +273,8 @@
       "command": "npm run start:demo15:ci",
       "dependencies": [
         "start:demo:ci",
-        "start:react:ci"
+        "start:react:ci",
+        "start:router6:ci"
       ],
       "service": true
     },
@@ -269,7 +287,8 @@
         "build",
         "build:react",
         "build:demo",
-        "build:next15"
+        "build:next15",
+        "build:router6"
       ]
     },
     "build:react": {
