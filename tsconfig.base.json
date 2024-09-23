@@ -41,6 +41,7 @@
   },
   "include": [
     "./packages/example-react/vite.config.ts",
+    "./packages/example-react-router6/vite.config.ts",
     "./typings.d.ts",
     "./packages/shared"
   ],
