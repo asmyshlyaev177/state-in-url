@@ -311,11 +311,11 @@ describe('useUrlStateBase', () => {
 
       const newState = { ...shape, num: 50 };
       act(() => {
-        result.current.updateUrl(
-          newState,
-          // @ts-expect-error for test
-          { replace: true, scroll: true, someOpt: 123 },
-        );
+        result.current.updateUrl(newState, {
+          replace: true,
+          scroll: true,
+          someOpt: 123,
+        });
       });
 
       expect(result.current.state).toStrictEqual(newState);
