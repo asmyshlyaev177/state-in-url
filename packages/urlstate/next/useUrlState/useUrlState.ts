@@ -177,7 +177,7 @@ function getArgs<T extends JSONCompatible>(
   const _searchParams = (isObjParam ? obj.searchParams : searchParams) as
     | object
     | undefined;
-  const _replace = (isObjParam ? obj.replace ?? true : false) as boolean;
+  const _replace = (isObjParam ? (obj.replace ?? true) : false) as boolean;
 
   return {
     _defaultState,
