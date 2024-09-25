@@ -1,31 +1,35 @@
 import resolve from '@rollup/plugin-node-resolve';
 import terser from '@rollup/plugin-terser';
 import sourcemaps from 'rollup-plugin-sourcemaps';
-import typescript from '@rollup/plugin-typescript';
 import filesize from 'rollup-plugin-filesize';
 import { glob } from 'glob'
-import config from './tsconfig.json'
+import sucrase from '@rollup/plugin-sucrase';
 
 const isProduction = !process.env.IS_DEVELOPMENT;
 const sourcemap = !isProduction;
-const clearScreen = { watch: { clearScreen: false } };
+const clearScreen = { watch: {
+  clearScreen: false,
+  chokidar: true
+} };
 
 console.log({ isProduction, sourcemap });
 
-const external = ['react', 'react-dom', 'next/navigation']
+const external = ['react', 'react-dom', 'next/navigation', 'react-router-dom']
 
 const plugins = [
   resolve({
     include: ['node_modules/**'],
+    extensions: ['.js', '.ts', '.jsx', '.tsx']
   }),
-  typescript({
-    tsconfig: './tsconfig.json',
-    compilerOptions: { ...config.compilerOptions, sourceMap: sourcemap, declarationMap: sourcemap },
+  sucrase({
+    exclude: ['node_modules/**'],
+    transforms: ['typescript']
   }),
 
   !isProduction && sourcemaps(),
   isProduction && terser({ ecma: '2022' }),
-  filesize(),
+  // TODO: show total size of JS files
+  isProduction && filesize({ showMinifiedSize: false }),
 ].filter(Boolean);
 
 export default [
@@ -34,7 +38,6 @@ export default [
     plugins,
     external,
     output: [{
-      // file: pkg.exports.import.default,
       dir: 'dist',
       format: 'es',
       sourcemap,
@@ -44,15 +47,4 @@ export default [
     }],
     ...clearScreen,
   },
-  // {
-  //   input,
-  //   plugins,
-  //   external,
-  //   output: [{
-  //     file: pkg.exports.require.default,
-  //     format: 'cjs',
-  //     sourcemap
-  //   }],
-  //   ...clearScreen,
-  // },
 ];

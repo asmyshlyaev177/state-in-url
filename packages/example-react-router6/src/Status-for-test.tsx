@@ -1,10 +1,9 @@
-'use client';
 import React from 'react';
 import { form } from 'shared/form';
-import { useUrlState } from 'state-in-url/next';
+import { useUrlState } from 'state-in-url/react-router';
 
-const Status = ({ className, sp }: { className?: string; sp?: object }) => {
-  const { state } = useUrlState({ defaultState: form, searchParams: sp });
+const Status = ({ className }: { className?: string }) => {
+  const { state } = useUrlState({ defaultState: form });
 
   return (
     <div className={className}>
@@ -27,12 +26,12 @@ const Status = ({ className, sp }: { className?: string; sp?: object }) => {
   );
 };
 
-const Wrapper = ({ className, sp }: { className?: string; sp?: object }) => {
+const Wrapper = ({ className }: { className?: string }) => {
   const [key, setKey] = React.useState(Math.random());
 
   return (
     <div>
-      <Status key={key} className={className} sp={sp} />
+      <Status key={key} className={className} />
       <button
         onClick={() => setKey(Math.random())}
         className="text-black p-4"
