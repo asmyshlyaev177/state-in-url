@@ -1,0 +1,141 @@
+import React from 'react';
+
+// import { useParams } from 'react-router-dom';
+import { useUrlStateBase } from '../../useUrlStateBase';
+import {
+  type DeepReadonly,
+  filterUnknownParamsClient,
+  type JSONCompatible,
+} from '../../utils';
+
+/**
+ * React-router hook. Returns `state`, `updateState`, and `updateUrl` functions
+ *
+ * @param {JSONCompatible<T>} [defaultState] Fallback (default) values for state
+ * @param {?SearchParams<T>} [searchParams] searchParams from Next server component
+ *
+ * * Example:
+ * ```ts
+ * export const form = { name: '', age: 0 };
+ * const { state, updateState, updateUrl } = useUrlState({ defaultState: form });
+ * // for nextjs seerver components
+ * // const { state, updateState, updateUrl } = useUrlState({ defaultState: form, searchParams });
+ *
+ * updateState({ name: 'test' });
+ * // by default it's uses router.push with scroll: false
+ * updateUrl({ name: 'test' }, { replace: true, scroll: true });
+ * // similar to React.useState
+ * updateUrl(curr => ({ ...curr, name: 'test' }), { replace: true, scroll: true });
+ *  ```
+ *
+ *  * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/main/packages/urlstate/react-router/useUrlState#api}
+ */
+export function useUrlState<T extends JSONCompatible>({
+  defaultState,
+  searchParams,
+}: {
+  defaultState: T;
+  searchParams?: object;
+  replace?: boolean;
+}): {
+  state: DeepReadonly<T>;
+  updateState: (
+    value: Partial<T> | Partial<DeepReadonly<T>> | ((currState: T) => T),
+  ) => void;
+  updateUrl: (
+    value?: Partial<T> | Partial<DeepReadonly<T>> | ((currState: T) => T),
+  ) => void;
+  getState: () => DeepReadonly<T>;
+};
+
+export function useUrlState<T extends JSONCompatible>({
+  defaultState,
+  // searchParams,
+  replace,
+}: {
+  defaultState: T;
+  searchParams?: object;
+  replace?: boolean;
+}) {
+  // const router = useRouter();
+  const router = { replace: () => {}, push: () => {} };
+  const {
+    state,
+    updateState,
+    updateUrl: updateUrlBase,
+    getState,
+  } = useUrlStateBase(defaultState, router, ({ parse }) =>
+    parse(filterUnknownParamsClient(defaultState)),
+  );
+
+  const updateUrl = React.useCallback(
+    (value?: Parameters<typeof updateUrlBase>[0], options?: Options) => {
+      const opts = { scroll: false, replace, ...options };
+      updateUrlBase(value, opts);
+    },
+    [updateUrlBase, replace],
+  );
+
+  // const sp = useSearchParams();
+  // React.useEffect(() => {
+  //   const shapeKeys = Object.keys(_defaultState);
+  //   const _sp = Object.fromEntries(
+  //     [...sp.entries()].filter(([key]) => shapeKeys.includes(key)),
+  //   );
+  //   updateState(parseSPObj(_sp, _defaultState));
+  // }, [sp]);
+
+  return {
+    /**
+     * * Example:
+     * ```ts
+     * updateState({ name: 'test' });
+     * // or
+     * updateState(curr => ({ ...curr, name: 'test' }) );
+     *  ```
+     *
+     *  * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/main/packages/urlstate/next/useUrlState#updatestate}
+     */
+    updateState,
+    /**
+     * * Example:
+     * ```ts
+     * updateUrl({ name: 'test' });
+     * // or
+     * updateUrl(curr => ({ ...curr, name: 'test' }), { replace: true, scroll: false  } );
+     *  ```
+     *
+     *  * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/main/packages/urlstate/next/useUrlState#updateurl}
+     */
+    updateUrl,
+    state: state as DeepReadonly<typeof state>,
+    getState,
+  };
+}
+
+// type Router = ReturnType<typeof useRouter>;
+type Router = {
+  push: (url: string, opts: unknown) => void;
+  replace: (url: string, opts: unknown) => void;
+};
+type RouterOptions = NonNullable<
+  Parameters<Router['push']>[1] | Parameters<Router['replace']>[1]
+>;
+
+interface Options extends RouterOptions {
+  replace?: boolean;
+}
+
+// function filterUnknownParams<T extends object>(
+//   shape: T,
+//   searchParams?: object,
+// ) {
+//   const shapeKeys = Object.keys(shape);
+
+//   const result = Object.fromEntries(
+//     Object.entries(searchParams || {})
+//       .map(([key, val]) => [key.replaceAll('+', ' '), val])
+//       .filter(([key]) => shapeKeys.includes(key)),
+//   );
+//   return result as T;
+// }

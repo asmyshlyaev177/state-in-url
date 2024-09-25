@@ -1,24 +1,22 @@
-'use client';
-import { useSearchParams } from 'next/navigation';
 import React from 'react';
+import { useParams } from 'react-router-dom';
 import { Field, Input, RefreshButton, Tag } from 'shared/components';
 import { form } from 'shared/form';
-import { useUrlState } from 'state-in-url/next';
+import { useUrlState } from 'state-in-url/react-router';
 
 export const Form = ({
   className,
-  searchParams,
   delay = 800,
 }: {
   className?: string;
-  searchParams?: object;
   delay?: number;
 }) => {
-  const sp = useSearchParams();
+  // const sp = useSearchParams();
+  const sp = useParams();
+  console.log({ sp });
   const { state, updateState, updateUrl } = useUrlState({
     defaultState: form,
-    searchParams,
-    replace: sp.get('replace') === 'false' ? false : true,
+    // replace: sp.get('replace') === 'false' ? false : true,
   });
 
   // set URI when state change

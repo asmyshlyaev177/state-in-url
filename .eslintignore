@@ -1,3 +1,11 @@
 typings.d.ts
 package.json
 playwright.config.ts
+rollup.config.js
+.eslintrc.cjs
+*.test.ts
+*.test.tsx
+*.spec.ts
+*.spec.ts
+dist
+exportsTest.ts
