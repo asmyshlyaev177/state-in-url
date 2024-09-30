@@ -1,4 +1,4 @@
-import { parseSPObj } from './next';
+import { parseSPObj } from './parseSPObj';
 
 describe('should decode server components searchParams', () => {
   it('without errors', () => {

@@ -1,9 +1,16 @@
 import React from 'react';
+import {
+  type NavigateOptions,
+  useNavigate,
+  useSearchParams,
+} from 'react-router-dom';
 
-// import { useParams } from 'react-router-dom';
+import { parseSPObj } from '../../parseSPObj';
 import { useUrlStateBase } from '../../useUrlStateBase';
 import {
+  assignValue,
   type DeepReadonly,
+  filterUnknownParams,
   filterUnknownParamsClient,
   type JSONCompatible,
 } from '../../utils';
@@ -12,53 +19,34 @@ import {
  * React-router hook. Returns `state`, `updateState`, and `updateUrl` functions
  *
  * @param {JSONCompatible<T>} [defaultState] Fallback (default) values for state
- * @param {?SearchParams<T>} [searchParams] searchParams from Next server component
- *
+ * @param {NavigateOptions} [NavigateOptions] See type from `react-router-dom`
  * * Example:
  * ```ts
  * export const form = { name: '', age: 0 };
- * const { state, updateState, updateUrl } = useUrlState({ defaultState: form });
- * // for nextjs seerver components
- * // const { state, updateState, updateUrl } = useUrlState({ defaultState: form, searchParams });
+ * const { state, updateState, updateUrl } = useUrlState({ defaultState: form, replace: false, preventScrollReset: false });
  *
  * updateState({ name: 'test' });
- * // by default it's uses router.push with scroll: false
- * updateUrl({ name: 'test' }, { replace: true, scroll: true });
+ * updateUrl({ name: 'test' }, { replace: true });
  * // similar to React.useState
- * updateUrl(curr => ({ ...curr, name: 'test' }), { replace: true, scroll: true });
+ * updateUrl(curr => ({ ...curr, name: 'test' }), { replace: true });
  *  ```
  *
  *  * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/main/packages/urlstate/react-router/useUrlState#api}
  */
 export function useUrlState<T extends JSONCompatible>({
   defaultState,
-  searchParams,
-}: {
-  defaultState: T;
-  searchParams?: object;
-  replace?: boolean;
-}): {
-  state: DeepReadonly<T>;
-  updateState: (
-    value: Partial<T> | Partial<DeepReadonly<T>> | ((currState: T) => T),
-  ) => void;
-  updateUrl: (
-    value?: Partial<T> | Partial<DeepReadonly<T>> | ((currState: T) => T),
-  ) => void;
-  getState: () => DeepReadonly<T>;
-};
-
-export function useUrlState<T extends JSONCompatible>({
-  defaultState,
-  // searchParams,
-  replace,
-}: {
-  defaultState: T;
-  searchParams?: object;
-  replace?: boolean;
-}) {
-  // const router = useRouter();
-  const router = { replace: () => {}, push: () => {} };
+  ...initOpts
+}: { defaultState: T } & NavigateOptions) {
+  const navigate = useNavigate();
+  const router = React.useMemo(
+    () => ({
+      replace: (url: string, opts: NavigateOptions) =>
+        navigate(url, { ...defaultOpts, ...initOpts, ...opts }),
+      push: (url: string, opts: NavigateOptions) =>
+        navigate(url, { ...defaultOpts, ...initOpts, ...opts }),
+    }),
+    [navigate, initOpts],
+  );
   const {
     state,
     updateState,
@@ -69,21 +57,34 @@ export function useUrlState<T extends JSONCompatible>({
   );
 
   const updateUrl = React.useCallback(
-    (value?: Parameters<typeof updateUrlBase>[0], options?: Options) => {
-      const opts = { scroll: false, replace, ...options };
+    (
+      value?: Parameters<typeof updateUrlBase>[0],
+      options?: NavigateOptions,
+    ) => {
+      const opts = { ...defaultOpts, ...initOpts, ...options };
       updateUrlBase(value, opts);
     },
-    [updateUrlBase, replace],
+    [initOpts],
   );
 
-  // const sp = useSearchParams();
-  // React.useEffect(() => {
-  //   const shapeKeys = Object.keys(_defaultState);
-  //   const _sp = Object.fromEntries(
-  //     [...sp.entries()].filter(([key]) => shapeKeys.includes(key)),
-  //   );
-  //   updateState(parseSPObj(_sp, _defaultState));
-  // }, [sp]);
+  const [sp] = useSearchParams();
+
+  // TODO: measure performance
+  React.useEffect(() => {
+    updateState(
+      assignValue(
+        defaultState,
+        state as T,
+        filterUnknownParams(
+          defaultState,
+          parseSPObj(
+            Object.fromEntries([...sp.entries()]),
+            defaultState,
+          ) as Partial<T>,
+        ),
+      ),
+    );
+  }, [sp]);
 
   return {
     /**
@@ -92,9 +93,11 @@ export function useUrlState<T extends JSONCompatible>({
      * updateState({ name: 'test' });
      * // or
      * updateState(curr => ({ ...curr, name: 'test' }) );
+     * // can pass optional React-Router `NavigateOptions`
+     * updateState(curr => ({ ...curr, name: 'test', preventScrollReset: false }) );
      *  ```
      *
-     *  * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/main/packages/urlstate/next/useUrlState#updatestate}
+     *  * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/main/packages/urlstate/react-router/useUrlState#updatestate}
      */
     updateState,
     /**
@@ -102,10 +105,12 @@ export function useUrlState<T extends JSONCompatible>({
      * ```ts
      * updateUrl({ name: 'test' });
      * // or
-     * updateUrl(curr => ({ ...curr, name: 'test' }), { replace: true, scroll: false  } );
+     * updateUrl(curr => ({ ...curr, name: 'test' }), { replace: true } );
+     * // can pass optional React-Router `NavigateOptions`
+     * updateState(curr => ({ ...curr, name: 'test', preventScrollReset: false }) );
      *  ```
      *
-     *  * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/main/packages/urlstate/next/useUrlState#updateurl}
+     *  * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/main/packages/urlstate/react-router/useUrlState#updateurl}
      */
     updateUrl,
     state: state as DeepReadonly<typeof state>,
@@ -113,29 +118,7 @@ export function useUrlState<T extends JSONCompatible>({
   };
 }
 
-// type Router = ReturnType<typeof useRouter>;
-type Router = {
-  push: (url: string, opts: unknown) => void;
-  replace: (url: string, opts: unknown) => void;
+const defaultOpts: NavigateOptions = {
+  replace: true,
+  preventScrollReset: true,
 };
-type RouterOptions = NonNullable<
-  Parameters<Router['push']>[1] | Parameters<Router['replace']>[1]
->;
-
-interface Options extends RouterOptions {
-  replace?: boolean;
-}
-
-// function filterUnknownParams<T extends object>(
-//   shape: T,
-//   searchParams?: object,
-// ) {
-//   const shapeKeys = Object.keys(shape);
-
-//   const result = Object.fromEntries(
-//     Object.entries(searchParams || {})
-//       .map(([key, val]) => [key.replaceAll('+', ' '), val])
-//       .filter(([key]) => shapeKeys.includes(key)),
-//   );
-//   return result as T;
-// }

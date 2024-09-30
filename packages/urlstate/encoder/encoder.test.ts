@@ -5,7 +5,7 @@ import {
   errorSym,
   parseJSON,
 } from './encoder';
-import { parseSPObj } from '../next';
+import { parseSPObj } from '../parseSPObj';
 import { type JSONCompatible } from '../utils';
 
 describe('encoder', () => {

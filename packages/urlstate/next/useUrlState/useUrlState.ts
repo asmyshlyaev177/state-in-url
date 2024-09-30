@@ -2,10 +2,11 @@ import { useRouter } from 'next/navigation';
 import { useSearchParams } from 'next/navigation';
 import React from 'react';
 
-import { parseSPObj } from '../parseSPObj';
+import { parseSPObj } from '../../parseSPObj';
 import { useUrlStateBase } from '../../useUrlStateBase';
 import {
   type DeepReadonly,
+  filterUnknownParams,
   filterUnknownParamsClient,
   isSSR,
   type JSONCompatible,
@@ -124,11 +125,15 @@ export function useUrlState<T extends JSONCompatible>(
 
   const sp = useSearchParams();
   React.useEffect(() => {
-    const shapeKeys = Object.keys(_defaultState);
-    const _sp = Object.fromEntries(
-      [...sp.entries()].filter(([key]) => shapeKeys.includes(key)),
+    updateState(
+      filterUnknownParams(
+        _defaultState,
+        parseSPObj(
+          Object.fromEntries([...sp.entries()]),
+          _defaultState,
+        ) as Partial<T>,
+      ),
     );
-    updateState(parseSPObj(_sp, _defaultState));
   }, [sp]);
 
   return {
@@ -184,18 +189,4 @@ function getArgs<T extends JSONCompatible>(
     _searchParams,
     _replace,
   };
-}
-
-function filterUnknownParams<T extends object>(
-  shape: T,
-  searchParams?: object,
-) {
-  const shapeKeys = Object.keys(shape);
-
-  const result = Object.fromEntries(
-    Object.entries(searchParams || {})
-      .map(([key, val]) => [key.replaceAll('+', ' '), val])
-      .filter(([key]) => shapeKeys.includes(key)),
-  );
-  return result as T;
 }

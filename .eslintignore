@@ -7,5 +7,6 @@ rollup.config.js
 *.test.tsx
 *.spec.ts
 *.spec.ts
+testUtils.ts
 dist
 exportsTest.ts
