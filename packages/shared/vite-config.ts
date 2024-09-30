@@ -9,11 +9,13 @@ export const getConfig = () => ({
     outDir: './dist',
     emptyOutDir: true,
     cssCodeSplit: false,
+    sourceMap: true,
   },
   resolve: {
     preserveSymlinks: true,
     alias: {
       shared: `${path.resolve(__dirname, './')}`,
+      'state-in-url': `${path.resolve(__dirname, '../urlstate')}`,
     },
   },
 });

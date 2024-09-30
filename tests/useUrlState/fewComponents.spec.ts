@@ -8,6 +8,10 @@ const urls = [
     'http://localhost:3001/useUrlState/1',
     'http://localhost:3001/useUrlState/2',
   ],
+  [
+    'http://localhost:5181/few-components/1',
+    'http://localhost:5181/few-components/2',
+  ]
 ];
 
 test.describe('few components tests', () => {

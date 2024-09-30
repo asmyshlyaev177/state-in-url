@@ -9,7 +9,7 @@ const urls = [
   'http://localhost:3001/test-ssr',
   'http://localhost:3001/test-use-client',
   'http://localhost:3001/test-ssr-sp',
-  // 'http://localhost:5182',
+  'http://localhost:5181',
 ];
 
 test.describe('main tests', () => {

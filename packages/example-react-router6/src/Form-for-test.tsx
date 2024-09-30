@@ -1,5 +1,5 @@
 import React from 'react';
-import { useParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import { Field, Input, RefreshButton, Tag } from 'shared/components';
 import { form } from 'shared/form';
 import { useUrlState } from 'state-in-url/react-router';
@@ -11,12 +11,10 @@ export const Form = ({
   className?: string;
   delay?: number;
 }) => {
-  // const sp = useSearchParams();
-  const sp = useParams();
-  console.log({ sp });
+  const [sp] = useSearchParams();
   const { state, updateState, updateUrl } = useUrlState({
     defaultState: form,
-    // replace: sp.get('replace') === 'false' ? false : true,
+    replace: sp.get('replace') === 'false' ? false : true,
   });
 
   // set URI when state change
@@ -114,7 +112,12 @@ export const Form = ({
 
         <div className="space-y-6">
           <Field id="name" text="Name">
-            <Input id="name" value={state.name} onChange={onChangeName} />
+            <Input
+              id="name"
+              value={state.name}
+              onChange={onChangeName}
+              className="text-black h-[30px]"
+            />
           </Field>
 
           <Field id="age" text="Age">
@@ -123,15 +126,21 @@ export const Form = ({
               type="number"
               value={state.age}
               onChange={onChangeAge}
+              className="text-black h-[30px]"
             />
           </Field>
 
-          <Field id="agree to terms" text="Agree to terms">
+          <Field
+            id="agree to terms"
+            text="Agree to terms"
+            className="text-black select-none flex gap-4"
+          >
             <Input
               id="agree to terms"
               type="checkbox"
               checked={state['agree to terms']}
               onChange={onChangeTerms}
+              className="w-[25px] h-[25px]"
             />
           </Field>
 

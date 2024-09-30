@@ -1,7 +1,7 @@
 import { act, fireEvent, renderHook } from '@testing-library/react';
 
 import { useUrlStateBase } from './useUrlStateBase';
-import { parseSPObj } from '../next/parseSPObj';
+import { parseSPObj } from '../parseSPObj';
 import * as sharedState from '../useSharedState';
 import * as urlEncode from '../useUrlEncode';
 import * as utils from '../utils';

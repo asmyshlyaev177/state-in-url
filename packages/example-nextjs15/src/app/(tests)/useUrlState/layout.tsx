@@ -11,11 +11,6 @@ export default async function Layout({
   children: React.ReactNode;
 }) {
   const sp = headers().get('searchParams') || '';
-  // console.log({
-  //   runtime: process.env.NEXT_RUNTIME,
-  //   sp,
-  //   dec: decodeState(sp, stateShape)
-  //  })
 
   return (
     <div>
