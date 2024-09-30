@@ -23,7 +23,7 @@ import { encodeState } from 'state-in-url/encodeState';
 
 const form = { name: '' };
 const encodedState = encodeState({ name: 'test' }, form, 'someExistingParam=123');
-console.log(encodedState); // Output: name=◖test&someExistingParam=∓123
+console.log(encodedState); // Output: name=test&someExistingParam=123
 ```
 
 ## `decodeState`
@@ -45,6 +45,6 @@ The decoded object.
 import { decodeState } from 'state-in-url/encodeState';
 
 const form = { name: '', key: '' };
-const decodedState = decodeState('key=◖value&name=◖Alex', form);
+const decodedState = decodeState('key=value&name=Alex', form);
 console.log(decodedState); // Output: { name: 'Alex', key: 'value }
 ```

@@ -85,7 +85,7 @@ describe('useUrlStateBase', () => {
 
     it('client with location.search', () => {
       jest.spyOn(utils, 'isSSR').mockReturnValue(false);
-      const search = '?num=∓55&with+space=true';
+      const search = '?num=55&with+space=true';
       const originalLocation = window.location;
       jest.spyOn(window, 'location', 'get').mockImplementation(() => ({
         ...originalLocation,
@@ -171,7 +171,7 @@ describe('useUrlStateBase', () => {
   describe('return state', () => {
     it('ssr with sp', () => {
       jest.spyOn(utils, 'isSSR').mockReturnValue(true);
-      const sp = { num: '∓55' };
+      const sp = { num: '55' };
       const { result } = renderHook(() =>
         useUrlStateBase(shape, router, () =>
           utils.isSSR() ? parseSPObj(sp, shape) : shape,
@@ -197,7 +197,7 @@ describe('useUrlStateBase', () => {
     });
 
     it('client with query params', () => {
-      const search = '?num=∓55';
+      const search = '?num=55';
       const originalLocation = window.location;
       jest.spyOn(window, 'location', 'get').mockImplementation(() => ({
         ...originalLocation,
@@ -382,7 +382,7 @@ describe('useUrlStateBase', () => {
   describe('back/forward history navigation', () => {
     it('should update state on back/forward', () => {
       jest.spyOn(utils, 'isSSR').mockReturnValue(false);
-      const search = '?num=∓55';
+      const search = '?num=55';
       const originalLocation = window.location;
       jest
         .spyOn(window, 'location', 'get')

@@ -28,10 +28,10 @@ const { parse, stringify } = useUrlEncode(form);
 
 // Stringify state to URL query string
 const queryString = stringify({ name: 'John' }, 'someExistingParamToKeep=123');
-console.log(queryString); // Output: name=◖John&someExistingParamToKeep=123
+console.log(queryString); // Output: name='John'&someExistingParamToKeep=123
 
 // Parse URL query string to state object
-const state = parse('name=◖Tom');
+const state = parse("name='Tom'");
 console.log(state); // Output: { name: 'Tom' }
 ```
 
@@ -64,6 +64,6 @@ The parsed state object.
 
 ```typescript
 // Parse URL query string to state object
-const state = parse('name=◖Tom');
+const state = parse("name='Tom'");
 console.log(state); // Output: { name: 'Tom' }
 ```

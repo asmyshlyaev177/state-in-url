@@ -69,7 +69,6 @@ export function useUrlState<T extends JSONCompatible>({
 
   const [sp] = useSearchParams();
 
-  // TODO: measure performance
   React.useEffect(() => {
     updateState(
       assignValue(
