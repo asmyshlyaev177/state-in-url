@@ -1,10 +1,9 @@
 'use client';
 import { useSearchParams } from 'next/navigation';
 import React from 'react';
+import { Field, Input, RefreshButton, Tag } from 'shared/components';
+import { form } from 'shared/form';
 import { useUrlState } from 'state-in-url/next';
-
-import { Field, Input, RefreshButton, Tag } from '../../../shared/components';
-import { form } from '../../../shared/form';
 
 export const Form = ({
   className,

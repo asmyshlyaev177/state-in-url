@@ -1,4 +1,4 @@
-import { getParams, typeOf } from './utils';
+import { getParams, typeOf, assignValue } from './utils';
 
 describe('typeOf', () => {
   it('string', () => {
@@ -92,3 +92,39 @@ describe('getParams', () => {
     expect(getParams(url5).toString()).toStrictEqual(url1);
   });
 });
+
+describe('assignValue', () => {
+  const shape = {
+    a1: 1,
+    a2: 2,
+    a3: {
+      a4: 'test'
+    }
+  }
+
+  it('should assign a value', () => {
+    expect(clone(assignValue(shape, { a1: 2 }, { ...shape, a1: 3 }))).toStrictEqual(clone({
+        ...shape,
+        a1: 3,
+      }))
+  })
+
+  it('should return a new instance of object', () => {
+    const curr = structuredClone(shape)
+    const newVal = {}
+    const result = assignValue(shape, curr, newVal)
+    expect(result === shape).toBeFalsy()
+    expect(result === curr).toBeFalsy()
+    expect(result === newVal).toBeFalsy()
+  })
+
+  it('should override curr value with newValue', () => {
+      expect(clone(assignValue(shape, { a1: 2 }, { a1: 3 }))).toStrictEqual(clone({ ...shape, a1: 3 }))
+  })
+
+  it('should use value from shape as default', () => {
+      expect(clone(assignValue(shape, { a1: 2 }, {}))).toStrictEqual(clone({ ...shape, a1: shape.a1 }))
+  })
+})
+
+const clone = (obj: object) => JSON.parse(JSON.stringify(obj))

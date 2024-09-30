@@ -6,11 +6,12 @@
     "declarationDir": "./dist",
     "declarationMap": true,
     "sourceMap": true,
-    // "rootDir": "./packages",
+    "rootDir": "./",
     "baseUrl": ".",
     "isolatedModules": true,
     "removeComments": false,
     "moduleResolution": "Bundler",
+    "allowImportingTsExtensions": true,
     "types": [
       "node",
       "jest",
@@ -36,13 +37,27 @@
       "shared/vite-config": ["packages/shared/vite-config.ts"],
       "shared/components/*": ["packages/shared/components/*"],
       "shared/components": ["packages/shared/components/index.ts"],
-      "shared/*": ["packages/shared/*"]
+      "shared/*": ["packages/shared/*"],
+      "shared": ["packages/shared"]
     }
   },
   "include": [
-    "./packages/example-react/vite.config.ts",
-    "./typings.d.ts",
-    "./packages/shared"
+    "typings.d.ts",
+    "packages",
+    "packages/*",
+    "packages/**/*",
+    "**/*.ts",
+    "**/*.tsx"
   ],
-  "exclude": ["node_modules", "tests/**/*", ".next/**/*"]
+  "exclude": [
+    "node_modules",
+    ".next/**/*",
+    "dist",
+    "**/dist",
+    "tests",
+    "**/*.test.ts",
+    "**/*.test.tsx",
+    "**/exportsTest.ts",
+    "exportsTest.ts"
+  ]
 }

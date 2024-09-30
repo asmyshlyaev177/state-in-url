@@ -48,7 +48,7 @@ export function useUrlEncode<T extends JSONCompatible>(stateShape: T) {
 Parse URL query string to state object
 * * Example:
  * ```ts
-const state = parse('name=◖Tom');
+const state = parse("name='Tom'");
 console.log(state); // Output: { name: 'Tom' }
  *  ```
  *
@@ -60,7 +60,7 @@ Converts a state object to a URL query string.
 * * Example:
 * ```ts
 const queryString = stringify({ name: 'John' }, 'someExistingParamToKeep=123');
-console.log(queryString); // Output: name=◖John&someExistingParamToKeep=123
+console.log(queryString); // Output: name='John'&someExistingParamToKeep=123
 *  ```
 *
 *  * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/main/packages/urlstate/useUrlEncode#stringify}

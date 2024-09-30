@@ -6,7 +6,6 @@ const nextConfig = {
       ...config,
     } as NextConfig;
     newConfig.resolve.webpack5 = true;
-    // TODO: minify html
     return newConfig;
   },
   transpilePackages: ['shared', 'shared/components', 'shared/components/Input', 'shared/components/Input.tsx', 'shared/components/Input', 'shared/components/Input.tsx'],

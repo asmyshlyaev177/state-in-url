@@ -2,7 +2,7 @@ import { Analytics } from '@vercel/analytics/react';
 import type { Metadata } from 'next';
 import { Roboto } from 'next/font/google';
 
-import '../../../shared/styles.css';
+import 'shared/styles.css';
 
 import { isVercel, netifyUrl, vercelUrl } from './domain';
 const roboto = Roboto({
@@ -21,7 +21,6 @@ export default async function RootLayout({
     <html lang="en">
       <link rel="preconnect" href="https://fonts.googleapis.com" />
       <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
-      {/* TODO: https://github.com/vercel/next.js/discussions/53540 */}
       <link rel="canonical" href={vercelUrl}></link>
       <link rel="alternate" href={netifyUrl}></link>
       <body className={`${roboto.className}`}>{children}</body>

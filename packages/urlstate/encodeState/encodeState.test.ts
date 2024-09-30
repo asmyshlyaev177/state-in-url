@@ -65,7 +65,7 @@ describe('encodeState', () => {
 
 describe('decodeState', () => {
   it('should decode a simple state object', () => {
-    const uriString = 'key1=%E2%97%96value1&key2=%E2%97%96value2';
+    const uriString = "key1=%27value1%27&key2=%27value2%27";
     const expected = { key1: 'value1', key2: 'value2' };
     const result = decodeState(uriString, { key1: '', key2: '' });
     expect(result).toEqual(expected);
@@ -81,9 +81,9 @@ describe('decodeState', () => {
 
   it('should decode a state object with default values', () => {
     const expected = { key1: 'value1', key2: 'value2' };
-    const defaults = { key1: '', key2: '' };
+    const defaults = { key1: '1', key2: '2' };
     expect(decodeState('', defaults)).toEqual(defaults);
-    expect(decodeState('key1=%E2%97%96value1', defaults)).toEqual({
+    expect(decodeState("key1=%27value1%27", defaults)).toEqual({
       ...expected,
       key2: defaults.key2,
     });
