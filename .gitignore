@@ -1,6 +1,7 @@
 node_modules
 .next
 dist
+/dist/
 /test-results/
 /playwright-report/
 /blob-report/

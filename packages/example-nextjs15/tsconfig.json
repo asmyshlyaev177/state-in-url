@@ -7,9 +7,6 @@
       },
       { "name": "typescript-plugin-css-modules" }
     ],
-    "paths": {
-      "@/*": ["./src/*"]
-    },
     "noEmit": true
   },
   "include": [
@@ -17,7 +14,7 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "../shared/form.ts",
+    "../shared",
     "./global.d.ts"
   ],
   "exclude": ["node_modules"]

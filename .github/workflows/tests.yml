@@ -103,6 +103,8 @@ jobs:
         path: |
           ./node_modules
           ./dist
+          ./packages/example-react-router6/dist
+          ./packages/example-react-router6/package.json
           ./packages/example-react/dist
           ./packages/example-react/package.json
           ./packages/example-nextjs14/package.json
@@ -133,6 +135,8 @@ jobs:
         path: |
           ./node_modules
           ./dist
+          ./packages/example-react-router6/dist
+          ./packages/example-react-router6/package.json
           ./packages/example-react/dist
           ./packages/example-react/package.json
           ./packages/example-nextjs14/package.json
@@ -181,6 +185,8 @@ jobs:
         path: |
           ./node_modules
           ./dist
+          ./packages/example-react-router6/dist
+          ./packages/example-react-router6/package.json
           ./packages/example-react/dist
           ./packages/example-react/package.json
           ./packages/example-nextjs14/package.json

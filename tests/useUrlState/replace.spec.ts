@@ -2,7 +2,11 @@ import { expect, test } from '@playwright/test';
 
 import { toHaveUrl } from '../testUtils';
 
-const urls = ['/test-ssr-sp', 'http://localhost:3001/test-ssr-sp'];
+const urls = [
+  '/test-ssr-sp',
+  'http://localhost:3001/test-ssr-sp',
+  'http://localhost:5181',
+];
 
 test('replace arg === true', async ({ page }) => {
   for (const url of urls) {

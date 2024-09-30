@@ -59,20 +59,24 @@ Add a ⭐️ and <a href="https://github.com/asmyshlyaev177" target="_blank">fol
 ## Table of content
 
 - [Installation](#installation)
-- [`useUrlState` for Next.js](#useurlstate-hook-for-nextjs)
-- [`useUrlStateBase` for other routers](#useurlstatebase-hook-for-others-routers)
-- [`useSharedState` hook for React.js/Next.js](#usesharedstate-hook-for-reactjs)
-- [`useUrlEncode` for React.js](#useurlencode-hook-for-reactjs)
-- [`encodeState` and `decodeState` for pure JS usage](#encodestate-and-decodestate-helpers)
-- [auto sync state with url](#auto-sync-state)
-- [Low-level `encode` and `decode` functions](#encode-and-decode-helpers)
+- [useUrlState hook](#useurlstate)
+- - [Next.js](#useurlstate-hook-for-nextjs)
+- - [React-Router](#useurlstate-hook-for-react-router)
+- [Other helpers](#other-hooks-and-helpers)
+- - [`useUrlStateBase` for other routers](#useurlstatebase-hook-for-others-routers)
+- - [`useSharedState` hook for React.js/Next.js](#usesharedstate-hook-for-reactjs)
+- - [`useUrlEncode` for React.js](#useurlencode-hook-for-reactjs)
+- - [`encodeState` and `decodeState` for pure JS usage](#encodestate-and-decodestate-helpers)
+- - [Low-level `encode` and `decode` functions](#encode-and-decode-helpers)
 - [Best practices](#best-practices)
-- [Gothas](#gothas)
-- [Roadmap](#roadmap)
-- [Contact & Support](#contact--support)
-- [Changelog](#changelog)
-- [License](#license)
-- [Inspiration](#inspiration)
+- - [Gothas](#gothas)
+- [Other](#other)
+- - [Roadmap](#roadmap)
+- - [Contributing](#contribute-andor-run-locally)
+- - [Contact & Support](#contact--support)
+- - [Changelog](#changelog)
+- - [License](#license)
+- - [Inspiration](#inspiration)
 
 ## installation
 
@@ -92,11 +96,13 @@ pnpm add state-in-url
 In `tsconfig.json` in `compilerOptions` set `"moduleResolution": "Bundler"`, or`"moduleResolution": "Node16"`, or `"moduleResolution": "NodeNext"`.
 Possibly need to set `"module": "ES2022"`, or `"module": "ESNext"`
 
+# useUrlState
+
+`useUrlState` is a custom React hook for Next.js/React-Router applications that make communication between client components easy. It allows you to share any complex state and sync it with the URL search parameters, providing a way to persist state across page reloads and share application state via URLs.
+
 ## useUrlState hook for Next.js
 
 [Docs](packages/urlstate/next/useUrlState#api)
-
-`useUrlState` is a custom React hook for Next.js applications that make communication between client components easy. It allows you to share any complex state and sync it with the URL search parameters, providing a way to persist state across page reloads and share application state via URLs.
 
 ### Usage examples
 
@@ -334,6 +340,90 @@ function SettingsComponent() {
 }
 ```
 
+## useUrlState hook for React-Router
+
+API is same as for Next.js version, except can pass options from [NavigateOptions](https://github.com/remix-run/react-router/blob/bc693ed9f39170bda13b9e1b282fb8e9d5925f66/packages/react-router/lib/context.ts#L99) type.
+
+[Docs](packages/urlstate/react-router/useUrlState#api)
+
+
+### Example
+
+```typescript
+export const form: Form = {
+  name: '',
+  age: undefined,
+  'agree to terms': false,
+  tags: [],
+};
+
+type Form = {
+  name: string;
+  age?: number;
+  'agree to terms': boolean;
+  tags: { id: string; value: { text: string; time: Date } }[];
+};
+
+```
+
+```typescript
+import { useUrlState } from 'state-in-url/react-router';
+
+import { form } from './form';
+
+function TagsComponent() {
+  const { state, updateUrl } = useUrlState({ defaultState: form });
+
+  const onChangeTags = React.useCallback(
+    (tag: (typeof tags)[number]) => {
+      updateUrl((curr) => ({
+        ...curr,
+        tags: curr.tags.find((t) => t.id === tag.id)
+          ? curr.tags.filter((t) => t.id !== tag.id)
+          : curr.tags.concat(tag),
+      }));
+    },
+    [updateUrl],
+  );
+
+  return (
+    <div>
+      <Field text="Tags">
+        <div className="flex flex-wrap gap-2">
+          {tags.map((tag) => (
+            <Tag
+              active={!!state.tags.find((t) => t.id === tag.id)}
+              text={tag.value.text}
+              onClick={() => onChangeTags(tag)}
+              key={tag.id}
+            />
+          ))}
+        </div>
+      </Field>
+    </div>
+  );
+}
+
+const tags = [
+  {
+    id: '1',
+    value: { text: 'React.js', time: new Date('2024-07-17T04:53:17.000Z') },
+  },
+  {
+    id: '2',
+    value: { text: 'Next.js', time: new Date('2024-07-18T04:53:17.000Z') },
+  },
+  {
+    id: '3',
+    value: { text: 'TailwindCSS', time: new Date('2024-07-19T04:53:17.000Z') },
+  },
+];
+```
+
+[Example code](packages/example-react-router6/src/Form-for-test.tsx)
+
+# Other hooks and helpers
+
 ## `useUrlStateBase` hook for others routers
 
 Hooks to create your own `useUrlState` hooks with other routers, e.g. react-router or tanstack router.
@@ -369,7 +459,7 @@ function SettingsComponent() {
 
 [Docs](packages/urlstate/encoder/README.md)
 
-## Best Practices
+# Best Practices
 
 - Define your state shape as a constant
 - Use TypeScript for enhanced type safety and autocomplete
@@ -384,20 +474,17 @@ function SettingsComponent() {
 2. Vercel servers limit size of headers (query string and other stuff) to **14KB**, so keep your URL state under ~5000 words. <https://vercel.com/docs/errors/URL_TOO_LONG>
 3. Tested with `next.js` 14/15  with app router, no plans to support pages.
 
-## Run locally
+# Other
 
-Clone this repo, run `npm install` and
+## Contribute and/or run locally
 
-```sh
-npm run dev
-```
+See [Contributing doc](CONTRIBUTING.md)
 
-Go to [localhost:3000](http://localhost:3000)
 
 ## Roadmap
 
 - [x] hook for `Next.js`
-- [ ] hook for 'react-router`
+- [x] hook for 'react-router`
 - [ ] hook for 'remix`
 - [ ] hook for store state in hash ?
 
@@ -405,11 +492,11 @@ Go to [localhost:3000](http://localhost:3000)
 
 - Create a [GitHub issue](https://github.com/asmyshlyaev177/state-in-url/issues) for bug reports, feature requests, or questions
 
-## [Changelog](https://github.com/asmyshlyaev177/state-in-url/blob/main/CHANGELOG.md)
+## [Changelog](CHANGELOG.md)
 
 ## License
 
-This project is licensed under the [MIT license](https://github.com/asmyshlyaev177/state-in-url/blob/main/LICENSE).
+This project is licensed under the [MIT license](LICENSE).
 
 ## Inspiration
 

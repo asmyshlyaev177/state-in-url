@@ -48,7 +48,8 @@
     "packages/urlstate",
     "packages/example-nextjs14",
     "packages/example-nextjs15",
-    "packages/example-react"
+    "packages/example-react",
+    "packages/example-react-router6"
   ],
   "files": [
     "dist"
@@ -62,6 +63,10 @@
     "./next": {
       "types": "./dist/next/index.d.ts",
       "default": "./dist/next/index.mjs"
+    },
+    "./react-router": {
+      "types": "./dist/react-router/index.d.ts",
+      "default": "./dist/react-router/index.mjs"
     },
     "./encodeState": {
       "types": "./dist/encodeState/index.d.ts",
@@ -163,7 +168,8 @@
     "dev": {
       "dependencies": [
         "dev:lib",
-        "kill-next",
+        "dev:react",
+        "dev:router6",
         "dev:nextjs15"
       ],
       "service": {
@@ -174,7 +180,7 @@
       "command": "npm run dev:nextjs14"
     },
     "dev:lib": {
-      "command": "cross-env IS_DEVELOPMENT=true rollup -c rollup.config.js -w",
+      "command": "cross-env IS_DEVELOPMENT=true rollup -c rollup.config.js --bundleConfigAsCjs -w",
       "service": {
         "readyWhen": {
           "lineMatches": "created "
@@ -184,23 +190,26 @@
         "cleanup"
       ]
     },
-    "dev:react-router": {
+    "dev:router6": {
       "command": "cd packages/example-react-router6 && npm run dev",
       "service": true
     },
     "dev:nextjs14": {
-      "command": "cd packages/example-nextjs14 && npm run dev",
-      "dependencies": [
-        "dev:react"
-      ],
+      "command": "cd packages/example-nextjs14 && npm run dev --turbo",
       "service": true
     },
     "dev:nextjs15": {
-      "command": "cd packages/example-nextjs15 && npm run dev",
+      "command": "cd packages/example-nextjs15 && npm run dev --turbo",
       "service": true
     },
     "build:next15": {
       "command": "cd packages/example-nextjs15 && npm run build",
+      "dependencies": [
+        "build"
+      ]
+    },
+    "build:router6": {
+      "command": "cd packages/example-react-router6 && npm run build",
       "dependencies": [
         "build"
       ]
@@ -233,6 +242,17 @@
       "command": "npx vite preview --port 5180 packages/example-react",
       "service": true
     },
+    "start:router6": {
+      "command": "npx vite preview --port 5181 packages/example-react-router6",
+      "dependencies": [
+        "build:router6"
+      ],
+      "service": true
+    },
+    "start:router6:ci": {
+      "command": "npx vite preview --port 5181 packages/example-react-router6",
+      "service": true
+    },
     "start:demo15": {
       "dependencies": [
         "build:next15"
@@ -248,7 +268,8 @@
       "command": "npm run start:demo15",
       "dependencies": [
         "start:demo",
-        "start:react"
+        "start:react",
+        "start:router6"
       ],
       "service": true
     },
@@ -256,7 +277,8 @@
       "command": "npm run start:demo15:ci",
       "dependencies": [
         "start:demo:ci",
-        "start:react:ci"
+        "start:react:ci",
+        "start:router6:ci"
       ],
       "service": true
     },
@@ -269,14 +291,15 @@
         "build",
         "build:react",
         "build:demo",
-        "build:next15"
+        "build:next15",
+        "build:router6"
       ]
     },
     "build:react": {
       "command": "cd packages/example-react && npm run build"
     },
     "build": {
-      "command": "rollup -c rollup.config.js && npm run test:exports",
+      "command": "rollup -c rollup.config.js --bundleConfigAsCjs && npm run test:exports",
       "dependencies": [
         "cleanup"
       ]
@@ -324,9 +347,9 @@
     "@commitlint/cli": "^19.0.3",
     "@commitlint/config-conventional": "^19.0.3",
     "@playwright/test": "^1.45.3",
-    "@rollup/plugin-node-resolve": "^15.2.3",
+    "@rollup/plugin-node-resolve": "^15.3.0",
+    "@rollup/plugin-sucrase": "^5.0.2",
     "@rollup/plugin-terser": "^0.4.4",
-    "@rollup/plugin-typescript": "^11.1.6",
     "@semantic-release/changelog": "^6.0.3",
     "@semantic-release/commit-analyzer": "^13.0.0",
     "@semantic-release/git": "^10.0.1",
@@ -337,12 +360,13 @@
     "@testing-library/react": "^16.0.0",
     "@testing-library/react-hooks": "^8.0.1",
     "@types/glob": "^8.1.0",
-    "@types/jest": "^29.5.12",
+    "@types/jest": "^29.5.13",
     "@types/node": "^20.11.24",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "auto-changelog": "^2.4.0",
     "babel-plugin-module-resolver": "^5.0.2",
+    "chokidar": "^4.0.1",
     "commitizen": "^4.3.0",
     "conventional-recommended-bump": "^10.0.0",
     "cross-env": "^7.0.3",
@@ -350,6 +374,7 @@
     "cz-conventional-changelog": "^3.3.0",
     "eslint": "^8.57.0",
     "eslint-plugin-maintainable": "^0.4.4",
+    "eslint-plugin-react-hooks": "^4.6.2",
     "husky": "^9.0.11",
     "jest": "^29.7.0",
     "jest-environment-jsdom": "^29.7.0",
@@ -357,7 +382,7 @@
     "playwright": "^1.45.3",
     "prettier": "^3.2.5",
     "release-it": "^17.6.0",
-    "rollup": "^2.79.1",
+    "rollup": "^3.29.5",
     "rollup-plugin-filesize": "^10.0.0",
     "rollup-plugin-sourcemaps": "^0.6.3",
     "semantic-release": "^24.1.0",

@@ -53,32 +53,3 @@ const obj = Object.fromEntries(
 )
 
 ```
-
-## `parseSPObj` for Server-Side Rendering (SSR) Query String Parsing
-
-To parse encoded object passed from server component `searchParams`
-
-### Parameters
-
-- `sp: object` - An object to decode.
-- `defaults?: object` - Shape object, this values will be used as defaults.
-
-### Returns
-
-A decoded object.
-
-### Example
-
-```typescript
-import { parseSPObj } from 'state-in-url/encoder';
-
-export async function Home({ searchParams }: { searchParams: object }) {
-  <ClientComponent sp={searchParams} />
-}
-
-/// in ClientComponent
-// sp is { name: '◖John Doe' };
-const defaults = { name: '', age: 0, isActive: false };
-const parsed = parseSPObj(sp, defaults);
-console.log(parsed); // { name: 'John Doe', age: 0, isActive: false }
-```
