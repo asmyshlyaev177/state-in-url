@@ -1,3 +1,22 @@
+# [3.0.0](https://github.com/asmyshlyaev177/state-in-url/compare/v2.6.0...v3.0.0) (2024-09-30)
+
+
+### Code Refactoring
+
+* **useurlstate:** remove deprecated things ([87c8c7c](https://github.com/asmyshlyaev177/state-in-url/commit/87c8c7c995c5cd7d9e7aa039c30bfe64b24abe4b))
+
+
+### Features
+
+* **useurlstate:** useUrlState hook for react-router@6 ([1c7cd02](https://github.com/asmyshlyaev177/state-in-url/commit/1c7cd0227a261dd7594f63cada63a73808df90d2))
+
+
+### BREAKING CHANGES
+
+* **useurlstate:** 1. `useUrlState` for Next.js now accept only object, eg. `useUrlState({
+defaultState: {}})`
+ 2. urls encoded with versions prior to v2.3.0 could stop working
+
 # [2.6.0](https://github.com/asmyshlyaev177/state-in-url/compare/v2.5.2...v2.6.0) (2024-09-19)
 
 
