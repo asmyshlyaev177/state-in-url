@@ -9,18 +9,6 @@ import { parseSPObj } from '../parseSPObj';
 import { type JSONCompatible } from '../utils';
 
 describe('encoder', () => {
-  it('should return payload if it already encoded', () => {
-    expect(encode('◖test')).toStrictEqual('◖test');
-    expect(encode('🗵false')).toStrictEqual('🗵false');
-    expect(encode('∙null')).toStrictEqual('∙null');
-    expect(encode('∙undefined')).toStrictEqual('∙undefined');
-    expect(encode('∓-3.14')).toStrictEqual('∓-3.14');
-    expect(encode('◖test')).toStrictEqual('◖test');
-    expect(encode('⏲2024-06-28T09:10:38.763Z')).toStrictEqual(
-      '⏲2024-06-28T09:10:38.763Z',
-    );
-  });
-
   describe('string', () => {
     it('simple', () => {
       expect('').toStrictEqual(decode(encode('')));
@@ -113,7 +101,7 @@ describe('encoder', () => {
       );
       expect(
         decode(
-          "{'num':'∓123','num2':'∓3.14','b1':'🗵true','b2':'🗵false','str':'◖test%20string','n':'∙null','obj1':{'obj2':{'str':'◖my_str','n':'∓123','n2':'∓-12.3','b':'🗵false','b1':'🗵true','dateIso':'◖2020-01-01T00%3A00%3A00.000Z'}},'dateIso':'◖2022-01-01T00%3A00%3A00.000Z'}",
+          "{'num':123,'num2':3.14,'b1':true,'b2':false,'str':'test string','n':null,'obj1':{'obj2':{'str':'my_str','n':123,'n2':-12.3,'b':false,'b1':true,'dateIso':'2020-01-01T00:00:00.000Z'}},'dateIso':'2022-01-01T00:00:00.000Z'}",
         ),
       ).toStrictEqual(obj);
     });
@@ -204,47 +192,36 @@ describe('real life example', () => {
 });
 
 describe('decodePrimitive', () => {
-  it('null', () => {
-    expect(decodePrimitive('∙null')).toStrictEqual(null);
-  });
-
-  it('undefined', () => {
+  it('should encode with specia symbols', () => {
     expect(decodePrimitive('∙undefined')).toStrictEqual(undefined);
-  });
 
-  it('boolean', () => {
-    expect(decodePrimitive('🗵false')).toStrictEqual(false);
-    expect(decodePrimitive('🗵true')).toStrictEqual(true);
-  });
-
-  it('number', () => {
-    expect(decodePrimitive('∓3')).toStrictEqual(3);
-    expect(decodePrimitive('∓3.14')).toStrictEqual(3.14);
-  });
-
-  it('date', () => {
     const date = new Date('2024-06-28T09:10:38.763Z');
     expect((decodePrimitive(`⏲${date}`) as Date).toString()).toStrictEqual(
       date.toString(),
     );
   });
 
-  it('string', () => {
-    expect(decodePrimitive('◖test%20string')).toStrictEqual('test string');
-  });
+  it('should return error for other primitive values', () => {
+    expect(decodePrimitive('null')).toStrictEqual(errorSym);
+    expect(decodePrimitive('false')).toStrictEqual(errorSym);
+    expect(decodePrimitive('true')).toStrictEqual(errorSym);
+    expect(decodePrimitive('3')).toStrictEqual(errorSym);
+    expect(decodePrimitive('3.14')).toStrictEqual(errorSym);
+    expect(decodePrimitive('test%20string')).toStrictEqual(errorSym);
+  })
 
   it('invalid string', () => {
     expect(decodePrimitive('')).toStrictEqual(errorSym);
     expect(decodePrimitive('invalid')).toStrictEqual(errorSym);
     const date = new Date('2024-06-28T09:10:38.763Z');
     expect(decodePrimitive(` ⏲${date}`) as Date).toStrictEqual(errorSym);
-    expect(decodePrimitive(' ∙null')).toStrictEqual(errorSym);
+    expect(decodePrimitive(' null')).toStrictEqual(errorSym);
     expect(decodePrimitive(' ∙undefined')).toStrictEqual(errorSym);
-    expect(decodePrimitive(' 🗵false')).toStrictEqual(errorSym);
-    expect(decodePrimitive(' 🗵true')).toStrictEqual(errorSym);
-    expect(decodePrimitive(' ∓3')).toStrictEqual(errorSym);
-    expect(decodePrimitive(' ∓3.14')).toStrictEqual(errorSym);
-    expect(decodePrimitive(' ◖test%20string')).toStrictEqual(errorSym);
+    expect(decodePrimitive(' false')).toStrictEqual(errorSym);
+    expect(decodePrimitive(' true')).toStrictEqual(errorSym);
+    expect(decodePrimitive(' 3')).toStrictEqual(errorSym);
+    expect(decodePrimitive(' 3.14')).toStrictEqual(errorSym);
+    expect(decodePrimitive(' test%20string')).toStrictEqual(errorSym);
   });
 });
 
@@ -288,7 +265,7 @@ describe('parseSPObj', () => {
 
   it('should parse params to object', () => {
     expect(parseSPObj({}, stateShape)).toStrictEqual(stateShape);
-    expect(parseSPObj({ perPage: '∓20' }, stateShape)).toStrictEqual({
+    expect(parseSPObj({ perPage: '20' }, stateShape)).toStrictEqual({
       perPage: 20,
     });
 

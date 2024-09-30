@@ -3,8 +3,8 @@ import { parseSPObj } from './parseSPObj';
 describe('should decode server components searchParams', () => {
   it('without errors', () => {
     const sp = {
-      'agree to terms': '🗵true',
-      tags: "[{'id':'◖3','value':{'text':'◖TailwindCSS','time':'◖2024-07-07T13%3A51%3A18.069Z'}}]",
+      'agree to terms': 'true',
+      tags: "[{'id':'3','value':{'text':'TailwindCSS','time':'2024-07-07T13:51:18.069Z'}}]",
     };
     const expected = {
       ...form,
@@ -22,8 +22,8 @@ describe('should decode server components searchParams', () => {
 
   it('invalid string', () => {
     const sp = {
-      'agree to terms': '🗵true',
-      tags: "[{'id':'◖3','value':{'text':'◖TailwindC",
+      'agree to terms': 'true',
+      tags: "[{'id':'3','value':{'text':'TailwindC",
     };
     const expected = {
       ...form,

@@ -53,16 +53,6 @@ export const decodePrimitive = (str: string) => {
   if (str === SYMBOLS.undefined) return undefined;
   if (str?.startsWith?.(SYMBOLS.date)) return new Date(str.slice(1));
 
-  // For backward compatibility
-  // TODO: remove
-  if (str === SYMBOLS.null) return null;
-  if (str?.startsWith?.(SYMBOLS.number))
-    return Number.parseFloat(str.replace(SYMBOLS.number, ''));
-  if (str?.startsWith?.(SYMBOLS.boolean))
-    return str.includes('true') ? true : false;
-  if (str?.startsWith?.(SYMBOLS.string))
-    return decodeURIComponent(str).replace(/^◖/, '');
-
   return errorSym;
 };
 
@@ -96,7 +86,5 @@ export function parseJSON<T extends JSONCompatible>(
   }
 }
 
-const encReg = new RegExp(
-  `^(${SYMBOLS.string}|${SYMBOLS.boolean}|${SYMBOLS.null}|${SYMBOLS.undefined}|${SYMBOLS.number}|${SYMBOLS.date})`,
-);
+const encReg = new RegExp(`^(${SYMBOLS.undefined}|${SYMBOLS.date})`);
 const isEncoded = (val: unknown) => encReg.test(String(val));

@@ -133,7 +133,7 @@ export const Form = ({
           <Field
             id="agree to terms"
             text="Agree to terms"
-            className="text-black select-none flex gap-4"
+            className="text-black select-none flex gap-4 cursor-pointer"
           >
             <Input
               id="agree to terms"
