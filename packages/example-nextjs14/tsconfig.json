@@ -6,16 +6,23 @@
       {
         "name": "next"
       },
-      { "name": "typescript-plugin-css-modules" }
-    ]
+      {
+        "name": "typescript-plugin-css-modules"
+      }
+    ],
+    "incremental": true
   },
   "include": [
+    "<tsconfigRootDir>/packages/example-nextjs14/",
     "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx",
-    ".next/types/**/*.ts",
+    "src",
+    "./*.ts",
+    "./*.tsx",
+    "./**/*.ts",
+    "./**/*.tsx",
     "../shared",
-    "./global.d.ts"
+    "./global.d.ts",
+    ".next/types/**/*.ts"
   ],
   "exclude": ["node_modules"]
 }
