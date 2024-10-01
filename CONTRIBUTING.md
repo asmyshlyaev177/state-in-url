@@ -9,6 +9,8 @@ Make sure that what you trying to fix really a bug, or if adding feature that is
 
 3. Check that all tests passed(unit and e2e) and add tests for your code.
 Run all tests witn `npm run test`
+Can use `distrobox` to run Playwright if you not on Ubuntu.
+
 You can run tests separately with `npm run test:unit` and tests `npm run test:int`
 Use `npm run kill` if some processes hang.
 
