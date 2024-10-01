@@ -1,0 +1,1 @@
+import{decodePrimitive as r,errorSym as t,decode as n}from"./encoder/encoder.mjs";function e(r,t){return{...t,...o(JSON.stringify(r),t)}}function o(n,e){try{return JSON.parse(n,c)}catch{const o=r(n);return o!==t?o:e}}const c=(r,t)=>{const e="string"==typeof t,o=e&&n(t?.replaceAll?.("'",'"'));return r&&e?o:t};export{e as parseSPObj};

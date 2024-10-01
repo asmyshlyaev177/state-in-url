@@ -1,3 +1,10 @@
+## [3.0.1](https://github.com/asmyshlyaev177/state-in-url/compare/v3.0.0...v3.0.1) (2024-10-01)
+
+
+### Bug Fixes
+
+* fix ts types ([e07340c](https://github.com/asmyshlyaev177/state-in-url/commit/e07340c7dfd3a59b159501ba205e050616f89c00))
+
 # [3.0.0](https://github.com/asmyshlyaev177/state-in-url/compare/v2.6.0...v3.0.0) (2024-09-30)
 
 
