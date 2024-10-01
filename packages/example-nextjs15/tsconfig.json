@@ -5,9 +5,12 @@
       {
         "name": "next"
       },
-      { "name": "typescript-plugin-css-modules" }
+      {
+        "name": "typescript-plugin-css-modules"
+      }
     ],
-    "noEmit": true
+    "noEmit": true,
+    "incremental": true
   },
   "include": [
     "next-env.d.ts",

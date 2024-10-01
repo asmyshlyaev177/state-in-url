@@ -1,0 +1,7 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "rootDir": "./packages/urlstate"
+  },
+  "include": ["typings.d.ts", "packages/urlstate", "packages/urlstate/**/*"]
+}

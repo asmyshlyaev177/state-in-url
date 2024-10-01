@@ -3,7 +3,8 @@
     "target": "ES2023",
     "outDir": "./dist",
     "declaration": true,
-    "declarationDir": "./dist",
+    "declarationDir": "dist",
+    "noEmit": true,
     "declarationMap": true,
     "sourceMap": true,
     "rootDir": "./",
@@ -20,10 +21,17 @@
       "jest-environment-jsdom",
       "@jest/globals"
     ],
-    "lib": ["ES2023", "ES2021.String", "DOM", "DOM.Iterable", "ESNext"],
+    "lib": [
+      "ES2021",
+      "ES2023",
+      "ES2021.String",
+      "DOM",
+      "DOM.Iterable",
+      "ESNext",
+      "ESNext.String"
+    ],
     "jsx": "preserve",
     "module": "ESNext",
-    "incremental": true,
     "resolveJsonModule": true,
     "allowJs": true,
     "esModuleInterop": true,
@@ -46,6 +54,8 @@
     "packages",
     "packages/*",
     "packages/**/*",
+    "packages/**/*.ts",
+    "packages/**/*.tsx",
     "**/*.ts",
     "**/*.tsx"
   ],
@@ -58,6 +68,8 @@
     "**/*.test.ts",
     "**/*.test.tsx",
     "**/exportsTest.ts",
+    "**/exportsTest.ts",
+    "packages/urlstate/exportsTest.ts",
     "exportsTest.ts"
   ]
 }
