@@ -24,7 +24,7 @@ export default async function Template({
               <Logo className="logo" />
 
               <div className="text">
-                <h1 className="title">State in url</h1>
+                <h1 className="title">State in url - useUrlState hook</h1>
                 <p className="subtitle">State management and deep links</p>
               </div>
             </div>

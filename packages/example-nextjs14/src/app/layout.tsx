@@ -2,7 +2,7 @@ import { Analytics } from '@vercel/analytics/react';
 import type { Metadata } from 'next';
 import { Roboto } from 'next/font/google';
 
-import 'shared/styles.css';
+// import 'shared/styles.css';
 
 import { isVercel, netifyUrl, vercelUrl } from './domain';
 const roboto = Roboto({
@@ -31,9 +31,9 @@ export default async function RootLayout({
 }
 
 const meta = {
-  title: 'state-in-url state management',
+  title: 'state-in-url - query parameters for state management',
   description:
-    'Easily share state between unrelated React components, with IDE autocomplete and TS validation. Without any hasssle or boilerplate.',
+    'Share state between unrelated React components with URL sync, IDE autocomplete and TS validation. No  hasssle or boilerplate. For Next.js and react-router.',
 };
 
 export const metadata = {
@@ -41,7 +41,7 @@ export const metadata = {
   description: meta.description,
   openGraph: {
     url: vercelUrl,
-    siteName: 'Next.js',
+    siteName: 'state-in-url',
     title: meta.title,
     description: meta.description,
     images: [
