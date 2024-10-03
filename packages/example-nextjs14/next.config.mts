@@ -16,7 +16,10 @@ const nextConfig = {
   basePath: '',
   experimental: {
     externalDir: true,
-    ppr: true
+    ppr: true,
+    // optimizePackageImports: {
+    //   'shiki'
+    // }
   },
   images: {
     minimumCacheTTL: 60 * 60 * 24 * 15,

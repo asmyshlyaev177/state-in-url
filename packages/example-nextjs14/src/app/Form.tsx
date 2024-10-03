@@ -9,9 +9,11 @@ import { SourceCodeBtn } from './components/SourceCodeBtn';
 export const Form = ({
   className,
   searchParams,
+  ghLink
 }: {
   className?: string;
   searchParams?: object;
+  ghLink: string
 }) => {
   const { state, updateState, updateUrl } = useUrlState({
     defaultState: form,
@@ -112,7 +114,7 @@ export const Form = ({
         </div>
 
         <SourceCodeBtn
-          href="https://github.com/asmyshlyaev177/state-in-url/blob/main/packages/example-nextjs14/src/app/Form.tsx"
+          href={ghLink}
           className="self-end ml-auto mt-4"
         />
       </div>

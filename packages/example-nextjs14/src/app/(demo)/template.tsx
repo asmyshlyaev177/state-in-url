@@ -1,4 +1,5 @@
 import dynamic from 'next/dynamic';
+import { headers } from 'next/headers';
 import React from 'react';
 
 import 'shared/styles.css';
@@ -16,30 +17,30 @@ export default async function Template({
   children: React.ReactNode;
 }) {
   return (
-    <main className="page-main">
-      <div className="wrapper">
-        <header className="header">
-          <div className="wrapper">
-            <div className="branding">
-              <Logo className="logo" />
+      <main className="page-main">
+        <div className="wrapper">
+          <header className="header">
+            <div className="wrapper">
+              <div className="branding">
+                <Logo className="logo" />
 
-              <div className="text">
-                <h1 className="title">State in url - useUrlState hook</h1>
-                <p className="subtitle">State management and deep links</p>
+                <div className="text">
+                  <h1 className="title">State in url</h1>
+                  <p className="subtitle">State management and deep links</p>
+                </div>
               </div>
+
+              <p className="desc">
+                Share complex state between unrelated React.js components and sync
+                it to the URL
+              </p>
             </div>
+          </header>
 
-            <p className="desc">
-              Share complex state between unrelated React.js components and sync
-              it to the URL
-            </p>
-          </div>
-        </header>
+          {children}
+        </div>
 
-        {children}
-      </div>
-
-      <Footer />
-    </main>
+        <Footer />
+      </main>
   );
 }
