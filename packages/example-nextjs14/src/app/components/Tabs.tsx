@@ -2,6 +2,7 @@
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 
+
 const scroll = false;
 
 export const Tabs = ({ entries, className = '' }: { entries: { text: string, url: string }[], className: string }) => {

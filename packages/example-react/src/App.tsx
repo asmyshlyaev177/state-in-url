@@ -61,7 +61,7 @@ const Input = ({ className, value, ...props }: React.DetailedHTMLProps<React.Inp
   return (
     <input
       className={`px-3 py-2 border border-gray-300 rounded-md
-         shadow-sm focus:ring-orange-500 focus:border-orange-500 text-black
+         shadow-sm focus:ring-orange-500 focus:border-orange-500
           ${className}
       ${props.type === 'checkbox' ? 'w-6 h-6 cursor-pointer' : 'w-full'}`}
       value={value ?? ''}

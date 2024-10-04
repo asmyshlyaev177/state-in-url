@@ -22,10 +22,10 @@ export const Status = ({
 
   return (
     <div className={`flex relative shadow-md hover:shadow-lg ${className} `}>
-      <div className="font-semibold mb-2 text-black">
+      <div className="font-semibold mb-2 ">
         Other client component
       </div>
-      <h3 className="text-black">Types and structure of data are presered</h3>
+      <h3 className="">Types and structure of data are presered</h3>
 
       <div className="flex-none">
         <pre

@@ -106,9 +106,7 @@ export const Form = ({
   return (
     <div className={className}>
       <div className="flex-1 border border-grey rounded-md p-4 shadow-md">
-        <div className="font-semibold text-black mb-4">
-          First client component
-        </div>
+        <div className="font-semibold mb-4">First client component</div>
 
         <div className="space-y-6">
           <Field id="name" text="Name">
@@ -116,7 +114,7 @@ export const Form = ({
               id="name"
               value={state.name}
               onChange={onChangeName}
-              className="text-black h-[30px]"
+              className="h-[30px]"
             />
           </Field>
 
@@ -126,14 +124,14 @@ export const Form = ({
               type="number"
               value={state.age}
               onChange={onChangeAge}
-              className="text-black h-[30px]"
+              className="h-[30px]"
             />
           </Field>
 
           <Field
             id="agree to terms"
             text="Agree to terms"
-            className="text-black select-none flex gap-4 cursor-pointer"
+            className="select-none flex gap-4 cursor-pointer"
           >
             <Input
               id="agree to terms"
@@ -232,7 +230,7 @@ const Button = ({
   return (
     <button
       onClick={onClick}
-      className="text-black border border-black rounded-md px-2 py-1"
+      className="border border-black rounded-md px-2 py-1"
       data-testid={dataTestId}
     >
       {children}

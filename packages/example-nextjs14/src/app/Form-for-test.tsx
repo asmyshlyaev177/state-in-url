@@ -110,7 +110,7 @@ export const Form = ({
   return (
     <div className={className}>
       <div className="flex-1 border border-grey rounded-md p-4 shadow-md">
-        <div className="font-semibold text-black mb-4">
+        <div className="font-semibold  mb-4">
           First client component
         </div>
 
@@ -225,7 +225,7 @@ const Button = ({
   return (
     <button
       onClick={onClick}
-      className="text-black border border-black rounded-md px-2 py-1"
+      className=" border border-black rounded-md px-2 py-1"
       data-testid={dataTestId}
     >
       {children}

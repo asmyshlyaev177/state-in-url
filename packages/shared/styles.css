@@ -36,6 +36,7 @@
 
 @layer components {
   .page-main {
+    @apply text-black;
     @apply bg-gradient-to-b
      from-orange-200 to-orange-400 p-4;
 

@@ -2,6 +2,7 @@ import dynamicImport from 'next/dynamic';
 import React from 'react';
 
 import { DemoPart } from '../DemoPart';
+import { Description } from '../components/Description';
 
 const CodeBlocks = dynamicImport(
   () => import('../components/CodeBlocksNext')
@@ -20,6 +21,8 @@ export default async function Home({ searchParams }: { searchParams: object }) {
          try https://codehike.org/docs/code/twoslash */}
         <CodeBlocks />
       </section>
+
+      <Description />
     </>
   );
 }

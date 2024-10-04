@@ -8,10 +8,10 @@ const Status = ({ className, sp }: { className?: string; sp?: object }) => {
 
   return (
     <div className={className}>
-      <div className="font-semibold mb-2 text-black">
+      <div className="font-semibold mb-2 ">
         Other client component
       </div>
-      <h3 className="text-black">Types and structure of data are presered</h3>
+      <h3 className="">Types and structure of data are presered</h3>
 
       <div className="flex-none">
         <pre
@@ -35,7 +35,7 @@ const Wrapper = ({ className, sp }: { className?: string; sp?: object }) => {
       <Status key={key} className={className} sp={sp} />
       <button
         onClick={() => setKey(Math.random())}
-        className="text-black p-4"
+        className="p-4"
         data-testid="remount"
       >
         remount

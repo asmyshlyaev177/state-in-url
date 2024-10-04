@@ -2,6 +2,7 @@ import dynamicImport from 'next/dynamic';
 import React from 'react';
 
 import { DemoPart } from '../../DemoPart';
+import { Description } from '../../components/Description';
 
 const CodeBlocks = dynamicImport(
   () => import('../../components/CodeBlocksRR').then((mod) => mod.CodeBlocksRR),
@@ -18,6 +19,8 @@ export default async function Home({ searchParams }: { searchParams: object }) {
       <section className="codeBlock-wrapper">
         <CodeBlocks />
       </section>
+
+      <Description/ >
     </>
   );
 }

@@ -11,7 +11,7 @@ export const File = async ({
 
   return (
     <div
-      className="codeblock shadow-md hover:shadow-2xl bg-white border border-gray-200 rounded-lg dark:border-gray-700 h-full"
+      className="text-white codeblock shadow-md hover:shadow-2xl bg-white border border-gray-200 rounded-lg dark:border-gray-700 h-full"
       data-nosnippet="true"
     >
       <div className="flex h-12 justify-between dark:bg-gray-900 font-mono border-b border-zinc-700 text-sm select-none">
@@ -29,7 +29,7 @@ export const File = async ({
       <code>
         <pre
           dangerouslySetInnerHTML={{ __html: text }}
-          className=" dark:bg-gray-900 text-sm font-mono p-5"
+          className=" dark:bg-gray-900 text-sm font-mono p-5 text-current"
         ></pre>
       </code>
     </div>

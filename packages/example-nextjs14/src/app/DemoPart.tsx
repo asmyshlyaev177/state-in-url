@@ -7,6 +7,7 @@ import { UrlBox } from './components/UrlBox';
 import { Form } from './Form';
 import { Status } from './Status';
 import { jsonLd } from './seoStuff';
+import { Word } from './components/Word';
 
 
 
@@ -25,7 +26,7 @@ export function DemoPart({ searchParams }: { searchParams: object }) {
       <section className="demo">
         <header className="header">
           <div className="wrapper">
-            <h2 className="title">useUrlState - demo with <span className='bg-gray-100 rounded-sm p-1'>{isReactRouter ? 'react-router' : 'Next.js'}</span></h2>
+            <h2 className="title">useUrlState - demo with <Word>{isReactRouter ? 'react-router' : 'Next.js'}</Word></h2>
             <div className="github-link">
               <GithubLink />
             </div>
