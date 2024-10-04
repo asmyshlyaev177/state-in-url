@@ -4,7 +4,7 @@ import React from 'react';
 import { DemoPart } from '../../DemoPart';
 
 const CodeBlocks = dynamicImport(
-  () => import('../../components/CodeBlocksNext').then((mod) => mod.CodeBlocks),
+  () => import('../../components/CodeBlocksRR').then((mod) => mod.CodeBlocksRR),
   {
     loading: () => <div className="codeBlock-wrapper codeBlock-loader"></div>,
   },

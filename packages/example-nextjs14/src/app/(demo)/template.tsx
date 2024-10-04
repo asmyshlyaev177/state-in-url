@@ -1,9 +1,9 @@
 import dynamic from 'next/dynamic';
-import { headers } from 'next/headers';
 import React from 'react';
 
 import 'shared/styles.css';
 
+import { Tabs } from '../components/Tabs';
 import { Logo } from '../components/Logo';
 
 const Footer = dynamic(
@@ -17,30 +17,37 @@ export default async function Template({
   children: React.ReactNode;
 }) {
   return (
-      <main className="page-main">
-        <div className="wrapper">
-          <header className="header">
-            <div className="wrapper">
-              <div className="branding">
-                <Logo className="logo" />
+    <main className="page-main">
+      <div className="wrapper">
+        <header className="header">
+          <div className="wrapper">
+            <div className="branding">
+              <Logo className="logo" />
 
-                <div className="text">
-                  <h1 className="title">State in url</h1>
-                  <p className="subtitle">State management and deep links</p>
-                </div>
+              <div className="text">
+                <h1 className="title">State in url</h1>
+                <p className="subtitle">State management and deep links</p>
               </div>
-
-              <p className="desc">
-                Share complex state between unrelated React.js components and sync
-                it to the URL
-              </p>
             </div>
-          </header>
 
-          {children}
-        </div>
+            <p className="desc">
+              Share complex state between unrelated React.js components and sync
+              it to the URL
+            </p>
+          </div>
+        </header>
 
-        <Footer />
-      </main>
+        <Tabs entries={TABS} className="sticky top-1" />
+
+        {children}
+      </div>
+
+      <Footer />
+    </main>
   );
 }
+
+const TABS = [
+  { text: "Next.js", url: '/' },
+  { text: "react-router", url: '/react-router' },
+]

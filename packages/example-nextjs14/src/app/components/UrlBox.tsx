@@ -8,7 +8,7 @@ export const UrlBox = () => {
 
   React.useEffect(() => {
     setUrl(
-      window.location.pathname + window.location.search + window.location.hash,
+      '/' + window.location.search + window.location.hash,
     );
   }, [sp]);
 

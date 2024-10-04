@@ -25,7 +25,7 @@ export function DemoPart({ searchParams }: { searchParams: object }) {
       <section className="demo">
         <header className="header">
           <div className="wrapper">
-            <h2 className="title">useUrlState - demo with {isReactRouter ? 'react-router' : 'Next.js'}</h2>
+            <h2 className="title">useUrlState - demo with <span className='bg-gray-100 rounded-sm p-1'>{isReactRouter ? 'react-router' : 'Next.js'}</span></h2>
             <div className="github-link">
               <GithubLink />
             </div>
