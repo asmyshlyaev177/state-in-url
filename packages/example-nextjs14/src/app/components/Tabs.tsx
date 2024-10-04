@@ -12,11 +12,11 @@ export const Tabs = ({ entries, className = '' }: { entries: { text: string, url
     <nav className={`z-10 ${className}`}>
       <div className='sm:hidden '>
         <label htmlFor="tabs" className="sr-only">Select framework</label>
-        <select id="tabs" onChange={(ev) => {
+        <select id="tabs" value={entries.find(en => en.url === pathname)!.url} onChange={(ev) => {
           router.push(ev.target.value, { scroll })
         }} className="px-4 pr-8 border text-sm rounded-lg text-white block w-full dark:bg-gray-700 border-gray-600 dark:placeholder-gray-400 focus:ring-blue-500 focus:border-blue-500">
           {entries.map((en) => (
-            <option selected={en.url === pathname} value={en.url} key={en.text} className='w-full p-4'>{en.text}</option>
+            <option value={en.url} key={en.text} className='w-full p-4'>{en.text}</option>
           ))}
         </select>
       </div>

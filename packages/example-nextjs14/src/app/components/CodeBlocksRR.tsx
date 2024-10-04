@@ -3,9 +3,10 @@ import { File } from './File';
 export const CodeBlocksRR = () => {
   return (
     <div className="flex flex-col gap-4">
-      <h2 className="text-black text-center text-xl mt-2">
+      <h2 className='text-black text-3xl text-center' >Quick start</h2>
+      <div className="text-black text-center text-xl mt-2">
         1. Define the state
-      </h2>
+      </div>
       <File
         name="state"
         content={`export const form: Form = {
@@ -23,9 +24,9 @@ type Form = {
 };`}
       />
 
-      <h2 className="text-black text-center text-xl mt-2">
+      <div className="text-black text-center text-xl mt-2">
         2. Use it in any components
-      </h2>
+      </div>
       <File
         name="ComponentA"
         content={`import { useUrlState } from 'state-in-url/react-router';// [!code highlight:1]
