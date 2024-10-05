@@ -1,8 +1,8 @@
-import React from 'react';
-import { useSearchParams } from 'react-router-dom';
-import { Field, Input, RefreshButton, Tag } from 'shared/components';
-import { form } from 'shared/form';
-import { useUrlState } from 'state-in-url/react-router';
+import React from "react";
+import { useSearchParams } from "react-router-dom";
+import { Field, Input, RefreshButton, Tag } from "shared/components";
+import { form } from "shared/form";
+import { useUrlState } from "state-in-url/react-router";
 
 export const Form = ({
   className,
@@ -14,7 +14,7 @@ export const Form = ({
   const [sp] = useSearchParams();
   const { state, updateState, updateUrl } = useUrlState({
     defaultState: form,
-    replace: sp.get('replace') === 'false' ? false : true,
+    replace: sp.get("replace") === "false" ? false : true,
   });
 
   // set URI when state change
@@ -40,14 +40,14 @@ export const Form = ({
       if (dateObj) {
         console.assert(
           dateObj?.value?.time instanceof Date,
-          'Date should be a Date instance!',
+          "Date should be a Date instance!",
         );
       }
       const isoDate = state.tags.find((t) => t?.value?.iso);
       if (isoDate) {
         console.assert(
-          typeof isoDate?.value?.iso === 'string',
-          'iso should be a string!',
+          typeof isoDate?.value?.iso === "string",
+          "iso should be a string!",
         );
       }
     }
@@ -57,9 +57,9 @@ export const Form = ({
       // @ts-expect-error should be readonly
       state.age = 18;
       // @ts-expect-error should be readonly
-      state.tags[0].value = { text: 'jjj', time: new Date() };
+      state.tags[0].value = { text: "jjj", time: new Date() };
       // @ts-expect-error should be readonly
-      state.tags[0].value.text = 'jjj';
+      state.tags[0].value.text = "jjj";
       updateState(state);
       updateState((st) => st);
       updateState((st) => ({ ...st, age: 18 }));
@@ -86,7 +86,7 @@ export const Form = ({
   const onChangeTerms = React.useCallback(
     (ev: React.ChangeEvent<HTMLInputElement>) => {
       clearTimeout(timer.current);
-      updateUrl({ 'agree to terms': ev.target.checked });
+      updateUrl({ "agree to terms": ev.target.checked });
     },
     [updateUrl, timer],
   );
@@ -136,7 +136,7 @@ export const Form = ({
             <Input
               id="agree to terms"
               type="checkbox"
-              checked={state['agree to terms']}
+              checked={state["agree to terms"]}
               onChange={onChangeTerms}
               className="w-[25px] h-[25px]"
             />
@@ -173,7 +173,7 @@ export const Form = ({
           </Button>
           <Button
             onClick={() => {
-              updateUrl((curr) => ({ ...curr, name: 'My Name', age: 55 }));
+              updateUrl((curr) => ({ ...curr, name: "My Name", age: 55 }));
             }}
             dataTestId="sync-object"
           >
@@ -201,19 +201,19 @@ export const Form = ({
 
 const tags = [
   {
-    id: '1',
-    value: { text: 'React.js', time: new Date('2024-07-17T04:53:17.000Z') },
+    id: "1",
+    value: { text: "React.js", time: new Date("2024-07-17T04:53:17.000Z") },
   },
   {
-    id: '2',
-    value: { text: 'Next.js', time: new Date('2024-07-18T04:53:17.000Z') },
+    id: "2",
+    value: { text: "Next.js", time: new Date("2024-07-18T04:53:17.000Z") },
   },
   {
-    id: '3',
+    id: "3",
     value: {
-      text: 'TailwindCSS',
-      time: new Date('2024-07-19T04:53:17.000Z'),
-      iso: '2020-07-19T04:53:17.000Z',
+      text: "TailwindCSS",
+      time: new Date("2024-07-19T04:53:17.000Z"),
+      iso: "2020-07-19T04:53:17.000Z",
     },
   },
 ];

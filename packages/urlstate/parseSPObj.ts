@@ -3,8 +3,8 @@ import {
   decodePrimitive,
   errorSym,
   type Primitive,
-} from './encoder/encoder';
-import { type JSONCompatible } from './utils';
+} from "./encoder/encoder";
+import { type JSONCompatible } from "./utils";
 
 /**
  * Parses the Next.js server-side `searchParams` into an object.
@@ -40,7 +40,7 @@ function parseJSONSsr<T extends JSONCompatible>(
 }
 
 const reviverSPSsr = (key: string, value: unknown) => {
-  const isStr = typeof value === 'string';
+  const isStr = typeof value === "string";
   const decoded = isStr && decode(value?.replaceAll?.("'", '"'));
   return key && isStr ? decoded : value;
 };

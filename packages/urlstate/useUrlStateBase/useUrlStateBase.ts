@@ -1,13 +1,13 @@
-import React from 'react';
+import React from "react";
 
-import { useInsertionEffect } from '../useInsertionEffect';
-import { useSharedState } from '../useSharedState';
-import { useUrlEncode } from '../useUrlEncode';
+import { useInsertionEffect } from "../useInsertionEffect";
+import { useSharedState } from "../useSharedState";
+import { useUrlEncode } from "../useUrlEncode";
 import {
   type DeepReadonly,
   filterUnknownParamsClient,
   type JSONCompatible,
-} from '../utils';
+} from "../utils";
 
 /**
  * A custom React hook to create custom hooks.
@@ -37,7 +37,7 @@ export function useUrlStateBase<T extends JSONCompatible>(
   getInitialState?: ({
     parse,
   }: {
-    parse: ReturnType<typeof useUrlEncode<T>>['parse'];
+    parse: ReturnType<typeof useUrlEncode<T>>["parse"];
   }) => T,
 ) {
   const { parse, stringify } = useUrlEncode(defaultState);
@@ -66,7 +66,7 @@ export function useUrlStateBase<T extends JSONCompatible>(
   const updateUrl = React.useCallback(
     (value?: Parameters<typeof setState>[0], options?: Options) => {
       const currUrl = `${window.location.pathname}${window.location.search}${window.location.hash}`;
-      const isFunc = typeof value === 'function';
+      const isFunc = typeof value === "function";
       const otherParams = getOtherParams(defaultState);
 
       const newVal = isFunc
@@ -77,11 +77,11 @@ export function useUrlStateBase<T extends JSONCompatible>(
       const qStr = stringify(newVal, otherParams);
       setState(newVal);
 
-      const newUrl = `${window.location.pathname}${qStr.length ? '?' : ''}${qStr}${window.location.hash}`;
+      const newUrl = `${window.location.pathname}${qStr.length ? "?" : ""}${qStr}${window.location.hash}`;
 
       if (currUrl !== newUrl) {
         const { replace, ...rOptions } = options || {};
-        router[replace ? 'replace' : 'push'](newUrl, {
+        router[replace ? "replace" : "push"](newUrl, {
           ...rOptions,
         });
       }
@@ -109,7 +109,7 @@ function getOtherParams<T extends object>(shape: T) {
   return params;
 }
 
-const popstateEv = 'popstate';
+const popstateEv = "popstate";
 
 interface OptionsObject {
   [key: string]: unknown;

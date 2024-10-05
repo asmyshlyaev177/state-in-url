@@ -1,19 +1,19 @@
-import React from 'react';
+import React from "react";
 import {
   type NavigateOptions,
   useNavigate,
   useSearchParams,
-} from 'react-router-dom';
+} from "react-router-dom";
 
-import { parseSPObj } from '../../parseSPObj';
-import { useUrlStateBase } from '../../useUrlStateBase';
+import { parseSPObj } from "../../parseSPObj";
+import { useUrlStateBase } from "../../useUrlStateBase";
 import {
   assignValue,
   type DeepReadonly,
   filterUnknownParams,
   filterUnknownParamsClient,
   type JSONCompatible,
-} from '../../utils';
+} from "../../utils";
 
 /**
  * React-router hook. Returns `state`, `updateState`, and `updateUrl` functions

@@ -1,4 +1,4 @@
-import { type JSONCompatible } from './utils';
+import { type JSONCompatible } from "./utils";
 
 const _stateMap = new WeakMap<JSONCompatible, JSONCompatible>();
 const _subscribers = new WeakMap<JSONCompatible, Cb[]>();

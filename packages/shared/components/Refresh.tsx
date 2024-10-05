@@ -1,6 +1,6 @@
-import { clsx } from 'clsx';
+import { clsx } from "clsx";
 
-import { Button } from './Button';
+import { Button } from "./Button";
 export const RefreshButton = ({ className }: { className?: string }) => {
   return (
     <Button

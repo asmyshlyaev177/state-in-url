@@ -1,5 +1,5 @@
-import { Form } from './Form-for-test';
-import { Status } from './Status-for-test';
+import { Form } from "./Form-for-test";
+import { Status } from "./Status-for-test";
 
 function App() {
   return (

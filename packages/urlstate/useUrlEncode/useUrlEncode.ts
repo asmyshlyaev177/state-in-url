@@ -1,7 +1,7 @@
-import React from 'react';
+import React from "react";
 
-import { decodeState, encodeState } from '../encodeState';
-import { type JSONCompatible, typeOf } from '../utils';
+import { decodeState, encodeState } from "../encodeState";
+import { type JSONCompatible, typeOf } from "../utils";
 
 /**
  * A hook that returns stringify and parse functions for encoding and decoding state
@@ -29,9 +29,9 @@ export function useUrlEncode<T extends JSONCompatible>(stateShape: T) {
       state: typeof stateShape,
       paramsToKeep?: string | URLSearchParams,
     ): string {
-      return typeOf(state) === 'object'
+      return typeOf(state) === "object"
         ? encodeState(state, stateShape, paramsToKeep)
-        : '';
+        : "";
     },
     [stateShape],
   );

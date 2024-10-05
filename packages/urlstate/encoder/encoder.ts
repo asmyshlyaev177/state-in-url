@@ -1,5 +1,5 @@
-import { SYMBOLS } from '../constants';
-import { type JSONCompatible, typeOf } from '../utils';
+import { SYMBOLS } from "../constants";
+import { type JSONCompatible, typeOf } from "../utils";
 
 /**
  * Encode any JSON serializable value to URL friendly string
@@ -15,12 +15,12 @@ export function encode(payload: unknown): string {
   }
 
   switch (typeOf(payload)) {
-    case 'function':
-    case 'symbol':
-      return '';
-    case 'date':
+    case "function":
+    case "symbol":
+      return "";
+    case "date":
       return encodeDate(payload as Date);
-    case 'undefined':
+    case "undefined":
       return SYMBOLS.undefined;
     default:
       return JSON.stringify(payload).replaceAll('"', "'");
@@ -56,10 +56,10 @@ export const decodePrimitive = (str: string) => {
   return errorSym;
 };
 
-export const errorSym = Symbol('isError');
+export const errorSym = Symbol("isError");
 
 export const reviver = (_key: string, value: unknown) => {
-  const isStr = typeof value === 'string';
+  const isStr = typeof value === "string";
   const decoded = isStr && decodePrimitive(value);
   if (decoded === errorSym) return value;
   return isStr ? decoded : value;

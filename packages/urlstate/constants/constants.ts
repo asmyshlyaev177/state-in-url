@@ -1,4 +1,4 @@
 export const SYMBOLS = {
-  date: '⏲',
-  undefined: '∙undefined',
+  date: "⏲",
+  undefined: "∙undefined",
 } as const;

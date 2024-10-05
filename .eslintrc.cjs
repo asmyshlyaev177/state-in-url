@@ -1,7 +1,7 @@
 module.exports = {
   root: true,
   extends: ['plugin:maintainable/recommended'],
-  plugins: ['maintainable', "react-hooks"],
+  plugins: ['maintainable', "react-hooks", 'prettier/recommended'],
   parserOptions: {
     project: './tsconfig.json',
     tsconfigRootDir: __dirname,
@@ -14,6 +14,14 @@ module.exports = {
   rules: {
     'max-len': 'off',
     complexity: ['error', 12],
+    'prettier/prettier': [
+      'warn',
+      {},
+      {
+        usePrettierrc: false,
+        plugins: ["eslint-plugin-prettier-plugin-tailwindcss"]
+      },
+    ]
   },
   overrides: [
     {

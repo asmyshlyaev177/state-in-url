@@ -1,4 +1,4 @@
-import { clsx } from 'clsx';
+import { clsx } from "clsx";
 
 export const Textarea = ({ className, value, onChange, ...rest }: Props) => {
   return (
@@ -15,5 +15,5 @@ export const Textarea = ({ className, value, onChange, ...rest }: Props) => {
 interface Props extends React.HTMLAttributes<HTMLTextAreaElement> {
   className: string;
   value: string;
-  onChange?: React.TextareaHTMLAttributes<HTMLTextAreaElement>['onChange'];
+  onChange?: React.TextareaHTMLAttributes<HTMLTextAreaElement>["onChange"];
 }

@@ -1,11 +1,11 @@
-import React from 'react';
-import { Link, useLocation, useParams } from 'react-router-dom';
+import React from "react";
+import { Link, useLocation, useParams } from "react-router-dom";
 
-import { Component } from './Component';
+import { Component } from "./Component";
 
 export function Page() {
-  const { id } = useParams<'id'>();
-  const to = id === '1' ? '2' : '1';
+  const { id } = useParams<"id">();
+  const to = id === "1" ? "2" : "1";
   const loc = useLocation();
   const newUrl = `../${to}`;
   const newUrlFull = `${newUrl}${loc.search}`;

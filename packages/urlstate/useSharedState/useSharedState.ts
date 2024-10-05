@@ -1,13 +1,13 @@
-import React from 'react';
+import React from "react";
 
-import { stateMap, subscribers } from '../subscribers';
-import { useInsertionEffect } from '../useInsertionEffect';
+import { stateMap, subscribers } from "../subscribers";
+import { useInsertionEffect } from "../useInsertionEffect";
 import {
   type DeepReadonly,
   isEqual,
   isSSR,
   type JSONCompatible,
-} from '../utils';
+} from "../utils";
 
 /**
  * Custom React hook for sharing state between unrelated components.
@@ -55,7 +55,7 @@ export function useSharedState<T extends JSONCompatible>(
         | ((currState: typeof stateShape.current) => typeof stateShape.current),
     ): void => {
       const curr = stateMap.get(stateShape.current);
-      const isFunc = typeof value === 'function';
+      const isFunc = typeof value === "function";
 
       const newVal = isFunc ? value(curr) : { ...curr, ...value };
       if (isEqual(curr, newVal)) return void 0;

@@ -1,8 +1,8 @@
-import { clsx } from 'clsx';
+import { clsx } from "clsx";
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-import styles from './Button.module.css';
+import styles from "./Button.module.css";
 
 export const Button = ({
   className,

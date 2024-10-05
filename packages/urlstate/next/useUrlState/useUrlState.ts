@@ -1,16 +1,16 @@
-import { useRouter } from 'next/navigation';
-import { useSearchParams } from 'next/navigation';
-import React from 'react';
+import { useRouter } from "next/navigation";
+import { useSearchParams } from "next/navigation";
+import React from "react";
 
-import { parseSPObj } from '../../parseSPObj';
-import { useUrlStateBase } from '../../useUrlStateBase';
+import { parseSPObj } from "../../parseSPObj";
+import { useUrlStateBase } from "../../useUrlStateBase";
 import {
   type DeepReadonly,
   filterUnknownParams,
   filterUnknownParamsClient,
   isSSR,
   type JSONCompatible,
-} from '../../utils';
+} from "../../utils";
 
 /**
  * NextJS hook. Returns `state`, `updateState`, and `updateUrl` functions
@@ -110,7 +110,7 @@ export function useUrlState<T extends JSONCompatible>({
 
 type Router = ReturnType<typeof useRouter>;
 type RouterOptions = NonNullable<
-  Parameters<Router['push']>[1] | Parameters<Router['replace']>[1]
+  Parameters<Router["push"]>[1] | Parameters<Router["replace"]>[1]
 >;
 
 interface Options extends RouterOptions {

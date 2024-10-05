@@ -1,15 +1,15 @@
 export type Type =
-  | 'string'
-  | 'date'
-  | 'boolean'
-  | 'number'
-  | 'bigint'
-  | 'undefined'
-  | 'object'
-  | 'null'
-  | 'function'
-  | 'symbol'
-  | 'array';
+  | "string"
+  | "date"
+  | "boolean"
+  | "number"
+  | "bigint"
+  | "undefined"
+  | "object"
+  | "null"
+  | "function"
+  | "symbol"
+  | "array";
 
 /**
  * A better replacement for `typeof`
@@ -24,18 +24,18 @@ export const typeOf = (val: unknown): Type => {
   const isNull = val === null;
   const isArray = Array.isArray(val);
   const isDate = val instanceof Date;
-  const isObject = !isNull && !isDate && !isArray && nativeType === 'object';
+  const isObject = !isNull && !isDate && !isArray && nativeType === "object";
 
   return (
-    (isNull && 'null') ||
-    (isDate && 'date') ||
-    (isArray && 'array') ||
-    (isObject && 'object') ||
+    (isNull && "null") ||
+    (isDate && "date") ||
+    (isArray && "array") ||
+    (isObject && "object") ||
     nativeType
   );
 };
 
-export const isSSR = () => typeof window === 'undefined';
+export const isSSR = () => typeof window === "undefined";
 
 export type JSON =
   | null
@@ -61,12 +61,12 @@ export type DeepReadonly<T> =
 
 export const getParams = (strOrSearchParams?: string | URLSearchParams) =>
   new URLSearchParams(
-    typeof strOrSearchParams === 'string'
+    typeof strOrSearchParams === "string"
       ? getQueryFromHref(strOrSearchParams)
-      : strOrSearchParams?.toString?.() || '',
+      : strOrSearchParams?.toString?.() || "",
   );
 
-const getQueryFromHref = (str: string) => str.split('?')?.[1] || str || '';
+const getQueryFromHref = (str: string) => str.split("?")?.[1] || str || "";
 
 export type UnknownObj = object | { [key: string]: unknown };
 
@@ -103,7 +103,7 @@ function filterUnknown<T extends object>(
 
   return entries
     .filter(([key]) => shapeKeys.includes(key))
-    .map(([key, val]) => [key.replaceAll('+', ' '), val]);
+    .map(([key, val]) => [key.replaceAll("+", " "), val]);
 }
 
 export function assignValue<T extends object>(

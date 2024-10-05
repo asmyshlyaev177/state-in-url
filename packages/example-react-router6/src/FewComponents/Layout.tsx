@@ -1,7 +1,7 @@
-import React from 'react';
-import { Outlet } from 'react-router-dom';
+import React from "react";
+import { Outlet } from "react-router-dom";
 
-import { Component } from './Component';
+import { Component } from "./Component";
 
 export function Layout() {
   return (
