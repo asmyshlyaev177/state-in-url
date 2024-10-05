@@ -119,6 +119,12 @@
         @apply bg-white min-h-[1466px] min-[384px]:min-h-[1366px] sm:min-h-[1186px] md:min-h-[1126px];
       }
     }
+
+    .share-block {
+      .share-icon {
+        @apply w-[48px] h-[48px];
+      }
+    }
   }
 
   .codeblock {

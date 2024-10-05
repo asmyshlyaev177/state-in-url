@@ -17,6 +17,7 @@
     "next": "14.2.4",
     "react": "^18",
     "react-dom": "^18",
+    "react-share": "^5.1.0",
     "schema-dts": "^1.1.2",
     "shiki": "^1.12.1"
   },

@@ -1,3 +1,4 @@
+import { Share } from "./Share"
 import { Word } from "./Word"
 
 export const Description = () => (
@@ -11,8 +12,8 @@ export const Description = () => (
       <br />
       <div><Word>state-in-url</Word> provides <Word>useUrlState</Word> hook for Next.js/react-router. With it you can store state easily without a lot of boilerplate.<br />
         No need to wrap components in a provider, can share data between unrelated client components. API is very similar to <Word>React.useState.</Word>
-        </div>
-  <br />
+      </div>
+      <br />
       <div>Structure and types are preserved, with full Typescript support.</div>
 
       <h3 className='mb-4 mt-6 font-semibold text-center'>Code quality</h3>
@@ -20,9 +21,14 @@ export const Description = () => (
     </div>
 
 
-      <h3 className='mt-8 mb-6 font-semibold'>Other frameworks or pure JS</h3>
-      <div className='max-w-[600px]'>
-        There are more hooks and helpers to deal with serialization/deconding of data, check out <a href="https://github.com/asmyshlyaev177/state-in-url" target="_blank" rel="noopener" className="text-blue-600 hover:underline">GitHub page</a>.
-      </div>
+    <h3 className='mt-8 mb-6 font-semibold'>Other frameworks or pure JS</h3>
+    <div className='max-w-[600px]'>
+      There are more hooks and helpers to deal with serialization/deconding of data, check out <a href="https://github.com/asmyshlyaev177/state-in-url" target="_blank" rel="noopener" className="text-blue-600 hover:underline">GitHub page</a>.
+    </div>
+
+    <h4 className='mt-12 mb-6 font-semibold'>Share this on social networks to help the library, purely voluntarily :)</h4>
+    <Share />
+    <div className="mb-8"></div>
+
   </section>
 )
