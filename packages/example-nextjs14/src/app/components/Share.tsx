@@ -27,6 +27,8 @@ export const Share = () => {
         <FacebookShareButton
           url={shareUrl}
           className="share-icon"
+          name="Facebook-share-button"
+        aria-label="Facebook-share-button"
         >
           <FacebookIcon size={size} round />
         </FacebookShareButton>
@@ -35,6 +37,8 @@ export const Share = () => {
           url={shareUrl}
           title={title}
           className="share-icon"
+        name="X/Twitter-share-button"
+        aria-label="X/Twitter-share-button"
         >
           <XIcon size={size} round />
         </TwitterShareButton>
@@ -43,6 +47,8 @@ export const Share = () => {
         <LinkedinShareButton
           url={shareUrl}
           className="share-icon"
+        name="LinkedIn-share-button"
+        aria-label="LinkedIn-share-button"
         >
           <LinkedinIcon size={size} round />
         </LinkedinShareButton>
@@ -53,6 +59,8 @@ export const Share = () => {
           windowWidth={660}
           windowHeight={460}
         className="share-icon"
+        name="Reddit-share-button"
+        aria-label="Reddit-share-button"
         >
           <RedditIcon size={size} round />
         </RedditShareButton>
@@ -61,6 +69,8 @@ export const Share = () => {
         url={shareUrl}
         image={`${vercelUrl}/social_banner.jpg`}
         className="share-icon"
+        name="VK-share-button"
+        aria-label="VK-share-button"
       >
         <VKIcon size={size} round />
       </VKShareButton>

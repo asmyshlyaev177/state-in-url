@@ -7,7 +7,10 @@ export const RefreshButton = ({ className }: { className?: string }) => {
       onClick={() => {
         window.location.reload();
       }}
-      className={clsx(`font-extrabold bg-orange-700 text-lg`, className)}
+      className={clsx(
+        `transition font-extrabold bg-orange-700 text-lg text-white`,
+        className,
+      )}
       name="Reload page"
     >
       Reload page
