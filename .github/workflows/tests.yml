@@ -1,11 +1,11 @@
 name: Tests
 on:
   push:
-    branches: [ main ]
+    branches: [ master ]
   pull_request:
-    branches: [ main ]
+    branches: [ master ]
   workflow_dispatch:
-    branches: [ main ]
+    branches: [ master ]
   repository_dispatch:
     types: [semantic-release]
 
@@ -161,7 +161,7 @@ jobs:
   release:
     name: release
     needs: [testint]
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/master'
     timeout-minutes: 20
     runs-on: ubuntu-22.04
     container:

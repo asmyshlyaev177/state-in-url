@@ -55,9 +55,8 @@ representative at an online or offline event.
 ## Enforcement
 
 Instances of abusive, or otherwise unacceptable behavior may be
-reported to the community leaders responsible for enforcement at
-asmyshlyaev177+state-in-url@gmail.com
-All complaints will be reviewed and investigated promptly and fairly.
+reported to the community leaders responsible for enforcement.
+Open an issue for that, you can include screenshots and any related information.
 
 All community leaders are obligated to respect the privacy and security of the
 reporter of any incident.
