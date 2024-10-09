@@ -50,7 +50,7 @@ Share if it useful for you.
 - 🧮 Store unsaved user forms in URL
 - 🙃 Share the state between different components without changing url, good as alternative to signals and other state management tools
 - 🧠 Sync data between unrelated client components
-- 🔗 Shareable URLs with application state (Deep linking)
+- 🔗 Shareable URLs with application state (Deep linking, URL state synchronization)
 - 🔄 Easy state persistence across page reloads
 
 # Features
