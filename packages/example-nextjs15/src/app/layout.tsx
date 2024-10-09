@@ -30,7 +30,7 @@ export default async function RootLayout({
 }
 
 const meta = {
-  title: 'state-in-url state management',
+  title: 'state-in-url state management and deep links',
   description:
     'Easily share state between unrelated React components, with IDE autocomplete and TS validation. Without any hasssle or boilerplate.',
 };

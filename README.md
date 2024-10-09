@@ -43,14 +43,14 @@ Share if it useful for you.
 
 ## Why use state-in-url?
 
-`state-in-url` Simple state management with optional URL sync. Share complex states between unrelated React components, TS-friendly, NextJS compatible. Most of users don't care about URL, so, can use it to store your app state.
+`state-in-url` Simple state management with optional URL sync. Good for implementing deep links. Share complex states between unrelated React components, TS-friendly, NextJS compatible. Most of users don't care about URL, so, can use it to store your app state.
 
 # Use cases
 
 - 🧮 Store unsaved user forms in URL
 - 🙃 Share the state between different components without changing url, good as alternative to signals and other state management tools
 - 🧠 Sync data between unrelated client components
-- 🔗 Shareable URLs with application state
+- 🔗 Shareable URLs with application state (Deep linking)
 - 🔄 Easy state persistence across page reloads
 
 # Features
@@ -59,7 +59,7 @@ Share if it useful for you.
 - 📘 **Typescript support and type Safety**: Preserves data types and structure, good developer experience with IDE suggestions, strong typing and JSDoc comments
 - ⚛️ **Framework Flexibility**: Separate hooks for Next.js and React.js applications, and functions for pure JS
 - ⚙ **Well tested**: Unit tests and Playwright tests, high quality and support
-- ⚡ **Fast**: Minimal rerenders
+- ⚡ **Fast**: Minimal rerenders, less than [1ms](https://github.com/asmyshlyaev177/state-in-url/blob/87c8c7c995c5cd7d9e7aa039c30bfe64b24abe4b/packages/urlstate/encoder/encoder.test.ts#L185) to encode and decode an object
 - 🪶 **Lightweight**: Zero dependencies for a smaller footprint
 
 ## Table of content
