@@ -9,7 +9,7 @@ export const jsonLd: WithContext<SoftwareApplication> = {
   '@type': 'SoftwareApplication',
   name: 'state-in-url',
   description:
-    'NPM Library to store complex state in browser URL, includes hook for NextJS and React-router, hooks for pure React, and low level helpers.',
+    'NPM Library to store complex state in browser URL, includes hook for NextJS and React-router, hooks for pure React, solution for deep links.',
   accessibilityControl: 'textual',
   accessMode: 'textual',
   author: {
@@ -41,7 +41,7 @@ export const jsonLd: WithContext<SoftwareApplication> = {
 const meta = {
   title: 'state-in-url - query parameters for state management',
   description:
-    'Share state between unrelated React components with URL sync, IDE autocomplete and TS validation. No  hasssle or boilerplate. For Next.js and react-router.',
+    'Share state between unrelated React components with URL sync, IDE autocomplete and TS validation. Deep links made easy. No  hasssle or boilerplate. For Next.js and react-router.',
 };
 
 export const metadata = {
