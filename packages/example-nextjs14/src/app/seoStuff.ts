@@ -57,7 +57,7 @@ export const metadata = {
         url: `${vercelUrl}/social_banner.jpg`,
         width: 1280,
         height: 640,
-        alt: 'state-in-url library img',
+        alt: 'state-in-url library image',
       },
     ],
     locale: 'en_US',
