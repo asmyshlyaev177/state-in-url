@@ -10,20 +10,20 @@ English | [한국어](./README.KO.md) | [简体中文](./README.CN.md)
 <hr />
 
 [![npm](https://img.shields.io/npm/v/state-in-url.svg)](https://www.npmjs.com/package/state-in-url)
-![Tests](https://github.com/asmyshlyaev177/state-in-url/actions/workflows/tests.yml/badge.svg?branch=main)
+![Tests](https://github.com/asmyshlyaev177/state-in-url/actions/workflows/tests.yml/badge.svg?branch=master)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/73be54068b7f41b0b74a252579ac09ec)](https://app.codacy.com/gh/asmyshlyaev177/state-in-url/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](https://github.com/asmyshlyaev177/state-in-url/)
 [![semantic-release: angular](https://img.shields.io/badge/semantic--release-angular-e10079?logo=semantic-release)]([https://github.com/semantic-release/semantic-release](https://github.com/asmyshlyaev177/state-in-url))
 ![npm bundle size (minified + gzip)](https://img.shields.io/bundlephobia/minzip/state-in-url.svg)
 
-[![StandWithUkraine](https://raw.githubusercontent.com/vshymanskyy/StandWithUkraine/main/badges/StandWithUkraine.svg)](https://stand-with-ukraine.pp.ua/)
+[![StandWithUkraine](https://raw.githubusercontent.com/vshymanskyy/StandWithUkraine/master/badges/StandWithUkraine.svg)](https://stand-with-ukraine.pp.ua/)
 </div>
 
 <div align="center">
 
 <h4 align="center">Don't hesitate to open an issue if you found a bug, or for requesting features</h4>
 
-![Demo-gif](https://github.com/asmyshlyaev177/state-in-url/blob/main/assets/Demo-gif.gif)
+![Demo-gif](https://github.com/asmyshlyaev177/state-in-url/blob/master/assets/Demo-gif.gif)
 
 <a href="https://state-in-url-asmyshlyaev177.vercel.app/" target="_blank">DEMO</a> |
 <a href="https://state-in-url.netlify.app/" target="_blank">DEMO2</a> |
@@ -242,7 +242,7 @@ const tags = [
 ];
 ```
 
-[Demo page example code](https://github.com/asmyshlyaev177/state-in-url/blob/main/packages/example-nextjs14/src/app/Form.tsx)
+[Demo page example code](https://github.com/asmyshlyaev177/state-in-url/blob/master/packages/example-nextjs14/src/app/Form.tsx)
 
 #### Auto sync state
 

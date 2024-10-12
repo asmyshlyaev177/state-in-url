@@ -31,7 +31,7 @@ import {
  * updateUrl(curr => ({ ...curr, name: 'test' }), { replace: true });
  *  ```
  *
- *  * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/main/packages/urlstate/react-router/useUrlState#api}
+ *  * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/master/packages/urlstate/react-router/useUrlState#api}
  */
 export function useUrlState<T extends JSONCompatible>({
   defaultState,
@@ -96,7 +96,7 @@ export function useUrlState<T extends JSONCompatible>({
      * updateState(curr => ({ ...curr, name: 'test', preventScrollReset: false }) );
      *  ```
      *
-     *  * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/main/packages/urlstate/react-router/useUrlState#updatestate}
+     *  * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/master/packages/urlstate/react-router/useUrlState#updatestate}
      */
     updateState,
     /**
@@ -109,7 +109,7 @@ export function useUrlState<T extends JSONCompatible>({
      * updateState(curr => ({ ...curr, name: 'test', preventScrollReset: false }) );
      *  ```
      *
-     *  * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/main/packages/urlstate/react-router/useUrlState#updateurl}
+     *  * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/master/packages/urlstate/react-router/useUrlState#updateurl}
      */
     updateUrl,
     state: state as DeepReadonly<typeof state>,

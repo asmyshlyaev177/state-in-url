@@ -19,16 +19,16 @@ export const jsonLd: WithContext<SoftwareApplication> = {
     url: 'https://www.linkedin.com/in/asmyshlyaev177/',
   },
   thumbnailUrl:
-    'https://github.com/asmyshlyaev177/state-in-url/blob/main/assets/Demo-gif.gif',
+    'https://github.com/asmyshlyaev177/state-in-url/blob/master/assets/Demo-gif.gif',
   applicationCategory: 'State management for Web Applications',
   url: 'https://github.com/asmyshlyaev177/state-in-url',
   sameAs: 'https://github.com/asmyshlyaev177/state-in-url',
   softwareRequirements: ['JavaScript', 'Web Browser', 'npm'],
   license:
-    'https://raw.githubusercontent.com/asmyshlyaev177/state-in-url/main/LICENSE',
+    'https://raw.githubusercontent.com/asmyshlyaev177/state-in-url/master/LICENSE',
   softwareVersion: packageJson.version,
   releaseNotes:
-    'https://raw.githubusercontent.com/asmyshlyaev177/state-in-url/main/CHANGELOG.md',
+    'https://raw.githubusercontent.com/asmyshlyaev177/state-in-url/master/CHANGELOG.md',
   discussionUrl: 'https://github.com/asmyshlyaev177/state-in-url/discussions',
   isAccessibleForFree: true,
   accessibilityFeature: ['fullMouseControl', 'readingOrder', 'ARIA'],

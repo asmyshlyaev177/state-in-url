@@ -10,7 +10,7 @@ import { type JSONCompatible } from "./utils";
  * Parses the Next.js server-side `searchParams` into an object.
  *
  * Or with react-router
- * {@link https://github.com/asmyshlyaev177/state-in-url/tree/main/packages/urlstate/react-router/useUrlState/useUrlState.ts}
+ * {@link https://github.com/asmyshlyaev177/state-in-url/tree/master/packages/urlstate/react-router/useUrlState/useUrlState.ts}
  *
  *
  * @param {object | undefined} sp - The server-side searchParams object to parse.

@@ -7,7 +7,7 @@ import { type JSONCompatible, typeOf } from "../utils";
  * @param {unknown} payload any value to serialize
  * @returns {string} URLSearchParams compatible value string
  *
- *  * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/main/packages/urlstate/encoder#encode}
+ *  * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/master/packages/urlstate/encoder#encode}
  */
 export function encode(payload: unknown): string {
   if (isEncoded(payload)) {
@@ -43,7 +43,7 @@ export type Primitive = Exclude<
  * @param {any} fallback optional fallback value
  * @returns {unknown} decoded object
  *
- *  * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/main/packages/urlstate/encoder#decode}
+ *  * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/master/packages/urlstate/encoder#decode}
  */
 export function decode<T>(payload: string, fallback?: T) {
   return parseJSON(payload.replaceAll("'", '"'), fallback as JSONCompatible);

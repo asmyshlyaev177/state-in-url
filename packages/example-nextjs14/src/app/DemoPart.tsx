@@ -50,11 +50,11 @@ export function DemoPart({ searchParams }: { searchParams: object }) {
 
 const sourceUrls = {
   next: {
-    form: 'https://github.com/asmyshlyaev177/state-in-url/blob/main/packages/example-nextjs14/src/app/Form.tsx',
-    status: 'https://github.com/asmyshlyaev177/state-in-url/blob/main/packages/example-nextjs14/src/app/Status.tsx'
+    form: 'https://github.com/asmyshlyaev177/state-in-url/blob/master/packages/example-nextjs14/src/app/Form.tsx',
+    status: 'https://github.com/asmyshlyaev177/state-in-url/blob/master/packages/example-nextjs14/src/app/Status.tsx'
   },
   reactRouter: {
-    form: 'https://github.com/asmyshlyaev177/state-in-url/blob/main/packages/example-react-router6/src/Form-for-test.tsx',
-    status: 'https://github.com/asmyshlyaev177/state-in-url/blob/main/packages/example-react-router6/src/Status-for-test.tsx'
+    form: 'https://github.com/asmyshlyaev177/state-in-url/blob/master/packages/example-react-router6/src/Form-for-test.tsx',
+    status: 'https://github.com/asmyshlyaev177/state-in-url/blob/master/packages/example-react-router6/src/Status-for-test.tsx'
   }
 } as const;
