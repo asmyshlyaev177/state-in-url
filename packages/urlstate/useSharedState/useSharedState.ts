@@ -25,7 +25,7 @@ import {
  * // OR
  * setState(curr => ({ ...curr, name: 'test' }))
  *  ```
- *  * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/main/packages/urlstate/useSharedState}
+ *  * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/master/packages/urlstate/useSharedState}
  */
 export function useSharedState<T extends JSONCompatible>(
   defaultState: T,

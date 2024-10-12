@@ -32,7 +32,7 @@ import {
  * updateUrl(curr => ({ ...curr, name: 'test' }), { replace: true, scroll: true });
  *  ```
  *
- *  * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/main/packages/urlstate/next/useUrlState#api}
+ *  * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/master/packages/urlstate/next/useUrlState#api}
  */
 export function useUrlState<T extends JSONCompatible>({
   defaultState,
@@ -89,7 +89,7 @@ export function useUrlState<T extends JSONCompatible>({
      * updateState(curr => ({ ...curr, name: 'test' }) );
      *  ```
      *
-     *  * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/main/packages/urlstate/next/useUrlState#updatestate}
+     *  * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/master/packages/urlstate/next/useUrlState#updatestate}
      */
     updateState,
     /**
@@ -100,7 +100,7 @@ export function useUrlState<T extends JSONCompatible>({
      * updateUrl(curr => ({ ...curr, name: 'test' }), { replace: true, scroll: false  } );
      *  ```
      *
-     *  * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/main/packages/urlstate/next/useUrlState#updateurl}
+     *  * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/master/packages/urlstate/next/useUrlState#updateurl}
      */
     updateUrl,
     state: state as DeepReadonly<typeof state>,
