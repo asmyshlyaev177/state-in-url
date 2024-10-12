@@ -1,4 +1,4 @@
-export type Type = 'string' | 'date' | 'boolean' | 'number' | 'bigint' | 'undefined' | 'object' | 'null' | 'function' | 'symbol' | 'array';
+export type Type = "string" | "date" | "boolean" | "number" | "bigint" | "undefined" | "object" | "null" | "function" | "symbol" | "array";
 /**
  * A better replacement for `typeof`
  *

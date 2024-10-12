@@ -1,3 +1,78 @@
+# 1.0.0 (2024-10-12)
+
+
+### Bug Fixes
+
+* edge cases in getParams ([a1a189c](https://github.com/asmyshlyaev177/state-in-url/commit/a1a189ccb9e0a5db7ecdde00fac64666d23cc07c))
+* fix export ([3dd6052](https://github.com/asmyshlyaev177/state-in-url/commit/3dd6052a8bdd51e8ab93497f781aaf1ed218ace2))
+* fix exports ([9a4c739](https://github.com/asmyshlyaev177/state-in-url/commit/9a4c73964b0ff3ea130cb04be4d106f30b562f02))
+* fix gh action ([f57d3f7](https://github.com/asmyshlyaev177/state-in-url/commit/f57d3f7ffdd52fc57d4665b1dcabed80ebb8f021))
+* fix history navigation, add more tests ([b253755](https://github.com/asmyshlyaev177/state-in-url/commit/b253755e141aa5ade0e224228e8c6fa1963b6900))
+* fix import, no type module, and cjs bundle too ([759a607](https://github.com/asmyshlyaev177/state-in-url/commit/759a607c4677f1d3490025e1bc2ab3b9e936046a))
+* fix loop for SSG ([4ea111e](https://github.com/asmyshlyaev177/state-in-url/commit/4ea111e5521e2c920a6c33dc56d7318c11cd9077))
+* fix minor bug in updateUrl ([566a63a](https://github.com/asmyshlyaev177/state-in-url/commit/566a63ab3df75716df6e7d074d69463a91ea08b5))
+* fix nested Date serialization ([6c6a73d](https://github.com/asmyshlyaev177/state-in-url/commit/6c6a73db6a1861182ac7f154d2972fa29ecd7a49))
+* fix ts types ([6b941a0](https://github.com/asmyshlyaev177/state-in-url/commit/6b941a03145c614f964b14a80c1e9f73d96dedc7))
+* fix types in dist ([e1a4eb6](https://github.com/asmyshlyaev177/state-in-url/commit/e1a4eb6351fd49e3ea25595d91b201488c7a4a20))
+* fix value getting for SSR ([2b7fe9b](https://github.com/asmyshlyaev177/state-in-url/commit/2b7fe9b8c160c04ca31823971c5148b5222526a7))
+* fix whitespaces in variable names bug ([af5b65e](https://github.com/asmyshlyaev177/state-in-url/commit/af5b65efd037d3d549b750dace98f24685861f61))
+* ignore undeclared params for history navigation ([056cd7d](https://github.com/asmyshlyaev177/state-in-url/commit/056cd7d738dcb6f6758d17777f04a887de1ad80e))
+* keep scroll for router.push, add option for router.replace ([f79cfe1](https://github.com/asmyshlyaev177/state-in-url/commit/f79cfe19945d18b774198a7986d193afb4187aac))
+* polished initial state logic in useSharedState ([269e498](https://github.com/asmyshlyaev177/state-in-url/commit/269e498f7db620bff63d50a9fdbb53244eb9ae7e))
+* preserve location.href ([2c4d34e](https://github.com/asmyshlyaev177/state-in-url/commit/2c4d34e9cb09909f592f8a138f845d980cc7802d))
+* semantic-release config ([8cb9bdb](https://github.com/asmyshlyaev177/state-in-url/commit/8cb9bdb325d21c2f4358159b88aea96bb8f81ece))
+* trigger release ([f5d4a12](https://github.com/asmyshlyaev177/state-in-url/commit/f5d4a127186fb67e0ebcf3367119b86364ed0ec4))
+* trying to fix date issue ([40ef2fa](https://github.com/asmyshlyaev177/state-in-url/commit/40ef2fa76444b2b4ddbccd76b5b08ea7cf3ef29d))
+* updateState on updateUrl and fix types ([ca54c2c](https://github.com/asmyshlyaev177/state-in-url/commit/ca54c2c8c834eb86c3f4c48158faa918c033a85c))
+* **useurlstate:** ignore/preserve sp not defined in stateShape ([a46b319](https://github.com/asmyshlyaev177/state-in-url/commit/a46b31988d39d0b4e40c0459c7111d2d550bc635))
+
+
+### Build System
+
+* **export:** keep es modules for transpilation, drop cjs ([2c776c5](https://github.com/asmyshlyaev177/state-in-url/commit/2c776c5aa87382c7fd3fc69da2581bf3c851da4a))
+
+
+### Code Refactoring
+
+* move `useUrlState` to `/next` export ([c0e702b](https://github.com/asmyshlyaev177/state-in-url/commit/c0e702beaa5a3f7cb84464b8ef1658ff43f7313d))
+* **useurlstate:** remove deprecated things ([82cb460](https://github.com/asmyshlyaev177/state-in-url/commit/82cb4605f867ac58f8e04b4df24385f64b36f3bd))
+
+
+### Features
+
+* `encodeState` and `decodeState` functions ([30bda96](https://github.com/asmyshlyaev177/state-in-url/commit/30bda960ceb6b9a781225368acfb78cb2b7dc3dd))
+* allow to use partial value for updateState/updateUrl ([82dfebd](https://github.com/asmyshlyaev177/state-in-url/commit/82dfebdf8b7262b14ba44a5a5deb07f45d16dd24))
+* first version ([b6b4d82](https://github.com/asmyshlyaev177/state-in-url/commit/b6b4d82173e17a4764726d3201a125c2d8a2384a))
+* fix updateUrl, add more tests ([adc216d](https://github.com/asmyshlyaev177/state-in-url/commit/adc216d3e8f1ece73b991765e1b69f81d23f03cb))
+* improve encoder algo, smaller URI strings and less complexity ([c72c0df](https://github.com/asmyshlyaev177/state-in-url/commit/c72c0dfafc6238637469837f6155f86941c526e3))
+* improve ts typings ([6d62dd7](https://github.com/asmyshlyaev177/state-in-url/commit/6d62dd700e559168d84a7129027aed3bbe6a94b0))
+* keywords update ([29129e2](https://github.com/asmyshlyaev177/state-in-url/commit/29129e2996335469690d97463478c3d0dc77c51e))
+* observer pattern to communicate between `useUrlState` hooks, stateShape parameter required ([2e7f724](https://github.com/asmyshlyaev177/state-in-url/commit/2e7f724fa10d26b2ae681a0324e1a8c701cc5ec2))
+* provenance test ([d4c4a0d](https://github.com/asmyshlyaev177/state-in-url/commit/d4c4a0da2f05f3ae7c68cf3a158905fcfc28ef76))
+* semantic release ([3c3333e](https://github.com/asmyshlyaev177/state-in-url/commit/3c3333e1449fc44932cb1e1a7026f9ecd49661fe))
+* test release ([ffa4a5e](https://github.com/asmyshlyaev177/state-in-url/commit/ffa4a5ea0f921d2d7d8ad50d2fa1dd533e6b3e75))
+* trigger a release ([810f91f](https://github.com/asmyshlyaev177/state-in-url/commit/810f91fbd7435d422ff0827de9e0d49d40b54cb1))
+* use fallback for invalid/incomplet URL string ([039f01b](https://github.com/asmyshlyaev177/state-in-url/commit/039f01b5b13f2aa8588f5d5d198a0c323fd744a3))
+* useSharedState hook for Next.js/React ([343f47d](https://github.com/asmyshlyaev177/state-in-url/commit/343f47dc9710b06626c68b263fec17d2ea9cbac4))
+* **useurlstate:** replace=true by default, object args ([09f6799](https://github.com/asmyshlyaev177/state-in-url/commit/09f6799a987e8ee4a282632709ca7c3d22484c6e))
+* **useurlstate:** useUrlState hook for react-router@6 ([c29d47d](https://github.com/asmyshlyaev177/state-in-url/commit/c29d47d61ec277adbd68d395edb9f9eadcf2d578))
+
+
+### Reverts
+
+* Revert "ci: use local library version, won't forget to update it this way" ([558fee3](https://github.com/asmyshlyaev177/state-in-url/commit/558fee3c6c0e325e33506c5ac84a5bb22ecae2fe))
+
+
+### BREAKING CHANGES
+
+* **useurlstate:** 1. `useUrlState` for Next.js now accept only object, eg. `useUrlState({
+defaultState: {}})`
+ 2. urls encoded with versions prior to v2.3.0 could stop working
+* move `useUrlState` to `/next` export
+* **export:** Ship only esm bundle, no cjs
+* `defaultState` arg in `useUrlState` now required, could be just `const state: {
+[key: string]: value: any } = {}`
+
 ## [3.0.1](https://github.com/asmyshlyaev177/state-in-url/compare/v3.0.0...v3.0.1) (2024-10-01)
 
 

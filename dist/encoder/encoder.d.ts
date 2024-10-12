@@ -1,11 +1,11 @@
-import { type JSONCompatible } from '../utils';
+import { type JSONCompatible } from "../utils";
 /**
  * Encode any JSON serializable value to URL friendly string
  *
  * @param {unknown} payload any value to serialize
  * @returns {string} URLSearchParams compatible value string
  *
- *  * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/main/packages/urlstate/encoder#encode}
+ *  * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/master/packages/urlstate/encoder#encode}
  */
 export declare function encode(payload: unknown): string;
 export type Primitive = Exclude<ReturnType<typeof decodePrimitive>, typeof errorSym>;
@@ -16,7 +16,7 @@ export type Primitive = Exclude<ReturnType<typeof decodePrimitive>, typeof error
  * @param {any} fallback optional fallback value
  * @returns {unknown} decoded object
  *
- *  * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/main/packages/urlstate/encoder#decode}
+ *  * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/master/packages/urlstate/encoder#decode}
  */
 export declare function decode<T>(payload: string, fallback?: T): JSONCompatible | Primitive;
 export declare const decodePrimitive: (str: string) => Date | typeof errorSym | undefined;

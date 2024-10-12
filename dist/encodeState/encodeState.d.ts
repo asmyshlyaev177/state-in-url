@@ -1,4 +1,4 @@
-import { type JSONCompatible, type UnknownObj } from '../utils';
+import { type JSONCompatible, type UnknownObj } from "../utils";
 /**
  * Encodes the state object into a URL query string.
  *
@@ -12,7 +12,7 @@ import { type JSONCompatible, type UnknownObj } from '../utils';
  * encodeState({ name: 'test' }, form, 'someExistingParam=123');
  *  ```
  *
- *  * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/main/packages/urlstate/encodeState#encodestate}
+ *  * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/master/packages/urlstate/encodeState#encodestate}
  */
 export declare function encodeState<T extends JSONCompatible>(state: T, defaults?: T, paramsToKeep?: string | URLSearchParams): string;
 /**
@@ -27,6 +27,6 @@ export declare function encodeState<T extends JSONCompatible>(state: T, defaults
  * decodeState('key=value&name=Alex', form);
  *  ```
  *
- *  * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/main/packages/urlstate/encodeState#decodestate}
+ *  * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/master/packages/urlstate/encodeState#decodestate}
  */
 export declare function decodeState<T extends JSONCompatible>(uriString: string | URLSearchParams, defaults?: T): undefined extends T ? UnknownObj : T;

@@ -1,4 +1,4 @@
-import { type JSONCompatible } from './utils';
+import { type JSONCompatible } from "./utils";
 export declare const subscribers: {
     get(obj: JSONCompatible): Cb[];
     add(obj: JSONCompatible, cb: Cb): () => void;

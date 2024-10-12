@@ -1,5 +1,5 @@
-import { type NavigateOptions } from 'react-router-dom';
-import { type DeepReadonly, type JSONCompatible } from '../../utils';
+import { type NavigateOptions } from "react-router-dom";
+import { type DeepReadonly, type JSONCompatible } from "../../utils";
 /**
  * React-router hook. Returns `state`, `updateState`, and `updateUrl` functions
  *
@@ -16,7 +16,7 @@ import { type DeepReadonly, type JSONCompatible } from '../../utils';
  * updateUrl(curr => ({ ...curr, name: 'test' }), { replace: true });
  *  ```
  *
- *  * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/main/packages/urlstate/react-router/useUrlState#api}
+ *  * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/master/packages/urlstate/react-router/useUrlState#api}
  */
 export declare function useUrlState<T extends JSONCompatible>({ defaultState, ...initOpts }: {
     defaultState: T;
@@ -31,7 +31,7 @@ export declare function useUrlState<T extends JSONCompatible>({ defaultState, ..
      * updateState(curr => ({ ...curr, name: 'test', preventScrollReset: false }) );
      *  ```
      *
-     *  * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/main/packages/urlstate/react-router/useUrlState#updatestate}
+     *  * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/master/packages/urlstate/react-router/useUrlState#updatestate}
      */
     updateState: (value: Partial<T> | Partial<DeepReadonly<T>> | ((currState: T) => T)) => void;
     /**
@@ -44,7 +44,7 @@ export declare function useUrlState<T extends JSONCompatible>({ defaultState, ..
      * updateState(curr => ({ ...curr, name: 'test', preventScrollReset: false }) );
      *  ```
      *
-     *  * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/main/packages/urlstate/react-router/useUrlState#updateurl}
+     *  * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/master/packages/urlstate/react-router/useUrlState#updateurl}
      */
     updateUrl: (value?: Parameters<(value?: Partial<T> | Partial<DeepReadonly<T>> | ((currState: T) => T) | undefined, options?: import("../../useUrlStateBase/useUrlStateBase").Options) => void>[0], options?: NavigateOptions) => void;
     state: DeepReadonly<DeepReadonly<T>>;
