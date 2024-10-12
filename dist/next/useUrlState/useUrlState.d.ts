@@ -1,5 +1,5 @@
-import { useRouter } from 'next/navigation';
-import { type DeepReadonly, type JSONCompatible } from '../../utils';
+import { useRouter } from "next/navigation";
+import { type DeepReadonly, type JSONCompatible } from "../../utils";
 /**
  * NextJS hook. Returns `state`, `updateState`, and `updateUrl` functions
  *
@@ -20,7 +20,7 @@ import { type DeepReadonly, type JSONCompatible } from '../../utils';
  * updateUrl(curr => ({ ...curr, name: 'test' }), { replace: true, scroll: true });
  *  ```
  *
- *  * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/main/packages/urlstate/next/useUrlState#api}
+ *  * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/master/packages/urlstate/next/useUrlState#api}
  */
 export declare function useUrlState<T extends JSONCompatible>({ defaultState, searchParams, ...opts }: {
     defaultState: T;
@@ -36,7 +36,7 @@ export declare function useUrlState<T extends JSONCompatible>({ defaultState, se
      * updateState(curr => ({ ...curr, name: 'test' }) );
      *  ```
      *
-     *  * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/main/packages/urlstate/next/useUrlState#updatestate}
+     *  * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/master/packages/urlstate/next/useUrlState#updatestate}
      */
     updateState: (value: Partial<T> | Partial<DeepReadonly<T>> | ((currState: T) => T)) => void;
     /**
@@ -47,14 +47,14 @@ export declare function useUrlState<T extends JSONCompatible>({ defaultState, se
      * updateUrl(curr => ({ ...curr, name: 'test' }), { replace: true, scroll: false  } );
      *  ```
      *
-     *  * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/main/packages/urlstate/next/useUrlState#updateurl}
+     *  * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/master/packages/urlstate/next/useUrlState#updateurl}
      */
     updateUrl: (value?: Parameters<(value?: Partial<T> | Partial<DeepReadonly<T>> | ((currState: T) => T) | undefined, options?: import("../../useUrlStateBase/useUrlStateBase").Options) => void>[0], options?: Options) => void;
     state: DeepReadonly<DeepReadonly<T>>;
     getState: () => T;
 };
 type Router = ReturnType<typeof useRouter>;
-type RouterOptions = NonNullable<Parameters<Router['push']>[1] | Parameters<Router['replace']>[1]>;
+type RouterOptions = NonNullable<Parameters<Router["push"]>[1] | Parameters<Router["replace"]>[1]>;
 interface Options extends RouterOptions {
     replace?: boolean;
 }

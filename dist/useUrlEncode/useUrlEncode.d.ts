@@ -1,4 +1,4 @@
-import { type JSONCompatible } from '../utils';
+import { type JSONCompatible } from "../utils";
 /**
  * A hook that returns stringify and parse functions for encoding and decoding state
  * to and from URL search parameters.
@@ -17,7 +17,7 @@ import { type JSONCompatible } from '../utils';
  * parse('name=Tom');
  *  ```
  *
- * * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/main/packages/urlstate/useUrlEncode#api}
+ * * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/master/packages/urlstate/useUrlEncode#api}
  */
 export declare function useUrlEncode<T extends JSONCompatible>(stateShape: T): {
     /**
@@ -28,7 +28,7 @@ const state = parse("name='Tom'");
 console.log(state); // Output: { name: 'Tom' }
  *  ```
  *
- *  * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/main/packages/urlstate/useUrlEncode#parse}
+ *  * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/master/packages/urlstate/useUrlEncode#parse}
  */
     parse: (strOrSearchParams: string | URLSearchParams) => typeof stateShape;
     /**
@@ -39,7 +39,7 @@ const queryString = stringify({ name: 'John' }, 'someExistingParamToKeep=123');
 console.log(queryString); // Output: name='John'&someExistingParamToKeep=123
 *  ```
 *
-*  * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/main/packages/urlstate/useUrlEncode#stringify}
+*  * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/master/packages/urlstate/useUrlEncode#stringify}
 */
     stringify: (state: typeof stateShape, paramsToKeep?: string | URLSearchParams) => string;
 };
