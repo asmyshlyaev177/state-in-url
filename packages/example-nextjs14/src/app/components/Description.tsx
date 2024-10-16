@@ -8,9 +8,9 @@ export const Description = () => (
     </h2>
 
     <div className='max-w-[600px] mb-2'>
-      <div>Main goal is to provide state management with URI and good developer experience, there are many similar libraries, but non of them are easy enough to use.</div>
+      <div>Main goal is to provide state management with URI and good developer experience, there are many similar libraries, but non of them are easy enough to use, or lack functionality.</div>
       <br />
-      <div><Word>state-in-url</Word> provides <Word>useUrlState</Word> hook for Next.js/react-router. With it you can store state easily without a lot of boilerplate.<br />
+      <div><Word>state-in-url</Word> provides <Word>useUrlState</Word> hook for Next.js/react-router. With it you can store state easily without a lot of boilerplate, and implement Deep Links pattern for your App.<br />
         No need to wrap components in a provider, can share data between unrelated client components. API is very similar to <Word>React.useState.</Word>
       </div>
       <br />
