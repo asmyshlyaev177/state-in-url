@@ -1,3 +1,10 @@
+## [3.0.4](https://github.com/asmyshlyaev177/state-in-url/compare/v3.0.3...v3.0.4) (2024-10-16)
+
+
+### Bug Fixes
+
+* update sitemap and description ([c68d45e](https://github.com/asmyshlyaev177/state-in-url/commit/c68d45e71ed6debf5977c2bc28d2fe6a8b3530b5))
+
 ## [3.0.3](https://github.com/asmyshlyaev177/state-in-url/compare/v3.0.2...v3.0.3) (2024-10-12)
 
 
