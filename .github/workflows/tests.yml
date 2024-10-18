@@ -26,6 +26,8 @@ jobs:
     runs-on: ubuntu-22.04
     container:
       image: mcr.microsoft.com/playwright:v1.45.0-jammy
+    env:
+      HUSKY: 0
     permissions:
       contents: write # to be able to publish a GitHub release
       issues: write # to be able to comment on released issues
