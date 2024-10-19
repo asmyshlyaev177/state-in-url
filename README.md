@@ -4,6 +4,14 @@ English | [한국어](./README.KO.md) | [简体中文](./README.CN.md)
   <img src="/assets/Logo_big.png?raw=true" alt="state-in-url logo"/>
 
   <div>Easily share complex state between unrelated React components, with IDE autocomplete and TS validation. Without any hasssle or boilerplate. </div>
+
+
+</div>
+
+<hr />
+
+<div align="center">
+<a href="https://github.com/asmyshlyaev177/state-in-url/blob/master/Limits.md"  target="_blank">URI size limitation, <b>up to 12KB</b> is safe</a>
 </div>
 
 <div align="center">
@@ -26,9 +34,10 @@ English | [한국어](./README.KO.md) | [简体中文](./README.CN.md)
 ![Demo-gif](https://github.com/asmyshlyaev177/state-in-url/blob/master/assets/Demo-gif.gif)
 
 <a href="https://state-in-url-asmyshlyaev177.vercel.app/" target="_blank">DEMO</a> |
-<a href="https://state-in-url.netlify.app/" target="_blank">DEMO2</a> |
+<a href="https://state-in-url.netlify.app/" target="_blank">DEMO2</a>
 
 <hr />
+
 
 Add a ⭐️ and <a href="https://github.com/asmyshlyaev177" target="_blank">follow me</a> to support the project!
 
