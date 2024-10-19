@@ -5,7 +5,6 @@ English | [한국어](./README.KO.md) | [简体中文](./README.CN.md)
 
   <div>Easily share complex state between unrelated React components, with IDE autocomplete and TS validation. Without any hasssle or boilerplate. </div>
 
-
 </div>
 
 <hr />
@@ -37,7 +36,6 @@ English | [한국어](./README.KO.md) | [简体中文](./README.CN.md)
 <a href="https://state-in-url.netlify.app/" target="_blank">DEMO2</a>
 
 <hr />
-
 
 Add a ⭐️ and <a href="https://github.com/asmyshlyaev177" target="_blank">follow me</a> to support the project!
 
@@ -362,7 +360,6 @@ API is same as for Next.js version, except can pass options from [NavigateOption
 
 [Docs](packages/urlstate/react-router/useUrlState#api)
 
-
 ### Example
 
 ```typescript
@@ -495,7 +492,6 @@ function SettingsComponent() {
 ## Contribute and/or run locally
 
 See [Contributing doc](CONTRIBUTING.md)
-
 
 ## Roadmap
 
