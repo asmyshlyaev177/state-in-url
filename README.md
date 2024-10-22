@@ -3,7 +3,7 @@ English | [한국어](./README.KO.md) | [简体中文](./README.CN.md)
 <div align="center">
   <img src="/assets/Logo_big.png?raw=true" alt="state-in-url logo"/>
 
-  <div>Easily share complex state between unrelated React components, with IDE autocomplete and TS validation. Without any hasssle or boilerplate. </div>
+  <div><h2>Easily share complex state objects between unrelated React components, preserve types and structure, with TS validation. Without any hasssle or boilerplate.</h2></div>
 
 </div>
 
