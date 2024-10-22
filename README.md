@@ -49,7 +49,7 @@ Share if it useful for you.
 
   </div>
 
-## Why use state-in-url?
+# Why use state-in-url?
 
 `state-in-url` Simple state management with optional URL sync. Good for implementing deep links. Share complex states between unrelated React components, TS-friendly, NextJS compatible. Most of users don't care about URL, so, can use it to store your app state.
 
@@ -110,7 +110,7 @@ pnpm add state-in-url
 In `tsconfig.json` in `compilerOptions` set `"moduleResolution": "Bundler"`, or`"moduleResolution": "Node16"`, or `"moduleResolution": "NodeNext"`.
 Possibly need to set `"module": "ES2022"`, or `"module": "ESNext"`
 
-# useUrlState
+## useUrlState
 
 `useUrlState` is a custom React hook for Next.js/React-Router applications that make communication between client components easy. It allows you to share any complex state and sync it with the URL search parameters, providing a way to persist state across page reloads and share application state via URLs.
 
