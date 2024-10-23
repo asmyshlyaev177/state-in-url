@@ -6,11 +6,11 @@ module.exports = {
     project: './tsconfig.json',
     tsconfigRootDir: __dirname,
   },
-  // ignores: [
-  //   "*.config.*",
-  //   "*.env.",
-  //   "*.env.*",
-  // ],
+  ignorePatterns: [
+    "node_modules",
+    "packages/example-nextjs14",
+    "packages/example-nextjs15",
+  ],
   rules: {
     'max-len': 'off',
     complexity: ['error', 12],

@@ -15,6 +15,9 @@
       "module-resolver",
       {
         "root": ["./"]
+        // "alias": {
+        //   "next/navigation": "node_modules/@next/"
+        // }
       }
     ]
   ]

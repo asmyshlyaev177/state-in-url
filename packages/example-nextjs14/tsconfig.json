@@ -13,7 +13,6 @@
     "incremental": true
   },
   "include": [
-    "<tsconfigRootDir>/packages/example-nextjs14/",
     "next-env.d.ts",
     "src",
     "./*.ts",

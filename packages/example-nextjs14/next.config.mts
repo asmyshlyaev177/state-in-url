@@ -10,16 +10,22 @@ const nextConfig = {
   },
   transpilePackages: ['shared', 'shared/components', 'shared/components/Input', 'shared/components/Input.tsx', 'shared/components/Input', 'shared/components/Input.tsx'],
   reactStrictMode: true,
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
+
   basePath: '',
   experimental: {
     externalDir: true,
-    ppr: true,
+    // ppr: true,
+    // serverComponentsExternalPackages: ["state-in-url", "urlstate"],
     // optimizePackageImports: {
     //   'shiki'
     // }
+  },
+  typescript: {
+    tsconfigPath: './tsconfig.json',
+    // ignoreBuildErrors: true,
+  },
+  eslint: {
+    ignoreDuringBuilds: true,
   },
   images: {
     minimumCacheTTL: 60 * 60 * 24 * 15,

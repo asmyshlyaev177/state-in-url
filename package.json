@@ -103,7 +103,7 @@
     "test:unit": "wireit",
     "test:int": "wireit",
     "test:int:ci": "wireit",
-    "test:exports": "npx babel-node --extensions .js,.mjs,.ts,.mts --config-file ./babel.config.json -- ./packages/urlstate/exportsTest.ts",
+    "test:exports": "npm run build && npx babel-node --extensions .js,.mjs,.ts,.mts --config-file ./babel.config.json -- ./packages/urlstate/exportsTest.ts",
     "test": "wireit",
     "tsc": "wireit",
     "dev": "wireit",
@@ -136,7 +136,7 @@
         "test:unit",
         "build:packages"
       ],
-      "command": "npm run test:int"
+      "command": "npm run test:exports && npm run test:int"
     },
     "kill-next": {
       "command": "ps aux | grep .next | grep -v grep | awk '{print $2}' | xargs kill -9 2>&1; exit 0"
@@ -304,7 +304,7 @@
       "command": "cd packages/example-react && npm run build"
     },
     "build": {
-      "command": "rollup -c rollup.config.js --bundleConfigAsCjs && npm run test:exports",
+      "command": "rollup -c rollup.config.js --bundleConfigAsCjs",
       "dependencies": [
         "cleanup"
       ]
@@ -386,6 +386,7 @@
     "jest": "^29.7.0",
     "jest-environment-jsdom": "^29.7.0",
     "lint-staged": "^15.2.9",
+    "only-allow": "^1.2.1",
     "playwright": "^1.45.3",
     "prettier": "^3.2.5",
     "prettier-plugin-tailwindcss": "^0.6.8",
@@ -399,7 +400,7 @@
     "ts-node": "^10.9.2",
     "typescript": "^5.3.3",
     "wait-on": "^8.0.1",
-    "wireit": "^0.14.9",
-    "zx": "^8.1.5"
-  }
+    "wireit": "^0.14.9"
+  },
+  "packageManager": "npm@10.8.2"
 }

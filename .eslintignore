@@ -10,3 +10,4 @@ rollup.config.js
 testUtils.ts
 dist
 exportsTest.ts
+.next

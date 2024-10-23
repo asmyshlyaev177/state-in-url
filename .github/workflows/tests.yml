@@ -51,6 +51,9 @@ jobs:
       if: steps.cache-node-modules.outputs.cache-hit != 'true'
       run: npm clean-install && npx cross-env HOME=/root PLAYWRIGHT_BROWSERS_PATH=0 npx playwright install chromium firefox webkit
 
+    - name: Test exports
+      run: npm run test:exports
+
     - name: Unit tests
       run: npm run test:unit
     - name: Run codacy-coverage-reporter
