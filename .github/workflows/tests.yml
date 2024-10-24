@@ -112,7 +112,6 @@ jobs:
       if: always()
       with:
         path: |
-          ./node_modules
           ./dist
           ./packages/example-react-router6/dist
           ./packages/example-react-router6/package.json
@@ -141,10 +140,16 @@ jobs:
       with:
         persist-credentials: false
     - uses: actions/cache/restore@v4
-      id: cache
+      id: cache-node-modules
       with:
         path: |
           ./node_modules
+        key: modules-1-${{ hashFiles('./package-lock.json') }}
+
+    - uses: actions/cache/restore@v4
+      id: cache
+      with:
+        path: |
           ./dist
           ./packages/example-react-router6/dist
           ./packages/example-react-router6/package.json
@@ -191,10 +196,16 @@ jobs:
         node-version-file: '.nvmrc'
         registry-url: 'https://registry.npmjs.org'
     - uses: actions/cache/restore@v4
-      id: cache
+      id: cache-node-modules
       with:
         path: |
           ./node_modules
+        key: modules-1-${{ hashFiles('./package-lock.json') }}
+
+    - uses: actions/cache/restore@v4
+      id: cache
+      with:
+        path: |
           ./dist
           ./packages/example-react-router6/dist
           ./packages/example-react-router6/package.json
@@ -228,11 +239,26 @@ jobs:
         NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
       run: npx semantic-release
 
-    # - name: clear cache
-      # run: gh cache delete modules-2-${{ github.sha }} --confirm
-      # run: |
-      #   curl \
-      #   -X DELETE \
-      #   -H "Accept: application/vnd.github.v3+json" \
-      #   -H "Authorization: token ${{ secrets.GH_TOKEN }}" \
-      #   https://api.github.com/repos/asmyshlyaev177/state-in-url/actions/caches/modules-2-${{ github.sha }}
+
+  cleanup:
+    name: cleanup
+    needs: [release]
+    runs-on: ubuntu-22.04
+    if: github.ref == 'refs/heads/master'
+    timeout-minutes: 10
+    permissions:
+     #   See also: https://docs.github.com/en/rest/actions/cache?apiVersion=2022-11-28#delete-a-github-actions-cache-for-a-repository-using-a-cache-id
+      actions: write
+      contents: read
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Cleanup
+        run: |
+          set +e
+          echo "Deleting caches..."
+          gh cache delete modules-2-${{ github.sha }}-${{ github.run_id }}
+          echo "Done"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
