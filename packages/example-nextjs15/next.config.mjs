@@ -1,10 +1,11 @@
-import { type NextConfig } from 'next';
-
+/**
+ * @type {import('next').NextConfig}
+ */
 const nextConfig = {
-  webpack: (config: NextConfig) => {
+  webpack: (config) => {
     const newConfig = {
       ...config,
-    } as NextConfig;
+    };
     // newConfig.resolve.webpack5 = true;
     return newConfig;
   },
@@ -15,8 +16,8 @@ const nextConfig = {
   experimental: {
     reactCompiler: true,
     externalDir: true,
-    ppr: 'incremental',
-    after: true,
+    // ppr: 'incremental',
+    // after: true,
   },
   transpilePackages: [
     'shared',
