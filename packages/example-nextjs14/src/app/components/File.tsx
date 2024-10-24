@@ -15,21 +15,22 @@ export const File = async ({
       data-nosnippet="true"
     >
       <div className="flex h-12 justify-between dark:bg-gray-900 font-mono border-b border-zinc-700 text-sm select-none">
+        <div className="flex items-center border-zinc-700 border-l-2 h-full relative px-4 ">
+          {name}
+        </div>
+
         <div className="flex border-zinc-800 gap-2 items-center p-2 pl-4 h-auto">
           <div className="h-4 w-4 rounded-full bg-zinc-700"></div>
           <div className="h-4 w-4 rounded-full bg-zinc-700"></div>
           <div className="h-4 w-4 rounded-full bg-zinc-700"></div>
         </div>
 
-        <div className="flex items-center border-zinc-700 border-l-2 h-full relative px-4 ">
-          {name}
-        </div>
       </div>
 
       <code>
         <pre
           dangerouslySetInnerHTML={{ __html: text }}
-          className=" dark:bg-gray-900 text-sm font-mono p-5 text-current"
+          className=" dark:bg-gray-800 text-sm font-mono p-5 text-current"
         ></pre>
       </code>
     </div>

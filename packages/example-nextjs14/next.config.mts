@@ -14,7 +14,7 @@ const nextConfig = {
   basePath: '',
   experimental: {
     externalDir: true,
-    // ppr: true,
+    ppr: true,
     // serverComponentsExternalPackages: ["state-in-url", "urlstate"],
     // optimizePackageImports: {
     //   'shiki'

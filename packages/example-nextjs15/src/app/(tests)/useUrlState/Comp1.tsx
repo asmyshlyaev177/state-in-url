@@ -19,7 +19,7 @@ export const Comp1 = ({ searchParams }: { searchParams?: object }) => {
         onChange={(ev) =>
           updateUrl((curr) => ({ ...curr, perPage: +ev.target.value }))
         }
-        className=""
+        className="text-black"
         data-testid="select"
       >
         <option>10</option>

@@ -10,7 +10,8 @@ export default async function Layout({
 }: {
   children: React.ReactNode;
 }) {
-  const sp = headers().get('searchParams') || '';
+  const headersList = await headers()
+  const sp = headersList.get('searchParams') || '';
 
   return (
     <div>

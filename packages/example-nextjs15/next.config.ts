@@ -5,18 +5,18 @@ const nextConfig = {
     const newConfig = {
       ...config,
     } as NextConfig;
-    newConfig.resolve.webpack5 = true;
+    // newConfig.resolve.webpack5 = true;
     return newConfig;
   },
+  // // Automatically bundle external packages in the Pages Router:
+  bundlePagesRouterDependencies: true,
+  // // Opt specific packages out of bundling for both App and Pages Router:
+  // serverExternalPackages: ['shared'],
   experimental: {
     reactCompiler: true,
     externalDir: true,
     ppr: 'incremental',
     after: true,
-    // // Automatically bundle external packages in the Pages Router:
-    bundlePagesRouterDependencies: true,
-    // // Opt specific packages out of bundling for both App and Pages Router:
-    serverExternalPackages: ['shared'],
   },
   transpilePackages: [
     'shared',

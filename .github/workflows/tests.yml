@@ -28,6 +28,8 @@ jobs:
       image: mcr.microsoft.com/playwright:v1.45.0-jammy
     env:
       HUSKY: 0
+      HOME: /root
+      PLAYWRIGHT_BROWSERS_PATH: 0
     permissions:
       contents: write # to be able to publish a GitHub release
       issues: write # to be able to comment on released issues
@@ -49,7 +51,7 @@ jobs:
         key: modules-1-${{ hashFiles('./package-lock.json') }}
     - name: Install dependencies
       if: steps.cache-node-modules.outputs.cache-hit != 'true'
-      run: npm clean-install && npx cross-env HOME=/root PLAYWRIGHT_BROWSERS_PATH=0 npx playwright install chromium firefox webkit
+      run: npm clean-install && npx playwright install chromium firefox webkit
 
     - name: Test exports
       run: npm run test:exports
@@ -82,6 +84,10 @@ jobs:
       issues: write # to be able to comment on released issues
       pull-requests: write # to be able to comment on released pull requests
       id-token: write # to enable use of OIDC for npm provenance
+    env:
+      HUSKY: 0
+      HOME: /root
+      PLAYWRIGHT_BROWSERS_PATH: 0
     steps:
     - uses: actions/checkout@v4
       with:
@@ -95,7 +101,7 @@ jobs:
 
     - name: Install dependencies
       if: steps.cache-node-modules.outputs.cache-hit != 'true'
-      run: npm clean-install && npx cross-env HOME=/root PLAYWRIGHT_BROWSERS_PATH=0 npx playwright install chromium firefox webkit
+      run: npm clean-install && npx playwright install chromium firefox webkit
 
     - name: build packages
       run: npm run build:packages
