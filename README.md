@@ -39,6 +39,8 @@ English | [한국어](./README.KO.md) | [简体中文](./README.CN.md)
 
 Add a ⭐️ and <a href="https://github.com/asmyshlyaev177" target="_blank">follow me</a> to support the project!
 
+Will appreciate you feedback/opinion on [discussions](https://github.com/asmyshlyaev177/state-in-url/discussions/1)
+
 Share if it useful for you.
 [FB](https://www.facebook.com/sharer.php?u=https://github.com/asmyshlyaev177/state-in-url)
 [LinkedIn](https://www.linkedin.com/sharing/share-offsite/?url=https://github.com/asmyshlyaev177/state-in-url)
