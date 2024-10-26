@@ -126,8 +126,7 @@
     "reinstall": "rm -rf dist .wireit node_modules packages/example-nextjs14/node_modules packages/example-nextjs14/.next packages/example-react/node_modules && npm install",
     "setup": "playwright install --with-deps",
     "prepack": "npm run build && cp package.json dist/package.json && npm run build:demo",
-    "prepare": "npx husky",
-    "preinstall": "npx only-allow npm"
+    "prepare": "npx husky"
   },
   "wireit": {
     "test": {
