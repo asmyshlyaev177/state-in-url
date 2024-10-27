@@ -47,6 +47,14 @@ const meta = {
 export const metadata = {
   title: meta.title,
   description: meta.description,
+  icons: {
+    icon: [
+      {
+        url: "/images/logo.svg",
+        href: "/images/logo.svg",
+      },
+    ],
+  },
   openGraph: {
     url: vercelUrl,
     siteName: 'state-in-url',
