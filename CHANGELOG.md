@@ -1,3 +1,10 @@
+## [3.0.6](https://github.com/asmyshlyaev177/state-in-url/compare/v3.0.5...v3.0.6) (2024-10-27)
+
+
+### Bug Fixes
+
+* minor fix ([2978d82](https://github.com/asmyshlyaev177/state-in-url/commit/2978d82bee9a3cb063972adfd7e8809a509bca73))
+
 ## [3.0.5](https://github.com/asmyshlyaev177/state-in-url/compare/v3.0.4...v3.0.5) (2024-10-22)
 
 
