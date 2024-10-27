@@ -23,7 +23,6 @@ English | [한국어](./README.KO.md) | [简体中文](./README.CN.md)
 [![semantic-release: angular](https://img.shields.io/badge/semantic--release-angular-e10079?logo=semantic-release)]([https://github.com/semantic-release/semantic-release](https://github.com/asmyshlyaev177/state-in-url))
 ![npm bundle size (minified + gzip)](https://img.shields.io/bundlephobia/minzip/state-in-url.svg)
 
-[![StandWithUkraine](https://raw.githubusercontent.com/vshymanskyy/StandWithUkraine/master/badges/StandWithUkraine.svg)](https://stand-with-ukraine.pp.ua/)
 </div>
 
 <div align="center">
