@@ -122,6 +122,11 @@
 
     .share-block {
       .share-icon {
+        transition: all 0.2s ease-in-out;
+        &:hover {
+          transform: scale(1.2);
+        }
+
         @apply w-[48px] h-[48px];
       }
     }
