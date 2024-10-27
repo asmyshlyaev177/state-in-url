@@ -9,7 +9,7 @@ export const jsonLd: WithContext<SoftwareApplication> = {
   '@type': 'SoftwareApplication',
   name: 'state-in-url',
   description:
-    'NPM Library to store complex state objects in browser URL, while preserving types and structure, solution for deep links and URL state synchronization, hooks for NextJS and React-router, hooks for pure React.',
+    'NPM Library to store complex state objects in browser URL, while preserving types and structure, solution for deep links and URL state synchronization, for Next.JS14/15 and React-router, hooks for pure React.',
   accessibilityControl: 'textual',
   accessMode: 'textual',
   author: {
@@ -20,9 +20,11 @@ export const jsonLd: WithContext<SoftwareApplication> = {
   },
   thumbnailUrl:
     'https://github.com/asmyshlyaev177/state-in-url/blob/master/assets/Demo-gif.gif',
-  applicationCategory: 'State management for Web Applications',
-  url: 'https://github.com/asmyshlyaev177/state-in-url',
-  sameAs: 'https://github.com/asmyshlyaev177/state-in-url',
+  applicationCategory: 'DeveloperApplication',
+  downloadUrl: 'https://github.com/asmyshlyaev177/state-in-url',
+  installUrl: 'https://www.npmjs.com/package/state-in-url',
+  url: 'https://state-in-url-asmyshlyaev177.vercel.app',
+  sameAs: 'https://state-in-url.netlify.app',
   softwareRequirements: ['JavaScript', 'Web Browser', 'npm'],
   license:
     'https://raw.githubusercontent.com/asmyshlyaev177/state-in-url/master/LICENSE',
@@ -33,8 +35,11 @@ export const jsonLd: WithContext<SoftwareApplication> = {
   isAccessibleForFree: true,
   accessibilityFeature: ['fullMouseControl', 'readingOrder', 'ARIA'],
   accessibilityHazard: 'none',
-  offers: [],
-  operatingSystem: 'All',
+  offers: {
+    '@type': 'Offer',
+    'price': 0
+  },
+  operatingSystem: 'Web Browser',
 };
 
 
