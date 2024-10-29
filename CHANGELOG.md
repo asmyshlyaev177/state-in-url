@@ -1,3 +1,10 @@
+## [3.0.7](https://github.com/asmyshlyaev177/state-in-url/compare/v3.0.6...v3.0.7) (2024-10-29)
+
+
+### Bug Fixes
+
+* update vercel domain ([2f4e0fc](https://github.com/asmyshlyaev177/state-in-url/commit/2f4e0fc2e9cb56d30d9163970a712a725b910e43))
+
 ## [3.0.6](https://github.com/asmyshlyaev177/state-in-url/compare/v3.0.5...v3.0.6) (2024-10-27)
 
 
