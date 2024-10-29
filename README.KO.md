@@ -26,7 +26,7 @@
 ![데모-gif](https://github.com/asmyshlyaev177/state-in-url/assets/19854148/c9802601-4d42-4362-b3e4-37ff87c3b97f)
 
 
-<a href="https://state-in-url-asmyshlyaev177.vercel.app/" target="_blank">데모</a> |
+<a href="https://state-in-url.dev" target="_blank">데모</a> |
 <a href="https://state-in-url.netlify.app/" target="_blank">DEMO2</a> |
 
 

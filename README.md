@@ -31,7 +31,7 @@ English | [한국어](./README.KO.md) | [简体中文](./README.CN.md)
 
 ![Demo-gif](https://github.com/asmyshlyaev177/state-in-url/blob/master/assets/Demo-gif.gif)
 
-<a href="https://state-in-url-asmyshlyaev177.vercel.app/" target="_blank">DEMO</a> |
+<a href="https://state-in-url.dev" target="_blank">DEMO</a> |
 <a href="https://state-in-url.netlify.app/" target="_blank">DEMO2</a>
 
 <hr />
