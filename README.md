@@ -541,6 +541,8 @@ This project is licensed under the [MIT license](LICENSE).
 
 ## Inspiration
 
+[NUQS](https://github.com/47ng/nuqs)
+
 [Using URL to store state in Vue](https://dev.to/jacobandrewsky/using-url-to-store-state-in-vue-275c)
 
 [Storing state in the URL](https://antonz.org/storing-state/)
