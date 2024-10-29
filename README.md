@@ -119,6 +119,8 @@ Possibly need to set `"module": "ES2022"`, or `"module": "ESNext"`
 
 [Docs](packages/urlstate/next/useUrlState#api)
 
+[React-Router example](#useurlstate-hook-for-react-router)
+
 ### Usage examples
 
 #### Basic
@@ -177,6 +179,9 @@ function MyComponent() {
 
 #### With complex state shape
 
+<details>
+  <Summary>Example</Summary>
+  
 ```typescript
 export const form: Form = {
   name: '',
@@ -191,7 +196,6 @@ type Form = {
   'agree to terms': boolean;
   tags: { id: string; value: { text: string; time: Date } }[];
 };
-
 ```
 
 ```typescript
@@ -251,10 +255,16 @@ const tags = [
 ```
 
 [Demo page example code](https://github.com/asmyshlyaev177/state-in-url/blob/master/packages/example-nextjs14/src/app/Form.tsx)
+</details>
+
 
 #### Auto sync state
 
-```typescript
+<details>
+  <Summary>Example</Summary>
+
+  ```typescript
+  
   const timer = React.useRef(0 as unknown as NodeJS.Timeout);
   React.useEffect(() => {
     clearTimeout(timer.current);
@@ -275,8 +285,15 @@ Syncing state `onBlur` will be more aligned with real world usage.
 <input onBlur={() => updateUrl()} .../>
 ```
 
+</details>
+
+
+
 #### With server side rendering
 
+<details>
+  <Summary>Example</Summary>
+  
 ```typescript
 export default async function Home({ searchParams }: { searchParams: object }) {
   return (
@@ -295,9 +312,13 @@ const Form = ({ searchParams }: { searchParams: object }) => {
 }
 ```
 
+</details>
+
 #### Using hook in `layout` component
 
-That a tricky part, since nextjs with app router doesn't allow to access searchParams from server side. There is workaround with using middleware, but it isn't pretty and can stop working after nextjs update.
+<details>
+  <Summary>Example</Summary>
+  That a tricky part, since nextjs with app router doesn't allow to access searchParams from server side. There is workaround with using middleware, but it isn't pretty and can stop working after nextjs update.
 
 ```typescript
 // add to appropriate `layout.tsc`
@@ -341,8 +362,12 @@ export default async function Layout({
 
 
 ```
+</details>
 
 #### With arbitrary state shape (not recommended)
+
+<details>
+  <Summary>Example</Summary>
 
 ```typescript
 'use client'
@@ -354,6 +379,9 @@ function SettingsComponent() {
   const { state, updateUrl, updateState } = useUrlState<object>(someObj);
 }
 ```
+</details>
+
+
 
 ## useUrlState hook for React-Router
 
