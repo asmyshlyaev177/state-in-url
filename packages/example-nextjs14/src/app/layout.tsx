@@ -20,7 +20,7 @@ export default async function RootLayout({
       <link rel="preconnect" href="https://fonts.googleapis.com" />
       <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
       {isVercel && <link rel="canonical" href={vercelUrl}></link>}
-      <meta name="google-site-verification" content="n2td2kbV0H7_y4De1DI04ZQlo_yoBJrOn9gOw-8Fi5E" />
+      <meta name="google-site-verification" content="NKunqTB4Sd_Bp6zoIbzKvw_WoGB-v2-MXxC5mbKJKJw" />
       <body className={`${roboto.className}`}>
         {children}
       </body>
