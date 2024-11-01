@@ -4,6 +4,7 @@ import { GoogleAnalytics } from '@next/third-parties/google'
 
 import { metadata as _metadata } from './seoStuff';
 import { isVercel, vercelUrl } from './domain';
+import { isProd } from '../../../../consts'
 const roboto = Roboto({
   subsets: ['latin'],
   weight: '400',
@@ -26,7 +27,7 @@ export default async function RootLayout({
       <body className={`${roboto.className}`}>
         {children}
       </body>
-      <GoogleAnalytics gaId="G-5N8Y565DXK" />
+      { isProd ? <GoogleAnalytics gaId="G-5N8Y565DXK" /> : null }
       {isVercel ? <Analytics /> : null}
     </html>
   );

@@ -104,7 +104,7 @@ jobs:
       run: npm clean-install && npx playwright install chromium firefox webkit
 
     - name: build packages
-      run: npm run build:packages
+      run: npx cross-env TEST=true npm run build:packages
 
     - name: Cache dependencies
       id: cache
