@@ -1,7 +1,7 @@
 import { useRouter } from "next/navigation";
 import { type DeepReadonly, type JSONCompatible } from "../../utils";
 /**
- * NextJS hook. Returns `state`, `updateState`, and `updateUrl` functions
+ * NextJS hook. Returns `urlState`, `setState`, and `setUrl` functions
  *
  * @param {JSONCompatible<T>} [defaultState] Fallback (default) values for state
  * @param {?SearchParams<T>} [searchParams] searchParams from Next server component
@@ -9,15 +9,15 @@ import { type DeepReadonly, type JSONCompatible } from "../../utils";
  * * Example:
  * ```ts
  * export const form = { name: '', age: 0 };
- * const { state, updateState, updateUrl } = useUrlState({ defaultState: form });
+ * const { urlState, setState, setUrl } = useUrlState({ defaultState: form });
  * // for nextjs seerver components
- * // const { state, updateState, updateUrl } = useUrlState({ defaultState: form, searchParams });
+ * // const { urlState, setState, setUrl } = useUrlState({ defaultState: form, searchParams });
  *
- * updateState({ name: 'test' });
+ * setState({ name: 'test' });
  * // by default it's uses router.push with scroll: false
- * updateUrl({ name: 'test' }, { replace: true, scroll: true });
+ * setUrl({ name: 'test' }, { replace: true, scroll: true });
  * // similar to React.useState
- * updateUrl(curr => ({ ...curr, name: 'test' }), { replace: true, scroll: true });
+ * setUrl(curr => ({ ...curr, name: 'test' }), { replace: true, scroll: true });
  *  ```
  *
  *  * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/master/packages/urlstate/next/useUrlState#api}
@@ -31,25 +31,37 @@ export declare function useUrlState<T extends JSONCompatible>({ defaultState, se
     /**
      * * Example:
      * ```ts
-     * updateState({ name: 'test' });
+     * setState({ name: 'test' });
      * // or
-     * updateState(curr => ({ ...curr, name: 'test' }) );
+     * setState(curr => ({ ...curr, name: 'test' }) );
      *  ```
      *
      *  * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/master/packages/urlstate/next/useUrlState#updatestate}
+     */
+    setState: (value: Partial<T> | Partial<DeepReadonly<T>> | ((currState: T) => T)) => void;
+    /**
+     * @deprecated use `setState`
      */
     updateState: (value: Partial<T> | Partial<DeepReadonly<T>> | ((currState: T) => T)) => void;
     /**
      * * Example:
      * ```ts
-     * updateUrl({ name: 'test' });
+     * setUrl({ name: 'test' });
      * // or
-     * updateUrl(curr => ({ ...curr, name: 'test' }), { replace: true, scroll: false  } );
+     * setUrl(curr => ({ ...curr, name: 'test' }), { replace: true, scroll: false  } );
      *  ```
      *
      *  * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/master/packages/urlstate/next/useUrlState#updateurl}
      */
+    setUrl: (value?: Parameters<(value?: Partial<T> | Partial<DeepReadonly<T>> | ((currState: T) => T) | undefined, options?: import("../../useUrlStateBase/useUrlStateBase").Options) => void>[0], options?: Options) => void;
+    /**
+     * @deprecated use `setUrl`
+     */
     updateUrl: (value?: Parameters<(value?: Partial<T> | Partial<DeepReadonly<T>> | ((currState: T) => T) | undefined, options?: import("../../useUrlStateBase/useUrlStateBase").Options) => void>[0], options?: Options) => void;
+    urlState: DeepReadonly<DeepReadonly<T>>;
+    /**
+     * @deprecated use `urlState`
+     */
     state: DeepReadonly<DeepReadonly<T>>;
     getState: () => T;
 };

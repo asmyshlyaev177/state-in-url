@@ -1,3 +1,15 @@
+# [3.1.0](https://github.com/asmyshlyaev177/state-in-url/compare/v3.0.7...v3.1.0) (2024-11-02)
+
+
+### Features
+
+* rename APIs, keep old ones for backward compatibility ([a4be099](https://github.com/asmyshlyaev177/state-in-url/commit/a4be099e62b9b90f94fc9bbcf2769ae3cf80c610))
+
+
+### Performance Improvements
+
+* way faster URL updates, can use `updateUrl` by default ([1920de8](https://github.com/asmyshlyaev177/state-in-url/commit/1920de810b4f549c9496d62eb7297edce57700c1))
+
 ## [3.0.7](https://github.com/asmyshlyaev177/state-in-url/compare/v3.0.6...v3.0.7) (2024-10-29)
 
 
