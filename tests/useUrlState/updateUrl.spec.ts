@@ -12,6 +12,8 @@ const urls = [
   'http://localhost:5181',
 ];
 
+const delay = 1
+
   for (const url of urls) {
     test(`reset ${url}`, async ({ page }) => {
 
@@ -19,7 +21,7 @@ const urls = [
     await page.waitForSelector('button[name="Reload page"]');
 
     await page.getByLabel('name').focus();
-    await page.getByLabel('name').pressSequentially('My Name', { delay: 5 });
+    await page.getByLabel('name').pressSequentially('My Name', { delay });
     await page.getByText('React.js').click();
 
     const expectedText = `{
@@ -65,7 +67,7 @@ test.describe('update', () => {
       await page.getByLabel('name').focus();
       await page
         .getByLabel('name')
-        .pressSequentially('My Name', { delay: 5 });
+        .pressSequentially('My Name', { delay });
       await page.getByText('React.js').click();
 
       const expectedText = `{
@@ -125,7 +127,7 @@ test.describe('update', () => {
       await page.getByLabel('name').focus();
       await page
         .getByLabel('name')
-        .pressSequentially('My Name', { delay: 5 });
+        .pressSequentially('My Name', { delay });
       await page.getByText('TailwindCSS').click();
 
       const expectedText = `{
@@ -165,7 +167,7 @@ test.describe('update', () => {
       await page.getByLabel('name').focus();
       await page
         .getByLabel('name')
-        .pressSequentially('My Name', { delay: 5 });
+        .pressSequentially('My Name', { delay });
 
       const expectedText = `{
   "name": "My Name",
