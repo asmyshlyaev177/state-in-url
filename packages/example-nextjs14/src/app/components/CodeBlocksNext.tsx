@@ -35,12 +35,12 @@ import { useUrlState } from 'state-in-url/next';// [!code highlight:1]
 import { form } from './form';
 
 export const ComponentA = () => {
-  const { state, updateUrl } = useUrlState({ defaultState: form });// [!code highlight:1]
+  const { urlState, setState } = useUrlState({ defaultState: form });// [!code highlight:1]
 
   return <input
     id="name"
-    value={state.name} // [!code highlight:3]
-    onChange={(ev) => updateUrl({ name: ev.target.value })}
+    value={urlState.name} // [!code highlight:3]
+    onChange={(ev) => setState({ name: ev.target.value })}
     />
 };`}
       />
@@ -52,10 +52,10 @@ import { form } from './form';
 
 // "searchParams" used to pass params from Server Components
 export const ComponentB = ({ searchParams }: { searchParams?: object }) => {
-  const { state } = useUrlState({ defaultState: form, searchParams });// [!code highlight:1]
+  const { urlState } = useUrlState({ defaultState: form, searchParams });// [!code highlight:1]
 
-// [!code word:state]
-  return <div>name: {state.name}</div>
+// [!code word:urlState]
+  return <div>name: {urlState.name}</div>
 };`}
       />
     </div>

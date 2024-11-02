@@ -144,28 +144,28 @@ import { useUrlState } from 'state-in-url/next';
 import { userState } from './userState';
 
 function MyComponent() {
-  // can pass `replace` arg, it's control will `updateUrl` will use `rounter.push` or `router.replace`, default replace=true
+  // can pass `replace` arg, it's control will `setUrl` will use `rounter.push` or `router.replace`, default replace=true
   // can pass `searchParams` from server components
-  const { state, updateUrl } = useUrlState({ defaultState: userState });
+  const { urlState, setUrl } = useUrlState({ defaultState: userState });
 
   // won't let you to accidently mutate state directly, requires TS
-  // state.name = 'John' // <- error
+  // urlState.name = 'John' // <- error
 
   return (
     <div>
-      <input value={state.name}
-        onChange={(ev) => { updateUrl({ name: ev.target.value }) }}
+      <input value={urlState.name}
+        onChange={(ev) => { setUrl({ name: ev.target.value }) }}
       />
-      <input value={state.age}
-        onChange={(ev) => { updateUrl({ age: +ev.target.value }) }}
+      <input value={urlState.age}
+        onChange={(ev) => { setUrl({ age: +ev.target.value }) }}
       />
 
       // same api as React.useState
-      <input value={state.name}
-        onChange={(ev) => { updateUrl(curr => ({ ...curr, name: ev.target.value })) }}
+      <input value={urlState.name}
+        onChange={(ev) => { setUrl(curr => ({ ...curr, name: ev.target.value })) }}
       />
 
-      <button onClick={() => updateUrl(userState)}>
+      <button onClick={() => setUrl(userState)}>
         Reset
       </button>
 
@@ -202,19 +202,19 @@ import { useUrlState } from 'state-in-url/next';
 import { form } from './form';
 
 function TagsComponent() {
-  // `state` will infer from Form type!
-  const { state, updateUrl } = useUrlState({ defaultState: form });
+  // `urlState` will infer from Form type!
+  const { urlState, setUrl } = useUrlState({ defaultState: form });
 
   const onChangeTags = React.useCallback(
     (tag: (typeof tags)[number]) => {
-      updateUrl((curr) => ({
+      setUrl((curr) => ({
         ...curr,
         tags: curr.tags.find((t) => t.id === tag.id)
           ? curr.tags.filter((t) => t.id !== tag.id)
           : curr.tags.concat(tag),
       }));
     },
-    [updateUrl],
+    [setUrl],
   );
 
   return (
@@ -223,7 +223,7 @@ function TagsComponent() {
         <div className="flex flex-wrap gap-2">
           {tags.map((tag) => (
             <Tag
-              active={!!state.tags.find((t) => t.id === tag.id)}
+              active={!!urlState.tags.find((t) => t.id === tag.id)}
               text={tag.value.text}
               onClick={() => onChangeTags(tag)}
               key={tag.id}
@@ -266,13 +266,13 @@ const tags = [
     clearTimeout(timer.current);
     timer.current = setTimeout(() => {
       // will compare state by content not by reference and fire update only for new values
-      updateUrl(state);
+      setUrl(urlState);
     }, 500);
 
     return () => {
       clearTimeout(timer.current);
     };
-  }, [state, updateUrl]);
+  }, [urlState, setUrl]);
 ```
 
 Syncing state `onBlur` will be more aligned with real world usage.
@@ -302,7 +302,7 @@ import { useUrlState } from 'state-in-url/next';
 import { form } from './form';
 
 const Form = ({ searchParams }: { searchParams: object }) => {
-  const { state, updateState, updateUrl } = useUrlState({ defaultState: form, searchParams });
+  const { urlState, setState, setUrl } = useUrlState({ defaultState: form, searchParams });
 }
 ```
 
@@ -371,7 +371,7 @@ import { useUrlState } from 'state-in-url/next';
 const someObj = {};
 
 function SettingsComponent() {
-  const { state, updateUrl, updateState } = useUrlState<object>(someObj);
+  const { urlState, setUrl, setState } = useUrlState<object>(someObj);
 }
 ```
 
@@ -408,18 +408,18 @@ import { useUrlState } from 'state-in-url/react-router';
 import { form } from './form';
 
 function TagsComponent() {
-  const { state, updateUrl } = useUrlState({ defaultState: form });
+  const { urlState, setUrl } = useUrlState({ defaultState: form });
 
   const onChangeTags = React.useCallback(
     (tag: (typeof tags)[number]) => {
-      updateUrl((curr) => ({
+      setUrl((curr) => ({
         ...curr,
         tags: curr.tags.find((t) => t.id === tag.id)
           ? curr.tags.filter((t) => t.id !== tag.id)
           : curr.tags.concat(tag),
       }));
     },
-    [updateUrl],
+    [setUrl],
   );
 
   return (
@@ -428,7 +428,7 @@ function TagsComponent() {
         <div className="flex flex-wrap gap-2">
           {tags.map((tag) => (
             <Tag
-              active={!!state.tags.find((t) => t.id === tag.id)}
+              active={!!urlState.tags.find((t) => t.id === tag.id)}
               text={tag.value.text}
               onClick={() => onChangeTags(tag)}
               key={tag.id}

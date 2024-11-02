@@ -15,9 +15,7 @@ const Status = ({ className, sp }: { className?: string; sp?: object }) => {
 
       <div className="flex-none">
         <pre
-          className="h-[330px] text-sm overflow-y-scroll
-         text-gray-600 bg-white p-4 rounded-md shadow-inner
-          break-all whitespace-pre-wrap"
+          className="h-[330px] text-sm overflow-y-scrolltext-gray-600 bg-white p-4 rounded-md shadow-inner break-all whitespace-pre-wrap"
           data-testid="parsed"
         >
           {JSON.stringify(state, null, 2)}

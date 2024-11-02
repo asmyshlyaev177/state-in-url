@@ -10,14 +10,14 @@ A custom React hook that manages state and synchronizes it with URL search param
 
 - `defaultState: object` - An object representing the default state values.
 - `sp?: object` - Optional search params object from Next.js server component.
-- `replace?: boolean` - Control will `updateUrl` use `replace` or `push` methods on router, default replace=true, can override by `updateUrl(stateObj, { replace: false })`
+- `replace?: boolean` - Control will `setUrl` use `replace` or `push` methods on router, default replace=true, can override by `setUrl(stateObj, { replace: false })`
 
 ### Returns:
 
 An object containing:
-- `state: object` - The current state (readonly).
-- `updateState: Function` - Function to update the state without updating the URL.
-- `updateUrl: Function` - Function to update both the state and the URL.
+- `urlState: object` - The current state (readonly).
+- `setState: Function` - Function to update the state without updating the URL.
+- `setUrl: Function` - Function to update both the state and the URL.
 
 ### Example:
 
@@ -25,19 +25,19 @@ An object containing:
 import { useUrlState } from 'state-in-url/next';
 
 const form = { name: '', age: 0 };
-const { state, updateState, updateUrl } = useUrlState(form);
+const { urlState, setState, setUrl } = useUrlState(form);
 
 // Update state without changing URL
-updateState({ name: 'test' });
+setState({ name: 'test' });
 
 // API same as React.useState
-updateState(currVal => ({ ...currVal, name: 'test' }) );
+setState(currVal => ({ ...currVal, name: 'test' }) );
 
 // Update state and URL
-updateUrl({ name: 'test' }, { replace: false, scroll: true });
+setUrl({ name: 'test' }, { replace: false, scroll: true });
 ```
 
-## `updateState`
+## `setState`
 
 Updates the state without modifying the URL.
 
@@ -45,7 +45,7 @@ Updates the state without modifying the URL.
 
 - `value: T | Partial<T> | T => T` - New state value or a function that receives the current state and returns the new state.
 
-## `updateUrl`
+## `setUrl`
 
 Updates both the state and the URL.
 

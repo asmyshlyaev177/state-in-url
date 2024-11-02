@@ -33,12 +33,12 @@ type Form = {
 import { form } from './form';
 
 export const ComponentA = () => {
-  const { state, updateUrl } = useUrlState({ defaultState: form });// [!code highlight:1]
+  const { urlState, setUrl } = useUrlState({ defaultState: form });// [!code highlight:1]
 
   return <input
     id="name"
-    value={state.name} // [!code highlight:3]
-    onChange={(ev) => updateUrl({ name: ev.target.value })}
+    value={urlState.name} // [!code highlight:3]
+    onChange={(ev) => setUrl({ name: ev.target.value })}
     />
 };`}
       />
@@ -48,10 +48,10 @@ export const ComponentA = () => {
 import { form } from './form';
 
 export const ComponentB = () => {
-  const { state } = useUrlState({ defaultState: form });// [!code highlight:1]
+  const { urlState } = useUrlState({ defaultState: form });// [!code highlight:1]
 
-// [!code word:state]
-  return <div>name: {state.name}</div>
+// [!code word:urlState]
+  return <div>name: {urlState.name}</div>
 };`}
       />
     </div>

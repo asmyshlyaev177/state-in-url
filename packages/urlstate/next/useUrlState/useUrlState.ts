@@ -13,7 +13,7 @@ import {
 } from "../../utils";
 
 /**
- * NextJS hook. Returns `state`, `updateState`, and `updateUrl` functions
+ * NextJS hook. Returns `urlState`, `setState`, and `setUrl` functions
  *
  * @param {JSONCompatible<T>} [defaultState] Fallback (default) values for state
  * @param {?SearchParams<T>} [searchParams] searchParams from Next server component
@@ -21,15 +21,15 @@ import {
  * * Example:
  * ```ts
  * export const form = { name: '', age: 0 };
- * const { state, updateState, updateUrl } = useUrlState({ defaultState: form });
+ * const { urlState, setState, setUrl } = useUrlState({ defaultState: form });
  * // for nextjs seerver components
- * // const { state, updateState, updateUrl } = useUrlState({ defaultState: form, searchParams });
+ * // const { urlState, setState, setUrl } = useUrlState({ defaultState: form, searchParams });
  *
- * updateState({ name: 'test' });
+ * setState({ name: 'test' });
  * // by default it's uses router.push with scroll: false
- * updateUrl({ name: 'test' }, { replace: true, scroll: true });
+ * setUrl({ name: 'test' }, { replace: true, scroll: true });
  * // similar to React.useState
- * updateUrl(curr => ({ ...curr, name: 'test' }), { replace: true, scroll: true });
+ * setUrl(curr => ({ ...curr, name: 'test' }), { replace: true, scroll: true });
  *  ```
  *
  *  * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/master/packages/urlstate/next/useUrlState#api}
@@ -84,25 +84,37 @@ export function useUrlState<T extends JSONCompatible>({
     /**
      * * Example:
      * ```ts
-     * updateState({ name: 'test' });
+     * setState({ name: 'test' });
      * // or
-     * updateState(curr => ({ ...curr, name: 'test' }) );
+     * setState(curr => ({ ...curr, name: 'test' }) );
      *  ```
      *
      *  * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/master/packages/urlstate/next/useUrlState#updatestate}
+     */
+    setState: updateState,
+    /**
+     * @deprecated use `setState`
      */
     updateState,
     /**
      * * Example:
      * ```ts
-     * updateUrl({ name: 'test' });
+     * setUrl({ name: 'test' });
      * // or
-     * updateUrl(curr => ({ ...curr, name: 'test' }), { replace: true, scroll: false  } );
+     * setUrl(curr => ({ ...curr, name: 'test' }), { replace: true, scroll: false  } );
      *  ```
      *
      *  * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/master/packages/urlstate/next/useUrlState#updateurl}
      */
+    setUrl: updateUrl,
+    /**
+     * @deprecated use `setUrl`
+     */
     updateUrl,
+    urlState: state as DeepReadonly<typeof state>,
+    /**
+     * @deprecated use `urlState`
+     */
     state: state as DeepReadonly<typeof state>,
     getState,
   };

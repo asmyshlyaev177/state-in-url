@@ -100,6 +100,7 @@ export function useUrlStateBase<T extends JSONCompatible>(
           if (!upd) return undefined;
 
           const [method, url, opts] = upd;
+          upd = undefined;
           router[method](url, opts);
         });
     },
