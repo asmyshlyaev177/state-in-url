@@ -174,7 +174,7 @@ jobs:
 
   merge-reports:
     # Merge reports after playwright-tests, even if some shards have failed
-    if: ${{ !cancelled() }}
+    if:  ${{ always() && contains(needs.*.result, 'failure') }}
     needs: [testint]
 
     runs-on: ubuntu-24.04
@@ -279,9 +279,9 @@ jobs:
 
   cleanup:
     name: cleanup
-    needs: [release]
+    needs: [release, merge-reports]
     runs-on: ubuntu-24.04
-    if: github.ref == 'refs/heads/master'
+    if: always() && github.ref == 'refs/heads/master'
     timeout-minutes: 10
     permissions:
      #   See also: https://docs.github.com/en/rest/actions/cache?apiVersion=2022-11-28#delete-a-github-actions-cache-for-a-repository-using-a-cache-id
