@@ -67,7 +67,7 @@ export const Share = () => {
 
       <VKShareButton
         url={shareUrl}
-        image={`${vercelUrl}/social_banner.jpg`}
+        image={`${vercelUrl}/social_banner.png`}
         className="share-icon"
         name="VK-share-button"
         aria-label="VK-share-button"
