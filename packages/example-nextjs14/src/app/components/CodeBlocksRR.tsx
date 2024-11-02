@@ -33,7 +33,7 @@ type Form = {
 import { form } from './form';
 
 export const ComponentA = () => {
-  const { urlState, setUrl, setUrlState } = useUrlState({ defaultState: form });// [!code highlight:1]
+  const { urlState, setUrl, setState } = useUrlState({ defaultState: form });// [!code highlight:1]
 
   return <>
     <input
@@ -44,7 +44,7 @@ export const ComponentA = () => {
     // OR can update state immediately but sync change to url as needed
     <input
       value={urlState.name}
-      onChange={(ev) => { setUrlState(curr => ({ ...curr, name: ev.target.value })) }}
+      onChange={(ev) => { setState(curr => ({ ...curr, name: ev.target.value })) }}
       onBlur={() => setUrl()}
     />
     </>

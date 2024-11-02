@@ -37,18 +37,18 @@ import { form } from './form';
 export const ComponentA = () => {
   // \`useHistory\` force to use window.history for navigation,
   // no _rsc requests https://github.com/vercel/next.js/discussions/59167
-  const { urlState, setState, setUrlState } = useUrlState({ defaultState: form, useHistory: true });// [!code highlight:1]
+  const { urlState, setState, setUrl } = useUrlState({ defaultState: form, useHistory: true });// [!code highlight:1]
 
   return <>
     <input
       id="name"
       value={urlState.name} // [!code highlight:3]
-      onChange={(ev) => setState({ name: ev.target.value })}
+      onChange={(ev) => setUrl({ name: ev.target.value })}
       />
     // OR can update state immediately but sync change to url as needed
     <input
       value={urlState.name}
-      onChange={(ev) => { setUrlState(curr => ({ ...curr, name: ev.target.value })) }}
+      onChange={(ev) => { setState(curr => ({ ...curr, name: ev.target.value })) }}
       onBlur={() => setUrl()}
     />
     </>

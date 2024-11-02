@@ -95,11 +95,11 @@ export function useUrlState<T extends JSONCompatible>({
     /**
      * * Example:
      * ```ts
-     * setUrlState({ name: 'test' });
+     * setState({ name: 'test' });
      * // or
-     * setUrlState(curr => ({ ...curr, name: 'test' }) );
+     * setState(curr => ({ ...curr, name: 'test' }) );
      * // can pass optional React-Router `NavigateOptions`
-     * setUrlState(curr => ({ ...curr, name: 'test', preventScrollReset: false }) );
+     * setState(curr => ({ ...curr, name: 'test', preventScrollReset: false }) );
      *  ```
      *
      *  * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/master/packages/urlstate/react-router/useUrlState#updatestate}
