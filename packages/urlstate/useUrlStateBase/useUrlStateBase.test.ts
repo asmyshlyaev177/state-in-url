@@ -217,7 +217,7 @@ describe('useUrlStateBase', () => {
 
   describe('updateUrl', () => {
     describe('object', () => {
-      it('full shape', () => {
+      it('full shape', async () => {
         jest.spyOn(utils, 'isSSR').mockReturnValue(false);
         const { result } = renderHook(() => useUrlStateBase(shape, router));
 
@@ -225,12 +225,14 @@ describe('useUrlStateBase', () => {
           result.current.updateUrl({ ...shape, num: 50 });
         });
 
+        await jest.runAllTimersAsync();
+
         expect(result.current.state).toStrictEqual({ ...shape, num: 50 });
         expect(router.push).toHaveBeenCalledTimes(1);
         expect(router.push).toHaveBeenNthCalledWith(1, '/?num=50', {});
       });
 
-      it('partial shape', () => {
+      it('partial shape', async () => {
         jest.spyOn(utils, 'isSSR').mockReturnValue(false);
         const { result } = renderHook(() => useUrlStateBase(shape, router));
 
@@ -238,12 +240,14 @@ describe('useUrlStateBase', () => {
           result.current.updateUrl({ num: 50 });
         });
 
+        await jest.runAllTimersAsync();
+
         expect(result.current.state).toStrictEqual({ ...shape, num: 50 });
         expect(router.push).toHaveBeenCalledTimes(1);
         expect(router.push).toHaveBeenNthCalledWith(1, '/?num=50', {});
       });
 
-      it('no arg, should reset', () => {
+      it('no arg, should reset', async () => {
         jest.spyOn(utils, 'isSSR').mockReturnValue(false);
         const { result } = renderHook(() => useUrlStateBase(shape, router));
 
@@ -254,19 +258,23 @@ describe('useUrlStateBase', () => {
           result.current.updateUrl();
         });
 
+        await jest.runAllTimersAsync();
+
         expect(result.current.state).toStrictEqual({ ...shape, num: 50 });
         expect(router.push).toHaveBeenCalledTimes(1);
         expect(router.push).toHaveBeenNthCalledWith(1, '/?num=50', {});
       });
     });
 
-    it('update url with function', () => {
+    it('update url with function', async () => {
       jest.spyOn(utils, 'isSSR').mockReturnValue(false);
       const { result } = renderHook(() => useUrlStateBase(shape, router));
 
       act(() => {
         result.current.updateUrl((curr) => ({ ...curr, num: 50 }));
       });
+
+      await jest.runAllTimersAsync();
 
       expect(result.current.state).toStrictEqual({ ...shape, num: 50 });
       expect(router.push).toHaveBeenCalledTimes(1);
@@ -284,7 +292,7 @@ describe('useUrlStateBase', () => {
       expect(router.push).not.toHaveBeenCalled();
     });
 
-    it('should preserve hash', () => {
+    it('should preserve hash', async () => {
       jest.spyOn(utils, 'isSSR').mockReturnValue(false);
       const hash = '#test123';
       const originalLocation = window.location;
@@ -301,11 +309,13 @@ describe('useUrlStateBase', () => {
         result.current.updateUrl(newState);
       });
 
+      await jest.runAllTimersAsync();
+
       expect(router.push).toHaveBeenCalledTimes(1);
       expect(router.push).toHaveBeenNthCalledWith(1, `/?num=55${hash}`, {});
     });
 
-    it('replace and options', () => {
+    it('replace and options', async () => {
       jest.spyOn(utils, 'isSSR').mockReturnValue(false);
       const { result } = renderHook(() => useUrlStateBase(shape, router));
 
@@ -317,6 +327,8 @@ describe('useUrlStateBase', () => {
           someOpt: 123,
         });
       });
+
+      await jest.runAllTimersAsync();
 
       expect(result.current.state).toStrictEqual(newState);
       expect(router.replace).toHaveBeenCalledTimes(1);
