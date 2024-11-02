@@ -1,3 +1,10 @@
+## [4.0.1](https://github.com/asmyshlyaev177/state-in-url/compare/v4.0.0...v4.0.1) (2024-11-02)
+
+
+### Bug Fixes
+
+* fix JSDoc ([621c436](https://github.com/asmyshlyaev177/state-in-url/commit/621c436eee19c8bd5233a4b7e59cfcaa47ed36e5))
+
 # [4.0.0](https://github.com/asmyshlyaev177/state-in-url/compare/v3.1.0...v4.0.0) (2024-11-02)
 
 
