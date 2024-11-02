@@ -91,17 +91,16 @@ export function useUrlStateBase<T extends JSONCompatible>(
         queueMicrotask(() => {
           while (queue.current.length) {
             const currUpd = queue.current.shift();
-            if (!currUpd) break;
-
-            if (currUpd?.[1] === upd?.[1]) continue;
-            upd = currUpd;
+            if (!!currUpd && currUpd?.[1] !== upd?.[1]) {
+              upd = currUpd;
+            }
           }
 
-          if (!upd) return undefined;
-
-          const [method, url, opts] = upd;
+          // @ts-expect-error fots
+          const [method, url, opts] = upd || {};
           upd = undefined;
-          router[method](url, opts);
+          // @ts-expect-error fots
+          method && router[method](url, opts);
         });
     },
     [router, stringify, getState],
