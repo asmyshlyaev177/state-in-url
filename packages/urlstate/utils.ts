@@ -120,3 +120,17 @@ export function assignValue<T extends object>(
   });
   return result;
 }
+
+export interface Router {
+  push: (href: string, opts: object) => void;
+  replace: (href: string, opts: object) => void;
+}
+
+export const routerHistory: Router = {
+  push: (str) => {
+    window && window.history.pushState(null, "", str);
+  },
+  replace: (str) => {
+    window && window.history.replaceState(null, "", str);
+  },
+};

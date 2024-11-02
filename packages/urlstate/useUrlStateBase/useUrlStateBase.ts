@@ -7,6 +7,7 @@ import {
   type DeepReadonly,
   filterUnknownParamsClient,
   type JSONCompatible,
+  type Router,
 } from "../utils";
 
 /**
@@ -141,8 +142,3 @@ interface OptionsObject {
 export interface Options extends OptionsObject {
   replace?: boolean;
 }
-
-type Router = {
-  push: (href: string, opts: object) => void;
-  replace: (href: string, opts: object) => void;
-};

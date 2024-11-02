@@ -10,6 +10,7 @@ import {
   filterUnknownParamsClient,
   isSSR,
   type JSONCompatible,
+  routerHistory,
 } from "../../utils";
 
 /**
@@ -17,6 +18,7 @@ import {
  *
  * @param {JSONCompatible<T>} [defaultState] Fallback (default) values for state
  * @param {?SearchParams<T>} [searchParams] searchParams from Next server component
+ * @param {boolean} [useHistory] use window.history for navigation, no _rsc requests https://github.com/vercel/next.js/discussions/59167
  *
  * * Example:
  * ```ts
@@ -37,14 +39,18 @@ import {
 export function useUrlState<T extends JSONCompatible>({
   defaultState,
   searchParams,
+  useHistory,
   ...opts
 }: {
   defaultState: T;
   searchParams?: object;
   replace?: boolean;
   scroll?: boolean;
+  useHistory?: boolean;
 }) {
-  const router = useRouter();
+  const router = (useHistory === undefined ? true : !!useHistory)
+    ? routerHistory
+    : useRouter();
   const {
     state,
     updateState,

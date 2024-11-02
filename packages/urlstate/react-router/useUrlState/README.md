@@ -11,6 +11,7 @@ A custom React hook that manages state and synchronizes it with URL search param
 - `defaultState: object` - An object representing the default state values.
 - `replace?: boolean` - Control will `setUrl` use `replace` or `push` methods on router, default replace=true, can override by `updateUrl(stateObj, { replace: false })`
 - `options?: NavigateOptions` - type from NavigateOptions of `react-router` type, same as options from `useNavigate`
+- `useHistory` - Optionally can use window.history for navigation
 
 ### Returns:
 

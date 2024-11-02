@@ -14,22 +14,22 @@ export const Form = ({
   delay?: number;
 }) => {
   const sp = useSearchParams();
-  const { state, updateState, updateUrl } = useUrlState({
+  const { urlState, setState, setUrl } = useUrlState({
     defaultState: form,
     searchParams,
     replace: sp.get('replace') === 'false' ? false : true,
   });
 
   React.useEffect(() => {
-    if (state?.tags?.length) {
-      const dateObj = state.tags.find((t) => t?.value?.time);
+    if (urlState?.tags?.length) {
+      const dateObj = urlState.tags.find((t) => t?.value?.time);
       if (dateObj) {
         console.assert(
           dateObj?.value?.time instanceof Date,
           'Date should be a Date instance!',
         );
       }
-      const isoDate = state.tags.find((t) => t?.value?.iso);
+      const isoDate = urlState.tags.find((t) => t?.value?.iso);
       if (isoDate) {
         console.assert(
           typeof isoDate?.value?.iso === 'string',
@@ -39,54 +39,54 @@ export const Form = ({
     }
 
     // Just to test ts types
-    if (state?.tags?.length === 10) {
+    if (urlState?.tags?.length === 10) {
       // @ts-expect-error should be readonly
-      state.age = 18;
+      urlState.age = 18;
       // @ts-expect-error should be readonly
-      state.tags[0].value = { text: 'jjj', time: new Date() };
+      urlState.tags[0].value = { text: 'jjj', time: new Date() };
       // @ts-expect-error should be readonly
-      state.tags[0].value.text = 'jjj';
-      updateState(state);
-      updateState((st) => st);
-      updateState((st) => ({ ...st, age: 18 }));
-      updateUrl(state);
-      updateUrl((st) => ({ ...st, age: 18 }));
+      urlState.tags[0].value.text = 'jjj';
+      setState(urlState);
+      setState((st) => st);
+      setState((st) => ({ ...st, age: 18 }));
+      setUrl(urlState);
+      setUrl((st) => ({ ...st, age: 18 }));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const onChangeAge = React.useCallback(
     (ev: React.ChangeEvent<HTMLInputElement>) => {
       const val = +ev.target.value;
-      updateUrl({ age: val ? val : undefined });
+      setUrl({ age: val ? val : undefined });
     },
-    [updateUrl],
+    [setUrl],
   );
 
   const onChangeNameUrl = React.useCallback(
     (ev: React.ChangeEvent<HTMLInputElement>) => {
-      updateUrl({ name: ev.target.value });
+      setUrl({ name: ev.target.value });
     },
-    [updateUrl],
+    [setUrl],
   );
 
 
   const onChangeTerms = React.useCallback(
     (ev: React.ChangeEvent<HTMLInputElement>) => {
-      updateUrl({ 'agree to terms': ev.target.checked });
+      setUrl({ 'agree to terms': ev.target.checked });
     },
-    [updateUrl],
+    [setUrl],
   );
 
   const onChangeTags = React.useCallback(
     (tag: (typeof tags)[number]) => {
-      updateUrl((curr) => ({
+      setUrl((curr) => ({
         ...curr,
         tags: curr.tags.find((t) => t.id === tag.id)
           ? curr.tags.filter((t) => t.id !== tag.id)
           : curr.tags.concat(tag),
       }));
     },
-    [updateUrl],
+    [setUrl],
   );
 
   return (
@@ -98,14 +98,14 @@ export const Form = ({
 
         <div className="space-y-6">
           <Field id="name" text="Name">
-            <Input id="name" value={state.name} onChange={onChangeNameUrl} />
+            <Input id="name" value={urlState.name} onChange={onChangeNameUrl} />
           </Field>
 
           <Field id="age" text="Age">
             <Input
               id="age"
               type="number"
-              value={state.age}
+              value={urlState.age}
               onChange={onChangeAge}
             />
           </Field>
@@ -114,7 +114,7 @@ export const Form = ({
             <Input
               id="agree to terms"
               type="checkbox"
-              checked={state['agree to terms']}
+              checked={urlState['agree to terms']}
               onChange={onChangeTerms}
             />
           </Field>
@@ -123,7 +123,7 @@ export const Form = ({
             <div className="flex flex-wrap gap-2">
               {tags.map((tag) => (
                 <Tag
-                  active={!!state.tags.find((t) => t.id === tag.id)}
+                  active={!!urlState.tags.find((t) => t.id === tag.id)}
                   text={tag.value.text}
                   onClick={() => onChangeTags(tag)}
                   key={tag.id}
@@ -134,7 +134,7 @@ export const Form = ({
 
           <Button
             onClick={() => {
-              updateUrl(form);
+              setUrl(form);
             }}
             dataTestId="sync-default"
           >
@@ -142,7 +142,7 @@ export const Form = ({
           </Button>
           <Button
             onClick={() => {
-              updateUrl((curr) => ({ ...curr, name: 'My Name', age: 55 }));
+              setUrl((curr) => ({ ...curr, name: 'My Name', age: 55 }));
             }}
             dataTestId="sync-object"
           >

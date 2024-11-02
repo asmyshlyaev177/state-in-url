@@ -35,7 +35,9 @@ import { useUrlState } from 'state-in-url/next';// [!code highlight:1]
 import { form } from './form';
 
 export const ComponentA = () => {
-  const { urlState, setState, setUrlState } = useUrlState({ defaultState: form });// [!code highlight:1]
+  // \`useHistory\` force to use window.history for navigation,
+  // no _rsc requests https://github.com/vercel/next.js/discussions/59167
+  const { urlState, setState, setUrlState } = useUrlState({ defaultState: form, useHistory: true });// [!code highlight:1]
 
   return <>
     <input

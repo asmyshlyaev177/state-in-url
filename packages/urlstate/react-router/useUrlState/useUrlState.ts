@@ -13,6 +13,7 @@ import {
   filterUnknownParams,
   filterUnknownParamsClient,
   type JSONCompatible,
+  routerHistory,
 } from "../../utils";
 
 /**
@@ -20,6 +21,7 @@ import {
  *
  * @param {JSONCompatible<T>} [defaultState] Fallback (default) values for state
  * @param {NavigateOptions} [NavigateOptions] See type from `react-router-dom`
+ * @param {boolean} [useHistory] use window.history for navigation
  * * Example:
  * ```ts
  * export const form = { name: '', age: 0 };
@@ -35,16 +37,20 @@ import {
  */
 export function useUrlState<T extends JSONCompatible>({
   defaultState,
+  useHistory,
   ...initOpts
-}: { defaultState: T } & NavigateOptions) {
+}: { defaultState: T; useHistory?: boolean } & NavigateOptions) {
   const navigate = useNavigate();
   const router = React.useMemo(
-    () => ({
-      replace: (url: string, opts: NavigateOptions) =>
-        navigate(url, { ...defaultOpts, ...initOpts, ...opts }),
-      push: (url: string, opts: NavigateOptions) =>
-        navigate(url, { ...defaultOpts, ...initOpts, ...opts }),
-    }),
+    () =>
+      useHistory
+        ? routerHistory
+        : {
+            replace: (url: string, opts: NavigateOptions) =>
+              navigate(url, { ...defaultOpts, ...initOpts, ...opts }),
+            push: (url: string, opts: NavigateOptions) =>
+              navigate(url, { ...defaultOpts, ...initOpts, ...opts }),
+          },
     [navigate, initOpts],
   );
   const {
