@@ -1,5 +1,5 @@
 import { useUrlEncode } from "../useUrlEncode";
-import { type DeepReadonly, type JSONCompatible } from "../utils";
+import { type DeepReadonly, type JSONCompatible, type Router } from "../utils";
 /**
  * A custom React hook to create custom hooks.
  *
@@ -35,8 +35,4 @@ interface OptionsObject {
 export interface Options extends OptionsObject {
     replace?: boolean;
 }
-type Router = {
-    push: (href: string, opts: object) => void;
-    replace: (href: string, opts: object) => void;
-};
 export {};

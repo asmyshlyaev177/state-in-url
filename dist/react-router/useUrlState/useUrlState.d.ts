@@ -5,6 +5,7 @@ import { type DeepReadonly, type JSONCompatible } from "../../utils";
  *
  * @param {JSONCompatible<T>} [defaultState] Fallback (default) values for state
  * @param {NavigateOptions} [NavigateOptions] See type from `react-router-dom`
+ * @param {boolean} [useHistory] use window.history for navigation
  * * Example:
  * ```ts
  * export const form = { name: '', age: 0 };
@@ -18,8 +19,9 @@ import { type DeepReadonly, type JSONCompatible } from "../../utils";
  *
  *  * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/master/packages/urlstate/react-router/useUrlState#api}
  */
-export declare function useUrlState<T extends JSONCompatible>({ defaultState, ...initOpts }: {
+export declare function useUrlState<T extends JSONCompatible>({ defaultState, useHistory, ...initOpts }: {
     defaultState: T;
+    useHistory?: boolean;
 } & NavigateOptions): {
     /**
      * * Example:

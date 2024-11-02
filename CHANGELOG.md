@@ -1,3 +1,16 @@
+# [4.0.0](https://github.com/asmyshlyaev177/state-in-url/compare/v3.1.0...v4.0.0) (2024-11-02)
+
+
+### Features
+
+* `useHistory` option to use native window.history instead of Next.js router, true by default ([6cb1a41](https://github.com/asmyshlyaev177/state-in-url/commit/6cb1a41ee1ab43e9a9c2b0e18f85d40054a60405))
+
+
+### BREAKING CHANGES
+
+* For Next.js, `useUrlState` hook will use `window.history` for navigation by
+default, to opt out pass `useUrlState({ useHistory: false })`
+
 # [3.1.0](https://github.com/asmyshlyaev177/state-in-url/compare/v3.0.7...v3.1.0) (2024-11-02)
 
 

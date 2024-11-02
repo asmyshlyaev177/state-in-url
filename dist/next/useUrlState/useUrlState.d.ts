@@ -5,6 +5,7 @@ import { type DeepReadonly, type JSONCompatible } from "../../utils";
  *
  * @param {JSONCompatible<T>} [defaultState] Fallback (default) values for state
  * @param {?SearchParams<T>} [searchParams] searchParams from Next server component
+ * @param {boolean} [useHistory] use window.history for navigation, no _rsc requests https://github.com/vercel/next.js/discussions/59167
  *
  * * Example:
  * ```ts
@@ -22,11 +23,12 @@ import { type DeepReadonly, type JSONCompatible } from "../../utils";
  *
  *  * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/master/packages/urlstate/next/useUrlState#api}
  */
-export declare function useUrlState<T extends JSONCompatible>({ defaultState, searchParams, ...opts }: {
+export declare function useUrlState<T extends JSONCompatible>({ defaultState, searchParams, useHistory, ...opts }: {
     defaultState: T;
     searchParams?: object;
     replace?: boolean;
     scroll?: boolean;
+    useHistory?: boolean;
 }): {
     /**
      * * Example:
