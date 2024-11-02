@@ -146,7 +146,7 @@ import { userState } from './userState';
 function MyComponent() {
   // can pass `replace` arg, it's control will `setUrl` will use `rounter.push` or `router.replace`, default replace=true
   // can pass `searchParams` from server components
-  const { urlState, setUrl } = useUrlState({ defaultState: userState });
+  const { urlState, setUrl, setUrlState } = useUrlState({ defaultState: userState });
 
   // won't let you to accidently mutate state directly, requires TS
   // urlState.name = 'John' // <- error
@@ -162,7 +162,9 @@ function MyComponent() {
 
       // same api as React.useState
       <input value={urlState.name}
-        onChange={(ev) => { setUrl(curr => ({ ...curr, name: ev.target.value })) }}
+        onChange={(ev) => { setUrlState(curr => ({ ...curr, name: ev.target.value })) }}
+        // Can update state immediately but sync change to url as needed
+        onBlur={() => setUrl()}
       />
 
       <button onClick={() => setUrl(userState)}>
@@ -408,7 +410,7 @@ import { useUrlState } from 'state-in-url/react-router';
 import { form } from './form';
 
 function TagsComponent() {
-  const { urlState, setUrl } = useUrlState({ defaultState: form });
+  const { urlState, setUrl, setUrlState } = useUrlState({ defaultState: form });
 
   const onChangeTags = React.useCallback(
     (tag: (typeof tags)[number]) => {
@@ -436,6 +438,12 @@ function TagsComponent() {
           ))}
         </div>
       </Field>
+
+      <input value={urlState.name}
+        onChange={(ev) => { setUrlState(curr => ({ ...curr, name: ev.target.value })) }}
+        // Can update state immediately but sync change to url as needed
+        onBlur={() => setUrl()}
+      />
     </div>
   );
 }

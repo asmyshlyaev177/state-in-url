@@ -35,13 +35,21 @@ import { useUrlState } from 'state-in-url/next';// [!code highlight:1]
 import { form } from './form';
 
 export const ComponentA = () => {
-  const { urlState, setState } = useUrlState({ defaultState: form });// [!code highlight:1]
+  const { urlState, setState, setUrlState } = useUrlState({ defaultState: form });// [!code highlight:1]
 
-  return <input
-    id="name"
-    value={urlState.name} // [!code highlight:3]
-    onChange={(ev) => setState({ name: ev.target.value })}
+  return <>
+    <input
+      id="name"
+      value={urlState.name} // [!code highlight:3]
+      onChange={(ev) => setState({ name: ev.target.value })}
+      />
+    // OR can update state immediately but sync change to url as needed
+    <input
+      value={urlState.name}
+      onChange={(ev) => { setUrlState(curr => ({ ...curr, name: ev.target.value })) }}
+      onBlur={() => setUrl()}
     />
+    </>
 };`}
       />
       <File
