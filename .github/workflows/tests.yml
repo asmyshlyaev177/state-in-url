@@ -23,12 +23,11 @@ jobs:
   installtest:
     name: installtest
     timeout-minutes: 20
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     container:
       image: mcr.microsoft.com/playwright:v1.48.2-noble
     env:
       HUSKY: 0
-      HOME: /root
       PLAYWRIGHT_BROWSERS_PATH: 0
     permissions:
       contents: write # to be able to publish a GitHub release
@@ -51,7 +50,7 @@ jobs:
         key: modules-1-${{ hashFiles('./package-lock.json') }}
     - name: Install dependencies
       if: steps.cache-node-modules.outputs.cache-hit != 'true'
-      run: npm clean-install && npx playwright install chromium firefox webkit
+      run: npm clean-install && npx playwright install --with-deps
 
     - name: Test exports
       run: npm run test:exports
@@ -76,7 +75,7 @@ jobs:
     name: build
     needs: [installtest]
     timeout-minutes: 20
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     container:
       image: mcr.microsoft.com/playwright:v1.48.2-noble
     permissions:
@@ -86,7 +85,6 @@ jobs:
       id-token: write # to enable use of OIDC for npm provenance
     env:
       HUSKY: 0
-      HOME: /root
       PLAYWRIGHT_BROWSERS_PATH: 0
     steps:
     - uses: actions/checkout@v4
@@ -101,7 +99,7 @@ jobs:
 
     - name: Install dependencies
       if: steps.cache-node-modules.outputs.cache-hit != 'true'
-      run: npm clean-install && npx playwright install chromium firefox webkit
+      run: npm clean-install && npx playwright install --with-deps
 
     - name: build packages
       run: npx cross-env TEST=true npm run build:packages
@@ -126,7 +124,7 @@ jobs:
   testint:
     needs: [build]
     name: testint
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     timeout-minutes: 30
     container:
       image: mcr.microsoft.com/playwright:v1.48.2-noble
@@ -179,7 +177,7 @@ jobs:
     if: ${{ !cancelled() }}
     needs: [testint]
 
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
     - uses: actions/checkout@v4
     - uses: actions/setup-node@v4
@@ -218,7 +216,7 @@ jobs:
     needs: [testint]
     if: github.ref == 'refs/heads/master'
     timeout-minutes: 20
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     container:
       image: mcr.microsoft.com/playwright:v1.48.2-noble
     permissions:
@@ -282,7 +280,7 @@ jobs:
   cleanup:
     name: cleanup
     needs: [release]
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     if: github.ref == 'refs/heads/master'
     timeout-minutes: 10
     permissions:
