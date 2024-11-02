@@ -33,13 +33,12 @@ type Form = {
 import { form } from './form';
 
 export const ComponentA = () => {
-  const { state, updateUrl, updateState } = useUrlState({ defaultState: form });// [!code highlight:1]
+  const { state, updateUrl } = useUrlState({ defaultState: form });// [!code highlight:1]
 
   return <input
     id="name"
     value={state.name} // [!code highlight:3]
-    onChange={(ev) => updateState({ name: ev.target.value })}
-    onBlur={() => updateUrl()}
+    onChange={(ev) => updateUrl({ name: ev.target.value })}
     />
 };`}
       />

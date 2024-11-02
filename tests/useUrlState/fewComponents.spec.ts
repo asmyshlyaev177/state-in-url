@@ -19,8 +19,9 @@ test.describe('few components tests', () => {
   const linkQs = 'link-sp';
   const linkQsClient = 'link-client';
 
-  test('load from URL', async ({ page }) => {
     for (const url of urls) {
+      test(`load from URL ${url[0]}`, async ({ page }) => {
+
       const [URL1] = url;
       const errorLogs: unknown[] = [];
       page.on('console', (message) => {
@@ -38,12 +39,14 @@ test.describe('few components tests', () => {
       await toHaveUrl(page, currUrl);
 
       await expect(errorLogs).toHaveLength(0);
-    }
   });
+  }
+
 
   test.describe('change value', () => {
-    test('layout component', async ({ page }) => {
       for (const url of urls) {
+        test(`layout component ${url[0]}`, async ({ page }) => {
+
         const [URL1] = url;
         const errorLogs: unknown[] = [];
         page.on('console', (message) => {
@@ -63,11 +66,11 @@ test.describe('few components tests', () => {
         await toHaveUrl(page, `${currUrl}?perPage=30`);
 
         await expect(errorLogs).toHaveLength(0);
-      }
     });
+    }
 
-    test('client component', async ({ page }) => {
       for (const url of urls) {
+        test(`client component ${url[0]}`, async ({ page }) => {
         const [URL1] = url;
         const errorLogs: unknown[] = [];
         page.on('console', (message) => {
@@ -87,12 +90,12 @@ test.describe('few components tests', () => {
         await toHaveUrl(page, `${currUrl}?perPage=30`);
 
         await expect(errorLogs).toHaveLength(0);
-      }
     });
+    }
   });
 
-  test('back/forward', async ({ page }) => {
     for (const url of urls) {
+      test(`back/forward ${url[0]}`, async ({ page }) => {
       const [URL1] = url;
       const errorLogs: unknown[] = [];
       page.on('console', (message) => {
@@ -122,12 +125,13 @@ test.describe('few components tests', () => {
       await expect(page.getByTestId('select').nth(1)).toHaveValue('30');
 
       await expect(errorLogs).toHaveLength(0);
-    }
   });
+  }
+
 
   test.describe('change page', () => {
-    test('usual link', async ({ page }) => {
       for (const url of urls) {
+        test(`usual link ${url[0]}`, async ({ page }) => {
         const [URL1, URL2] = url;
         const errorLogs: unknown[] = [];
         page.on('console', (message) => {
@@ -151,11 +155,11 @@ test.describe('few components tests', () => {
         await expect(page.getByTestId('select').nth(1)).toHaveValue('10');
 
         await expect(errorLogs).toHaveLength(0);
-      }
     });
+    }
 
-    test('link with qs', async ({ page }) => {
       for (const url of urls) {
+        test(`link with qs ${url[0]}`, async ({ page }) => {
         const [URL1, URL2] = url;
         const errorLogs: unknown[] = [];
         page.on('console', (message) => {
@@ -180,11 +184,11 @@ test.describe('few components tests', () => {
         await expect(page.getByTestId('select').nth(1)).toHaveValue('30');
 
         await expect(errorLogs).toHaveLength(0);
-      }
     });
+    }
 
-    test('link with qs client', async ({ page }) => {
       for (const url of urls) {
+        test(`link with qs client ${url[0]}`, async ({ page }) => {
         const [URL1, URL2] = url;
         const errorLogs: unknown[] = [];
         page.on('console', (message) => {
@@ -209,7 +213,8 @@ test.describe('few components tests', () => {
         await expect(page.getByTestId('select').nth(1)).toHaveValue('30');
 
         await expect(errorLogs).toHaveLength(0);
-      }
     });
+    }
+
   });
 });

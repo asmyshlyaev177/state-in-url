@@ -63,28 +63,45 @@ export function useUrlStateBase<T extends JSONCompatible>(
     };
   }, [setState]);
 
+  const queue = React.useRef<UpdateQueueItem[]>([]);
+
   const updateUrl = React.useCallback(
     (value?: Parameters<typeof setState>[0], options?: Options) => {
-      const currUrl = `${window.location.pathname}${window.location.search}${window.location.hash}`;
       const isFunc = typeof value === "function";
-      const otherParams = getOtherParams(defaultState);
 
       const newVal = isFunc
         ? value(getState())
         : value
           ? { ...getState(), ...value }
           : getState();
-      const qStr = stringify(newVal, otherParams);
-      setState(newVal);
+      const qStr = stringify(newVal, getOtherParams(defaultState));
 
       const newUrl = `${window.location.pathname}${qStr.length ? "?" : ""}${qStr}${window.location.hash}`;
+      const currUrl = `${window.location.pathname}${window.location.search}${window.location.hash}`;
+      if (newUrl === currUrl) return;
 
-      if (currUrl !== newUrl) {
-        const { replace, ...rOptions } = options || {};
-        router[replace ? "replace" : "push"](newUrl, {
-          ...rOptions,
+      let upd: (typeof queue.current)[0] | undefined;
+      setState(newVal);
+
+      const { replace, ...rOptions } = options || {};
+
+      queue.current.push([replace ? "replace" : "push", newUrl, rOptions]);
+
+      if (queue.current.length === 1)
+        queueMicrotask(() => {
+          while (queue.current.length) {
+            const currUpd = queue.current.shift();
+            if (!currUpd) break;
+
+            if (currUpd?.[1] === upd?.[1]) continue;
+            upd = currUpd;
+          }
+
+          if (!upd) return undefined;
+
+          const [method, url, opts] = upd;
+          router[method](url, opts);
         });
-      }
     },
     [router, stringify, getState],
   );
@@ -108,6 +125,12 @@ function getOtherParams<T extends object>(shape: T) {
   );
   return params;
 }
+
+type UpdateQueueItem = [
+  method: "push" | "replace",
+  url: string,
+  opts: Partial<Options>,
+];
 
 const popstateEv = "popstate";
 

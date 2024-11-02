@@ -15,7 +15,7 @@ export const Form = ({
   searchParams?: object;
   ghLink: string
 }) => {
-  const { state, updateState, updateUrl } = useUrlState({
+  const { state, updateUrl } = useUrlState({
     defaultState: form,
     searchParams,
   });
@@ -23,16 +23,16 @@ export const Form = ({
   const onChangeAge = React.useCallback(
     (ev: React.ChangeEvent<HTMLInputElement>) => {
       const val = +ev.target.value;
-      updateState({ age: val ? val : undefined });
+      updateUrl({ age: val ? val : undefined });
     },
-    [updateState],
+    [updateUrl],
   );
 
   const onChangeName = React.useCallback(
     (ev: React.ChangeEvent<HTMLInputElement>) => {
-      updateState({ name: ev.target.value });
+      updateUrl({ name: ev.target.value });
     },
-    [updateState],
+    [updateUrl],
   );
 
   const onChangeTerms = React.useCallback(
@@ -54,8 +54,6 @@ export const Form = ({
     [updateUrl],
   );
 
-  const doSync = React.useCallback(() => updateUrl(), [updateUrl]);
-
   return (
     <div className={className}>
       <div className="flex flex-1 flex-col border border-grey rounded-md p-4 shadow-md hover:shadow-lg">
@@ -69,7 +67,6 @@ export const Form = ({
               id="name"
               value={state.name}
               onChange={onChangeName}
-              onBlur={doSync}
             />
           </Field>
 
@@ -79,7 +76,6 @@ export const Form = ({
               type="number"
               value={state.age}
               onChange={onChangeAge}
-              onBlur={doSync}
             />
           </Field>
 

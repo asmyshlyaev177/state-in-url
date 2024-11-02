@@ -8,7 +8,6 @@ import { useUrlState } from 'state-in-url/next';
 export const Form = ({
   className,
   searchParams,
-  delay = 800,
 }: {
   className?: string;
   searchParams?: object;
@@ -20,23 +19,6 @@ export const Form = ({
     searchParams,
     replace: sp.get('replace') === 'false' ? false : true,
   });
-
-  // set URI when state change
-  const timer = React.useRef(0 as unknown as NodeJS.Timeout);
-  React.useEffect(() => {
-    if (delay === 0) {
-      return () => {};
-    }
-
-    clearTimeout(timer.current);
-    timer.current = setTimeout(() => {
-      updateUrl(state);
-    }, delay);
-
-    return () => {
-      clearTimeout(timer.current);
-    };
-  }, [state, updateUrl, delay, timer]);
 
   React.useEffect(() => {
     if (state?.tags?.length) {
@@ -75,36 +57,36 @@ export const Form = ({
   const onChangeAge = React.useCallback(
     (ev: React.ChangeEvent<HTMLInputElement>) => {
       const val = +ev.target.value;
-      updateState({ age: val ? val : undefined });
+      updateUrl({ age: val ? val : undefined });
     },
-    [updateState],
+    [updateUrl],
   );
 
-  const onChangeName = React.useCallback(
+  const onChangeNameUrl = React.useCallback(
     (ev: React.ChangeEvent<HTMLInputElement>) => {
-      updateState({ name: ev.target.value });
+      updateUrl({ name: ev.target.value });
     },
-    [updateState],
+    [updateUrl],
   );
+
 
   const onChangeTerms = React.useCallback(
     (ev: React.ChangeEvent<HTMLInputElement>) => {
-      clearTimeout(timer.current);
       updateUrl({ 'agree to terms': ev.target.checked });
     },
-    [updateUrl, timer],
+    [updateUrl],
   );
 
   const onChangeTags = React.useCallback(
     (tag: (typeof tags)[number]) => {
-      updateState((curr) => ({
+      updateUrl((curr) => ({
         ...curr,
         tags: curr.tags.find((t) => t.id === tag.id)
           ? curr.tags.filter((t) => t.id !== tag.id)
           : curr.tags.concat(tag),
       }));
     },
-    [updateState],
+    [updateUrl],
   );
 
   return (
@@ -116,7 +98,7 @@ export const Form = ({
 
         <div className="space-y-6">
           <Field id="name" text="Name">
-            <Input id="name" value={state.name} onChange={onChangeName} />
+            <Input id="name" value={state.name} onChange={onChangeNameUrl} />
           </Field>
 
           <Field id="age" text="Age">
@@ -152,14 +134,6 @@ export const Form = ({
 
           <Button
             onClick={() => {
-              updateUrl();
-            }}
-            dataTestId="sync-empty"
-          >
-            Sync state
-          </Button>
-          <Button
-            onClick={() => {
               updateUrl(form);
             }}
             dataTestId="sync-default"
@@ -174,18 +148,6 @@ export const Form = ({
           >
             Sync state object
           </Button>
-          {/* <Field
-            id="replace"
-            text="replace"
-            className="flex gap-2"
-          >
-            <Input
-              id="replace"
-              type="checkbox"
-              checked={replace}
-              onChange={ev => setReplace(ev.target.checked)}
-            />
-          </Field> */}
 
           <RefreshButton />
         </div>

@@ -20,7 +20,7 @@ export const Field = ({
       )}
     >
       <label
-        className="mb-2 block select-none hover:cursor-pointer"
+        className="mb-2 block select-none hover:cursor-pointer text-black"
         htmlFor={id}
       >
         {text}

@@ -145,8 +145,8 @@ import { userState } from './userState';
 
 function MyComponent() {
   // can pass `replace` arg, it's control will `updateUrl` will use `rounter.push` or `router.replace`, default replace=true
-  // const { state, updateState, updateUrl } = useUrlState({ defaultState: userState, searchParams, replace: false });
-  const { state, updateState, updateUrl } = useUrlState({ defaultState: userState });
+  // can pass `searchParams` from server components
+  const { state, updateUrl } = useUrlState({ defaultState: userState });
 
   // won't let you to accidently mutate state directly, requires TS
   // state.name = 'John' // <- error
@@ -154,18 +154,15 @@ function MyComponent() {
   return (
     <div>
       <input value={state.name}
-        onChange={(ev) => { updateState({ name: ev.target.value }) }}
-        onBlur={() => updateUrl()}
+        onChange={(ev) => { updateUrl({ name: ev.target.value }) }}
       />
       <input value={state.age}
-        onChange={(ev) => { updateState({ age: +ev.target.value }) }}
-        onBlur={() => updateUrl()}
+        onChange={(ev) => { updateUrl({ age: +ev.target.value }) }}
       />
 
       // same api as React.useState
       <input value={state.name}
-        onChange={(ev) => { updateState(curr => ({ ...curr, name: ev.target.value })) }}
-        onBlur={() => updateUrl()}
+        onChange={(ev) => { updateUrl(curr => ({ ...curr, name: ev.target.value })) }}
       />
 
       <button onClick={() => updateUrl(userState)}>
@@ -181,7 +178,7 @@ function MyComponent() {
 
 <details>
   <Summary>Example</Summary>
-  
+
 ```typescript
 export const form: Form = {
   name: '',
@@ -257,14 +254,13 @@ const tags = [
 [Demo page example code](https://github.com/asmyshlyaev177/state-in-url/blob/master/packages/example-nextjs14/src/app/Form.tsx)
 </details>
 
-
-#### Auto sync state
+#### Update state only and sync to URL manually
 
 <details>
   <Summary>Example</Summary>
 
   ```typescript
-  
+
   const timer = React.useRef(0 as unknown as NodeJS.Timeout);
   React.useEffect(() => {
     clearTimeout(timer.current);
@@ -287,13 +283,11 @@ Syncing state `onBlur` will be more aligned with real world usage.
 
 </details>
 
-
-
 #### With server side rendering
 
 <details>
   <Summary>Example</Summary>
-  
+
 ```typescript
 export default async function Home({ searchParams }: { searchParams: object }) {
   return (
@@ -362,6 +356,7 @@ export default async function Layout({
 
 
 ```
+
 </details>
 
 #### With arbitrary state shape (not recommended)
@@ -379,9 +374,8 @@ function SettingsComponent() {
   const { state, updateUrl, updateState } = useUrlState<object>(someObj);
 }
 ```
+
 </details>
-
-
 
 ## useUrlState hook for React-Router
 
@@ -506,8 +500,6 @@ function SettingsComponent() {
 - Define your state shape as a constant
 - Use TypeScript for enhanced type safety and autocomplete
 - Avoid storing sensitive information in URL parameters (SSN, API keys etc)
-- Use `updateState` for frequent updates and `updateUrl` to sync changes to url
-- Use `Suspence` to wrap client components in Next.js
 - Use this [extension](https://marketplace.visualstudio.com/items?itemName=yoavbls.pretty-ts-errors) for readable TS errors
 
 ## Gothas

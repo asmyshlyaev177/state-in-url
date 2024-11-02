@@ -19,9 +19,7 @@ export default function Home() {
         </Suspense>
         <Suspense>
           <Status
-            className="flex-1 max-h-[450px] bg-gray-100
-             rounded-lg p-4 flex flex-col shadow-md border border-grey
-              basis-1/2 grow-0"
+            className="flex-1 max-h-[450px] bg-gray-100 rounded-lg p-4 flex flex-col shadow-md border border-grey basis-1/2 grow-0"
           />
         </Suspense>
       </div>

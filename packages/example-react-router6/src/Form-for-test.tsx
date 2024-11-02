@@ -4,35 +4,12 @@ import { Field, Input, RefreshButton, Tag } from "shared/components";
 import { form } from "shared/form";
 import { useUrlState } from "state-in-url/react-router";
 
-export const Form = ({
-  className,
-  delay = 800,
-}: {
-  className?: string;
-  delay?: number;
-}) => {
+export const Form = ({ className }: { className?: string }) => {
   const [sp] = useSearchParams();
   const { state, updateState, updateUrl } = useUrlState({
     defaultState: form,
     replace: sp.get("replace") === "false" ? false : true,
   });
-
-  // set URI when state change
-  const timer = React.useRef(0 as unknown as NodeJS.Timeout);
-  React.useEffect(() => {
-    if (delay === 0) {
-      return () => {};
-    }
-
-    clearTimeout(timer.current);
-    timer.current = setTimeout(() => {
-      updateUrl(state);
-    }, delay);
-
-    return () => {
-      clearTimeout(timer.current);
-    };
-  }, [state, updateUrl, delay, timer]);
 
   React.useEffect(() => {
     if (state?.tags?.length) {
@@ -71,36 +48,35 @@ export const Form = ({
   const onChangeAge = React.useCallback(
     (ev: React.ChangeEvent<HTMLInputElement>) => {
       const val = +ev.target.value;
-      updateState({ age: val ? val : undefined });
+      updateUrl({ age: val ? val : undefined });
     },
-    [updateState],
+    [updateUrl],
   );
 
-  const onChangeName = React.useCallback(
+  const onChangeNameUrl = React.useCallback(
     (ev: React.ChangeEvent<HTMLInputElement>) => {
-      updateState({ name: ev.target.value });
+      updateUrl({ name: ev.target.value });
     },
-    [updateState],
+    [updateUrl],
   );
 
   const onChangeTerms = React.useCallback(
     (ev: React.ChangeEvent<HTMLInputElement>) => {
-      clearTimeout(timer.current);
       updateUrl({ "agree to terms": ev.target.checked });
     },
-    [updateUrl, timer],
+    [updateUrl],
   );
 
   const onChangeTags = React.useCallback(
     (tag: (typeof tags)[number]) => {
-      updateState((curr) => ({
+      updateUrl((curr) => ({
         ...curr,
         tags: curr.tags.find((t) => t.id === tag.id)
           ? curr.tags.filter((t) => t.id !== tag.id)
           : curr.tags.concat(tag),
       }));
     },
-    [updateState],
+    [updateUrl],
   );
 
   return (
@@ -113,8 +89,8 @@ export const Form = ({
             <Input
               id="name"
               value={state.name}
-              onChange={onChangeName}
-              className="h-[30px]"
+              onChange={onChangeNameUrl}
+              className="h-[30px] text-black"
             />
           </Field>
 
@@ -124,7 +100,7 @@ export const Form = ({
               type="number"
               value={state.age}
               onChange={onChangeAge}
-              className="h-[30px]"
+              className="h-[30px] text-black"
             />
           </Field>
 
@@ -138,7 +114,7 @@ export const Form = ({
               type="checkbox"
               checked={state["agree to terms"]}
               onChange={onChangeTerms}
-              className="w-[25px] h-[25px]"
+              className="w-[25px] h-[25px] text-black"
             />
           </Field>
 
@@ -157,14 +133,6 @@ export const Form = ({
 
           <Button
             onClick={() => {
-              updateUrl();
-            }}
-            dataTestId="sync-empty"
-          >
-            Sync state
-          </Button>
-          <Button
-            onClick={() => {
               updateUrl(form);
             }}
             dataTestId="sync-default"
@@ -179,18 +147,6 @@ export const Form = ({
           >
             Sync state object
           </Button>
-          {/* <Field
-            id="replace"
-            text="replace"
-            className="flex gap-2"
-          >
-            <Input
-              id="replace"
-              type="checkbox"
-              checked={replace}
-              onChange={ev => setReplace(ev.target.checked)}
-            />
-          </Field> */}
 
           <RefreshButton />
         </div>
@@ -230,7 +186,7 @@ const Button = ({
   return (
     <button
       onClick={onClick}
-      className="border border-black rounded-md px-2 py-1"
+      className="border border-black rounded-md px-2 py-1 text-black"
       data-testid={dataTestId}
     >
       {children}

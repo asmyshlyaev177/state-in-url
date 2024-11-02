@@ -16,8 +16,8 @@ test.describe('main tests', () => {
   `;
   const values = { name: 'My Name', age: '33' };
 
-  test('update state', async ({ page }) => {
     for (const url of urls) {
+      test(`update state ${url}`, async ({ page }) => {
       const errorLogs: string[] = [];
       page.on('console', (message) => {
         if (message.type() === 'error') {
@@ -54,6 +54,6 @@ test.describe('main tests', () => {
       await expect(
         errorLogs.filter((err) => !err.includes('dangerouslySetInnerHTML')),
       ).toHaveLength(0);
-    }
   });
+  }
 });

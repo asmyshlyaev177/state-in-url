@@ -31,8 +31,46 @@ test.describe('main tests', () => {
     }`;
   const values = { name: 'My Name', age: '33' };
 
-  test('update state/url', async ({ page }) => {
     for (const url of urls) {
+      test(`fast concurent URL updates ${url}`, async ({ page }) => {
+      const errorLogs: unknown[] = [];
+      page.on('console', (message) => {
+        if (message.type() === 'error') {
+          errorLogs.push({ text: message.text(), url });
+        }
+      });
+
+      await page.goto(url);
+      await page.waitForSelector('button[name="Reload page"]');
+
+      const delay = 5
+
+      const text1 = 'One two three four'
+
+      await page.getByLabel('name').focus();
+      await page
+        .getByLabel('name')
+        .pressSequentially(text1, { delay });
+      await page.keyboard.press('Control+Backspace');
+      await page
+        .getByLabel('name')
+        .pressSequentially('four', { delay });
+      await page.keyboard.press('Backspace')
+      await page.keyboard.press('Backspace')
+      await page.keyboard.press('Backspace')
+      await page
+        .getByLabel('name')
+        .pressSequentially('our', { delay });
+
+      await page.waitForTimeout(750);
+      await expect(await page.getByLabel('name')).toHaveValue(text1)
+  });
+  }
+
+
+    for (const url of urls) {
+      test(`update state/url ${url}`, async ({ page }) => {
+
       const errorLogs: unknown[] = [];
       page.on('console', (message) => {
         if (message.type() === 'error') {
@@ -81,11 +119,13 @@ test.describe('main tests', () => {
       if (url === '/test-ssr-sp') {
         await expect(errorLogs).toHaveLength(0);
       }
-    }
   });
+  }
 
-  test('load from URL', async ({ page }) => {
+
     for (const url of urls) {
+      test(`load from URL ${url}`, async ({ page }) => {
+
       const errorLogs: unknown[] = [];
       page.on('console', (message) => {
         if (message.type() === 'error') {
@@ -105,6 +145,6 @@ test.describe('main tests', () => {
       if (url === '/test-ssr-sp') {
         await expect(errorLogs).toHaveLength(0);
       }
-    }
   });
+  }
 });
