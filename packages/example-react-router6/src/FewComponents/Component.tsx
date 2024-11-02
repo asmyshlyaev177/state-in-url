@@ -5,7 +5,7 @@ import { useUrlState } from "state-in-url/react-router";
 import { stateShape } from "./stateShape";
 
 export const Component = () => {
-  const { state, updateUrl } = useUrlState({
+  const { urlState, setUrl } = useUrlState({
     defaultState: stateShape,
     replace: false,
   });
@@ -14,9 +14,9 @@ export const Component = () => {
     <div className="flex gap-2">
       <h2>Per page select</h2>
       <select
-        value={state.perPage}
+        value={urlState.perPage}
         onChange={(ev) =>
-          updateUrl((curr) => ({ ...curr, perPage: +ev.target.value }))
+          setUrl((curr) => ({ ...curr, perPage: +ev.target.value }))
         }
         className=""
         data-testid="select"

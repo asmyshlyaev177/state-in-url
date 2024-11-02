@@ -15,7 +15,7 @@ export const Form = ({
   searchParams?: object;
   ghLink: string
 }) => {
-  const { state, updateUrl } = useUrlState({
+  const { urlState, setUrl } = useUrlState({
     defaultState: form,
     searchParams,
   });
@@ -23,35 +23,35 @@ export const Form = ({
   const onChangeAge = React.useCallback(
     (ev: React.ChangeEvent<HTMLInputElement>) => {
       const val = +ev.target.value;
-      updateUrl({ age: val ? val : undefined });
+      setUrl({ age: val ? val : undefined });
     },
-    [updateUrl],
+    [setUrl],
   );
 
   const onChangeName = React.useCallback(
     (ev: React.ChangeEvent<HTMLInputElement>) => {
-      updateUrl({ name: ev.target.value });
+      setUrl({ name: ev.target.value });
     },
-    [updateUrl],
+    [setUrl],
   );
 
   const onChangeTerms = React.useCallback(
     (ev: React.ChangeEvent<HTMLInputElement>) => {
-      updateUrl({ 'agree to terms': ev.target.checked });
+      setUrl({ agree_to_terms: ev.target.checked });
     },
-    [updateUrl],
+    [setUrl],
   );
 
   const onChangeTags = React.useCallback(
     (tag: (typeof tags)[number]) => {
-      updateUrl((curr) => ({
+      setUrl((curr) => ({
         ...curr,
         tags: curr.tags.find((t) => t.id === tag.id)
           ? curr.tags.filter((t) => t.id !== tag.id)
           : curr.tags.concat(tag),
       }));
     },
-    [updateUrl],
+    [setUrl],
   );
 
   return (
@@ -65,8 +65,9 @@ export const Form = ({
           <Field id="name" text="Name">
             <Input
               id="name"
-              value={state.name}
+              value={urlState.name}
               onChange={onChangeName}
+              name="name"
             />
           </Field>
 
@@ -74,22 +75,24 @@ export const Form = ({
             <Input
               id="age"
               type="number"
-              value={state.age}
+              value={urlState.age}
               onChange={onChangeAge}
+              name="age"
             />
           </Field>
 
           <Field
-            id="agree to terms"
+            id="agree_to_terms"
             text="Agree to terms"
             className="flex flex-row justify-between gap-2 max-w-[150px] min-w-[150px]"
           >
             <Input
-              id="agree to terms"
+              id="agree_to_terms"
               type="checkbox"
               className="max-w-[24px]"
-              checked={state['agree to terms']}
+              checked={urlState['agree_to_terms']}
               onChange={onChangeTerms}
+              name="agree_to_terms"
             />
           </Field>
 
@@ -97,7 +100,7 @@ export const Form = ({
             <div className="flex flex-wrap gap-2">
               {tags.map((tag) => (
                 <Tag
-                  active={!!state.tags.find((t) => t.id === tag.id)}
+                  active={!!urlState.tags.find((t) => t.id === tag.id)}
                   text={tag.value.text}
                   onClick={() => onChangeTags(tag)}
                   key={tag.id}

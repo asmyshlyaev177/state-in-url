@@ -185,14 +185,14 @@ function MyComponent() {
 export const form: Form = {
   name: '',
   age: undefined,
-  'agree to terms': false,
+  agree_to_terms: false,
   tags: [],
 };
 
 type Form = {
   name: string;
   age?: number;
-  'agree to terms': boolean;
+  agree_to_terms: boolean;
   tags: { id: string; value: { text: string; time: Date } }[];
 };
 ```
@@ -391,14 +391,14 @@ API is same as for Next.js version, except can pass options from [NavigateOption
 export const form: Form = {
   name: '',
   age: undefined,
-  'agree to terms': false,
+  agree_to_terms: false,
   tags: [],
 };
 
 type Form = {
   name: string;
   age?: number;
-  'agree to terms': boolean;
+  agree_to_terms: boolean;
   tags: { id: string; value: { text: string; time: Date } }[];
 };
 

@@ -16,11 +16,11 @@ const delay = 1
 
 test.describe('main tests', () => {
   const expectedUrl =
-    '?name=%27My+Name%27&age=33&agree+to+terms=true&tags=%5B%7B%27id%27%3A%271%27%2C%27value%27%3A%7B%27text%27%3A%27React.js%27%2C%27time%27%3A%272024-07-17T04%3A53%3A17.000Z%27%7D%7D%5D';
+    '?name=%27My+Name%27&age=33&agree_to_terms=true&tags=%5B%7B%27id%27%3A%271%27%2C%27value%27%3A%7B%27text%27%3A%27React.js%27%2C%27time%27%3A%272024-07-17T04%3A53%3A17.000Z%27%7D%7D%5D';
   const expectedText = `{
       "name": "My Name",
       "age": 33,
-      "agree to terms": true,
+      "agree_to_terms": true,
       "tags": [
         {
           "id": "1",
@@ -90,7 +90,7 @@ test.describe('main tests', () => {
       await page
         .getByLabel('age')
         .pressSequentially(values.age, { delay });
-      await page.getByRole('checkbox', { name: 'agree to terms' }).click();
+        await page.getByTestId('agree_to_terms').click();
       await page.waitForTimeout(400);
       await page.getByText('React.js').click();
 

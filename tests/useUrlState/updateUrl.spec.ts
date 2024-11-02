@@ -26,7 +26,7 @@ const delay = 1
 
     const expectedText = `{
       "name": "My Name",
-      "agree to terms": false,
+      "agree_to_terms": false,
       "tags": [
         {
           "id": "1",
@@ -50,7 +50,7 @@ const delay = 1
 
     await expect(page.getByTestId('parsed')).toHaveText(`{
       "name": "",
-      "agree to terms": false,
+      "agree_to_terms": false,
       "tags": []
 }`);
 });
@@ -72,7 +72,7 @@ test.describe('update', () => {
 
       const expectedText = `{
       "name": "My Name",
-      "agree to terms": false,
+      "agree_to_terms": false,
       "tags": [
         {
           "id": "1",
@@ -97,7 +97,7 @@ test.describe('update', () => {
       await expect(page.getByTestId('parsed')).toHaveText(`{
       "name": "My Name",
       "age": 55,
-      "agree to terms": false,
+      "agree_to_terms": false,
       "tags": [
         {
           "id": "1",
@@ -132,7 +132,7 @@ test.describe('update', () => {
 
       const expectedText = `{
   "name": "My Name",
-  "agree to terms": false,
+  "agree_to_terms": false,
   "tags": [
     {
       "id": "3",
@@ -171,7 +171,7 @@ test.describe('update', () => {
 
       const expectedText = `{
   "name": "My Name",
-  "agree to terms": false,
+  "agree_to_terms": false,
   "tags": []
 }`;
 

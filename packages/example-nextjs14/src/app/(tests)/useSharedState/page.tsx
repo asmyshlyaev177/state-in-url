@@ -53,6 +53,7 @@ const FirstComponent = () => {
           onChange={(ev) =>
             setState((curr) => ({ ...curr, agree: ev.target.checked }))
           }
+          data-testid="agree_to_terms"
         ></Input>
       </div>
     </div>

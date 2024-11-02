@@ -71,7 +71,7 @@ export const Form = ({
 
   const onChangeTerms = React.useCallback(
     (ev: React.ChangeEvent<HTMLInputElement>) => {
-      setUrl({ 'agree to terms': ev.target.checked });
+      setUrl({ agree_to_terms: ev.target.checked });
     },
     [setUrl],
   );
@@ -110,12 +110,13 @@ export const Form = ({
             />
           </Field>
 
-          <Field id="agree to terms" text="Agree to terms">
+          <Field id="agree_to_terms" text="Agree to terms">
             <Input
-              id="agree to terms"
+              id="agree_to_terms"
               type="checkbox"
-              checked={urlState['agree to terms']}
+              checked={urlState['agree_to_terms']}
               onChange={onChangeTerms}
+              data-testid="agree_to_terms"
             />
           </Field>
 

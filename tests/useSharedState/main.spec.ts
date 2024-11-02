@@ -31,12 +31,12 @@ test.describe('main tests', () => {
       await page.getByLabel('name').focus();
       await page
         .getByLabel('name')
-        .pressSequentially(values.name, { delay: 150 });
+        .pressSequentially(values.name, { delay: 5 });
       await page.getByLabel('age').focus();
       await page
         .getByLabel('age')
-        .pressSequentially(values.age, { delay: 150 });
-      await page.getByRole('checkbox', { name: 'agree' }).click();
+        .pressSequentially(values.age, { delay: 5 });
+        await page.getByTestId('agree_to_terms').click({ force: true });
 
       await expect(page.getByTestId('parsed')).toHaveText(expectedText);
       await expect(page.getByTestId('name-input')).toHaveValue(values.name);
@@ -44,7 +44,7 @@ test.describe('main tests', () => {
       await page.getByTestId('name-input').focus();
       await page
         .getByTestId('name-input')
-        .pressSequentially(' test ', { delay: 150 });
+        .pressSequentially(' test ', { delay: 5 });
       const name = `${values.name} test `;
       await expect(page.getByLabel('name')).toHaveValue(name);
       await expect(page.getByTestId('parsed')).toContainText(

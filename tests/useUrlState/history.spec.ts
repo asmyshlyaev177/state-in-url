@@ -31,7 +31,7 @@ const urls = [
 
     const expectedText = `{
       "name": "${name}",
-      "agree to terms": false,
+      "agree_to_terms": false,
       "tags": []
     }`;
 
@@ -52,7 +52,7 @@ const urls = [
     await page.goForward();
       await expect(page.getByTestId('parsed')).toHaveText(`{
       "name": "${name}",
-      "agree to terms": false,
+      "agree_to_terms": false,
       "tags": []
     }`);
 

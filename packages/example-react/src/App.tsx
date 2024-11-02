@@ -36,7 +36,10 @@ const FirstComponent = () => {
       <Label htmlFor='agree'>Agree</Label>
       <Input id="agree"
         checked={state.agree} type="checkbox"
-        onChange={ev => setState(curr => ({ ...curr, agree: ev.target.checked }))}></Input>
+        onChange={ev => setState(curr => ({ ...curr, agree: ev.target.checked }))}
+        data-testid="agree_to_terms"
+        ></Input>
+
     </div>
   </div>
 }
