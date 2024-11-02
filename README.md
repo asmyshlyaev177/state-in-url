@@ -3,7 +3,8 @@ English | [한국어](./README.KO.md) | [简体中文](./README.CN.md)
 <div align="center">
   <img src="/assets/Logo_big.png?raw=true" alt="state-in-url logo"/>
 
-  <div><h2>Easily share complex state objects between unrelated React components, preserve types and structure, with TS validation. Without any hasssle or boilerplate.</h2></div>
+  <div><h2> Store any complex state in query parameters, URL synchronization (aka deep links) made easy. Share state between any unrelated components. With support of static types validation and server side rendering.</h2></div>
+
 
 </div>
 
@@ -50,26 +51,36 @@ Share if it useful for you.
 
   </div>
 
-# Why use state-in-url?
+# Why use `state-in-url`?
 
-`state-in-url` Simple state management with optional URL sync. Good for implementing deep links. Share complex states between unrelated React components, TS-friendly, NextJS compatible. Most of users don't care about URL, so, can use it to store your app state.
+Store any user state in query parameters; imagine JSON in a browser URL, while keeping types and structure of data.
+Dead simple, fast, and with static Typescript validation. Deep links, aka URL syncronization, made easy.
+
+Contains `useUrlState` hook for Next.js and react-router, and helpers for anything else on JS.
+Since modern browsers support huge URLs and users don't care about query strings (it is a select all and copy/past workflow).
+
+Time to use query string for state management, as it was originally intended.
+This library does all mundate stuff for you.
 
 # Use cases
 
-- 🧮 Store unsaved user forms in URL
-- 🙃 Share the state between different components without changing url, good as alternative to signals and other state management tools
-- 🧠 Sync data between unrelated client components
+- 💾 Store unsaved user forms or page filters in URL
+- 🧠 Just sync data between unrelated client components without touching URI
 - 🔗 Shareable URLs with application state (Deep linking, URL state synchronization)
 - 🔄 Easy state persistence across page reloads
 
 # Features
 
-- 🧩 **Simple**: No providers, reducers, boilerplate or new concepts, API similar to React.useState
-- 📘 **Typescript support and type Safety**: Preserves data types and structure, good developer experience with IDE suggestions, strong typing and JSDoc comments
-- ⚛️ **Framework Flexibility**: Separate hooks for Next.js and React.js applications, and functions for pure JS
-- ⚙ **Well tested**: Unit tests and Playwright tests, high quality and support
-- ⚡ **Fast**: Minimal rerenders, less than [1ms](https://github.com/asmyshlyaev177/state-in-url/blob/87c8c7c995c5cd7d9e7aa039c30bfe64b24abe4b/packages/urlstate/encoder/encoder.test.ts#L185) to encode and decode an object
-- 🪶 **Lightweight**: Zero dependencies for a smaller footprint
+- 🧩 **Simple**: No providers, reducers, boilerplate or new concepts, API similar to `React.useState`
+- 📘 **Typescript validation**: State is just an object, automatic static validation in IDE/tests according to Typescript definition
+- ✨ **Complex data**: Nested objects, dates and arrays, works same as JSON, but in URL
+- 🔵 **Server Side Rendering**: Can use it in Server Components, Next.js 14 and 15 are supported
+- ⚙ **Well tested**: Unit tests and Playwright tests for Chrome/Firefox/Safari
+- ⚡ **Fast**: Minimal rerenders, less than [1ms](https://github.com/asmyshlyaev177/state-in-url/blob/87c8c7c995c5cd7d9e7aa039c30bfe64b24abe4b/packages/urlstate/encoder/encoder.test.ts#L185) to encode and decode big object
+- 🪶 **Lightweight**: Zero dependencies, library less than 2KB
+- 👍 **DX**: Good developer experience, documentation, JSDoc comments, and examples
+- ⚛️ **Framework Flexibility**: Hooks for `Next.js` and `react-router`, helpers to use it with other frameworks or pure JS
+- 📃 **Permissive license**: MIT
 
 ## Table of content
 
@@ -113,7 +124,8 @@ Possibly need to set `"module": "ES2022"`, or `"module": "ESNext"`
 
 ## useUrlState
 
-`useUrlState` is a custom React hook for Next.js/React-Router applications that make communication between client components easy. It allows you to share any complex state and sync it with the URL search parameters, providing a way to persist state across page reloads and share application state via URLs.
+Main hook that takes initial state as parameter and returns state object, callback to update url, and callback to update only state.
+All components that use the same `state` object are automatically synchronized.
 
 ## useUrlState hook for Next.js
 
@@ -125,11 +137,11 @@ Possibly need to set `"module": "ES2022"`, or `"module": "ESNext"`
 
 #### Basic
 
-1. Define state shape
+1. Define state shape with default values
 
    ```typescript
    // userState.ts
-   // State shape should be stored in a constant, don't pass an object directly
+   // Only parameters with value different from default will go to the url.
    export const userState: UserState = { name: '', age: 0 }
 
    type UserState = { name: string, age: number }
@@ -154,13 +166,13 @@ function MyComponent() {
   return (
     <div>
       <input value={urlState.name}
-        onChange={(ev) => { setUrl({ name: ev.target.value }) }}
+        // same api as React.useState, e.g. setUrl(currVal => currVal + 1)
+        onChange={(ev) => setUrl({ name: ev.target.value }) }
       />
       <input value={urlState.age}
-        onChange={(ev) => { setUrl({ age: +ev.target.value }) }}
+        onChange={(ev) => setUrl({ age: +ev.target.value }) }
       />
 
-      // same api as React.useState
       <input value={urlState.name}
         onChange={(ev) => { setState(curr => ({ ...curr, name: ev.target.value })) }}
         // Can update state immediately but sync change to url as needed
@@ -509,6 +521,27 @@ function SettingsComponent() {
 - Use TypeScript for enhanced type safety and autocomplete
 - Avoid storing sensitive information in URL parameters (SSN, API keys etc)
 - Use this [extension](https://marketplace.visualstudio.com/items?itemName=yoavbls.pretty-ts-errors) for readable TS errors
+
+Can create state hooks for slices of state, and reuse them across application. For example:
+```Typescript
+type UserState = {
+  name: string;
+  age: number;
+  other: { id: string, value: number }[]
+};
+const userState = {
+  name: '',
+  age: 0,
+  other: [],
+};
+
+export const useUserState = () => {
+  const { urlState, setUrl } = useUrlState({ defaultState: userState });
+
+  return { userState: urlState, setUserState: setUrl };;
+}
+
+```
 
 ## Gothas
 
