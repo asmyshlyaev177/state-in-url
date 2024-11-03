@@ -1,6 +1,6 @@
 {
   "name": "state-in-url",
-  "version": "4.0.1",
+  "version": "4.0.2",
   "description": "Easily share complex state objects between unrelated React components, preserve types and structure, with TS validation. Deep links and url state synchronization wthout any hasssle or boilerplate.",
   "homepage": "https://state-in-url.dev",
   "keywords": [

@@ -1,3 +1,10 @@
+## [4.0.2](https://github.com/asmyshlyaev177/state-in-url/compare/v4.0.1...v4.0.2) (2024-11-03)
+
+
+### Bug Fixes
+
+* update tags and description ([56c634c](https://github.com/asmyshlyaev177/state-in-url/commit/56c634cc8a4553c1750ce937c3fe0a6cf3d1eaf1))
+
 ## [4.0.1](https://github.com/asmyshlyaev177/state-in-url/compare/v4.0.0...v4.0.1) (2024-11-02)
 
 
