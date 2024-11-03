@@ -30,7 +30,7 @@ export const File = async ({
       <code>
         <pre
           dangerouslySetInnerHTML={{ __html: text }}
-          className="bg-gray-800 text-sm font-mono p-5 text-current"
+          className="bg-gray-800 max-sm:text-[0.7rem] max-sm:p-2 font-mono p-5 text-current"
         ></pre>
       </code>
     </div>
