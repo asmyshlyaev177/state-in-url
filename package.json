@@ -122,8 +122,9 @@
     "kill-next": "wireit",
     "kill-vite": "wireit",
     "kill": "wireit",
-    "cleanup": "rm -rf dist",
-    "reinstall": "rm -rf dist .wireit node_modules packages/example-nextjs14/node_modules packages/example-nextjs14/.next packages/example-react/node_modules && npm install",
+    "rmdist": "rm -rf dist",
+    "cleanup": "rm -rf dist .wireit node_modules test-results playwright-report coverage-reports nyc_coverage packages/example-nextjs14/node_modules packages/example-nextjs14/.next packages/example-nextjs15/node_modules packages/example-nextjs15/.next packages/example-react/node_modules packages/example-react-router6/node_modules",
+    "reinstall": "npm run cleanup && npm install",
     "setup": "playwright install --with-deps",
     "prepack": "npm run build && cp package.json dist/package.json && npm run build:demo",
     "prepare": "npx husky"
@@ -191,7 +192,7 @@
         }
       },
       "dependencies": [
-        "cleanup"
+        "rmdist"
       ]
     },
     "dev:router6": {
@@ -305,7 +306,7 @@
     "build": {
       "command": "rollup -c rollup.config.js --bundleConfigAsCjs",
       "dependencies": [
-        "cleanup"
+        "rmdist"
       ]
     }
   },
