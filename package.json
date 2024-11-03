@@ -13,7 +13,6 @@
     "useUrlState",
     "state in url",
     "client components communication",
-    "signals alternative",
     "query string",
     "search params",
     "query params",
@@ -25,7 +24,8 @@
     "reactjs",
     "react",
     "NextJS",
-    "Next.js"
+    "Next.js",
+    "nuqs alternative"
   ],
   "repository": {
     "type": "git",

@@ -62,6 +62,8 @@ Since modern browsers support huge URLs and users don't care about query strings
 Time to use query string for state management, as it was originally intended.
 This library does all mundane stuff for you.
 
+This library is a good alternative for NUQS.
+
 # Use cases
 
 - 💾 Store unsaved user forms or page filters in URL
