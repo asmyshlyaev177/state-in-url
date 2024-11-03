@@ -54,13 +54,13 @@ Share if it useful for you.
 # Why use `state-in-url`?
 
 Store any user state in query parameters; imagine JSON in a browser URL, while keeping types and structure of data.
-Dead simple, fast, and with static Typescript validation. Deep links, aka URL syncronization, made easy.
+Dead simple, fast, and with static Typescript validation. Deep links, aka URL synchronization, made easy.
 
 Contains `useUrlState` hook for Next.js and react-router, and helpers for anything else on JS.
 Since modern browsers support huge URLs and users don't care about query strings (it is a select all and copy/past workflow).
 
 Time to use query string for state management, as it was originally intended.
-This library does all mundate stuff for you.
+This library does all mundane stuff for you.
 
 # Use cases
 
