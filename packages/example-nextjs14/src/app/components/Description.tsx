@@ -23,11 +23,17 @@ export const Description = () => (
 
     <h3 className='mt-8 mb-6 font-semibold'>Other frameworks or pure JS</h3>
     <div className='max-w-[600px]'>
-      There are more hooks and helpers to deal with serialization/deconding of data, check out <a href="https://github.com/asmyshlyaev177/state-in-url" target="_blank" rel="noopener" className="text-blue-600 hover:underline">GitHub page</a>.
+      There are more hooks and helpers to deal with serialization/deconding of data.
     </div>
+
+    <div className="mt-8">Check out <a href="https://github.com/asmyshlyaev177/state-in-url" target="_blank" rel="noopener" className="text-blue-600 hover:underline">GitHub page</a>. <span className="font-semibold">Give Us a star.</span></div>
 
     <h4 className='mt-12 mb-6 font-semibold'>Share this on social networks to help the library, purely voluntarily :)</h4>
     <Share />
+{/*  */}
+    <a href="https://www.uneed.best/tool/state-in-url" target="_blank" rel="noopener" className="mt-6 max-w-80">
+      <img src="https://www.uneed.best/EMBED2B.png" alt="Uneed Embed Badge" />
+    </a>
     <div className="mb-8"></div>
 
   </section>
