@@ -27,7 +27,7 @@ export default async function RootLayout({
       <body className={`${roboto.className}`}>
         {children}
       </body>
-      { isProd ? <GoogleAnalytics gaId="G-5N8Y565DXK" /> : null }
+      {isProd ? <GoogleAnalytics gaId="GT-WF8DT7LS" /> : null }
       {isVercel ? <Analytics /> : null}
     </html>
   );
