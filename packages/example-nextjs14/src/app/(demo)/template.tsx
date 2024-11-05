@@ -31,8 +31,7 @@ export default async function Template({
             </div>
 
             <p className="desc">
-              Share complex state between unrelated React.js components and sync
-              it to the URL
+              Store complex state in query parameters; imagine JSON in a browser URL, while keeping types and structure of data.
             </p>
           </div>
         </header>

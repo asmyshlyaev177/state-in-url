@@ -46,7 +46,7 @@ export const jsonLd: WithContext<SoftwareApplication> = {
 const meta = {
   title: 'state-in-url - deep links and URL state synchronization',
   description:
-    'Share complex state objects between unrelated React components with URL sync, structure and types are preserved, with TS validation. Deep links and URL state synchronization made easy. No hasssle or boilerplate. For Next.js and react-router.',
+    'Store any user state in query parameters; imagine JSON in a browser URL, while keeping types and structure of data. For Next.js, React-router and pure JS',
 };
 
 export const metadata = {
