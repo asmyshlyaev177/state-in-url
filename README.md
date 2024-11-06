@@ -97,7 +97,7 @@ This library is a good alternative for NUQS.
 - - [`encodeState` and `decodeState` for pure JS usage](#encodestate-and-decodestate-helpers)
 - - [Low-level `encode` and `decode` functions](#encode-and-decode-helpers)
 - [Best practices](#best-practices)
-- - [Gothas](#gothas)
+- - [Gotchas](#gotchas)
 - [Other](#other)
 - - [Roadmap](#roadmap)
 - - [Contributing](#contribute-andor-run-locally)
@@ -545,7 +545,7 @@ export const useUserState = () => {
 
 ```
 
-## Gothas
+## Gotchas
 
 1. Can pass only serializable values, `Function`, `BigInt` or `Symbol` won't work, probably things like `ArrayBuffer` neither. Everything that can be serialized to JSON will work.
 2. Vercel servers limit size of headers (query string and other stuff) to **14KB**, so keep your URL state under ~5000 words. <https://vercel.com/docs/errors/URL_TOO_LONG>
