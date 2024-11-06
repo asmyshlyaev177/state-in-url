@@ -131,7 +131,7 @@ All components that use the same `state` object are automatically synchronized.
 
 ## useUrlState hook for Next.js
 
-[Docs](packages/urlstate/next/useUrlState#api)
+[Full API Docs](packages/urlstate/next/useUrlState#api)
 
 [React-Router example](#useurlstate-hook-for-react-router)
 
@@ -397,7 +397,7 @@ function SettingsComponent() {
 
 API is same as for Next.js version, except can pass options from [NavigateOptions](https://github.com/remix-run/react-router/blob/bc693ed9f39170bda13b9e1b282fb8e9d5925f66/packages/react-router/lib/context.ts#L99) type.
 
-[Docs](packages/urlstate/react-router/useUrlState#api)
+[API Docs](packages/urlstate/react-router/useUrlState#api)
 
 ### Example
 
@@ -486,7 +486,7 @@ const tags = [
 
 Hooks to create your own `useUrlState` hooks with other routers, e.g. react-router or tanstack router.
 
-[Docs](packages/urlstate/useUrlStateBase)
+[API Docs](packages/urlstate/useUrlStateBase)
 
 ## `useSharedState` hook for React.js
 
@@ -503,19 +503,19 @@ function SettingsComponent() {
 }
 ```
 
-[Docs](packages/urlstate/useSharedState/README.md)
+[API Docs](packages/urlstate/useSharedState/README.md)
 
 ## `useUrlEncode` hook for React.js
 
-[Docs](packages/urlstate/useUrlEncode/README.md)
+[API Docs](packages/urlstate/useUrlEncode/README.md)
 
 ## `encodeState` and `decodeState` helpers
 
-[Docs](packages/urlstate/encodeState/README.md)
+[API Docs](packages/urlstate/encodeState/README.md)
 
 ## `encode` and `decode` helpers
 
-[Docs](packages/urlstate/encoder/README.md)
+[API Docs](packages/urlstate/encoder/README.md)
 
 # Best Practices
 
