@@ -53,7 +53,7 @@ Share if it useful for you.
 
 # Why use `state-in-url`?
 
-Store any user state in query parameters; imagine JSON in a browser URL, while keeping types and structure of data.
+Store any user state in query parameters; imagine JSON in a browser URL, while keeping types and structure of data, e.g. numbers will be decoded as numbers not strings, Date stay a date, objects and arrays supported.
 Dead simple, fast, and with static Typescript validation. Deep links, aka URL synchronization, made easy.
 
 Contains `useUrlState` hook for Next.js and react-router, and helpers for anything else on JS.
