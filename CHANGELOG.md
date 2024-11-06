@@ -1,3 +1,10 @@
+## [4.0.3](https://github.com/asmyshlyaev177/state-in-url/compare/v4.0.2...v4.0.3) (2024-11-06)
+
+
+### Bug Fixes
+
+* **readme:** typo ([d4b0eed](https://github.com/asmyshlyaev177/state-in-url/commit/d4b0eedc42b4bb215f8b748506d314195fa7da61))
+
 ## [4.0.2](https://github.com/asmyshlyaev177/state-in-url/compare/v4.0.1...v4.0.2) (2024-11-03)
 
 
