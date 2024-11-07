@@ -25,7 +25,9 @@
     "react",
     "NextJS",
     "Next.js",
-    "nuqs alternative"
+    "nuqs alternative",
+    "query params parser",
+    "query params parsing"
   ],
   "repository": {
     "type": "git",
