@@ -1,3 +1,10 @@
+## [4.0.4](https://github.com/asmyshlyaev177/state-in-url/compare/v4.0.3...v4.0.4) (2024-11-07)
+
+
+### Bug Fixes
+
+* minor refactor ([7a10939](https://github.com/asmyshlyaev177/state-in-url/commit/7a109397d78aed14b88c618be4377849307c9aa8))
+
 ## [4.0.3](https://github.com/asmyshlyaev177/state-in-url/compare/v4.0.2...v4.0.3) (2024-11-06)
 
 
