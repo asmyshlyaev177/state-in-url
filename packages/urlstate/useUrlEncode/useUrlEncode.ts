@@ -25,10 +25,7 @@ import { type JSONCompatible, typeOf } from "../utils";
  */
 export function useUrlEncode<T extends JSONCompatible>(stateShape: T) {
   const stringify = React.useCallback(
-    function (
-      state: typeof stateShape,
-      paramsToKeep?: string | URLSearchParams,
-    ): string {
+    (state: typeof stateShape, paramsToKeep?: string | URLSearchParams) => {
       return typeOf(state) === "object"
         ? encodeState(state, stateShape, paramsToKeep)
         : "";
@@ -37,9 +34,8 @@ export function useUrlEncode<T extends JSONCompatible>(stateShape: T) {
   );
 
   const parse = React.useCallback(
-    function (strOrSearchParams: string | URLSearchParams) {
-      return decodeState(strOrSearchParams, stateShape) as typeof stateShape;
-    },
+    (strOrSearchParams: string | URLSearchParams) =>
+      decodeState(strOrSearchParams, stateShape) as typeof stateShape,
     [stateShape],
   );
 

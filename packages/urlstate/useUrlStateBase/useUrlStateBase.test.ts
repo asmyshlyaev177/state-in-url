@@ -225,7 +225,7 @@ describe('useUrlStateBase', () => {
           result.current.updateUrl({ ...shape, num: 50 });
         });
 
-        await jest.runAllTimersAsync();
+        await new Promise(process.nextTick);
 
         expect(result.current.state).toStrictEqual({ ...shape, num: 50 });
         expect(router.push).toHaveBeenCalledTimes(1);
@@ -240,7 +240,7 @@ describe('useUrlStateBase', () => {
           result.current.updateUrl({ num: 50 });
         });
 
-        await jest.runAllTimersAsync();
+        await new Promise(process.nextTick);
 
         expect(result.current.state).toStrictEqual({ ...shape, num: 50 });
         expect(router.push).toHaveBeenCalledTimes(1);
@@ -258,7 +258,7 @@ describe('useUrlStateBase', () => {
           result.current.updateUrl();
         });
 
-        await jest.runAllTimersAsync();
+        await new Promise(process.nextTick);
 
         expect(result.current.state).toStrictEqual({ ...shape, num: 50 });
         expect(router.push).toHaveBeenCalledTimes(1);
@@ -274,7 +274,7 @@ describe('useUrlStateBase', () => {
         result.current.updateUrl((curr) => ({ ...curr, num: 50 }));
       });
 
-      await jest.runAllTimersAsync();
+      await new Promise(process.nextTick);
 
       expect(result.current.state).toStrictEqual({ ...shape, num: 50 });
       expect(router.push).toHaveBeenCalledTimes(1);
@@ -309,7 +309,7 @@ describe('useUrlStateBase', () => {
         result.current.updateUrl(newState);
       });
 
-      await jest.runAllTimersAsync();
+      await new Promise(process.nextTick);
 
       expect(router.push).toHaveBeenCalledTimes(1);
       expect(router.push).toHaveBeenNthCalledWith(1, `/?num=55${hash}`, {});
@@ -328,7 +328,7 @@ describe('useUrlStateBase', () => {
         });
       });
 
-      await jest.runAllTimersAsync();
+      await new Promise(process.nextTick);
 
       expect(result.current.state).toStrictEqual(newState);
       expect(router.replace).toHaveBeenCalledTimes(1);

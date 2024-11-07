@@ -63,13 +63,8 @@ export function useUrlState<T extends JSONCompatible>({
   );
 
   const updateUrl = React.useCallback(
-    (
-      value?: Parameters<typeof updateUrlBase>[0],
-      options?: NavigateOptions,
-    ) => {
-      const opts = { ...defaultOpts, ...initOpts, ...options };
-      updateUrlBase(value, opts);
-    },
+    (value?: Parameters<typeof updateUrlBase>[0], options?: NavigateOptions) =>
+      updateUrlBase(value, { ...defaultOpts, ...initOpts, ...options }),
     [initOpts],
   );
 

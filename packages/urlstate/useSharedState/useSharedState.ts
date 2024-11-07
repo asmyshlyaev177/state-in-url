@@ -60,9 +60,7 @@ export function useSharedState<T extends JSONCompatible>(
       const newVal = isFunc ? value(curr) : { ...curr, ...value };
       if (isEqual(curr, newVal)) return void 0;
       stateMap.set(stateShape.current, newVal);
-      subscribers.get(stateShape.current).forEach((sub) => {
-        sub();
-      });
+      subscribers.get(stateShape.current).forEach((sub) => sub());
     },
     [],
   );
@@ -79,9 +77,10 @@ export function useSharedState<T extends JSONCompatible>(
   }, []);
 
   // get state without deps
-  const getState = React.useCallback(() => {
-    return stateMap.get(stateShape.current) || stateShape.current;
-  }, []);
+  const getState = React.useCallback(
+    () => stateMap.get(stateShape.current) || stateShape.current,
+    [],
+  );
 
   return { state, getState, setState };
 }

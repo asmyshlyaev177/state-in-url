@@ -1,4 +1,4 @@
-import { getParams, typeOf, assignValue } from './utils';
+import { getParams, typeOf, assignValue, filterUnknownParamsClient } from './utils';
 
 describe('typeOf', () => {
   it('string', () => {
@@ -128,3 +128,69 @@ describe('assignValue', () => {
 })
 
 const clone = (obj: object) => JSON.parse(JSON.stringify(obj))
+
+describe('filterUnknownParamsClient', () => {
+  afterAll(() => {
+    jest.resetAllMocks()
+  })
+
+  it('should include only the keys that exist in the shape', () => {
+    const originalLocation = window.location;
+    jest.spyOn(window, 'location', 'get').mockImplementation(() => ({
+      ...originalLocation,
+      search: "?foo=bar&baz=qux",
+    }));
+    const result = filterUnknownParamsClient({ foo: '', dummy: '' });
+    expect(result).toBe("foo=bar");
+  });
+
+  it('should return an empty string if no keys match the shape', () => {
+    const originalLocation = window.location;
+    jest.spyOn(window, 'location', 'get').mockImplementation(() => ({
+      ...originalLocation,
+      search: "?foo=bar&baz=qux",
+    }));
+    const result = filterUnknownParamsClient({ noKey: '' });
+    expect(result).toBe("");
+  });
+
+  it('should handle an empty URL search string returning an empty string', () => {
+    const originalLocation = window.location;
+    jest.spyOn(window, 'location', 'get').mockImplementation(() => ({
+      ...originalLocation,
+      search: "",
+    }));
+    const result = filterUnknownParamsClient({ someKey: '' });
+    expect(result).toBe("");
+  });
+
+  it('should handle an empty shape returning an empty string', () => {
+    const originalLocation = window.location;
+    jest.spyOn(window, 'location', 'get').mockImplementation(() => ({
+      ...originalLocation,
+      search: "?foo=bar&baz=qux",
+    }));
+    const result = filterUnknownParamsClient({});
+    expect(result).toBe("");
+  });
+
+  it('should handle special characters correctly', () => {
+    const originalLocation = window.location;
+    jest.spyOn(window, 'location', 'get').mockImplementation(() => ({
+      ...originalLocation,
+      search: "?foo=bar%20baz&baz=qux",
+    }));
+    const result = filterUnknownParamsClient({ foo: '' });
+    expect(result).toBe("foo=bar+baz");
+  });
+
+  it('should manage repeated keys and take the last one', () => {
+    const originalLocation = window.location;
+    jest.spyOn(window, 'location', 'get').mockImplementation(() => ({
+      ...originalLocation,
+      search: "?foo=first&foo=second",
+    }));
+    const result = filterUnknownParamsClient({ foo: '' });
+    expect(result).toBe("foo=second");
+  });
+});
