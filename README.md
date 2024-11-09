@@ -562,8 +562,9 @@ See [Contributing doc](CONTRIBUTING.md)
 ## Roadmap
 
 - [x] hook for `Next.js`
-- [x] hook for 'react-router`
-- [ ] hook for 'remix`
+- [x] hook for `react-router`
+- [ ] hook for `remix`
+- [ ] hook for `astro`
 - [ ] hook for store state in hash ?
 
 ## Contact & Support
