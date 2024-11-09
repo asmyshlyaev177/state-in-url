@@ -40,12 +40,6 @@ export const Form = ({
 
     // Just to test ts types
     if (urlState?.tags?.length === 10) {
-      // @ts-expect-error should be readonly
-      urlState.age = 18;
-      // @ts-expect-error should be readonly
-      urlState.tags[0].value = { text: 'jjj', time: new Date() };
-      // @ts-expect-error should be readonly
-      urlState.tags[0].value.text = 'jjj';
       setState(urlState);
       setState((st) => st);
       setState((st) => ({ ...st, age: 18 }));

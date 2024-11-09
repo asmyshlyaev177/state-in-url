@@ -15,7 +15,8 @@ A custom React hook to create custom `useUrlState` hooks.
 ### Returns:
 
 An object containing:
-- `state: object` - The current state (readonly).
+
+- `state: object` - The current state.
 - `getState: Function` - Function to get state.
 - `updateState: Function` - Function to update the state without updating the URL.
 - `updateUrl: Function` - Function to update both the state and the URL.

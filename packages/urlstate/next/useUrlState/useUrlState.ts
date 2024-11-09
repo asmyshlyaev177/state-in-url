@@ -5,7 +5,6 @@ import React from "react";
 import { parseSPObj } from "../../parseSPObj";
 import { useUrlStateBase } from "../../useUrlStateBase";
 import {
-  type DeepReadonly,
   filterUnknownParams,
   filterUnknownParamsClient,
   isSSR,
@@ -115,11 +114,11 @@ export function useUrlState<T extends JSONCompatible>({
      * @deprecated use `setUrl`
      */
     updateUrl,
-    urlState: state as DeepReadonly<typeof state>,
+    urlState: state,
     /**
      * @deprecated use `urlState`
      */
-    state: state as DeepReadonly<typeof state>,
+    state,
     getState,
   };
 }

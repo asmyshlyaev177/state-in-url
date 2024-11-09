@@ -16,7 +16,8 @@ A custom React hook that manages state and synchronizes it with URL search param
 ### Returns:
 
 An object containing:
-- `urlState: object` - The current state (readonly).
+
+- `urlState: object` - The current state.
 - `setState: Function` - Function to update the state without updating the URL.
 - `setUrl: Function` - Function to update both the state and the URL.
 

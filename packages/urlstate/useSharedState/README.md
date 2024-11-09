@@ -14,7 +14,8 @@ A custom React hook that manages shared state across components.
 ### Returns:
 
 An object containing:
-- `state: T` - The current state (readonly).
+
+- `state: T` - The current state.
 - `getState: () => T` - Function to get the current state.
 - `setState: T | Partial<T> | (T) => void` - Function to update the state.
 
@@ -42,7 +43,7 @@ Updates the shared state.
 
 ### Parameters:
 
-- `value: T | DeepReadonly<T> | ((currState: T) => T)` - New state value or a function that receives the current state and returns the new state.
+- `value: T | ((currState: T) => T)` - New state value or a function that receives the current state and returns the new state.
 
 ## `getState`
 

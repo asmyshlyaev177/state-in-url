@@ -2,12 +2,7 @@ import React from "react";
 
 import { stateMap, subscribers } from "../subscribers";
 import { useInsertionEffect } from "../useInsertionEffect";
-import {
-  type DeepReadonly,
-  isEqual,
-  isSSR,
-  type JSONCompatible,
-} from "../utils";
+import { isEqual, isSSR, type JSONCompatible } from "../utils";
 
 /**
  * Custom React hook for sharing state between unrelated components.
@@ -51,7 +46,7 @@ export function useSharedState<T extends JSONCompatible>(
   const setState = React.useCallback(
     (
       value:
-        | (Partial<T> | Partial<DeepReadonly<T>>)
+        | Partial<T>
         | ((currState: typeof stateShape.current) => typeof stateShape.current),
     ): void => {
       const curr = stateMap.get(stateShape.current);
