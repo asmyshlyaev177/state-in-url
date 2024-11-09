@@ -34,7 +34,7 @@ English | [한국어](./README.KO.md) | [简体中文](./README.CN.md)
 
 <h4 align="center">Don't hesitate to open an issue if you found a bug, or for requesting features</h4>
 
-
+![Demo-gif](https://github.com/asmyshlyaev177/state-in-url/blob/master/assets/Demo-gif.gif)
 
 <a href="https://state-in-url.dev" target="_blank">DEMO</a> |
 <a href="https://state-in-url.netlify.app/" target="_blank">DEMO2</a>
