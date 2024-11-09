@@ -103,6 +103,7 @@
     "reinstall": "npm run cleanup && npm install",
     "setup": "playwright install --with-deps",
     "prepack": "npm run build && cp package.json dist/package.json && npm run build:demo",
+    "pin-gh-deps": "pin-github-action .github/workflows/tests.yml",
     "prepare": "npx husky"
   },
   "wireit": {
@@ -363,6 +364,7 @@
     "jest-environment-jsdom": "^29.7.0",
     "lint-staged": "^15.2.9",
     "only-allow": "^1.2.1",
+    "pin-github-action": "^1.9.1",
     "playwright": "^1.48.2",
     "prettier": "^3.2.5",
     "prettier-plugin-tailwindcss": "^0.6.8",

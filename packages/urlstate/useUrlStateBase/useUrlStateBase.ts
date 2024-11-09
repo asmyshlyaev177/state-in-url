@@ -4,7 +4,6 @@ import { useInsertionEffect } from "../useInsertionEffect";
 import { useSharedState } from "../useSharedState";
 import { useUrlEncode } from "../useUrlEncode";
 import {
-  type DeepReadonly,
   filterUnknownParamsClient,
   type JSONCompatible,
   type Router,
@@ -110,7 +109,7 @@ export function useUrlStateBase<T extends JSONCompatible>(
   return {
     updateState: setState,
     updateUrl,
-    state: state as DeepReadonly<typeof state>,
+    state,
     getState,
   };
 }

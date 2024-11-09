@@ -9,7 +9,6 @@ import { parseSPObj } from "../../parseSPObj";
 import { useUrlStateBase } from "../../useUrlStateBase";
 import {
   assignValue,
-  type DeepReadonly,
   filterUnknownParams,
   filterUnknownParamsClient,
   type JSONCompatible,
@@ -121,11 +120,14 @@ export function useUrlState<T extends JSONCompatible>({
      * @deprecated use `setUrl`
      */
     updateUrl,
-    urlState: state as DeepReadonly<typeof state>,
+    /**
+     * State object. Don't mutate directly, use `setState` or `setUrl`
+     */
+    urlState: state,
     /**
      * @deprecated use `urlState`
      */
-    state: state as DeepReadonly<typeof state>,
+    state,
     getState,
   };
 }

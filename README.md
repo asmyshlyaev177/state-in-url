@@ -167,9 +167,6 @@ function MyComponent() {
   // can pass `searchParams` from server components
   const { urlState, setUrl, setState } = useUrlState({ defaultState: userState });
 
-  // won't let you to accidently mutate state directly, requires TS
-  // urlState.name = 'John' // <- error
-
   return (
     <div>
       <input value={urlState.name}

@@ -49,16 +49,6 @@ export type JSONCompatible = {
   [prop: string]: JSON | JSON[];
 };
 
-// Always will be some compromise between how strict checks are and readability
-export type DeepReadonly<T> =
-  T extends Map<infer K, infer V>
-    ? ReadonlyMap<DeepReadonly<K>, DeepReadonly<V>>
-    : T extends Set<infer S>
-      ? ReadonlySet<DeepReadonly<S>>
-      : T extends object
-        ? { readonly [K in keyof T]: DeepReadonly<T[K]> }
-        : T;
-
 export const getParams = (strOrSearchParams?: string | URLSearchParams) =>
   new URLSearchParams(
     typeof strOrSearchParams === "string"
