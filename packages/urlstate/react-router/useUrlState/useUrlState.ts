@@ -120,6 +120,9 @@ export function useUrlState<T extends JSONCompatible>({
      * @deprecated use `setUrl`
      */
     updateUrl,
+    /**
+     * State object. Don't mutate directly, use `setState` or `setUrl`
+     */
     urlState: state,
     /**
      * @deprecated use `urlState`
