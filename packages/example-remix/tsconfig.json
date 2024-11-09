@@ -1,0 +1,39 @@
+{
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    "**/.server/**/*.ts",
+    "**/.server/**/*.tsx",
+    "**/.client/**/*.ts",
+    "**/.client/**/*.tsx",
+    "../shared"
+  ],
+  "compilerOptions": {
+    "lib": ["DOM", "DOM.Iterable", "ES2022"],
+    "types": ["@remix-run/node", "vite/client"],
+    "isolatedModules": true,
+    "esModuleInterop": true,
+    "jsx": "react-jsx",
+    "moduleResolution": "Bundler",
+    "resolveJsonModule": true,
+    "target": "ES2022",
+    "strict": true,
+    "allowJs": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "baseUrl": ".",
+    "paths": {
+      "~/*": ["./app/*"],
+      "shared/tailwind": ["packages/shared/tailwind.ts"],
+      "shared/styles.css": ["packages/shared/styles.css"],
+      "shared/vite-config": ["packages/shared/vite-config.ts"],
+      "shared/components/*": ["packages/shared/components/*"],
+      "shared/components": ["packages/shared/components/index.ts"],
+      "shared/*": ["packages/shared/*"],
+      "shared": ["packages/shared"]
+    },
+
+    // Remix takes care of building everything in `remix build`.
+    "noEmit": true
+  }
+}

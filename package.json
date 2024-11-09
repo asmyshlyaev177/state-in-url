@@ -30,7 +30,8 @@
     "packages/example-nextjs14",
     "packages/example-nextjs15",
     "packages/example-react",
-    "packages/example-react-router6"
+    "packages/example-react-router6",
+    "packages/example-remix"
   ],
   "files": [
     "dist"
@@ -152,7 +153,8 @@
         "dev:lib",
         "dev:react",
         "dev:router6",
-        "dev:nextjs15"
+        "dev:nextjs15",
+        "dev:remix"
       ],
       "service": {
         "readyWhen": {
@@ -184,6 +186,10 @@
       "command": "cd packages/example-nextjs15 && npm run dev --turbo",
       "service": true
     },
+    "dev:remix": {
+      "command": "cd packages/example-remix && npm run dev",
+      "service": true
+    },
     "build:next15": {
       "command": "cd packages/example-nextjs15 && npm run build",
       "dependencies": [
@@ -192,6 +198,12 @@
     },
     "build:router6": {
       "command": "cd packages/example-react-router6 && npm run build",
+      "dependencies": [
+        "build"
+      ]
+    },
+    "build:remix": {
+      "command": "cd packages/example-remix && npm run build",
       "dependencies": [
         "build"
       ]
@@ -235,6 +247,17 @@
       "command": "npx vite preview --port 5181 packages/example-react-router6",
       "service": true
     },
+    "start:remix": {
+      "command": "packages/example-remix && npm run start",
+      "dependencies": [
+        "build:remix"
+      ],
+      "service": true
+    },
+    "start:remix:ci": {
+      "command": "packages/example-remix && npm run start",
+      "service": true
+    },
     "start:demo15": {
       "dependencies": [
         "build:next15"
@@ -251,7 +274,8 @@
       "dependencies": [
         "start:demo",
         "start:react",
-        "start:router6"
+        "start:router6",
+        "start:remix"
       ],
       "service": true
     },
@@ -260,7 +284,8 @@
       "dependencies": [
         "start:demo:ci",
         "start:react:ci",
-        "start:router6:ci"
+        "start:router6:ci",
+        "start:remix:ci"
       ],
       "service": true
     },
@@ -274,7 +299,8 @@
         "build:react",
         "build:demo",
         "build:next15",
-        "build:router6"
+        "build:router6",
+        "build:remix"
       ]
     },
     "build:react": {
