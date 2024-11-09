@@ -1,4 +1,4 @@
-import { type DeepReadonly, type JSONCompatible } from "../utils";
+import { type JSONCompatible } from "../utils";
 /**
  * Custom React hook for sharing state between unrelated components.
  *
@@ -20,5 +20,5 @@ import { type DeepReadonly, type JSONCompatible } from "../utils";
 export declare function useSharedState<T extends JSONCompatible>(defaultState: T, _getInitial?: () => T): {
     state: T;
     getState: () => T;
-    setState: (value: (Partial<T> | Partial<DeepReadonly<T>>) | ((currState: T) => T)) => void;
+    setState: (value: Partial<T> | ((currState: T) => T)) => void;
 };

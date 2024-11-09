@@ -1,5 +1,5 @@
 import { type NavigateOptions } from "react-router-dom";
-import { type DeepReadonly, type JSONCompatible } from "../../utils";
+import { type JSONCompatible } from "../../utils";
 /**
  * React-router hook. Returns `urlState`, `setState`, and `setUrl` functions
  *
@@ -35,11 +35,11 @@ export declare function useUrlState<T extends JSONCompatible>({ defaultState, us
      *
      *  * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/master/packages/urlstate/react-router/useUrlState#updatestate}
      */
-    setState: (value: Partial<T> | Partial<DeepReadonly<T>> | ((currState: T) => T)) => void;
+    setState: (value: Partial<T> | ((currState: T) => T)) => void;
     /**
      * @deprecated use `setState`
      */
-    updateState: (value: Partial<T> | Partial<DeepReadonly<T>> | ((currState: T) => T)) => void;
+    updateState: (value: Partial<T> | ((currState: T) => T)) => void;
     /**
      * * Example:
      * ```ts
@@ -52,15 +52,18 @@ export declare function useUrlState<T extends JSONCompatible>({ defaultState, us
      *
      *  * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/master/packages/urlstate/react-router/useUrlState#updateurl}
      */
-    setUrl: (value?: Parameters<(value?: Partial<T> | Partial<DeepReadonly<T>> | ((currState: T) => T) | undefined, options?: import("../../useUrlStateBase/useUrlStateBase").Options) => void>[0], options?: NavigateOptions) => void;
+    setUrl: (value?: Parameters<(value?: Partial<T> | ((currState: T) => T) | undefined, options?: import("../../useUrlStateBase/useUrlStateBase").Options) => void>[0], options?: NavigateOptions) => void;
     /**
      * @deprecated use `setUrl`
      */
-    updateUrl: (value?: Parameters<(value?: Partial<T> | Partial<DeepReadonly<T>> | ((currState: T) => T) | undefined, options?: import("../../useUrlStateBase/useUrlStateBase").Options) => void>[0], options?: NavigateOptions) => void;
-    urlState: DeepReadonly<DeepReadonly<T>>;
+    updateUrl: (value?: Parameters<(value?: Partial<T> | ((currState: T) => T) | undefined, options?: import("../../useUrlStateBase/useUrlStateBase").Options) => void>[0], options?: NavigateOptions) => void;
+    /**
+     * State object. Don't mutate directly, use `setState` or `setUrl`
+     */
+    urlState: T;
     /**
      * @deprecated use `urlState`
      */
-    state: DeepReadonly<DeepReadonly<T>>;
+    state: T;
     getState: () => T;
 };

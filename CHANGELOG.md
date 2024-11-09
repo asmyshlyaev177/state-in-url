@@ -1,3 +1,10 @@
+## [4.0.5](https://github.com/asmyshlyaev177/state-in-url/compare/v4.0.4...v4.0.5) (2024-11-09)
+
+
+### Bug Fixes
+
+* return urlState as normal type, not readonly ([a0aa6dd](https://github.com/asmyshlyaev177/state-in-url/commit/a0aa6dd458c120a4457ceb1e4c29c7b5f228705e))
+
 ## [4.0.4](https://github.com/asmyshlyaev177/state-in-url/compare/v4.0.3...v4.0.4) (2024-11-07)
 
 

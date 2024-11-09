@@ -1,5 +1,5 @@
 import { useUrlEncode } from "../useUrlEncode";
-import { type DeepReadonly, type JSONCompatible, type Router } from "../utils";
+import { type JSONCompatible, type Router } from "../utils";
 /**
  * A custom React hook to create custom hooks.
  *
@@ -24,9 +24,9 @@ import { type DeepReadonly, type JSONCompatible, type Router } from "../utils";
 export declare function useUrlStateBase<T extends JSONCompatible>(defaultState: T, router: Router, getInitialState?: ({ parse, }: {
     parse: ReturnType<typeof useUrlEncode<T>>["parse"];
 }) => T): {
-    updateState: (value: Partial<T> | Partial<DeepReadonly<T>> | ((currState: T) => T)) => void;
-    updateUrl: (value?: Parameters<(value: Partial<T> | Partial<DeepReadonly<T>> | ((currState: T) => T)) => void>[0], options?: Options) => void;
-    state: DeepReadonly<T>;
+    updateState: (value: Partial<T> | ((currState: T) => T)) => void;
+    updateUrl: (value?: Parameters<(value: Partial<T> | ((currState: T) => T)) => void>[0], options?: Options) => void;
+    state: T;
     getState: () => T;
 };
 interface OptionsObject {

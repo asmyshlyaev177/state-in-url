@@ -1,5 +1,5 @@
 import { useRouter } from "next/navigation";
-import { type DeepReadonly, type JSONCompatible } from "../../utils";
+import { type JSONCompatible } from "../../utils";
 /**
  * NextJS hook. Returns `urlState`, `setState`, and `setUrl` functions
  *
@@ -40,11 +40,11 @@ export declare function useUrlState<T extends JSONCompatible>({ defaultState, se
      *
      *  * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/master/packages/urlstate/next/useUrlState#updatestate}
      */
-    setState: (value: Partial<T> | Partial<DeepReadonly<T>> | ((currState: T) => T)) => void;
+    setState: (value: Partial<T> | ((currState: T) => T)) => void;
     /**
      * @deprecated use `setState`
      */
-    updateState: (value: Partial<T> | Partial<DeepReadonly<T>> | ((currState: T) => T)) => void;
+    updateState: (value: Partial<T> | ((currState: T) => T)) => void;
     /**
      * * Example:
      * ```ts
@@ -55,16 +55,19 @@ export declare function useUrlState<T extends JSONCompatible>({ defaultState, se
      *
      *  * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/master/packages/urlstate/next/useUrlState#updateurl}
      */
-    setUrl: (value?: Parameters<(value?: Partial<T> | Partial<DeepReadonly<T>> | ((currState: T) => T) | undefined, options?: import("../../useUrlStateBase/useUrlStateBase").Options) => void>[0], options?: Options) => void;
+    setUrl: (value?: Parameters<(value?: Partial<T> | ((currState: T) => T) | undefined, options?: import("../../useUrlStateBase/useUrlStateBase").Options) => void>[0], options?: Options) => void;
     /**
      * @deprecated use `setUrl`
      */
-    updateUrl: (value?: Parameters<(value?: Partial<T> | Partial<DeepReadonly<T>> | ((currState: T) => T) | undefined, options?: import("../../useUrlStateBase/useUrlStateBase").Options) => void>[0], options?: Options) => void;
-    urlState: DeepReadonly<DeepReadonly<T>>;
+    updateUrl: (value?: Parameters<(value?: Partial<T> | ((currState: T) => T) | undefined, options?: import("../../useUrlStateBase/useUrlStateBase").Options) => void>[0], options?: Options) => void;
+    /**
+     * State object. Don't mutate directly, use `setState` or `setUrl`
+     */
+    urlState: T;
     /**
      * @deprecated use `urlState`
      */
-    state: DeepReadonly<DeepReadonly<T>>;
+    state: T;
     getState: () => T;
 };
 type Router = ReturnType<typeof useRouter>;
