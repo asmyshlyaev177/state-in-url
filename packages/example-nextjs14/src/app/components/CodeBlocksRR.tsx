@@ -1,4 +1,5 @@
 import { File } from './File';
+import { CodeBlockForm } from './CodeBlockForm';
 
 export const CodeBlocksRR = () => {
   return (
@@ -7,22 +8,7 @@ export const CodeBlocksRR = () => {
       <div className="text-center text-xl mt-2">
         1. Define the state
       </div>
-      <File
-        name="state"
-        content={`export const form: Form = {
-  name: '',
-  age: undefined,
-  agree_to_terms: false,
-  tags: [],
-};
-
-type Form = {
-  name: string;
-  age?: number;
-  agree_to_terms: boolean;
-  tags: { id: string; value: { text: string; time: Date } }[];
-};`}
-      />
+      <CodeBlockForm />
 
       <div className="text-center text-xl mt-2">
         2. Use it in any components

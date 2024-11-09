@@ -150,6 +150,7 @@ All components that use the same `state` object are automatically synchronized.
    // Only parameters with value different from default will go to the url.
    export const userState: UserState = { name: '', age: 0 }
 
+   // use `Type` not `Interface`!
    type UserState = { name: string, age: number }
    ```
 
