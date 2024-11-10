@@ -7,6 +7,7 @@ dist
 /blob-report/
 /playwright/.cache/
 .wireit
+/packages/example-remix/build
 /packages/example-nextjs14/public/react.html
 /packages/example-nextjs14/public/react-router.html
 .vercel
