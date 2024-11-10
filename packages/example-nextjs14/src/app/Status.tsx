@@ -33,7 +33,14 @@ export const Status = ({
           break-all whitespace-pre-wrap"
           data-testid="parsed"
         >
-          {JSON.stringify(urlState, null, 2)}
+          <div>{'{'}</div>
+            <div className="ml-4">
+              <div><b>name:</b> {urlState.name}</div>
+              <div><b>age:</b> {urlState.age}</div>
+              <div><b>agree:</b> {JSON.stringify(urlState.agree_to_terms)}</div>
+              <div><b>tags:</b> {JSON.stringify(urlState.tags, null, 2)}</div>
+            </div>
+          <div>{'}'}</div>
         </pre>
       </div>
       <SourceCodeBtn

@@ -102,7 +102,7 @@
           @apply flex flex-col md:flex-row gap-8 relative;
 
           & > .form {
-            @apply flex max-h-[550px] flex-col md:flex-row gap-8 basis-1/2;
+            @apply flex max-h-[550px] flex-col md:flex-row gap-8 basis-[40%];
           }
 
           & > .status {
