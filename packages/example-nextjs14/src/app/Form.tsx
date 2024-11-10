@@ -15,8 +15,7 @@ export const Form = ({
   searchParams?: object;
   ghLink: string
 }) => {
-  const { urlState, setUrl } = useUrlState({
-    defaultState: form,
+  const { urlState, setUrl } = useUrlState(form, {
     searchParams,
   });
 

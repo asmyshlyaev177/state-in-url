@@ -1,6 +1,6 @@
 import { File } from './File';
 
-export const CodeBlockForm = () => {
+export const CodeBlockState = () => {
   return (
       <File
         name="state"

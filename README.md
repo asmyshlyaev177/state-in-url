@@ -20,6 +20,7 @@ English | [한국어](./README.KO.md) | [简体中文](./README.CN.md)
 [![npm](https://img.shields.io/npm/v/state-in-url.svg)](https://www.npmjs.com/package/state-in-url)
 ![Tests](https://github.com/asmyshlyaev177/state-in-url/actions/workflows/tests.yml/badge.svg?branch=master)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/73be54068b7f41b0b74a252579ac09ec)](https://app.codacy.com/gh/asmyshlyaev177/state-in-url/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
+[![Codacy Badge](https://app.codacy.com/project/badge/Coverage/73be54068b7f41b0b74a252579ac09ec)](https://app.codacy.com/gh/asmyshlyaev177/state-in-url/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_coverage)
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](https://github.com/asmyshlyaev177/state-in-url/)
 [![semantic-release: angular](https://img.shields.io/badge/semantic--release-angular-e10079?logo=semantic-release)]([https://github.com/semantic-release/semantic-release](https://github.com/asmyshlyaev177/state-in-url))
 ![npm bundle size (minified + gzip)](https://img.shields.io/bundlephobia/minzip/state-in-url.svg)
@@ -165,7 +166,7 @@ import { userState } from './userState';
 function MyComponent() {
   // can pass `replace` arg, it's control will `setUrl` will use `rounter.push` or `router.replace`, default replace=true
   // can pass `searchParams` from server components
-  const { urlState, setUrl, setState } = useUrlState({ defaultState: userState });
+  const { urlState, setUrl, setState } = useUrlState(userState);
 
   return (
     <div>
@@ -221,7 +222,7 @@ import { form } from './form';
 
 function TagsComponent() {
   // `urlState` will infer from Form type!
-  const { urlState, setUrl } = useUrlState({ defaultState: form });
+  const { urlState, setUrl } = useUrlState(form);
 
   const onChangeTags = React.useCallback(
     (tag: (typeof tags)[number]) => {
@@ -320,7 +321,7 @@ import { useUrlState } from 'state-in-url/next';
 import { form } from './form';
 
 const Form = ({ searchParams }: { searchParams: object }) => {
-  const { urlState, setState, setUrl } = useUrlState({ defaultState: form, searchParams });
+  const { urlState, setState, setUrl } = useUrlState(form, { searchParams });
 }
 ```
 
@@ -426,7 +427,7 @@ import { useUrlState } from 'state-in-url/react-router';
 import { form } from './form';
 
 function TagsComponent() {
-  const { urlState, setUrl, setState } = useUrlState({ defaultState: form });
+  const { urlState, setUrl, setState } = useUrlState(form);
 
   const onChangeTags = React.useCallback(
     (tag: (typeof tags)[number]) => {
@@ -540,7 +541,7 @@ const userState = {
 };
 
 export const useUserState = () => {
-  const { urlState, setUrl } = useUrlState({ defaultState: userState });
+  const { urlState, setUrl } = useUrlState(userState);
 
   return { userState: urlState, setUserState: setUrl };;
 }

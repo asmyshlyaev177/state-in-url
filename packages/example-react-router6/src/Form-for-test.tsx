@@ -6,8 +6,7 @@ import { useUrlState } from "state-in-url/react-router";
 
 export const Form = ({ className }: { className?: string }) => {
   const [sp] = useSearchParams();
-  const { urlState, setState, setUrl } = useUrlState({
-    defaultState: form,
+  const { urlState, setState, setUrl } = useUrlState(form, {
     replace: sp.get("replace") === "false" ? false : true,
   });
 

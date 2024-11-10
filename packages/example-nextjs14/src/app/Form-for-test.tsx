@@ -14,11 +14,11 @@ export const Form = ({
   delay?: number;
 }) => {
   const sp = useSearchParams();
-  const { urlState, setState, setUrl } = useUrlState({
-    defaultState: form,
+  const { urlState, setState, setUrl } = useUrlState(form, {
     searchParams,
     replace: sp.get('replace') === 'false' ? false : true,
   });
+
 
   React.useEffect(() => {
     if (urlState?.tags?.length) {

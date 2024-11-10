@@ -4,7 +4,7 @@ import { form } from 'shared/form';
 import { useUrlState } from 'state-in-url/next';
 
 const Status = ({ className, sp }: { className?: string; sp?: object }) => {
-  const { state } = useUrlState({ defaultState: form, searchParams: sp });
+  const { urlState } = useUrlState(form, { searchParams: sp });
 
   return (
     <div className={className}>
@@ -18,7 +18,7 @@ const Status = ({ className, sp }: { className?: string; sp?: object }) => {
           className="h-[330px] text-sm overflow-y-scrolltext-gray-600 bg-white p-4 rounded-md shadow-inner break-all whitespace-pre-wrap"
           data-testid="parsed"
         >
-          {JSON.stringify(state, null, 2)}
+          {JSON.stringify(urlState, null, 2)}
         </pre>
       </div>
     </div>

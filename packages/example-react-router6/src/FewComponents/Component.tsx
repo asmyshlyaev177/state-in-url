@@ -5,8 +5,7 @@ import { useUrlState } from "state-in-url/react-router";
 import { stateShape } from "./stateShape";
 
 export const Component = () => {
-  const { urlState, setUrl } = useUrlState({
-    defaultState: stateShape,
+  const { urlState, setUrl } = useUrlState(stateShape, {
     replace: false,
   });
 

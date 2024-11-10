@@ -103,27 +103,25 @@ describe('assignValue', () => {
   }
 
   it('should assign a value', () => {
-    expect(clone(assignValue(shape, { a1: 2 }, { ...shape, a1: 3 }))).toStrictEqual(clone({
+    expect(clone(assignValue(shape, { ...shape, a1: 3 }))).toStrictEqual(clone({
         ...shape,
         a1: 3,
       }))
   })
 
   it('should return a new instance of object', () => {
-    const curr = structuredClone(shape)
     const newVal = {}
-    const result = assignValue(shape, curr, newVal)
+    const result = assignValue(shape, newVal)
     expect(result === shape).toBeFalsy()
-    expect(result === curr).toBeFalsy()
     expect(result === newVal).toBeFalsy()
   })
 
   it('should override curr value with newValue', () => {
-      expect(clone(assignValue(shape, { a1: 2 }, { a1: 3 }))).toStrictEqual(clone({ ...shape, a1: 3 }))
+      expect(clone(assignValue(shape, { a1: 3 }))).toStrictEqual(clone({ ...shape, a1: 3 }))
   })
 
   it('should use value from shape as default', () => {
-      expect(clone(assignValue(shape, { a1: 2 }, {}))).toStrictEqual(clone({ ...shape, a1: shape.a1 }))
+      expect(clone(assignValue(shape, {}))).toStrictEqual(clone({ ...shape, a1: shape.a1 }))
   })
 })
 

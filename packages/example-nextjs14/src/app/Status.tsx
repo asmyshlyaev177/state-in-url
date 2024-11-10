@@ -14,8 +14,7 @@ export const Status = ({
   sp?: object;
   ghLink: string;
 }) => {
-  const { state } = useUrlState({
-    defaultState: form,
+  const { urlState } = useUrlState(form, {
     searchParams: sp,
     replace: false,
   });
@@ -34,7 +33,7 @@ export const Status = ({
           break-all whitespace-pre-wrap"
           data-testid="parsed"
         >
-          {JSON.stringify(state, null, 2)}
+          {JSON.stringify(urlState, null, 2)}
         </pre>
       </div>
       <SourceCodeBtn
