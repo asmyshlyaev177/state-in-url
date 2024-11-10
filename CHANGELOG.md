@@ -1,3 +1,10 @@
+## [4.0.6](https://github.com/asmyshlyaev177/state-in-url/compare/v4.0.5...v4.0.6) (2024-11-10)
+
+
+### Bug Fixes
+
+* use first argument for `defaultState` and second as object with other options ([b896d5f](https://github.com/asmyshlyaev177/state-in-url/commit/b896d5f0bc7b33ba036612a5dada69315609fb2c))
+
 ## [4.0.5](https://github.com/asmyshlyaev177/state-in-url/compare/v4.0.4...v4.0.5) (2024-11-09)
 
 

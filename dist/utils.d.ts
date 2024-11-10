@@ -22,7 +22,7 @@ export type UnknownObj = object | {
 export declare const isEqual: (val1: unknown, val2: unknown) => boolean;
 export declare function filterUnknownParamsClient<T extends object>(shape: T): string;
 export declare function filterUnknownParams<T extends object>(shape: T, searchParams?: object): T;
-export declare function assignValue<T extends object>(shape: T, curr: Partial<T>, newVal: Partial<T>): T;
+export declare function assignValue<T extends object>(shape: T, newVal: Partial<T>): T;
 export interface Router {
     push: (href: string, opts: object) => void;
     replace: (href: string, opts: object) => void;
