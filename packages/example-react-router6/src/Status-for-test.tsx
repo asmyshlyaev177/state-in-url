@@ -3,7 +3,7 @@ import { form } from "shared/form";
 import { useUrlState } from "state-in-url/react-router";
 
 const Status = ({ className }: { className?: string }) => {
-  const { state } = useUrlState({ defaultState: form });
+  const { urlState } = useUrlState(form);
 
   return (
     <div className={className}>
@@ -17,7 +17,7 @@ const Status = ({ className }: { className?: string }) => {
           break-all whitespace-pre-wrap"
           data-testid="parsed"
         >
-          {JSON.stringify(state, null, 2)}
+          {JSON.stringify(urlState, null, 2)}
         </pre>
       </div>
     </div>

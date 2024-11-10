@@ -165,7 +165,7 @@ import { userState } from './userState';
 function MyComponent() {
   // can pass `replace` arg, it's control will `setUrl` will use `rounter.push` or `router.replace`, default replace=true
   // can pass `searchParams` from server components
-  const { urlState, setUrl, setState } = useUrlState({ defaultState: userState });
+  const { urlState, setUrl, setState } = useUrlState(userState);
 
   return (
     <div>
@@ -221,7 +221,7 @@ import { form } from './form';
 
 function TagsComponent() {
   // `urlState` will infer from Form type!
-  const { urlState, setUrl } = useUrlState({ defaultState: form });
+  const { urlState, setUrl } = useUrlState(form);
 
   const onChangeTags = React.useCallback(
     (tag: (typeof tags)[number]) => {
@@ -320,7 +320,7 @@ import { useUrlState } from 'state-in-url/next';
 import { form } from './form';
 
 const Form = ({ searchParams }: { searchParams: object }) => {
-  const { urlState, setState, setUrl } = useUrlState({ defaultState: form, searchParams });
+  const { urlState, setState, setUrl } = useUrlState(form, { searchParams });
 }
 ```
 
@@ -426,7 +426,7 @@ import { useUrlState } from 'state-in-url/react-router';
 import { form } from './form';
 
 function TagsComponent() {
-  const { urlState, setUrl, setState } = useUrlState({ defaultState: form });
+  const { urlState, setUrl, setState } = useUrlState(form);
 
   const onChangeTags = React.useCallback(
     (tag: (typeof tags)[number]) => {
@@ -540,7 +540,7 @@ const userState = {
 };
 
 export const useUserState = () => {
-  const { urlState, setUrl } = useUrlState({ defaultState: userState });
+  const { urlState, setUrl } = useUrlState(userState);
 
   return { userState: urlState, setUserState: setUrl };;
 }

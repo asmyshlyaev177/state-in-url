@@ -1,5 +1,5 @@
 import { File } from './File';
-import { CodeBlockForm } from './CodeBlockForm';
+import { CodeBlockState } from './CodeBlockState';
 
 export const CodeBlocks = () => {
   return (
@@ -8,7 +8,7 @@ export const CodeBlocks = () => {
       <div className="text-center text-xl mt-2">
         1. Define the state
       </div>
-      <CodeBlockForm />
+      <CodeBlockState />
 
       <div className="text-center text-xl mt-2">
         2. Use it in any components
@@ -23,7 +23,8 @@ import { form } from './form';
 export const ComponentA = () => {
   // \`useHistory\` force to use window.history for navigation,
   // no _rsc requests https://github.com/vercel/next.js/discussions/59167
-  const { urlState, setState, setUrl } = useUrlState({ defaultState: form, useHistory: true });// [!code highlight:1]
+  // see docs for all possible params https://github.com/asmyshlyaev177/state-in-url/tree/master/packages/urlstate/next/useUrlState
+  const { urlState, setState, setUrl } = useUrlState(form, { useHistory: true });// [!code highlight:1]
 
   return <>
     <input
@@ -48,7 +49,7 @@ import { form } from './form';
 
 // "searchParams" used to pass params from Server Components
 export const ComponentB = ({ searchParams }: { searchParams?: object }) => {
-  const { urlState } = useUrlState({ defaultState: form, searchParams });// [!code highlight:1]
+  const { urlState } = useUrlState(form, { searchParams });// [!code highlight:1]
 
 // [!code word:urlState]
   return <div>name: {urlState.name}</div>

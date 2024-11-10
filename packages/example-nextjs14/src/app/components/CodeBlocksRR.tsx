@@ -1,5 +1,5 @@
 import { File } from './File';
-import { CodeBlockForm } from './CodeBlockForm';
+import { CodeBlockState } from './CodeBlockState';
 
 export const CodeBlocksRR = () => {
   return (
@@ -8,7 +8,7 @@ export const CodeBlocksRR = () => {
       <div className="text-center text-xl mt-2">
         1. Define the state
       </div>
-      <CodeBlockForm />
+      <CodeBlockState />
 
       <div className="text-center text-xl mt-2">
         2. Use it in any components
@@ -19,7 +19,8 @@ export const CodeBlocksRR = () => {
 import { form } from './form';
 
 export const ComponentA = () => {
-  const { urlState, setUrl, setState } = useUrlState({ defaultState: form });// [!code highlight:1]
+  // see docs for all possible params https://github.com/asmyshlyaev177/state-in-url/tree/master/packages/urlstate/react-router/useUrlState
+  const { urlState, setUrl, setState } = useUrlState(form, { replace: true });// [!code highlight:1]
 
   return <>
     <input
@@ -42,7 +43,7 @@ export const ComponentA = () => {
 import { form } from './form';
 
 export const ComponentB = () => {
-  const { urlState } = useUrlState({ defaultState: form });// [!code highlight:1]
+  const { urlState } = useUrlState(form);// [!code highlight:1]
 
 // [!code word:urlState]
   return <div>name: {urlState.name}</div>

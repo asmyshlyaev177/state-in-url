@@ -5,8 +5,7 @@ import { useUrlState } from 'state-in-url/next';
 import { stateShape } from './state';
 
 export const Comp1 = ({ searchParams }: { searchParams?: object }) => {
-  const { state, updateUrl } = useUrlState({
-    defaultState: stateShape,
+  const { urlState, setUrl } = useUrlState(stateShape, {
     searchParams,
     replace: false,
   });
@@ -15,9 +14,9 @@ export const Comp1 = ({ searchParams }: { searchParams?: object }) => {
     <div className="flex gap-2">
       <h2>Per page select</h2>
       <select
-        value={state.perPage}
+        value={urlState.perPage}
         onChange={(ev) =>
-          updateUrl((curr) => ({ ...curr, perPage: +ev.target.value }))
+          setUrl((curr) => ({ ...curr, perPage: +ev.target.value }))
         }
         className="text-black"
         data-testid="select"
