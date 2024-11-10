@@ -1,3 +1,10 @@
+## [4.0.7](https://github.com/asmyshlyaev177/state-in-url/compare/v4.0.6...v4.0.7) (2024-11-10)
+
+
+### Bug Fixes
+
+* fix single quote encoding ([8e768b6](https://github.com/asmyshlyaev177/state-in-url/commit/8e768b63d6628db6a9296a1cb02c26f3b10e2182))
+
 ## [4.0.6](https://github.com/asmyshlyaev177/state-in-url/compare/v4.0.5...v4.0.6) (2024-11-10)
 
 
