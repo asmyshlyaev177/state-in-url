@@ -121,7 +121,6 @@ export function useUrlState<T extends JSONCompatible>(
     updateState(
       assignValue(
         _defaultState,
-        state as T,
         filterUnknownParams(
           _defaultState,
           parseSPObj(

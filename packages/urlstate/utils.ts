@@ -95,12 +95,8 @@ function filterUnknown<T extends object>(
     .map(([key, val]) => [key.replaceAll("+", " "), val]);
 }
 
-export function assignValue<T extends object>(
-  shape: T,
-  curr: Partial<T>,
-  newVal: Partial<T>,
-) {
-  const result: T = Object.assign({}, shape, curr);
+export function assignValue<T extends object>(shape: T, newVal: Partial<T>) {
+  const result: T = Object.assign({}, shape);
 
   Object.entries(shape).forEach(([key]) => {
     const _key = key as keyof T;
