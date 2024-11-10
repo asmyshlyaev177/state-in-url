@@ -19,6 +19,7 @@ import {
  * @deprecated .
  * * use format `useUrlState(defaultState, { ...otherParams })`
  *
+ * .
  */
 export function useUrlState<T extends JSONCompatible>({
   defaultState: T,
