@@ -19,6 +19,11 @@ describe('encoder', () => {
       const str = '"test #?\t=\n[]{}()%.';
       expect(decode(encode(str))).toStrictEqual(str);
     });
+
+    it('single quote', () => {
+      const str = "'";
+      expect(decode(encode(str))).toStrictEqual(str);
+    });
   });
 
   describe('number', () => {

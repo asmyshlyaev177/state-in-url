@@ -23,7 +23,9 @@ export function encode(payload: unknown): string {
     case "undefined":
       return SYMBOLS.undefined;
     default:
-      return JSON.stringify(payload).replaceAll('"', "'");
+      return JSON.stringify(payload)
+        .replaceAll("'", "%27")
+        .replaceAll('"', "'");
   }
 }
 
@@ -46,7 +48,10 @@ export type Primitive = Exclude<
  *  * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/master/packages/urlstate/encoder#decode}
  */
 export function decode<T>(payload: string, fallback?: T) {
-  return parseJSON(payload.replaceAll("'", '"'), fallback as JSONCompatible);
+  return parseJSON(
+    payload.replaceAll("'", '"').replaceAll("%27", "'"),
+    fallback as JSONCompatible,
+  );
 }
 
 export const decodePrimitive = (str: string) => {
