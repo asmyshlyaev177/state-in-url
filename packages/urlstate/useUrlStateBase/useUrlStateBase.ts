@@ -83,9 +83,9 @@ export function useUrlStateBase<T extends JSONCompatible>(
       let upd: (typeof queue.current)[0] | undefined;
       setState(newVal);
 
-      const { replace, ...rOptions } = options || {};
-
-      queue.current.push([replace ? "replace" : "push", newUrl, rOptions]);
+      const replace = options?.replace;
+      delete options?.replace;
+      queue.current.push([replace ? "replace" : "push", newUrl, options]);
 
       if (queue.current.length === 1)
         queueMicrotask(() => {
@@ -129,7 +129,7 @@ function getOtherParams<T extends object>(shape: T) {
 type UpdateQueueItem = [
   method: "push" | "replace",
   url: string,
-  opts: Partial<Options>,
+  opts?: Partial<Options>,
 ];
 
 const popstateEv = "popstate";

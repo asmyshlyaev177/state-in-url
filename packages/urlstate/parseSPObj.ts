@@ -41,6 +41,6 @@ function parseJSONSsr<T extends JSONCompatible>(
 
 const reviverSPSsr = (key: string, value: unknown) => {
   const isStr = typeof value === "string";
-  const decoded = isStr && decode(value?.replaceAll?.("'", '"'));
+  const decoded = isStr && decode(value?.replace?.(/'/g, '"'));
   return key && isStr ? decoded : value;
 };

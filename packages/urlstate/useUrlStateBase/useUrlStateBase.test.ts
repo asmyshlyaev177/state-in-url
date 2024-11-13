@@ -229,7 +229,7 @@ describe('useUrlStateBase', () => {
 
         expect(result.current.state).toStrictEqual({ ...shape, num: 50 });
         expect(router.push).toHaveBeenCalledTimes(1);
-        expect(router.push).toHaveBeenNthCalledWith(1, '/?num=50', {});
+        expect(router.push).toHaveBeenNthCalledWith(1, '/?num=50', undefined);
       });
 
       it('partial shape', async () => {
@@ -244,7 +244,7 @@ describe('useUrlStateBase', () => {
 
         expect(result.current.state).toStrictEqual({ ...shape, num: 50 });
         expect(router.push).toHaveBeenCalledTimes(1);
-        expect(router.push).toHaveBeenNthCalledWith(1, '/?num=50', {});
+        expect(router.push).toHaveBeenNthCalledWith(1, '/?num=50', undefined);
       });
 
       it('no arg, should reset', async () => {
@@ -262,7 +262,7 @@ describe('useUrlStateBase', () => {
 
         expect(result.current.state).toStrictEqual({ ...shape, num: 50 });
         expect(router.push).toHaveBeenCalledTimes(1);
-        expect(router.push).toHaveBeenNthCalledWith(1, '/?num=50', {});
+        expect(router.push).toHaveBeenNthCalledWith(1, '/?num=50', undefined);
       });
     });
 
@@ -278,7 +278,7 @@ describe('useUrlStateBase', () => {
 
       expect(result.current.state).toStrictEqual({ ...shape, num: 50 });
       expect(router.push).toHaveBeenCalledTimes(1);
-      expect(router.push).toHaveBeenNthCalledWith(1, '/?num=50', {});
+      expect(router.push).toHaveBeenNthCalledWith(1, '/?num=50', undefined);
     });
 
     it('do not update if url same', () => {
@@ -312,7 +312,7 @@ describe('useUrlStateBase', () => {
       await new Promise(process.nextTick);
 
       expect(router.push).toHaveBeenCalledTimes(1);
-      expect(router.push).toHaveBeenNthCalledWith(1, `/?num=55${hash}`, {});
+      expect(router.push).toHaveBeenNthCalledWith(1, `/?num=55${hash}`, undefined);
     });
 
     it('replace and options', async () => {

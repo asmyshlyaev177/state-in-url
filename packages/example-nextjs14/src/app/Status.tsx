@@ -24,7 +24,7 @@ export const Status = ({
       <div className="font-semibold mb-2 ">
         Other client component
       </div>
-      <h3 className="">Types and structure of data are presered</h3>
+      <h3>Types and structure of data are presered</h3>
 
       <div className="flex-none">
         <pre

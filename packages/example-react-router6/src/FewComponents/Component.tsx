@@ -17,7 +17,6 @@ export const Component = () => {
         onChange={(ev) =>
           setUrl((curr) => ({ ...curr, perPage: +ev.target.value }))
         }
-        className=""
         data-testid="select"
       >
         <option>10</option>

@@ -23,9 +23,7 @@ export function encode(payload: unknown): string {
     case "undefined":
       return SYMBOLS.undefined;
     default:
-      return JSON.stringify(payload)
-        .replaceAll("'", "%27")
-        .replaceAll('"', "'");
+      return JSON.stringify(payload).replace(/'/g, "%27").replace(/"/g, "'");
   }
 }
 
@@ -49,7 +47,7 @@ export type Primitive = Exclude<
  */
 export function decode<T>(payload: string, fallback?: T) {
   return parseJSON(
-    payload.replaceAll("'", '"').replaceAll("%27", "'"),
+    payload.replace(/'/g, '"').replace(/%27/g, "'"),
     fallback as JSONCompatible,
   );
 }

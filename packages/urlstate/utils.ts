@@ -92,7 +92,7 @@ function filterUnknown<T extends object>(
 
   return entries
     .filter(([key]) => shapeKeys.includes(key))
-    .map(([key, val]) => [key.replaceAll("+", " "), val]);
+    .map(([key, val]) => [key.replace(/\+/g, " "), val]);
 }
 
 export function assignValue<T extends object>(shape: T, newVal: Partial<T>) {
