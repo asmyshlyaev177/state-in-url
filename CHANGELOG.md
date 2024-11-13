@@ -1,3 +1,10 @@
+## [4.0.8](https://github.com/asmyshlyaev177/state-in-url/compare/v4.0.7...v4.0.8) (2024-11-13)
+
+
+### Performance Improvements
+
+* minor performance improvements, regex in replaceAll ([b89406d](https://github.com/asmyshlyaev177/state-in-url/commit/b89406dc27c70ca6ec9d59ffbcb6475fc6ee31a6))
+
 ## [4.0.7](https://github.com/asmyshlyaev177/state-in-url/compare/v4.0.6...v4.0.7) (2024-11-10)
 
 
