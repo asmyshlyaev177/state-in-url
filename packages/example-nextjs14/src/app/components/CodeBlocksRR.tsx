@@ -45,6 +45,7 @@ import { form } from './form';
 export const ComponentB = () => {
   const { urlState } = useUrlState(form);// [!code highlight:1]
 
+// will be defaultValue from \`form\` if not in url, no need to check
 // [!code word:urlState]
   return <div>name: {urlState.name}</div>
 };`}

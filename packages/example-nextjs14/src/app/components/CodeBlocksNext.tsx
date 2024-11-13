@@ -51,6 +51,7 @@ import { form } from './form';
 export const ComponentB = ({ searchParams }: { searchParams?: object }) => {
   const { urlState } = useUrlState(form, { searchParams });// [!code highlight:1]
 
+// will be defaultValue from \`form\` if not in url, no need to check
 // [!code word:urlState]
   return <div>name: {urlState.name}</div>
 };`}
