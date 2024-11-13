@@ -1,6 +1,7 @@
 'use client'
 import React from 'react';
 import { usePathname } from 'next/navigation';
+import { ErrorBoundary, type FallbackProps } from "react-error-boundary";
 
 import { GithubLink } from './components/GithubLink';
 import { UrlBox } from './components/UrlBox';
@@ -39,12 +40,28 @@ export function DemoPart({ searchParams }: { searchParams: object }) {
 
         <section className="form-components">
           <React.Suspense>
-            <Form className="form" searchParams={searchParams} ghLink={urls.form} />
-            <Status className="status" sp={searchParams} ghLink={urls.status} />
+            <ErrorBoundary fallbackRender={fallbackRender}>
+              <Form className="form" searchParams={searchParams} ghLink={urls.form} />
+            </ErrorBoundary>
+            <ErrorBoundary
+              fallbackRender={fallbackRender}>
+              <Status className="status" sp={searchParams} ghLink={urls.status} />
+            </ErrorBoundary>
+
           </React.Suspense>
         </section>
       </section>
     </>
+  );
+}
+
+function fallbackRender({ error, resetErrorBoundary }: FallbackProps) {
+  return (
+    <div role="alert" className='max-w-[30%] flex flex-col items-center gap-4'>
+      <p>Something went wrong:</p>
+      <pre className='whitespace-break-spaces text-red-500 max-h-[350px]'>{error.message || error}</pre>
+      <button onClick={resetErrorBoundary} className='p-4 bg-gray-300 rounded-md'>Try again</button>
+    </div>
   );
 }
 
