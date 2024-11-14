@@ -45,6 +45,8 @@ export const Form = ({
       setState((st) => ({ ...st, age: 18 }));
       setUrl(urlState);
       setUrl((st) => ({ ...st, age: 18 }));
+      setUrl(urlState, { replace: true });
+      setUrl((st) => ({ ...st, age: 18 }), { replace: true });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
