@@ -41,7 +41,9 @@ export function useUrlState<T extends JSONCompatible>({
  * @param {JSONCompatible<T>} [defaultState] Fallback (default) values for state
  * @param {Object} params - Object with other parameters
  * @param {NavigateOptions} params.NavigateOptions See type from `react-router-dom`
- * @param {boolean} params.useHistory use window.history for navigation
+ * @param {boolean} params.replace replace URL of push, default `true`
+ * @param {boolean} params.useHistory use window.history for navigation, default `false`
+ * @param {boolean} params.preventScrollReset keep scroll position, default `true`
  * * Example:
  * ```ts
  * export const form = { name: '', age: 0 };
@@ -61,7 +63,10 @@ export function useUrlState<T extends JSONCompatible>(
 ): {
   urlState: T;
   setState: (value: Partial<T> | ((currState: T) => T)) => void;
-  setUrl: (value?: Partial<T> | ((currState: T) => T)) => void;
+  setUrl: (
+    value?: Partial<T> | ((currState: T) => T),
+    options?: Params,
+  ) => void;
 };
 
 export function useUrlState<T extends JSONCompatible>(
@@ -140,7 +145,7 @@ export function useUrlState<T extends JSONCompatible>(
      * // or
      * setState(curr => ({ ...curr, name: 'test' }) );
      * // can pass optional React-Router `NavigateOptions`
-     * setState(curr => ({ ...curr, name: 'test', preventScrollReset: false }) );
+     * setState(curr => ({ ...curr, name: 'test' }) );
      *  ```
      *
      *  * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/master/packages/urlstate/react-router/useUrlState#updatestate}
@@ -157,7 +162,7 @@ export function useUrlState<T extends JSONCompatible>(
      * // or
      * setUrl(curr => ({ ...curr, name: 'test' }), { replace: true } );
      * // can pass optional React-Router `NavigateOptions`
-     * setState(curr => ({ ...curr, name: 'test', preventScrollReset: false }) );
+     * setUrl(curr => ({ ...curr, name: 'test' }), { preventScrollReset: false } );
      *  ```
      *
      *  * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/master/packages/urlstate/react-router/useUrlState#updateurl}
