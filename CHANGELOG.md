@@ -1,3 +1,10 @@
+## [4.0.9](https://github.com/asmyshlyaev177/state-in-url/compare/v4.0.8...v4.0.9) (2024-11-14)
+
+
+### Bug Fixes
+
+* fix `setUrl` options as second argument ([2347850](https://github.com/asmyshlyaev177/state-in-url/commit/2347850a4d34bbcf418632b6e45dac3aeff6ceb2))
+
 ## [4.0.8](https://github.com/asmyshlyaev177/state-in-url/compare/v4.0.7...v4.0.8) (2024-11-13)
 
 

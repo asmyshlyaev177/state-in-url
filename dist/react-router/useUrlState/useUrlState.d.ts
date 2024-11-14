@@ -20,7 +20,9 @@ export declare function useUrlState<T extends JSONCompatible>({ defaultState: T,
  * @param {JSONCompatible<T>} [defaultState] Fallback (default) values for state
  * @param {Object} params - Object with other parameters
  * @param {NavigateOptions} params.NavigateOptions See type from `react-router-dom`
- * @param {boolean} params.useHistory use window.history for navigation
+ * @param {boolean} params.replace replace URL of push, default `true`
+ * @param {boolean} params.useHistory use window.history for navigation, default `false`
+ * @param {boolean} params.preventScrollReset keep scroll position, default `true`
  * * Example:
  * ```ts
  * export const form = { name: '', age: 0 };
@@ -37,7 +39,7 @@ export declare function useUrlState<T extends JSONCompatible>({ defaultState: T,
 export declare function useUrlState<T extends JSONCompatible>(defaultState: T, params?: Params): {
     urlState: T;
     setState: (value: Partial<T> | ((currState: T) => T)) => void;
-    setUrl: (value?: Partial<T> | ((currState: T) => T)) => void;
+    setUrl: (value?: Partial<T> | ((currState: T) => T), options?: Params) => void;
 };
 type OldParams<T> = {
     defaultState: T;

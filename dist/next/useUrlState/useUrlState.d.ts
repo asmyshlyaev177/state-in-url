@@ -1,3 +1,4 @@
+import { useRouter } from "next/navigation";
 import { type JSONCompatible } from "../../utils";
 /**
  * @deprecated .
@@ -17,9 +18,12 @@ export declare function useUrlState<T extends JSONCompatible>({ defaultState: T,
  * NextJS hook. Returns `urlState`, `setState`, and `setUrl` functions
  *
  * @param {JSONCompatible<T>} [defaultState] Fallback (default) values for state
- * @param {Object} params - Object with other parameters
- * @param {?SearchParams<T>} params.searchParams searchParams from Next server component
+ * @param {Object} params - Object with other parameters, including params from App router
+ * @param {boolean} params.replace replace URL of push, default `true`
  * @param {boolean} params.useHistory use window.history for navigation, default true, no _rsc requests https://github.com/vercel/next.js/discussions/59167
+ * @param {?SearchParams<T>} params.searchParams searchParams from Next server component
+ * @param {boolean} params.scroll reset scroll, default `false`
+
  *
  * * Example:
  * ```ts
@@ -29,9 +33,7 @@ export declare function useUrlState<T extends JSONCompatible>({ defaultState: T,
  * const { urlState, setState, setUrl } = useUrlState(form, { searchParams });
  *
  * setState({ name: 'test' });
- * // by default it's uses router.push with scroll: false
  * setUrl({ name: 'test' }, { replace: true, scroll: true });
- * // similar to React.useState
  * setUrl(curr => ({ ...curr, name: 'test' }), { replace: true, scroll: true });
  *  ```
  *
@@ -40,8 +42,13 @@ export declare function useUrlState<T extends JSONCompatible>({ defaultState: T,
 export declare function useUrlState<T extends JSONCompatible>(defaultState: T, params?: Params): {
     urlState: T;
     setState: (value: Partial<T> | ((currState: T) => T)) => void;
-    setUrl: (value?: Partial<T> | ((currState: T) => T)) => void;
+    setUrl: (value?: Partial<T> | ((currState: T) => T), options?: Options) => void;
 };
+type Router = ReturnType<typeof useRouter>;
+type RouterOptions = NonNullable<Parameters<Router["push"]>[1] | Parameters<Router["replace"]>[1]>;
+interface Options extends RouterOptions {
+    replace?: boolean;
+}
 interface OldParams<T> {
     defaultState: T;
     searchParams?: object;
