@@ -44,7 +44,7 @@ export const jsonLd: WithContext<SoftwareApplication> = {
 
 
 const meta = {
-  title: 'state-in-url - deep links and URL state synchronization',
+  title: 'state-in-url - store state in URL like in JSON, type-safe',
   description:
     'Store any user state in query parameters; imagine JSON in a browser URL, while keeping types and structure of data. For Next.js, React-router and pure JS',
 };
