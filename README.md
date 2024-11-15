@@ -192,6 +192,55 @@ function MyComponent() {
 }
 ```
 
+#### Custom hook to work with slice of state conveniently
+<details>
+  <Summary>Example</Summary>
+
+  ```typescript
+'use client';
+
+import React from 'react';
+import { useUrlState } from 'state-in-url/next';
+
+const form: Form = {
+    name: '',
+    age: undefined,
+    agree_to_terms: false,
+    tags: [],
+};
+
+type Form = {
+    name: string;
+    age?: number;
+    agree_to_terms: boolean;
+    tags: {id: string; value: {text: string; time: Date } }[];
+};
+
+export const useFormState = ({ searchParams }: { searchParams?: object }) => {
+    const { urlState, setUrl: setUrlBase, reset } = useUrlState(form, {
+      searchParams,
+    });
+
+    // first navigation will push new history entry
+    // all following will just replace that entry
+    // this way will have history with only 2 entries - ['/url', '/url?key=param']
+
+    const replace = React.useRef(false);
+    const setUrl = React.useCallback((
+        state: Parameters<typeof setUrlBase>[0],
+        opts?: Parameters<typeof setUrlBase>[1]
+      ) => {
+        setUrlBase(state, { replace: replace.current, ...opts });
+        replace.current = true;
+    }, [setUrlBase]);
+
+    return { urlState, setUrl, resetUrl: reset };
+};
+  ```
+</details>
+
+<hr />
+
 #### With complex state shape
 
 <details>
