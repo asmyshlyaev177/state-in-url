@@ -1,21 +1,17 @@
 English | [한국어](./README.KO.md) | [简体中文](./README.CN.md)
 
 <div align="center">
-  <img src="/assets/Logo_big.png?raw=true" alt="state-in-url logo"/>
+  <img src="/packages/example-nextjs14/public/Logo_symbol.png" alt="state-in-url logo" width="150px" />
 
-  <div><h2> Store any complex state in query parameters, URL synchronization (aka deep links) made easy. Share state between any unrelated components. With support of static types validation and server side rendering.</h2></div>
-
-
+  <div><h2>State in url</h2></div>
 </div>
-
-<hr />
 
 <div align="center">
 <a href="https://github.com/asmyshlyaev177/state-in-url/blob/master/Limits.md"  target="_blank">URI size limitation, <b>up to 12KB</b> is safe</a>
+<h3></h3>
 </div>
 
 <div align="center">
-<hr />
 
 [![npm](https://img.shields.io/npm/v/state-in-url.svg)](https://www.npmjs.com/package/state-in-url)
 ![Tests](https://github.com/asmyshlyaev177/state-in-url/actions/workflows/tests.yml/badge.svg?branch=master)
@@ -58,7 +54,7 @@ Share if it useful for you.
 
 # Why use `state-in-url`?
 
-Store any user state in query parameters; imagine JSON in a browser URL, while keeping types and structure of data, e.g. numbers will be decoded as numbers not strings, Date stay a date, objects and arrays supported.
+Store any user state in query parameters; imagine JSON in a browser URL, while keeping types and structure of data, e.g. numbers will be decoded as numbers not strings, objects and arrays supported.
 Dead simple, fast, and with static Typescript validation. Deep links, aka URL synchronization, made easy.
 
 Contains `useUrlState` hook for Next.js and react-router, and helpers for anything else on JS.
