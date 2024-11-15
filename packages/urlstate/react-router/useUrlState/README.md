@@ -10,8 +10,9 @@ A custom React hook that manages state and synchronizes it with URL search param
 
 - `defaultState: object` - An object representing the default state values.
 - `replace?: boolean` - Control will `setUrl` use `replace` or `push` methods on router, default replace=true, can override by `updateUrl(stateObj, { replace: false })`
-- `options?: NavigateOptions` - type from NavigateOptions of `react-router` type, same as options from `useNavigate`
+- `options?: NavigateOptions` - `replace` arg and types from `NavigateOptions` of `react-router` type, same as options from `useNavigate`
 - `useHistory` - Optionally can use window.history for navigation
+- `preventScrollReset` - Option from react-router navigate
 
 ### Returns:
 
@@ -20,6 +21,7 @@ An object containing:
 - `urlState: object` - The current state.
 - `setState: Function` - Function to update the state without updating the URL.
 - `setUrl: Function` - Function to update both the state and the URL.
+- `reset: Function` - Function to reset state to default.
 
 ### Example:
 
@@ -56,3 +58,12 @@ Updates both the state and the URL.
 
 - `value?: T | Partial<T> | (currState: T) => T` - Optional new state value or a function that receives the current state and returns the new state.
 - `options?: NavigateOptions` - Optional options object from react-router's `NavigateOptions` type.
+
+## `reset`
+
+Updates both the state and the URL.
+
+### Parameters:
+
+- `options?: NavigateOptions` - Optional options object from react-router's `NavigateOptions` type.
+

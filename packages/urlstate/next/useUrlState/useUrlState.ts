@@ -38,10 +38,15 @@ export function useUrlState<T extends JSONCompatible>({
  *
  * @param {JSONCompatible<T>} [defaultState] Fallback (default) values for state
  * @param {Object} params - Object with other parameters, including params from App router
- * @param {boolean} params.replace replace URL of push, default `true`
- * @param {boolean} params.useHistory use window.history for navigation, default true, no _rsc requests https://github.com/vercel/next.js/discussions/59167
+ * @param {boolean} params.replace replace URL or push, default `true`
+ * @param {boolean} params.useHistory use window.history for navigation, default `true`, no _rsc requests https://github.com/vercel/next.js/discussions/59167
  * @param {?SearchParams<T>} params.searchParams searchParams from Next server component
  * @param {boolean} params.scroll reset scroll, default `false`
+ * @returns {Object} [result] State and callbacks
+ * @returns {Object} [result.state] - current state object
+ * @returns {Function} [result.setUrl] - function to update state and url
+ * @returns {Function} [result.setState] - function to update state only
+ * @returns {Function} [result.reset] - function to reset state and url to default
 
  *
  * * Example:
@@ -49,11 +54,15 @@ export function useUrlState<T extends JSONCompatible>({
  * export const form = { name: '', age: 0 };
  * const { urlState, setState, setUrl } = useUrlState(form);
  * // for nextjs server components
- * const { urlState, setState, setUrl } = useUrlState(form, { searchParams });
+ * const { urlState, setState, setUrl, reset } = useUrlState(form, { searchParams });
  *
  * setState({ name: 'test' });
  * setUrl({ name: 'test' }, { replace: true, scroll: true });
  * setUrl(curr => ({ ...curr, name: 'test' }), { replace: true, scroll: true });
+ * // reset state and url
+ * reset();
+ * reset({ replace: true });
+ * // same as setState(form) with setUrl(form)
  *  ```
  *
  *  * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/master/packages/urlstate/next/useUrlState#api}
@@ -68,6 +77,7 @@ export function useUrlState<T extends JSONCompatible>(
     value?: Partial<T> | ((currState: T) => T),
     options?: Options,
   ) => void;
+  reset: (options?: Options & { [key: string]: unknown }) => void;
 };
 
 export function useUrlState<T extends JSONCompatible>(
@@ -102,6 +112,7 @@ export function useUrlState<T extends JSONCompatible>(
     state,
     updateState,
     updateUrl: updateUrlBase,
+    reset: resetBase,
     getState,
   } = useUrlStateBase(_defaultState, router, ({ parse }) =>
     isSSR()
@@ -112,10 +123,12 @@ export function useUrlState<T extends JSONCompatible>(
       : parse(filterUnknownParamsClient(_defaultState)),
   );
 
+  const defOpts = React.useMemo(() => ({ ...defaultOptions, ..._opts }), []);
+
   const setUrl = React.useCallback(
     (value?: Parameters<typeof updateUrlBase>[0], options?: Options) =>
-      updateUrlBase(value, { ...defaultOptions, ..._opts, ...options }),
-    [updateUrlBase, _opts],
+      updateUrlBase(value, { ...defOpts, ...options }),
+    [updateUrlBase],
   );
 
   const sp = useSearchParams();
@@ -130,6 +143,13 @@ export function useUrlState<T extends JSONCompatible>(
       ),
     );
   }, [sp]);
+
+  const reset = React.useCallback(
+    (options?: Options & { [key: string]: unknown }) => {
+      resetBase({ ...defOpts, ...options });
+    },
+    [resetBase],
+  );
 
   return {
     /**
@@ -170,6 +190,17 @@ export function useUrlState<T extends JSONCompatible>(
      * @deprecated use `urlState`
      */
     state,
+    /**
+     * * Example:
+     * ```ts
+     * reset();
+     * // or
+     * reset({ replace: false, scroll: true })
+     *  ```
+     *
+     *  * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/master/packages/urlstate/next/useUrlState#reset}
+     */
+    reset,
     getState,
   };
 }

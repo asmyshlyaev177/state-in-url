@@ -6,7 +6,7 @@ import { useUrlState } from "state-in-url/react-router";
 
 export const Form = ({ className }: { className?: string }) => {
   const [sp] = useSearchParams();
-  const { urlState, setState, setUrl } = useUrlState(form, {
+  const { urlState, setState, setUrl, reset } = useUrlState(form, {
     replace: sp.get("replace") === "false" ? false : true,
   });
 
@@ -37,6 +37,8 @@ export const Form = ({ className }: { className?: string }) => {
       setUrl((st) => ({ ...st, age: 18 }));
       setUrl(urlState, { replace: true });
       setUrl((st) => ({ ...st, age: 18 }), { replace: true });
+      reset();
+      reset({ replace: false, preventScrollReset: true });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -127,12 +129,7 @@ export const Form = ({ className }: { className?: string }) => {
             </div>
           </Field>
 
-          <Button
-            onClick={() => {
-              setUrl(form);
-            }}
-            dataTestId="sync-default"
-          >
+          <Button onClick={reset} dataTestId="sync-default">
             Reset state
           </Button>
           <Button

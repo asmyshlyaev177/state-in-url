@@ -168,10 +168,11 @@ import { userState } from './userState';
 function MyComponent() {
   // can pass `replace` arg, it's control will `setUrl` will use `rounter.push` or `router.replace`, default replace=true
   // can pass `searchParams` from server components
-  const { urlState, setUrl, setState } = useUrlState(userState);
+  const { urlState, setUrl, setState, reset } = useUrlState(userState);
 
   return (
     <div>
+      // urlState.name will return default value from `userState` if url empty
       <input value={urlState.name}
         // same api as React.useState, e.g. setUrl(currVal => currVal + 1)
         onChange={(ev) => setUrl({ name: ev.target.value }) }
@@ -186,7 +187,7 @@ function MyComponent() {
         onBlur={() => setUrl()}
       />
 
-      <button onClick={() => setUrl(userState)}>
+      <button onClick={reset}>
         Reset
       </button>
 

@@ -41,9 +41,14 @@ export function useUrlState<T extends JSONCompatible>({
  * @param {JSONCompatible<T>} [defaultState] Fallback (default) values for state
  * @param {Object} params - Object with other parameters
  * @param {NavigateOptions} params.NavigateOptions See type from `react-router-dom`
- * @param {boolean} params.replace replace URL of push, default `true`
+ * @param {boolean} params.replace replace URL or push, default `true`
  * @param {boolean} params.useHistory use window.history for navigation, default `false`
  * @param {boolean} params.preventScrollReset keep scroll position, default `true`
+ * @returns {Object} [result] State and callbacks
+ * @returns {Object} [result.state] - current state object
+ * @returns {Function} [result.setUrl] - function to update state and url
+ * @returns {Function} [result.setState] - function to update state only
+ * @returns {Function} [result.reset] - function to reset state and url to default
  * * Example:
  * ```ts
  * export const form = { name: '', age: 0 };
@@ -53,6 +58,10 @@ export function useUrlState<T extends JSONCompatible>({
  * setUrl({ name: 'test' }, { replace: true });
  * // similar to React.useState
  * setUrl(curr => ({ ...curr, name: 'test' }), { replace: true });
+ * // reset state and url
+ * reset();
+ * reset({ replace: true });
+ * // same as setState(form) with setUrl(form)
  *  ```
  *
  *  * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/master/packages/urlstate/react-router/useUrlState#api}
@@ -67,6 +76,7 @@ export function useUrlState<T extends JSONCompatible>(
     value?: Partial<T> | ((currState: T) => T),
     options?: Params,
   ) => void;
+  reset: (options?: NavigateOptions & { [key: string]: unknown }) => void;
 };
 
 export function useUrlState<T extends JSONCompatible>(
@@ -92,6 +102,8 @@ export function useUrlState<T extends JSONCompatible>(
           preventScrollReset: params?.preventScrollReset as boolean,
         };
 
+  const defOpts = React.useMemo(() => ({ ...defaultOpts, ..._opts }), []);
+
   const navigate = useNavigate();
   const router = React.useMemo(
     () =>
@@ -99,25 +111,27 @@ export function useUrlState<T extends JSONCompatible>(
         ? routerHistory
         : {
             replace: (url: string, options: NavigateOptions) =>
-              navigate(url, { ...defaultOpts, ..._opts, ...options }),
+              navigate(url, { ...defOpts, ...options }),
             push: (url: string, options: NavigateOptions) =>
-              navigate(url, { ...defaultOpts, ..._opts, ...options }),
+              navigate(url, { ...defOpts, ...options }),
           },
-    [navigate, _opts],
+    [navigate],
   );
+
   const {
     state,
     updateState,
     updateUrl: updateUrlBase,
     getState,
+    reset: resetBase,
   } = useUrlStateBase(_defaultState, router, ({ parse }) =>
     parse(filterUnknownParamsClient(_defaultState)),
   );
 
   const updateUrl = React.useCallback(
     (value?: Parameters<typeof updateUrlBase>[0], options?: NavigateOptions) =>
-      updateUrlBase(value, { ...defaultOpts, ..._opts, ...options }),
-    [_opts],
+      updateUrlBase(value, { ...defOpts, ...options }),
+    [updateUrlBase],
   );
 
   const [sp] = useSearchParams();
@@ -136,6 +150,13 @@ export function useUrlState<T extends JSONCompatible>(
       ),
     );
   }, [sp]);
+
+  const reset = React.useCallback(
+    (options?: NavigateOptions & { [key: string]: unknown }) => {
+      resetBase({ ...defOpts, ...options });
+    },
+    [resetBase],
+  );
 
   return {
     /**
@@ -180,6 +201,17 @@ export function useUrlState<T extends JSONCompatible>(
      * @deprecated use `urlState`
      */
     state,
+    /**
+     * * Example:
+     * ```ts
+     * reset();
+     * // or
+     * reset({ replace: false, preventScrollReset: false })
+     *  ```
+     *
+     *  * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/master/packages/urlstate/react-router/useUrlState#reset}
+     */
+    reset,
     getState,
   };
 }
