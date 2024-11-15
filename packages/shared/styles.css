@@ -133,6 +133,8 @@
   }
 
   .codeblock {
+    margin-bottom: 2rem;
+
     & * {
       transition: all 0.2s ease-in-out;
     }
@@ -158,5 +160,9 @@
     &:hover .highlighted-word {
       border: 1px solid rgba(255, 255, 255, 0.2);
     }
+  }
+
+  .codeTitle {
+    @apply text-center text-2xl mt-2;
   }
 }

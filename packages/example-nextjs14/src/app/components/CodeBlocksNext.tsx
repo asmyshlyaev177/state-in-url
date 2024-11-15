@@ -5,12 +5,12 @@ export const CodeBlocks = () => {
   return (
     <div className="flex flex-col gap-4">
       <h2 className='text-3xl text-center' >Quick start</h2>
-      <div className="text-center text-xl mt-2">
+      <div className="codeTitle">
         1. Define the state
       </div>
       <CodeBlockState />
 
-      <div className="text-center text-xl mt-2">
+      <div className="codeTitle">
         2. Use it in any components
       </div>
       <File
@@ -21,10 +21,8 @@ import { useUrlState } from 'state-in-url/next';// [!code highlight:1]
 import { form } from './form';
 
 export const ComponentA = () => {
-  // \`useHistory\` force to use window.history for navigation,
-  // no _rsc requests https://github.com/vercel/next.js/discussions/59167
   // see docs for all possible params https://github.com/asmyshlyaev177/state-in-url/tree/master/packages/urlstate/next/useUrlState
-  const { urlState, setState, setUrl } = useUrlState(form, { useHistory: true });// [!code highlight:1]
+  const { urlState, setState, setUrl } = useUrlState(form);// [!code highlight:1]
 
   return <>
     <input
@@ -56,6 +54,50 @@ export const ComponentB = ({ searchParams }: { searchParams?: object }) => {
   return <div>name: {urlState.name}</div>
 };`}
       />
+      <div className="codeTitle">
+        3. Can create self-sufficient hook to manage slice of some state.
+      </div>
+      <File
+        name="useFormState - custom hook"
+        content={`'use client';
+
+import React from 'react';
+import { useUrlState } from 'state-in-url/next';
+
+const form: Form={
+  name: '',
+  age: undefined,
+  agree_to_terms: false,
+  tags: [],
+};
+
+type Form = {
+  name: string;
+  age?: number;
+  agree_to_terms: boolean;
+  tags: {id: string; value: {text: string; time: Date } }[];
+};
+
+export const useFormState = ({ searchParams }: { searchParams?: object }) => {// [!code highlight:1]
+  const { urlState, setUrl: setUrlBase, reset } = useUrlState(form, {
+    searchParams,
+  });
+
+  // first navigation will push new history entry
+  // all following will just replace that entry
+  // this way will have history with only 2 entries - ['/url', '/url?key=param']
+
+  const replace = React.useRef(false);
+  const setUrl = React.useCallback((
+      state: Parameters<typeof setUrlBase>[0],
+      opts?: Parameters<typeof setUrlBase>[1]
+    ) => {
+      setUrlBase(state, { replace: replace.current, ...opts });
+      replace.current = true;
+  }, [setUrlBase]);
+
+  return { urlState, setUrl, resetUrl: reset };
+};`}/>
     </div>
   );
 };

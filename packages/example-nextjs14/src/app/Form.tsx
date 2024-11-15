@@ -15,9 +15,16 @@ export const Form = ({
   searchParams?: object;
   ghLink: string
 }) => {
-  const { urlState, setUrl } = useUrlState(form, {
+  const { urlState, setUrl: setUrlBase } = useUrlState(form, {
     searchParams,
   });
+
+  const replace = React.useRef(false);
+
+  const setUrl = React.useCallback((state: Parameters<typeof setUrlBase>[0], opts?: Parameters<typeof setUrlBase>[1]) => {
+    setUrlBase(state, { replace: replace.current, ...opts });
+    replace.current = true;
+  }, [setUrlBase]);
 
   const onChangeAge = React.useCallback(
     (ev: React.ChangeEvent<HTMLInputElement>) => {
