@@ -20,6 +20,7 @@ An object containing:
 - `getState: Function` - Function to get state.
 - `updateState: Function` - Function to update the state without updating the URL.
 - `updateUrl: Function` - Function to update both the state and the URL.
+- `reset: Function` - Function to reset state and url to default values
 
 ### Example:
 
@@ -52,3 +53,10 @@ Updates both the state and the URL.
 - `value?: T | Partial<T> | (currState: T) => T` - Optional new state value or a function that receives the current state and returns the new state.
 - `options?: Options` - Optional options object. When `replace` is true it will use router.replace. Other nextjs native options for `router`'s push/replace.
 
+## `reset`
+
+Reset state and URL to default
+
+### Parameters:
+
+- `options?: Options` - Optional options object. When `replace` is true it will use router.replace. Other nextjs native options for `router`'s push/replace.

@@ -14,7 +14,7 @@ export const Form = ({
   delay?: number;
 }) => {
   const sp = useSearchParams();
-  const { urlState, setState, setUrl } = useUrlState(form, {
+  const { urlState, setState, setUrl, reset } = useUrlState(form, {
     searchParams,
     replace: sp.get('replace') === 'false' ? false : true,
   });
@@ -47,6 +47,8 @@ export const Form = ({
       setUrl((st) => ({ ...st, age: 18 }));
       setUrl(urlState, { replace: true });
       setUrl((st) => ({ ...st, age: 18 }), { replace: true });
+      reset()
+      reset({ replace: false, scroll: true })
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -132,9 +134,7 @@ export const Form = ({
           </Field>
 
           <Button
-            onClick={() => {
-              setUrl(form);
-            }}
+            onClick={reset}
             dataTestId="sync-default"
           >
             Reset state

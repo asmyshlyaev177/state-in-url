@@ -391,6 +391,85 @@ describe('useUrlStateBase', () => {
     });
   });
 
+  describe('reset', () => {
+    it('should reset after update', async () => {
+      jest.spyOn(utils, 'isSSR').mockReturnValue(false);
+
+
+      const { result } = renderHook(() => useUrlStateBase(shape, router));
+
+      act(() => {
+        result.current.updateUrl({ num: 50 });
+      });
+      await new Promise(process.nextTick);
+
+      expect(router.push).toHaveBeenCalledTimes(1)
+      expect(result.current.state).toStrictEqual({ ...shape, num: 50 });
+
+      const originalLocation = window.location;
+      jest.spyOn(window, 'location', 'get').mockImplementation(() => ({
+        ...originalLocation,
+        search: 'num=50',
+      }));
+
+
+      act(() => {
+        result.current.reset();
+      })
+      await new Promise(process.nextTick);
+
+      expect(router.replace).not.toHaveBeenCalled()
+      expect(router.push).toHaveBeenCalledTimes(2)
+      expect(router.push).toHaveBeenLastCalledWith('/', undefined)
+
+      expect(result.current.state).toStrictEqual(shape);
+    });
+
+    it('from existing query params', async () => {
+      jest.spyOn(utils, 'isSSR').mockReturnValue(false);
+      const search = '?num=51';
+      const originalLocation = window.location;
+      jest.spyOn(window, 'location', 'get').mockImplementation(() => ({
+        ...originalLocation,
+        search,
+      }));
+
+      const { result } = renderHook(() => useUrlStateBase(shape, router));
+
+      act(() => {
+        result.current.reset();
+      })
+      await new Promise(process.nextTick);
+
+      expect(router.replace).not.toHaveBeenCalled()
+      expect(router.push).toHaveBeenCalledTimes(1)
+      expect(router.push).toHaveBeenLastCalledWith('/', undefined)
+      expect(result.current.state).toStrictEqual(shape);
+    });
+
+    it('with replace', async () => {
+      jest.spyOn(utils, 'isSSR').mockReturnValue(false);
+      const search = '?num=51';
+      const originalLocation = window.location;
+      jest.spyOn(window, 'location', 'get').mockImplementation(() => ({
+        ...originalLocation,
+        search,
+      }));
+
+      const { result } = renderHook(() => useUrlStateBase(shape, router));
+
+      act(() => {
+        result.current.reset({ replace: true });
+      })
+      await new Promise(process.nextTick);
+
+      expect(router.push).not.toHaveBeenCalled()
+      expect(router.replace).toHaveBeenCalledTimes(1)
+      expect(router.replace).toHaveBeenLastCalledWith('/', {})
+      expect(result.current.state).toStrictEqual(shape);
+    });
+  })
+
   describe('back/forward history navigation', () => {
     it('should update state on back/forward', () => {
       jest.spyOn(utils, 'isSSR').mockReturnValue(false);
