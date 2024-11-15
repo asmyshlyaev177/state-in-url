@@ -1,3 +1,10 @@
+# [4.1.0](https://github.com/asmyshlyaev177/state-in-url/compare/v4.0.9...v4.1.0) (2024-11-15)
+
+
+### Features
+
+* **useurlstate:** return `reset` cb from `useUrlState`, it can reset state and URL to default ([68fc693](https://github.com/asmyshlyaev177/state-in-url/commit/68fc69347be80d511232e5805207734d2865b54a))
+
 ## [4.0.9](https://github.com/asmyshlyaev177/state-in-url/compare/v4.0.8...v4.0.9) (2024-11-14)
 
 
