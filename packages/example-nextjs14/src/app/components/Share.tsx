@@ -24,25 +24,15 @@ export const Share = () => {
   return (
     <div className="share-block flex items-center max-sm:justify-evenly  sm:justify-center sm:gap-4 w-full">
 
-        <FacebookShareButton
-          url={shareUrl}
-          className="share-icon"
-          name="Facebook-share-button"
-        aria-label="Facebook-share-button"
-        >
-          <FacebookIcon size={size} round />
-        </FacebookShareButton>
-
-        <TwitterShareButton
-          url={shareUrl}
-          title={title}
-          className="share-icon"
+      <TwitterShareButton
+        url={shareUrl}
+        title={title}
+        className="share-icon"
         name="X/Twitter-share-button"
         aria-label="X/Twitter-share-button"
-        >
-          <XIcon size={size} round />
-        </TwitterShareButton>
-
+      >
+        <XIcon size={size} round />
+      </TwitterShareButton>
 
         <LinkedinShareButton
           url={shareUrl}
@@ -74,6 +64,15 @@ export const Share = () => {
       >
         <VKIcon size={size} round />
       </VKShareButton>
+
+      <FacebookShareButton
+        url={shareUrl}
+        className="share-icon"
+        name="Facebook-share-button"
+        aria-label="Facebook-share-button"
+      >
+        <FacebookIcon size={size} round />
+      </FacebookShareButton>
     </div>
   )
 }
