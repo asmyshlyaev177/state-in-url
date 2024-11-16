@@ -1,0 +1,29 @@
+name: GPT Translate
+
+# on:
+  # push:
+  #   branches: [ master ]
+
+on:
+  issue_comment:
+    types: [ created ]
+
+jobs:
+  gpt_translate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # pin@11bd71901bbe5b1630ceea73d27597364c9af683
+
+      - name: Run GPT Translate
+        if: |
+          contains(github.event.comment.body, '/gpt-translate') ||
+          contains(github.event.comment.body, '/gt')
+        uses: 3ru/gpt-translate@385f6b8fc744607dc39d37884fc33fa35b984ad5 # pin@master
+        with:
+          apikey: ${{ secrets.ANTHROPIC_API_KEY }}
+          provider: 'anthropic'
+          languages: 'korean chinese'
+          # inputFiles: ${{ steps.changed_files.outputs.files }}
+          inputFiles: 'README.md /**/README.md'
+          outputFiles: '/**/*.KO.md /**/*.CH.md'
