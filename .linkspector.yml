@@ -1,0 +1,18 @@
+dirs:
+  - ./
+  - ./packages/urlstate
+
+files:
+  - README.md
+
+excludedDirs:
+  - ./packages/example-nextjs14
+  - ./packages/example-nextjs15
+  - ./packages/example-react
+  - ./packages/example-react-router6
+  - ./packages/shared
+
+useGitIgnore: true
+
+# doesn't work correctly
+# modifiedFilesOnly: true

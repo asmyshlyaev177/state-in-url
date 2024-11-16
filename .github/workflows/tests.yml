@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
     branches: [ master ]
   repository_dispatch:
-    types: [semantic-release]
+    types: [ semantic-release ]
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
@@ -20,8 +20,22 @@ permissions:
   issues: write
   pull-requests: write
 jobs:
+  linkspector:
+    name: linkspector
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # pin@v4
+      - name: Run linkspector
+        uses: umbrelladocs/action-linkspector@fc382e19892aca958e189954912fe379a8df270c # pin@v1
+        with:
+          github_token: ${{ secrets.github_token }}
+          reporter: github-pr-review
+          fail_on_error: true
+          config_file: .linkspector.yml
+
   installtest:
     name: installtest
+    needs: [ linkspector ]
     timeout-minutes: 20
     runs-on: ubuntu-24.04
     container:
@@ -35,50 +49,50 @@ jobs:
       pull-requests: write # to be able to comment on released pull requests
       id-token: write # to enable use of OIDC for npm provenance
     steps:
-    # - uses: google/wireit@setup-github-actions-caching/v2
-    - name: Harden Runner
-      uses: step-security/harden-runner@91182cccc01eb5e619899d80e4e971d6181294a7 # v2.10.1
-      with:
-        egress-policy: audit
+      # - uses: google/wireit@setup-github-actions-caching/v2
+      - name: Harden Runner
+        uses: step-security/harden-runner@91182cccc01eb5e619899d80e4e971d6181294a7 # v2.10.1
+        with:
+          egress-policy: audit
 
-    - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-      with:
-        persist-credentials: false
-    - uses: actions/setup-node@39370e3970a6d050c480ffad4ff0ed4d3fdee5af # v4.1.0
-      with:
-        node-version-file: '.nvmrc'
-    - uses: actions/cache/restore@6849a6489940f00c2f30c0fb92c6274307ccb58a # v4.1.2
-      id: cache-node-modules
-      with:
-        path: |
-          ./node_modules
-        key: modules-1-${{ hashFiles('./package-lock.json') }}
-    - name: Install dependencies
-      if: steps.cache-node-modules.outputs.cache-hit != 'true'
-      run: npm clean-install && npx playwright install --with-deps
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@39370e3970a6d050c480ffad4ff0ed4d3fdee5af # v4.1.0
+        with:
+          node-version-file: '.nvmrc'
+      - uses: actions/cache/restore@6849a6489940f00c2f30c0fb92c6274307ccb58a # v4.1.2
+        id: cache-node-modules
+        with:
+          path: |
+            ./node_modules
+          key: modules-1-${{ hashFiles('./package-lock.json') }}
+      - name: Install dependencies
+        if: steps.cache-node-modules.outputs.cache-hit != 'true'
+        run: npm clean-install && npx playwright install --with-deps
 
-    - name: Test exports
-      run: npm run test:exports
+      - name: Test exports
+        run: npm run test:exports
 
-    - name: Unit tests
-      run: npm run test:unit
-    - name: Run codacy-coverage-reporter
-      uses: codacy/codacy-coverage-reporter-action@89d6c85cfafaec52c72b6c5e8b2878d33104c699 # v1.3.0
-      continue-on-error: true
-      with:
-        project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
-        coverage-reports: coverage-reports/lcov.info
-    - name: Cache dependencies
-      uses: actions/cache/save@6849a6489940f00c2f30c0fb92c6274307ccb58a # v4.1.2
-      if: steps.cache-node-modules.outputs.cache-hit != 'true'
-      with:
-        path: |
-          ./node_modules
-        key: modules-1-${{ hashFiles('./package-lock.json') }}
+      - name: Unit tests
+        run: npm run test:unit
+      - name: Run codacy-coverage-reporter
+        uses: codacy/codacy-coverage-reporter-action@89d6c85cfafaec52c72b6c5e8b2878d33104c699 # v1.3.0
+        continue-on-error: true
+        with:
+          project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
+          coverage-reports: coverage-reports/lcov.info
+      - name: Cache dependencies
+        uses: actions/cache/save@6849a6489940f00c2f30c0fb92c6274307ccb58a # v4.1.2
+        if: steps.cache-node-modules.outputs.cache-hit != 'true'
+        with:
+          path: |
+            ./node_modules
+          key: modules-1-${{ hashFiles('./package-lock.json') }}
 
   build:
     name: build
-    needs: [installtest]
+    needs: [ installtest ]
     timeout-minutes: 20
     runs-on: ubuntu-24.04
     container:
@@ -92,47 +106,47 @@ jobs:
       HUSKY: 0
       PLAYWRIGHT_BROWSERS_PATH: 0
     steps:
-    - name: Harden Runner
-      uses: step-security/harden-runner@91182cccc01eb5e619899d80e4e971d6181294a7 # v2.10.1
-      with:
-        egress-policy: audit
+      - name: Harden Runner
+        uses: step-security/harden-runner@91182cccc01eb5e619899d80e4e971d6181294a7 # v2.10.1
+        with:
+          egress-policy: audit
 
-    - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-      with:
-        persist-credentials: false
-    - uses: actions/cache/restore@6849a6489940f00c2f30c0fb92c6274307ccb58a # v4.1.2
-      id: cache-node-modules
-      with:
-        path: |
-          ./node_modules
-        key: modules-1-${{ hashFiles('./package-lock.json') }}
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+      - uses: actions/cache/restore@6849a6489940f00c2f30c0fb92c6274307ccb58a # v4.1.2
+        id: cache-node-modules
+        with:
+          path: |
+            ./node_modules
+          key: modules-1-${{ hashFiles('./package-lock.json') }}
 
-    - name: Install dependencies
-      if: steps.cache-node-modules.outputs.cache-hit != 'true'
-      run: npm clean-install && npx playwright install --with-deps
+      - name: Install dependencies
+        if: steps.cache-node-modules.outputs.cache-hit != 'true'
+        run: npm clean-install && npx playwright install --with-deps
 
-    - name: build packages
-      run: npx cross-env TEST=true npm run build:packages
+      - name: build packages
+        run: npx cross-env TEST=true npm run build:packages
 
-    - name: Cache dependencies
-      id: cache
-      uses: actions/cache/save@6849a6489940f00c2f30c0fb92c6274307ccb58a # v4.1.2
-      if: always()
-      with:
-        path: |
-          ./dist
-          ./packages/example-react-router6/dist
-          ./packages/example-react-router6/package.json
-          ./packages/example-react/dist
-          ./packages/example-react/package.json
-          ./packages/example-nextjs14/package.json
-          ./packages/example-nextjs14/.next
-          ./packages/example-nextjs15/package.json
-          ./packages/example-nextjs15/.next
-        key: modules-2-${{ github.sha }}-${{ github.run_id }}
+      - name: Cache dependencies
+        id: cache
+        uses: actions/cache/save@6849a6489940f00c2f30c0fb92c6274307ccb58a # v4.1.2
+        if: always()
+        with:
+          path: |
+            ./dist
+            ./packages/example-react-router6/dist
+            ./packages/example-react-router6/package.json
+            ./packages/example-react/dist
+            ./packages/example-react/package.json
+            ./packages/example-nextjs14/package.json
+            ./packages/example-nextjs14/.next
+            ./packages/example-nextjs15/package.json
+            ./packages/example-nextjs15/.next
+          key: modules-2-${{ github.sha }}-${{ github.run_id }}
 
   testint:
-    needs: [build]
+    needs: [ build ]
     name: testint
     runs-on: ubuntu-24.04
     timeout-minutes: 30
@@ -141,99 +155,99 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        shardIndex: [1, 2]
-        shardTotal: [2]
+        shardIndex: [ 1, 2 ]
+        shardTotal: [ 2 ]
     steps:
-    - name: Harden Runner
-      uses: step-security/harden-runner@91182cccc01eb5e619899d80e4e971d6181294a7 # v2.10.1
-      with:
-        egress-policy: audit
+      - name: Harden Runner
+        uses: step-security/harden-runner@91182cccc01eb5e619899d80e4e971d6181294a7 # v2.10.1
+        with:
+          egress-policy: audit
 
-    - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-      with:
-        persist-credentials: false
-    - uses: actions/cache/restore@6849a6489940f00c2f30c0fb92c6274307ccb58a # v4.1.2
-      id: cache-node-modules
-      with:
-        path: |
-          ./node_modules
-        key: modules-1-${{ hashFiles('./package-lock.json') }}
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+      - uses: actions/cache/restore@6849a6489940f00c2f30c0fb92c6274307ccb58a # v4.1.2
+        id: cache-node-modules
+        with:
+          path: |
+            ./node_modules
+          key: modules-1-${{ hashFiles('./package-lock.json') }}
 
-    - uses: actions/cache/restore@6849a6489940f00c2f30c0fb92c6274307ccb58a # v4.1.2
-      id: cache
-      with:
-        path: |
-          ./dist
-          ./packages/example-react-router6/dist
-          ./packages/example-react-router6/package.json
-          ./packages/example-react/dist
-          ./packages/example-react/package.json
-          ./packages/example-nextjs14/package.json
-          ./packages/example-nextjs14/.next
-          ./packages/example-nextjs15/package.json
-          ./packages/example-nextjs15/.next
-        key: modules-2-${{ github.sha }}-${{ github.run_id }}
+      - uses: actions/cache/restore@6849a6489940f00c2f30c0fb92c6274307ccb58a # v4.1.2
+        id: cache
+        with:
+          path: |
+            ./dist
+            ./packages/example-react-router6/dist
+            ./packages/example-react-router6/package.json
+            ./packages/example-react/dist
+            ./packages/example-react/package.json
+            ./packages/example-nextjs14/package.json
+            ./packages/example-nextjs14/.next
+            ./packages/example-nextjs15/package.json
+            ./packages/example-nextjs15/.next
+          key: modules-2-${{ github.sha }}-${{ github.run_id }}
 
-    - name: Run Playwright tests
-      run: |
-        npm run start:ci & \
-        npx wait-on http://localhost:3000 && \
-        npx wait-on http://localhost:3001 && \
-        npm run test:int:ci -- --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }}
-    - uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4.4.3
-      if: always()
-      with:
-        name: blob-report-${{ matrix.shardIndex }}
-        path: blob-report
-        retention-days: 5
+      - name: Run Playwright tests
+        run: |
+          npm run start:ci & \
+          npx wait-on http://localhost:3000 && \
+          npx wait-on http://localhost:3001 && \
+          npm run test:int:ci -- --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }}
+      - uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4.4.3
+        if: always()
+        with:
+          name: blob-report-${{ matrix.shardIndex }}
+          path: blob-report
+          retention-days: 5
 
   merge-reports:
     # Merge reports after playwright-tests, even if some shards have failed
-    if:  ${{ always() && contains(needs.*.result, 'failure') }}
-    needs: [testint]
+    if: ${{ always() && contains(needs.*.result, 'failure') }}
+    needs: [ testint ]
 
     runs-on: ubuntu-24.04
     steps:
-    - name: Harden Runner
-      uses: step-security/harden-runner@91182cccc01eb5e619899d80e4e971d6181294a7 # v2.10.1
-      with:
-        egress-policy: audit
+      - name: Harden Runner
+        uses: step-security/harden-runner@91182cccc01eb5e619899d80e4e971d6181294a7 # v2.10.1
+        with:
+          egress-policy: audit
 
-    - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-    - uses: actions/setup-node@39370e3970a6d050c480ffad4ff0ed4d3fdee5af # v4.1.0
-      with:
-        node-version-file: '.nvmrc'
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - uses: actions/setup-node@39370e3970a6d050c480ffad4ff0ed4d3fdee5af # v4.1.0
+        with:
+          node-version-file: '.nvmrc'
 
-    - uses: actions/cache/restore@6849a6489940f00c2f30c0fb92c6274307ccb58a # v4.1.2
-      id: cache-node-modules
-      with:
-        path: |
-          ./node_modules
-        key: modules-1-${{ hashFiles('./package-lock.json') }}
-    - name: Install dependencies
-      if: steps.cache-node-modules.outputs.cache-hit != 'true'
-      run: npm clean-install
+      - uses: actions/cache/restore@6849a6489940f00c2f30c0fb92c6274307ccb58a # v4.1.2
+        id: cache-node-modules
+        with:
+          path: |
+            ./node_modules
+          key: modules-1-${{ hashFiles('./package-lock.json') }}
+      - name: Install dependencies
+        if: steps.cache-node-modules.outputs.cache-hit != 'true'
+        run: npm clean-install
 
-    - name: Download blob reports from GitHub Actions Artifacts
-      uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4.1.8
-      with:
-        path: all-blob-reports
-        pattern: blob-report-*
-        merge-multiple: true
+      - name: Download blob reports from GitHub Actions Artifacts
+        uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4.1.8
+        with:
+          path: all-blob-reports
+          pattern: blob-report-*
+          merge-multiple: true
 
-    - name: Merge into HTML Report
-      run: npx playwright merge-reports --reporter html ./all-blob-reports
+      - name: Merge into HTML Report
+        run: npx playwright merge-reports --reporter html ./all-blob-reports
 
-    - name: Upload HTML report
-      uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4.4.3
-      with:
-        name: html-report--attempt-${{ github.run_attempt }}
-        path: playwright-report
-        retention-days: 14
+      - name: Upload HTML report
+        uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4.4.3
+        with:
+          name: html-report--attempt-${{ github.run_attempt }}
+          path: playwright-report
+          retention-days: 14
 
   release:
     name: release
-    needs: [testint]
+    needs: [ testint ]
     if: github.ref == 'refs/heads/master'
     timeout-minutes: 20
     runs-on: ubuntu-24.04
@@ -245,87 +259,85 @@ jobs:
       pull-requests: write # to be able to comment on released pull requests
       id-token: write # to enable use of OIDC for npm provenance
     steps:
-    - name: Harden Runner
-      uses: step-security/harden-runner@91182cccc01eb5e619899d80e4e971d6181294a7 # v2.10.1
-      with:
-        egress-policy: audit
-
-    - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-      with:
-        persist-credentials: false
-    - uses: actions/setup-node@39370e3970a6d050c480ffad4ff0ed4d3fdee5af # v4.1.0
-      with:
-        node-version-file: '.nvmrc'
-        registry-url: 'https://registry.npmjs.org'
-    - uses: actions/cache/restore@6849a6489940f00c2f30c0fb92c6274307ccb58a # v4.1.2
-      id: cache-node-modules
-      with:
-        path: |
-          ./node_modules
-        key: modules-1-${{ hashFiles('./package-lock.json') }}
-
-    - uses: actions/cache/restore@6849a6489940f00c2f30c0fb92c6274307ccb58a # v4.1.2
-      id: cache
-      with:
-        path: |
-          ./dist
-          ./packages/example-react-router6/dist
-          ./packages/example-react-router6/package.json
-          ./packages/example-react/dist
-          ./packages/example-react/package.json
-          ./packages/example-nextjs14/package.json
-          ./packages/example-nextjs14/.next
-          ./packages/example-nextjs15/package.json
-          ./packages/example-nextjs15/.next
-        key: modules-2-${{ github.sha }}-${{ github.run_id }}
-
-    - name: Verify the integrity of provenance attestations and registry signatures for installed dependencies
-      run: npm audit signatures
-    # - name: Debug
-    #   run: echo `pwd` && echo `ls -a`
-
-    - name: git config
-      run: git config --global --add safe.directory /__w/state-in-url/state-in-url
-    - name: Initialize Git user
-      run: |
-          git config --global user.email "github-release-bot@example.com"
-          git config --global user.name "Release Workflow"
-    - name: Initialise the NPM config
-      run: npm config set //registry.npmjs.org/:_authToken $NPM_TOKEN
-      env:
-        NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-
-    - name: Release
-      env:
-        GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-        NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-      run: npx semantic-release
-
-
-  cleanup:
-    name: cleanup
-    needs: [release, merge-reports]
-    runs-on: ubuntu-24.04
-    if: always() && github.ref == 'refs/heads/master'
-    timeout-minutes: 10
-    permissions:
-     #   See also: https://docs.github.com/en/rest/actions/cache?apiVersion=2022-11-28#delete-a-github-actions-cache-for-a-repository-using-a-cache-id
-      actions: write
-      contents: read
-    steps:
       - name: Harden Runner
         uses: step-security/harden-runner@91182cccc01eb5e619899d80e4e971d6181294a7 # v2.10.1
         with:
           egress-policy: audit
 
-      - name: Check out code
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@39370e3970a6d050c480ffad4ff0ed4d3fdee5af # v4.1.0
+        with:
+          node-version-file: '.nvmrc'
+          registry-url: 'https://registry.npmjs.org'
+      - uses: actions/cache/restore@6849a6489940f00c2f30c0fb92c6274307ccb58a # v4.1.2
+        id: cache-node-modules
+        with:
+          path: |
+            ./node_modules
+          key: modules-1-${{ hashFiles('./package-lock.json') }}
 
-      - name: Cleanup
+      - uses: actions/cache/restore@6849a6489940f00c2f30c0fb92c6274307ccb58a # v4.1.2
+        id: cache
+        with:
+          path: |
+            ./dist
+            ./packages/example-react-router6/dist
+            ./packages/example-react-router6/package.json
+            ./packages/example-react/dist
+            ./packages/example-react/package.json
+            ./packages/example-nextjs14/package.json
+            ./packages/example-nextjs14/.next
+            ./packages/example-nextjs15/package.json
+            ./packages/example-nextjs15/.next
+          key: modules-2-${{ github.sha }}-${{ github.run_id }}
+
+      - name: Verify the integrity of provenance attestations and registry signatures for installed dependencies
+        run: npm audit signatures
+      # - name: Debug
+      #   run: echo `pwd` && echo `ls -a`
+
+      - name: git config
+        run: git config --global --add safe.directory /__w/state-in-url/state-in-url
+      - name: Initialize Git user
         run: |
-          set +e
-          echo "Deleting caches..."
-          gh cache delete modules-2-${{ github.sha }}-${{ github.run_id }}
-          echo "Done"
+          git config --global user.email "github-release-bot@example.com"
+          git config --global user.name "Release Workflow"
+      - name: Initialise the NPM config
+        run: npm config set //registry.npmjs.org/:_authToken $NPM_TOKEN
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npx semantic-release
+  # cleanup:
+  #   name: cleanup
+  #   needs: [release, merge-reports]
+  #   runs-on: ubuntu-24.04
+  #   if: always() && github.ref == 'refs/heads/master'
+  #   timeout-minutes: 10
+  #   permissions:
+  #    #   See also: https://docs.github.com/en/rest/actions/cache?apiVersion=2022-11-28#delete-a-github-actions-cache-for-a-repository-using-a-cache-id
+  #     actions: write
+  #     contents: read
+  #   steps:
+  #     - name: Harden Runner
+  #       uses: step-security/harden-runner@91182cccc01eb5e619899d80e4e971d6181294a7 # v2.10.1
+  #       with:
+  #         egress-policy: audit
+
+  #     - name: Check out code
+  #       uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+  #     - name: Cleanup
+  #       run: |
+  #         set +e
+  #         echo "Deleting caches..."
+  #         gh cache delete modules-2-${{ github.sha }}-${{ github.run_id }}
+  #         echo "Done"
+  #       env:
+  #         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

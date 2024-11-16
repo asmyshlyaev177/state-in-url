@@ -40,7 +40,7 @@ import {
  *
  *  ```
  *
- * * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/integrations/packages/urlstate/useUrlStateBase#api}
+ * * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/integrations/packages/urlstate/useUrlStateBase}
  */
 
 export function useUrlStateBase<T extends JSONCompatible>(

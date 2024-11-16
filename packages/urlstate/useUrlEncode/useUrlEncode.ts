@@ -21,7 +21,7 @@ import { type JSONCompatible, typeOf } from "../utils";
  * parse('name=Tom');
  *  ```
  *
- * * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/master/packages/urlstate/useUrlEncode#api}
+ * * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/master/packages/urlstate/useUrlEncode}
  */
 export function useUrlEncode<T extends JSONCompatible>(stateShape: T) {
   const stringify = React.useCallback(
