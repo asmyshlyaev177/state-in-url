@@ -1,3 +1,4 @@
+Please follow [contributing guidelines](/CONTRIBUTING.md)
 
 [comment]: # (What it's about. Adding feature or fixing a bug)
 # PR title
