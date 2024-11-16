@@ -23,7 +23,12 @@ jobs:
         with:
           apikey: ${{ secrets.ANTHROPIC_API_KEY }}
           provider: 'anthropic'
+          model: 'claude-3-5-sonnet-20240620'
           languages: 'korean chinese'
           # inputFiles: ${{ steps.changed_files.outputs.files }}
           inputFiles: 'README.md /**/README.md'
           outputFiles: '/**/*.KO.md /**/*.CH.md'
+
+# for use open an issue and post comment
+# /gpt-translate [input file path] [output file path] [target language]
+# for example  /gpt-translate README.md README.KO.md korean
