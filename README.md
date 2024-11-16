@@ -1,25 +1,25 @@
 English | [한국어](./README.KO.md) | [简体中文](./README.CN.md)
 
 <div align="center">
-  <img src="/packages/example-nextjs14/public/Logo_symbol.png" alt="state-in-url logo" width="150px" />
+  <img src="/packages/example-nextjs14/public/Logo_symbol.png" alt="state-in-url logo" width="120px" />
 
-  <div><h2>State in url</h2></div>
+  # State in url
 </div>
 
 <div align="center">
-<a href="https://github.com/asmyshlyaev177/state-in-url/blob/master/Limits.md"  target="_blank">URI size limitation, <b>up to 12KB</b> is safe</a>
-<h3></h3>
 </div>
 
 <div align="center">
 
 [![npm](https://img.shields.io/npm/v/state-in-url.svg)](https://www.npmjs.com/package/state-in-url)
-![Tests](https://github.com/asmyshlyaev177/state-in-url/actions/workflows/tests.yml/badge.svg?branch=master)
+![npm bundle size (minified + gzip)](https://img.shields.io/bundlephobia/minzip/state-in-url.svg)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/73be54068b7f41b0b74a252579ac09ec)](https://app.codacy.com/gh/asmyshlyaev177/state-in-url/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
+
+![Tests](https://github.com/asmyshlyaev177/state-in-url/actions/workflows/tests.yml/badge.svg?branch=master)
 [![Codacy Badge](https://app.codacy.com/project/badge/Coverage/73be54068b7f41b0b74a252579ac09ec)](https://app.codacy.com/gh/asmyshlyaev177/state-in-url/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_coverage)
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](https://github.com/asmyshlyaev177/state-in-url/)
 [![semantic-release: angular](https://img.shields.io/badge/semantic--release-angular-e10079?logo=semantic-release)]([https://github.com/semantic-release/semantic-release](https://github.com/asmyshlyaev177/state-in-url))
-![npm bundle size (minified + gzip)](https://img.shields.io/bundlephobia/minzip/state-in-url.svg)
+
 [![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/asmyshlyaev177/state-in-url/badge)](https://scorecard.dev/viewer/?uri=github.com/asmyshlyaev177/state-in-url)
 [![OpenSSF Best Practices](https://www.bestpractices.dev/projects/9679/badge)](https://www.bestpractices.dev/projects/9679)
 <!-- or by embedding this in your HTML:
@@ -36,6 +36,8 @@ English | [한국어](./README.KO.md) | [简体中文](./README.CN.md)
 <a href="https://state-in-url.dev" target="_blank">DEMO</a> |
 <a href="https://state-in-url.netlify.app/" target="_blank">DEMO2</a>
 
+<a href="https://github.com/asmyshlyaev177/state-in-url/blob/master/Limits.md"  target="_blank">URI size limitation, <b>up to 12KB</b> is safe</a>
+
 <hr />
 
 Add a ⭐️ and <a href="https://github.com/asmyshlyaev177" target="_blank">follow me</a> to support the project!
@@ -51,8 +53,8 @@ Share if it useful for you.
   <hr />
 
   </div>
-
-# Why use `state-in-url`?
+  
+## Why use `state-in-url`?
 
 Store any user state in query parameters; imagine JSON in a browser URL, while keeping types and structure of data, e.g. numbers will be decoded as numbers not strings, objects and arrays supported.
 Dead simple, fast, and with static Typescript validation. Deep links, aka URL synchronization, made easy.
@@ -65,14 +67,14 @@ This library does all mundane stuff for you.
 
 This library is a good alternative for NUQS.
 
-# Use cases
+### Use cases
 
 - 💾 Store unsaved user forms or page filters in URL
 - 🧠 Just sync data between unrelated client components without touching URI
 - 🔗 Shareable URLs with application state (Deep linking, URL state synchronization)
 - 🔄 Easy state persistence across page reloads
 
-# Features
+### Features
 
 - 🧩 **Simple**: No providers, reducers, boilerplate or new concepts, API similar to `React.useState`
 - 📘 **Typescript validation**: State is just an object, automatic static validation in IDE/tests according to Typescript definition
@@ -132,26 +134,26 @@ Possibly need to set `"module": "ES2022"`, or `"module": "ESNext"`
 Main hook that takes initial state as parameter and returns state object, callback to update url, and callback to update only state.
 All components that use the same `state` object are automatically synchronized.
 
-## useUrlState hook for Next.js
+### useUrlState hook for Next.js
 
 [Full API Docs](packages/urlstate/next/useUrlState#api)
 
 [React-Router example](#useurlstate-hook-for-react-router)
 
-### Usage examples
+#### Usage examples
 
-#### Basic
+##### Basic
 
 1. Define state shape with default values
 
-   ```typescript
-   // userState.ts
-   // Only parameters with value different from default will go to the url.
-   export const userState: UserState = { name: '', age: 0 }
+ ```typescript
+ // userState.ts
+ // Only parameters with value different from default will go to the url.
+ export const userState: UserState = { name: '', age: 0 }
 
-   // use `Type` not `Interface`!
-   type UserState = { name: string, age: number }
-   ```
+ // use `Type` not `Interface`!
+ type UserState = { name: string, age: number }
+ ```
 
 2. Import it and use
 
@@ -192,7 +194,7 @@ function MyComponent() {
 }
 ```
 
-#### Custom hook to work with slice of state conveniently
+##### Custom hook to work with slice of state conveniently
 <details>
   <Summary>Example</Summary>
 
@@ -241,7 +243,7 @@ export const useFormState = ({ searchParams }: { searchParams?: object }) => {
 
 <hr />
 
-#### With complex state shape
+##### With complex state shape
 
 <details>
   <Summary>Example</Summary>
@@ -321,7 +323,7 @@ const tags = [
 [Demo page example code](https://github.com/asmyshlyaev177/state-in-url/blob/master/packages/example-nextjs14/src/app/Form.tsx)
 </details>
 
-#### Update state only and sync to URL manually
+##### Update state only and sync to URL manually
 
 <details>
   <Summary>Example</Summary>
@@ -350,7 +352,7 @@ Syncing state `onBlur` will be more aligned with real world usage.
 
 </details>
 
-#### With server side rendering
+##### With server side rendering
 
 <details>
   <Summary>Example</Summary>
@@ -375,7 +377,7 @@ const Form = ({ searchParams }: { searchParams: object }) => {
 
 </details>
 
-#### Using hook in `layout` component
+##### Using hook in `layout` component
 
 <details>
   <Summary>Example</Summary>
@@ -426,7 +428,7 @@ export default async function Layout({
 
 </details>
 
-#### With arbitrary state shape (not recommended)
+##### With arbitrary state shape (not recommended)
 
 <details>
   <Summary>Example</Summary>
@@ -444,13 +446,13 @@ function SettingsComponent() {
 
 </details>
 
-## useUrlState hook for React-Router
+### useUrlState hook for React-Router
 
 API is same as for Next.js version, except can pass options from [NavigateOptions](https://github.com/remix-run/react-router/blob/bc693ed9f39170bda13b9e1b282fb8e9d5925f66/packages/react-router/lib/context.ts#L99) type.
 
 [API Docs](packages/urlstate/react-router/useUrlState#api)
 
-### Example
+#### Example
 
 ```typescript
 export const form: Form = {
@@ -531,15 +533,15 @@ const tags = [
 
 [Example code](packages/example-react-router6/src/Form-for-test.tsx)
 
-# Other hooks and helpers
+## Other hooks and helpers
 
-## `useUrlStateBase` hook for others routers
+### `useUrlStateBase` hook for others routers
 
 Hooks to create your own `useUrlState` hooks with other routers, e.g. react-router or tanstack router.
 
 [API Docs](packages/urlstate/useUrlStateBase)
 
-## `useSharedState` hook for React.js
+### `useSharedState` hook for React.js
 
 Hook to share state between any React components, tested with Next.js and Vite.
 
@@ -556,19 +558,19 @@ function SettingsComponent() {
 
 [API Docs](packages/urlstate/useSharedState/README.md)
 
-## `useUrlEncode` hook for React.js
+### `useUrlEncode` hook for React.js
 
 [API Docs](packages/urlstate/useUrlEncode/README.md)
 
-## `encodeState` and `decodeState` helpers
+### `encodeState` and `decodeState` helpers
 
 [API Docs](packages/urlstate/encodeState/README.md)
 
-## `encode` and `decode` helpers
+### `encode` and `decode` helpers
 
 [API Docs](packages/urlstate/encoder/README.md)
 
-# Best Practices
+## Best Practices
 
 - Define your state shape as a constant
 - Use TypeScript for enhanced type safety and autocomplete
@@ -602,9 +604,9 @@ export const useUserState = () => {
 2. Vercel servers limit size of headers (query string and other stuff) to **14KB**, so keep your URL state under ~5000 words. <https://vercel.com/docs/errors/URL_TOO_LONG>
 3. Tested with `next.js` 14/15  with app router, no plans to support pages.
 
-# Other
+## Other
 
-## Contribute and/or run locally
+### Contribute and/or run locally
 
 See [Contributing doc](CONTRIBUTING.md)
 
