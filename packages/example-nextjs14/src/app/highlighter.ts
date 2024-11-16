@@ -39,10 +39,10 @@ export const createHighlighter = async () =>
 
 export let highlighter: HighlighterCore;
 
+
 export const highlight = async (content: string) => {
-  if (!highlighter) {
-    highlighter = await createHighlighter();
-  }
+  highlighter = await getHighlighter();
+
   return (
     highlighter?.codeToHtml?.(content, {
       lang: 'typescript',
@@ -54,3 +54,11 @@ export const highlight = async (content: string) => {
     }) || ''
   );
 };
+
+async function getHighlighter() {
+  if (!highlighter) {
+    highlighter = await createHighlighter();
+  }
+  return highlighter
+}
+
