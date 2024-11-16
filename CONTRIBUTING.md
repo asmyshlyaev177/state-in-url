@@ -8,10 +8,12 @@ Make sure that what you trying to fix really a bug, or if adding feature that is
 - Run `npm run dev` for run the demo project in watch mode
 
 2. Write code! Add some feature or fix bug.
+   
+    2.1 [Use conventional commit format](https://gist.github.com/qoomon/5dfcdf8eec66a051ecd85625518cfd13)
+   
+    `fix` and `feat` will bump the version, **those tags should be used only for files inside `./packages/urlstate` or `package.json`**.
 
-`fix` and `feat` will bump the version, **those tags should be used only for files inside `./packages/urlstate` or `package.json`**.
-
-There are also `ci`, `build`, `docs`, `style`, `test`, `chore` and `refactor`.
+    There are also `ci`, `build`, `docs`, `style`, `test`, `chore` and `refactor`.
 
 3. Check that all tests passed(unit and e2e) and add tests for your code.
 Run all tests witn `npm run test`
