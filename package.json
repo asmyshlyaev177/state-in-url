@@ -103,7 +103,7 @@
     "reinstall": "npm run cleanup && npm install",
     "setup": "playwright install --with-deps",
     "prepack": "npm run build && cp package.json dist/package.json && npm run build:demo",
-    "pin-gh-deps": "pin-github-action .github/workflows/tests.yml",
+    "pin-gh-deps": "pin-github-action -i .github/workflows/tests.yml",
     "prepare": "npx husky"
   },
   "wireit": {

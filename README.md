@@ -53,7 +53,7 @@ Share if it useful for you.
   <hr />
 
   </div>
-  
+
 ## Why use `state-in-url`?
 
 Store any user state in query parameters; imagine JSON in a browser URL, while keeping types and structure of data, e.g. numbers will be decoded as numbers not strings, objects and arrays supported.
@@ -136,7 +136,7 @@ All components that use the same `state` object are automatically synchronized.
 
 ### useUrlState hook for Next.js
 
-[Full API Docs](packages/urlstate/next/useUrlState#api)
+[Full API Docs](packages/urlstate/next/useUrlState)
 
 [React-Router example](#useurlstate-hook-for-react-router)
 
@@ -450,7 +450,7 @@ function SettingsComponent() {
 
 API is same as for Next.js version, except can pass options from [NavigateOptions](https://github.com/remix-run/react-router/blob/bc693ed9f39170bda13b9e1b282fb8e9d5925f66/packages/react-router/lib/context.ts#L99) type.
 
-[API Docs](packages/urlstate/react-router/useUrlState#api)
+[API Docs](packages/urlstate/react-router/useUrlState)
 
 #### Example
 
