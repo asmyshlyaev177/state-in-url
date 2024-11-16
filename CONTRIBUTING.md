@@ -9,7 +9,9 @@ Make sure that what you trying to fix really a bug, or if adding feature that is
 
 2. Write code! Add some feature or fix bug.
 
-`fix` and `feat` will bump the version. There are also `ci`, `build`, `docs`, `style`, `test`, `chore` and `refactor`.
+`fix` and `feat` will bump the version, **those tags should be used only for files inside `./packages/urlstate` or `package.json`**.
+
+There are also `ci`, `build`, `docs`, `style`, `test`, `chore` and `refactor`.
 
 3. Check that all tests passed(unit and e2e) and add tests for your code.
 Run all tests witn `npm run test`
