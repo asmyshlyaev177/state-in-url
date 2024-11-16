@@ -69,25 +69,25 @@ This library is a good alternative for NUQS.
 
 ### Use cases
 
-- 💾 Store unsaved user forms or page filters in URL
-- 🧠 Just sync data between unrelated client components without touching URI
-- 🔗 Shareable URLs with application state (Deep linking, URL state synchronization)
-- 🔄 Easy state persistence across page reloads
+- Store unsaved user forms or page filters in URL
+- Just sync data between unrelated client components without touching URI
+- Shareable URLs with application state (Deep linking, URL state synchronization)
+- Easy state persistence across page reloads
 
 ### Features
 
 - 🧩 **Simple**: No providers, reducers, boilerplate or new concepts, API similar to `React.useState`
-- 📘 **Typescript validation**: State is just an object, automatic static validation in IDE/tests according to Typescript definition
+- 📘 **Typescript validation/autocomplete**: State is just an object, automatic static validation in IDE/tests according to Typescript definition
 - ✨ **Complex data**: Nested objects, dates and arrays, works same as JSON, but in URL
-- 🔵 **Server Side Rendering**: Can use it in Server Components, Next.js 14 and 15 are supported
 - ☂ **Default values**: Giving you default values if parameter not in url
 - ⌨ **Organized**: All possible values defined at start, protect you from getting non existing key
-- ⚙ **Well tested**: Unit tests and Playwright tests for Chrome/Firefox/Safari
-- ⚡ **Fast**: Minimal rerenders, less than [1ms](https://github.com/asmyshlyaev177/state-in-url/blob/87c8c7c995c5cd7d9e7aa039c30bfe64b24abe4b/packages/urlstate/encoder/encoder.test.ts#L185) to encode and decode big object
-- 🪶 **Lightweight**: Zero dependencies, library less than 2KB
-- 👍 **DX**: Good developer experience, documentation, JSDoc comments, and examples
-- ⚛️ **Framework Flexibility**: Hooks for `Next.js` and `react-router`, helpers to use it with other frameworks or pure JS
-- 📃 **Permissive license**: MIT
+- **Fast**: Minimal rerenders, less than [1ms](https://github.com/asmyshlyaev177/state-in-url/blob/87c8c7c995c5cd7d9e7aa039c30bfe64b24abe4b/packages/urlstate/encoder/encoder.test.ts#L185) to encode and decode big object
+- **Server Side Rendering**: Can use it in Server Components, Next.js 14 and 15 are supported
+- **Lightweight**: Zero dependencies, library less than 2KB
+- **DX**: Good developer experience, documentation, JSDoc comments, and examples
+- **Framework Flexibility**: Hooks for `Next.js` and `react-router`, helpers to use it with other frameworks or pure JS
+- **Well tested**: Unit tests and Playwright tests for Chrome/Firefox/Safari
+- **Permissive license**: MIT
 
 ## Table of content
 
