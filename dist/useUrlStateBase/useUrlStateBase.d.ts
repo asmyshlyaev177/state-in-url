@@ -31,7 +31,7 @@ import { type JSONCompatible, type Router } from "../utils";
  *
  *  ```
  *
- * * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/integrations/packages/urlstate/useUrlStateBase#api}
+ * * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/integrations/packages/urlstate/useUrlStateBase}
  */
 export declare function useUrlStateBase<T extends JSONCompatible>(defaultState: T, router: Router, getInitialState?: ({ parse, }: {
     parse: ReturnType<typeof useUrlEncode<T>>["parse"];

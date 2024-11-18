@@ -43,7 +43,7 @@ export declare function useUrlState<T extends JSONCompatible>({ defaultState: T,
  * // same as setState(form) with setUrl(form)
  *  ```
  *
- *  * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/master/packages/urlstate/react-router/useUrlState#api}
+ *  * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/master/packages/urlstate/react-router/useUrlState}
  */
 export declare function useUrlState<T extends JSONCompatible>(defaultState: T, params?: Params): {
     urlState: T;

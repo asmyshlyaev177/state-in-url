@@ -1,3 +1,10 @@
+## [4.1.1](https://github.com/asmyshlyaev177/state-in-url/compare/v4.1.0...v4.1.1) (2024-11-18)
+
+
+### Bug Fixes
+
+* bump after refactor ([1aca296](https://github.com/asmyshlyaev177/state-in-url/commit/1aca2965a7571e32829d471b709c33d7b013ec6f))
+
 # [4.1.0](https://github.com/asmyshlyaev177/state-in-url/compare/v4.0.9...v4.1.0) (2024-11-15)
 
 

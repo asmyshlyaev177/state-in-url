@@ -17,7 +17,7 @@ import { type JSONCompatible } from "../utils";
  * parse('name=Tom');
  *  ```
  *
- * * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/master/packages/urlstate/useUrlEncode#api}
+ * * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/master/packages/urlstate/useUrlEncode}
  */
 export declare function useUrlEncode<T extends JSONCompatible>(stateShape: T): {
     /**

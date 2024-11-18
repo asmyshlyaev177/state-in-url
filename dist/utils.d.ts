@@ -8,6 +8,8 @@ export type Type = "string" | "date" | "boolean" | "number" | "bigint" | "undefi
  * `function`, `symbol`, `array`
  */
 export declare const typeOf: (val: unknown) => Type;
+export declare const isPrimitive: (val: unknown) => val is Simple;
+export type Simple = string | Date | boolean | number | null | undefined | Function | symbol;
 export declare const isSSR: () => boolean;
 export type JSON = null | boolean | Date | number | string | {
     [prop: string]: JSON | JSON[];
@@ -22,6 +24,7 @@ export type UnknownObj = object | {
 export declare const isEqual: (val1: unknown, val2: unknown) => boolean;
 export declare function filterUnknownParamsClient<T extends object>(shape: T): string;
 export declare function filterUnknownParams<T extends object>(shape: T, searchParams?: object): T;
+export declare function filterUnknown<T extends object>(shape: T, entries: [key: string, value: string][]): string[][];
 export declare function assignValue<T extends object>(shape: T, newVal: Partial<T>): T;
 export interface Router {
     push: (href: string, opts: object) => void;
