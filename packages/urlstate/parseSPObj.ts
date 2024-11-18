@@ -1,9 +1,4 @@
-import {
-  decode,
-  decodePrimitive,
-  errorSym,
-  type Primitive,
-} from "./encoder/encoder";
+import { type CustomDecoded, decode } from "./encoder/encoder";
 import { type JSONCompatible } from "./utils";
 
 /**
@@ -30,12 +25,11 @@ export function parseSPObj<T extends JSONCompatible>(
 function parseJSONSsr<T extends JSONCompatible>(
   jsonString: string,
   fallbackValue?: T,
-): T | Primitive | undefined {
+): T | CustomDecoded | undefined {
   try {
     return JSON.parse(jsonString, reviverSPSsr) as T;
   } catch {
-    const decodedValue = decodePrimitive(jsonString);
-    return decodedValue !== errorSym ? decodedValue : fallbackValue;
+    return fallbackValue;
   }
 }
 

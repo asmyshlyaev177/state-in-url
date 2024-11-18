@@ -1,4 +1,6 @@
-import { getParams, typeOf, assignValue, filterUnknownParamsClient } from './utils';
+import { getParams, typeOf, assignValue, filterUnknownParamsClient, filterUnknown } from './utils';
+
+import { clone } from './testUtils';
 
 describe('typeOf', () => {
   it('string', () => {
@@ -125,8 +127,6 @@ describe('assignValue', () => {
   })
 })
 
-const clone = (obj: object) => JSON.parse(JSON.stringify(obj))
-
 describe('filterUnknownParamsClient', () => {
   afterAll(() => {
     jest.resetAllMocks()
@@ -190,5 +190,48 @@ describe('filterUnknownParamsClient', () => {
     }));
     const result = filterUnknownParamsClient({ foo: '' });
     expect(result).toBe("foo=second");
+  });
+});
+
+describe('filterUnknown', () => {
+  it('filters out entries with keys not present in the shape', () => {
+    const shape = { a: '', b: '' };
+    const entries: [string, string][] = [
+      ['a', 'value1'],
+      ['b', 'value2'],
+      ['c', 'value3'],
+    ];
+    const result = filterUnknown(shape, entries);
+    expect(result).toEqual([
+      ['a', 'value1'],
+      ['b', 'value2'],
+    ]);
+  });
+
+  it('returns an empty array if no keys match the shape', () => {
+    const shape = { x: '', y: '' };
+    const entries: [string, string][] = [
+      ['a', 'value1'],
+      ['b', 'value2'],
+    ];
+    const result = filterUnknown(shape, entries);
+    expect(result).toEqual([]);
+  });
+
+  it('handles an empty shape object gracefully', () => {
+    const shape = {};
+    const entries: [string, string][] = [
+      ['a', 'value1'],
+      ['b', 'value2'],
+    ];
+    const result = filterUnknown(shape, entries);
+    expect(result).toEqual([]);
+  });
+
+  it('handles an empty entries array gracefully', () => {
+    const shape = { a: '', b: '' };
+    const entries: [string, string][] = [];
+    const result = filterUnknown(shape, entries);
+    expect(result).toEqual([]);
   });
 });

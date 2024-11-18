@@ -1,5 +1,5 @@
 import { SYMBOLS } from "../constants";
-import { type JSONCompatible, typeOf } from "../utils";
+import { type JSONCompatible, type Simple, typeOf } from "../utils";
 
 /**
  * Encode any JSON serializable value to URL friendly string
@@ -14,27 +14,47 @@ export function encode(payload: unknown): string {
     return payload as string;
   }
 
+  return JSON.stringify(payload, replacer)
+    .replace(/'/g, "%27")
+    .replace(/"/g, "'");
+}
+
+function replacer(_key: string, value: unknown): unknown {
+  const type = typeOf(value);
+
+  if (type !== "object" && type !== "array") {
+    return encodePrimitive(value as unknown as Simple);
+  }
+
+  if (type === "object") {
+    const _value = value as { [key: string]: unknown };
+    Object.keys(_value).forEach((objKey) => {
+      _value[objKey] = replacer("", _value[objKey]);
+    });
+    return _value;
+  }
+  if (type === "array") {
+    return (value as unknown as Array<unknown>).map(
+      (val) => replacer("", val) as Simple,
+    );
+  }
+
+  return value;
+}
+
+export const encodePrimitive = (payload: Simple) => {
   switch (typeOf(payload)) {
     case "function":
     case "symbol":
       return "";
     case "date":
-      return encodeDate(payload as Date);
+      return SYMBOLS.date + new Date(payload as Date).toISOString();
     case "undefined":
       return SYMBOLS.undefined;
     default:
-      return JSON.stringify(payload).replace(/'/g, "%27").replace(/"/g, "'");
+      return payload;
   }
-}
-
-function encodeDate(val: Date) {
-  return SYMBOLS.date + new Date(val).toISOString();
-}
-
-export type Primitive = Exclude<
-  ReturnType<typeof decodePrimitive>,
-  typeof errorSym
->;
+};
 
 /**
  * Decode value part of URLSearchParams back to JS value
@@ -49,45 +69,41 @@ export function decode<T>(payload: string, fallback?: T) {
   return parseJSON(
     payload.replace(/'/g, '"').replace(/%27/g, "'"),
     fallback as JSONCompatible,
-  );
+  ) as T;
 }
-
-export const decodePrimitive = (str: string) => {
-  if (str === SYMBOLS.undefined) return undefined;
-  if (str?.startsWith?.(SYMBOLS.date)) return new Date(str.slice(1));
-
-  return errorSym;
-};
-
-export const errorSym = Symbol("isError");
-
-export const reviver = (_key: string, value: unknown) => {
-  const isStr = typeof value === "string";
-  const decoded = isStr && decodePrimitive(value);
-  if (decoded === errorSym) return value;
-  return isStr ? decoded : value;
-};
 
 /**
  * Parses a JSON string into a TypeScript object.
  *
  * @param {string} jsonString - The JSON string to parse.
  * @param {T} [fallbackValue] - The fallback value to use if parsing fails.
- * @return {T | Primitive | undefined} - The parsed object or a primitive value, or undefined if parsing fails.
+ * @return {T | CustomDecoded | undefined} - The parsed object or a primitive value, or undefined if parsing fails.
  *
  *  * Docs {@link https://github.com/asmyshlyaev177/state-in-url}
  */
 export function parseJSON<T extends JSONCompatible>(
   jsonString: string,
   fallbackValue?: T,
-): T | Primitive | undefined {
+): T | CustomDecoded | undefined {
   try {
     return JSON.parse(jsonString, reviver) as T;
   } catch {
-    const decodedValue = decodePrimitive(jsonString);
-    return decodedValue !== errorSym ? decodedValue : fallbackValue;
+    return fallbackValue;
   }
 }
 
+export function reviver(_key: string, value: unknown): unknown {
+  return typeof value === "string" ? decodePrimitive(value) : value;
+}
+
+export const decodePrimitive = (str: string) => {
+  if (str === SYMBOLS.undefined) return undefined;
+  if (str?.startsWith?.(SYMBOLS.date)) return new Date(str.slice(1));
+
+  return str;
+};
+
 const encReg = new RegExp(`^(${SYMBOLS.undefined}|${SYMBOLS.date})`);
 const isEncoded = (val: unknown) => encReg.test(String(val));
+
+export type CustomDecoded = ReturnType<typeof decodePrimitive>;
