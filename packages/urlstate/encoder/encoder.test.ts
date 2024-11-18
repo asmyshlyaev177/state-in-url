@@ -133,7 +133,7 @@ describe('encoder', () => {
   });
 
   describe('date', () => {
-    it.only('instance', () => {
+    it('instance', () => {
       const d = new Date('2024-06-28T09:10:38.763Z');
       expect(encode(d)).toStrictEqual("'2024-06-28T09:10:38.763Z'");
     });
