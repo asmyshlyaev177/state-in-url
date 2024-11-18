@@ -128,6 +128,7 @@ describe('encoder', () => {
   describe('number', () => {
     it('integer and float', () => {
       expect(encode(5)).toStrictEqual("5");
+
       expect(encode(5.55)).toStrictEqual("5.55");
     });
   });
