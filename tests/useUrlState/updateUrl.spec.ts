@@ -91,7 +91,7 @@ test.describe('update', () => {
       await page.getByTestId('sync-object').click();
 
       const expectedUrl =
-        '?name=%27My+Name%27&age=55&tags=%5B%7B%27id%27%3A%271%27%2C%27value%27%3A%7B%27text%27%3A%27React.js%27%2C%27time%27%3A%272024-07-17T04%3A53%3A17.000Z%27%7D%7D%5D';
+        '?name=%27My+Name%27&age=55&tags=%5B%7B%27id%27%3A%271%27%2C%27value%27%3A%7B%27text%27%3A%27React.js%27%2C%27time%27%3A%27%E2%8F%B22024-07-17T04%3A53%3A17.000Z%27%7D%7D%5D';
       await toHaveUrl(page, `${url}${expectedUrl}`);
 
       await expect(page.getByTestId('parsed')).toHaveText(`{
@@ -148,7 +148,7 @@ test.describe('update', () => {
       await page.waitForTimeout(700);
 
       const expectedUrl =
-        '?name=%27My+Name%27&tags=%5B%7B%27id%27%3A%273%27%2C%27value%27%3A%7B%27text%27%3A%27TailwindCSS%27%2C%27time%27%3A%272024-07-19T04%3A53%3A17.000Z%27%2C%27iso%27%3A%272020-07-19T04%3A53%3A17.000Z%27%7D%7D%5D';
+        '?name=%27My+Name%27&tags=%5B%7B%27id%27%3A%273%27%2C%27value%27%3A%7B%27text%27%3A%27TailwindCSS%27%2C%27time%27%3A%27%E2%8F%B22024-07-19T04%3A53%3A17.000Z%27%2C%27iso%27%3A%272020-07-19T04%3A53%3A17.000Z%27%7D%7D%5D';
       await toHaveUrl(page, `${url}${expectedUrl}`);
 
       if (url === '/test-ssr-sp') {

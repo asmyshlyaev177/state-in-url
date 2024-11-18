@@ -5,7 +5,7 @@ describe('encodeState', () => {
   it('should encode a simple state object', () => {
     const state = { str: 'test', num: 123, bool: true };
     const expected = 'str=%27test%27&num=123&bool=true';
-    expect(state).toStrictEqual(decodeState(encodeState(state)));
+    expect(decodeState(encodeState(state))).toStrictEqual(state);
     expect(encodeState(state)).toEqual(expected);
   });
 
@@ -15,7 +15,7 @@ describe('encodeState', () => {
       num: 123,
       nested: { bool: true, arr: [1, 2, 3] },
     };
-    expect(state).toStrictEqual(decodeState(encodeState(state)));
+    expect(decodeState(encodeState(state))).toStrictEqual(state);
 
     const expected =
       'str=%27test%27&num=123&nested=%7B%27bool%27%3Atrue%2C%27arr%27%3A%5B1%2C2%2C3%5D%7D';

@@ -35,6 +35,23 @@ export const typeOf = (val: unknown): Type => {
   );
 };
 
+export const isPrimitive = (val: unknown): val is Simple => {
+  const type = typeOf(val);
+
+  return type !== "object" && type !== "array";
+};
+
+export type Simple =
+  | string
+  | Date
+  | boolean
+  | number
+  | null
+  | undefined
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  | Function
+  | symbol;
+
 export const isSSR = () => typeof window === "undefined";
 
 export type JSON =
@@ -83,16 +100,21 @@ export function filterUnknownParams<T extends object>(
   ) as T;
 }
 
-// TODO: tests
-function filterUnknown<T extends object>(
+export function filterUnknown<T extends object>(
   shape: T,
   entries: [key: string, value: string][],
 ) {
   const shapeKeys = Object.keys(shape);
 
-  return entries
-    .filter(([key]) => shapeKeys.includes(key))
-    .map(([key, val]) => [key.replace(/\+/g, " "), val]);
+  const result = [];
+
+  for (let i = 0; i < entries.length; i++) {
+    if (shapeKeys.includes(entries[i]?.[0])) {
+      result.push([entries[i][0].replace(/\+/g, " "), entries[i][1]]);
+    }
+  }
+
+  return result;
 }
 
 export function assignValue<T extends object>(shape: T, newVal: Partial<T>) {
