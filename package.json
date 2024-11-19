@@ -202,6 +202,12 @@
       ],
       "command": "cd packages/example-nextjs14 && npm run build"
     },
+    "build:demo:tests": {
+      "dependencies": [
+        "build"
+      ],
+      "command": "cd packages/example-nextjs14 && npx cross-env TEST=true npm run build"
+    },
     "start:demo": {
       "dependencies": [
         "build:demo"
@@ -272,7 +278,7 @@
       "dependencies": [
         "build",
         "build:react",
-        "build:demo",
+        "build:demo:tests",
         "build:next15",
         "build:router6"
       ]

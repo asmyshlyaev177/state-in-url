@@ -28,7 +28,7 @@ export default async function RootLayout({
         {children}
       </body>
       {isProd ? <GoogleAnalytics gaId="G-5N8Y565DXK" /> : null }
-      {isVercel ? <Analytics /> : null}
+      {isProd && isVercel ? <Analytics /> : null}
     </html>
   );
 }
