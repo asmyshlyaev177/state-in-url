@@ -56,7 +56,7 @@ Share if it useful for you.
 
 ## Why use `state-in-url`?
 
-Store any user state in query parameters; imagine JSON in a browser URL, while keeping types and structure of data, e.g. numbers will be decoded as numbers not strings, objects and arrays supported.
+Store any user state in query parameters; imagine JSON in a browser URL. All of it with keeping types and structure of data, e.g. numbers will be decoded as numbers not strings, dates as dates, etc, objects and arrays supported.
 Dead simple, fast, and with static Typescript validation. Deep links, aka URL synchronization, made easy.
 
 Contains `useUrlState` hook for Next.js and react-router, and helpers for anything else on JS.
@@ -70,6 +70,7 @@ This library is a good alternative for NUQS.
 ### Use cases
 
 - Store unsaved user forms or page filters in URL
+- Sycn URL with React state
 - Just sync data between unrelated client components without touching URI
 - Shareable URLs with application state (Deep linking, URL state synchronization)
 - Easy state persistence across page reloads
