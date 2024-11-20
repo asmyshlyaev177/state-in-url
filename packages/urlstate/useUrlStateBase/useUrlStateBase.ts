@@ -1,5 +1,6 @@
 import React from "react";
 
+import { TIMEOUT } from "../constants";
 import { useInsertionEffect } from "../useInsertionEffect";
 import { useSharedState } from "../useSharedState";
 import { useUrlEncode } from "../useUrlEncode";
@@ -60,6 +61,9 @@ export function useUrlStateBase<T extends JSONCompatible>(
         parse,
       }) || defaultState,
   );
+  const timer = React.useRef<ReturnType<typeof setTimeout> | undefined>(
+    undefined,
+  );
 
   useInsertionEffect(() => {
     // for history navigation
@@ -72,6 +76,7 @@ export function useUrlStateBase<T extends JSONCompatible>(
 
     return () => {
       window.removeEventListener(popstateEv, popCb);
+      clearTimeout(timer.current);
     };
   }, [setState]);
 
@@ -99,7 +104,9 @@ export function useUrlStateBase<T extends JSONCompatible>(
       delete options?.replace;
       queue.current.push([replace ? "replace" : "push", newUrl, options]);
 
-      if (queue.current.length === 1)
+      clearTimeout(timer.current);
+
+      timer.current = setTimeout(() => {
         queueMicrotask(() => {
           while (queue.current.length) {
             const currUpd = queue.current.shift();
@@ -114,6 +121,7 @@ export function useUrlStateBase<T extends JSONCompatible>(
           // @ts-expect-error fots
           method && router[method](url, opts);
         });
+      }, TIMEOUT);
     },
     [router, stringify, getState],
   );

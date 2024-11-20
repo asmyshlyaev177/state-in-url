@@ -29,7 +29,7 @@ export function useSharedState<T extends JSONCompatible>(
   const stateShape = React.useRef(defaultState);
 
   const [state, _setState] = React.useState(() => {
-    if (isSSR()) {
+    if (isSSR) {
       return _getInitial ? _getInitial?.() : stateShape.current;
     }
 
