@@ -2,13 +2,9 @@ import { act, renderHook } from '@testing-library/react';
 
 import { useSharedState } from './useSharedState';
 import * as subscribers from '../subscribers';
+import * as utils from '../utils'
 
-jest.mock('../utils.ts', () => ({
-  ...jest.requireActual('../utils.ts'),
-  isSSR: jest.fn(),
-}));
-
-import { isSSR, JSONCompatible } from '../utils';
+import { JSONCompatible } from '../utils';
 
 describe('useSharedState', () => {
   let state: typeof form;
@@ -27,7 +23,7 @@ describe('useSharedState', () => {
         it('always use getInitial', () => {
           const stateSpy = jest.spyOn(subscribers.stateMap, 'get');
           const stateSpySet = jest.spyOn(subscribers.stateMap, 'set');
-          jest.mocked(isSSR).mockReturnValue(true);
+          Object.defineProperty(utils, 'isSSR', { value: true })
           const hook1 = renderHook(() => useSharedState(state, getInitial));
 
           expect(hook1.result.current.state).toStrictEqual(initial);
@@ -43,7 +39,7 @@ describe('useSharedState', () => {
             .spyOn(subscribers.stateMap, 'set')
             .mockReturnValue(stateMock);
 
-          jest.mocked(isSSR).mockReturnValue(false);
+          Object.defineProperty(utils, 'isSSR', { value: false })
           const hook1 = renderHook(() => useSharedState(state, getInitial));
 
           expect(hook1.result.current.state).toStrictEqual(initial);
@@ -61,7 +57,7 @@ describe('useSharedState', () => {
             .spyOn(subscribers.stateMap, 'set')
             .mockReturnValue(stateMock);
 
-          jest.mocked(isSSR).mockReturnValue(false);
+          Object.defineProperty(utils, 'isSSR', { value: false })
           const hook1 = renderHook(() => useSharedState(state));
 
           expect(stateSpyGet).toHaveBeenCalledTimes(1);
@@ -80,7 +76,7 @@ describe('useSharedState', () => {
             .spyOn(subscribers.stateMap, 'set')
             .mockReturnValue(stateMock);
 
-          jest.mocked(isSSR).mockReturnValue(false);
+          Object.defineProperty(utils, 'isSSR', { value: false })
           const hook1 = renderHook(() => useSharedState(state));
 
           expect(stateSpyGet).toHaveBeenCalledTimes(1);

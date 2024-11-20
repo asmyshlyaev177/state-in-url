@@ -52,7 +52,7 @@ export type Simple =
   | Function
   | symbol;
 
-export const isSSR = () => typeof window === "undefined";
+export const isSSR = typeof window === "undefined";
 
 export type JSON =
   | null
@@ -141,3 +141,5 @@ export const routerHistory: Router = {
     window && window.history.replaceState(null, "", str);
   },
 };
+
+export const isSafari = /apple/i.test((!isSSR && navigator?.userAgent) || "");

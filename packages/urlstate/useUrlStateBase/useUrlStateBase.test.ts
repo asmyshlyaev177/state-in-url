@@ -1,10 +1,12 @@
 import { act, fireEvent, renderHook } from '@testing-library/react';
 
+import { advanceTimersByTime } from '../../../tests/testUtils';
 import { useUrlStateBase } from './useUrlStateBase';
 import { parseSPObj } from '../parseSPObj';
 import * as sharedState from '../useSharedState';
 import * as urlEncode from '../useUrlEncode';
 import * as utils from '../utils';
+
 
 type State = {
   str: string;
@@ -45,12 +47,12 @@ describe('useUrlStateBase', () => {
 
   describe('pass state to useSharedState', () => {
     it('ssr with searchParams', () => {
-      jest.spyOn(utils, 'isSSR').mockReturnValue(true);
+      Object.defineProperty(utils, 'isSSR', { value: true })
       const sharedStateSpy = jest.spyOn(sharedState, 'useSharedState');
       const sp = { num: 55, 'with space': true };
       renderHook(() =>
         useUrlStateBase(shape, router, () =>
-          utils.isSSR() ? { ...shape, ...sp } : shape,
+          utils.isSSR ? { ...shape, ...sp } : shape,
         ),
       );
 
@@ -69,7 +71,7 @@ describe('useUrlStateBase', () => {
     });
 
     it('ssr without searchParams', () => {
-      jest.spyOn(utils, 'isSSR').mockReturnValue(true);
+      Object.defineProperty(utils, 'isSSR', { value: true })
       const sharedStateSpy = jest.spyOn(sharedState, 'useSharedState');
       renderHook(() => useUrlStateBase(shape, router));
 
@@ -84,7 +86,7 @@ describe('useUrlStateBase', () => {
     });
 
     it('client with location.search', () => {
-      jest.spyOn(utils, 'isSSR').mockReturnValue(false);
+      Object.defineProperty(utils, 'isSSR', { value: false })
       const search = '?num=55&with+space=true';
       const originalLocation = window.location;
       jest.spyOn(window, 'location', 'get').mockImplementation(() => ({
@@ -113,7 +115,7 @@ describe('useUrlStateBase', () => {
     });
 
     it('client empty state', () => {
-      jest.spyOn(utils, 'isSSR').mockReturnValue(false);
+      Object.defineProperty(utils, 'isSSR', { value: false })
       const sharedStateSpy = jest.spyOn(sharedState, 'useSharedState');
       renderHook(() => useUrlStateBase(shape, router));
 
@@ -130,7 +132,7 @@ describe('useUrlStateBase', () => {
     describe('with existing queryParams', () => {
       describe('state contains only fields from stateShape', () => {
         it('ssr', () => {
-          jest.spyOn(utils, 'isSSR').mockReturnValue(true);
+          Object.defineProperty(utils, 'isSSR', { value: true })
           const sharedStateSpy = jest.spyOn(sharedState, 'useSharedState');
           const { result } = renderHook(() => useUrlStateBase(shape, router));
 
@@ -145,7 +147,8 @@ describe('useUrlStateBase', () => {
         });
 
         it('client', () => {
-          jest.spyOn(utils, 'isSSR').mockReturnValue(false);
+          Object.defineProperty(utils, 'isSSR', { value: false })
+          // jest.spyOn(utils, 'isSSR').mockReturnValue(false);
           const search = '?key=value123';
           const originalLocation = window.location;
           jest.spyOn(window, 'location', 'get').mockImplementation(() => ({
@@ -170,11 +173,11 @@ describe('useUrlStateBase', () => {
 
   describe('return state', () => {
     it('ssr with sp', () => {
-      jest.spyOn(utils, 'isSSR').mockReturnValue(true);
+      Object.defineProperty(utils, 'isSSR', { value: true })
       const sp = { num: '55' };
       const { result } = renderHook(() =>
         useUrlStateBase(shape, router, () =>
-          utils.isSSR() ? parseSPObj(sp, shape) : shape,
+          utils.isSSR ? parseSPObj(sp, shape) : shape,
         ),
       );
 
@@ -183,14 +186,14 @@ describe('useUrlStateBase', () => {
     });
 
     it('ssr', () => {
-      jest.spyOn(utils, 'isSSR').mockReturnValue(true);
+      Object.defineProperty(utils, 'isSSR', { value: true })
       const { result } = renderHook(() => useUrlStateBase(shape, router));
 
       expect(result.current.state).toStrictEqual(shape);
     });
 
     it('client', () => {
-      jest.spyOn(utils, 'isSSR').mockReturnValue(false);
+      Object.defineProperty(utils, 'isSSR', { value: false })
       const { result } = renderHook(() => useUrlStateBase(shape, router));
 
       expect(result.current.state).toStrictEqual(shape);
@@ -203,7 +206,7 @@ describe('useUrlStateBase', () => {
         ...originalLocation,
         search,
       }));
-      jest.spyOn(utils, 'isSSR').mockReturnValue(false);
+      Object.defineProperty(utils, 'isSSR', { value: false })
       const { result } = renderHook(() =>
         useUrlStateBase(shape, router, ({ parse }) =>
           parse(window.location.search),
@@ -216,16 +219,23 @@ describe('useUrlStateBase', () => {
   });
 
   describe('updateUrl', () => {
+    afterEach(() => {
+      jest.useRealTimers()
+    })
+
     describe('object', () => {
       it('full shape', async () => {
-        jest.spyOn(utils, 'isSSR').mockReturnValue(false);
+        jest.useFakeTimers({
+          doNotFake: ['nextTick', 'setImmediate', 'setInterval'],
+        });
+        Object.defineProperty(utils, 'isSSR', { value: false })
         const { result } = renderHook(() => useUrlStateBase(shape, router));
 
         act(() => {
           result.current.updateUrl({ ...shape, num: 50 });
         });
 
-        await new Promise(process.nextTick);
+        await advanceTimersByTime(700);
 
         expect(result.current.state).toStrictEqual({ ...shape, num: 50 });
         expect(router.push).toHaveBeenCalledTimes(1);
@@ -233,14 +243,17 @@ describe('useUrlStateBase', () => {
       });
 
       it('partial shape', async () => {
-        jest.spyOn(utils, 'isSSR').mockReturnValue(false);
+        jest.useFakeTimers({
+          doNotFake: ['nextTick', 'setImmediate', 'setInterval'],
+        });
+        Object.defineProperty(utils, 'isSSR', { value: false })
         const { result } = renderHook(() => useUrlStateBase(shape, router));
 
         act(() => {
           result.current.updateUrl({ num: 50 });
         });
 
-        await new Promise(process.nextTick);
+        await advanceTimersByTime(700);
 
         expect(result.current.state).toStrictEqual({ ...shape, num: 50 });
         expect(router.push).toHaveBeenCalledTimes(1);
@@ -248,7 +261,10 @@ describe('useUrlStateBase', () => {
       });
 
       it('no arg, should reset', async () => {
-        jest.spyOn(utils, 'isSSR').mockReturnValue(false);
+        jest.useFakeTimers({
+          doNotFake: ['nextTick', 'setImmediate', 'setInterval'],
+        });
+        Object.defineProperty(utils, 'isSSR', { value: false })
         const { result } = renderHook(() => useUrlStateBase(shape, router));
 
         act(() => {
@@ -258,7 +274,7 @@ describe('useUrlStateBase', () => {
           result.current.updateUrl();
         });
 
-        await new Promise(process.nextTick);
+        await advanceTimersByTime(700);
 
         expect(result.current.state).toStrictEqual({ ...shape, num: 50 });
         expect(router.push).toHaveBeenCalledTimes(1);
@@ -267,14 +283,17 @@ describe('useUrlStateBase', () => {
     });
 
     it('update url with function', async () => {
-      jest.spyOn(utils, 'isSSR').mockReturnValue(false);
+      jest.useFakeTimers({
+        doNotFake: ['nextTick', 'setImmediate', 'setInterval'],
+      });
+      Object.defineProperty(utils, 'isSSR', { value: false })
       const { result } = renderHook(() => useUrlStateBase(shape, router));
 
       act(() => {
         result.current.updateUrl((curr) => ({ ...curr, num: 50 }));
       });
 
-      await new Promise(process.nextTick);
+      await advanceTimersByTime(700);
 
       expect(result.current.state).toStrictEqual({ ...shape, num: 50 });
       expect(router.push).toHaveBeenCalledTimes(1);
@@ -282,7 +301,7 @@ describe('useUrlStateBase', () => {
     });
 
     it('do not update if url same', () => {
-      jest.spyOn(utils, 'isSSR').mockReturnValue(false);
+      Object.defineProperty(utils, 'isSSR', { value: false })
       const { result } = renderHook(() => useUrlStateBase(shape, router));
       const newState = { ...shape };
       act(() => {
@@ -293,7 +312,10 @@ describe('useUrlStateBase', () => {
     });
 
     it('should preserve hash', async () => {
-      jest.spyOn(utils, 'isSSR').mockReturnValue(false);
+      jest.useFakeTimers({
+        doNotFake: ['nextTick', 'setImmediate', 'setInterval'],
+      });
+      Object.defineProperty(utils, 'isSSR', { value: false })
       const hash = '#test123';
       const originalLocation = window.location;
       jest.spyOn(window, 'location', 'get').mockImplementation(() => ({
@@ -309,14 +331,17 @@ describe('useUrlStateBase', () => {
         result.current.updateUrl(newState);
       });
 
-      await new Promise(process.nextTick);
+      await advanceTimersByTime(700);
 
       expect(router.push).toHaveBeenCalledTimes(1);
       expect(router.push).toHaveBeenNthCalledWith(1, `/?num=55${hash}`, undefined);
     });
 
     it('replace and options', async () => {
-      jest.spyOn(utils, 'isSSR').mockReturnValue(false);
+      jest.useFakeTimers({
+        doNotFake: ['nextTick', 'setImmediate', 'setInterval'],
+      });
+      Object.defineProperty(utils, 'isSSR', { value: false })
       const { result } = renderHook(() => useUrlStateBase(shape, router));
 
       const newState = { ...shape, num: 50 };
@@ -328,7 +353,7 @@ describe('useUrlStateBase', () => {
         });
       });
 
-      await new Promise(process.nextTick);
+      await advanceTimersByTime(700);
 
       expect(result.current.state).toStrictEqual(newState);
       expect(router.replace).toHaveBeenCalledTimes(1);
@@ -340,7 +365,7 @@ describe('useUrlStateBase', () => {
 
     describe('with existing queryParams', () => {
       it('should only update fields from stateShape', () => {
-        jest.spyOn(utils, 'isSSR').mockReturnValue(false);
+        Object.defineProperty(utils, 'isSSR', { value: false })
         const sp = 'key=value123';
         const search = `?${sp}`;
         const originalLocation = window.location;
@@ -372,7 +397,7 @@ describe('useUrlStateBase', () => {
 
   describe('updateState', () => {
     it('should call setState in useSharedState', () => {
-      jest.spyOn(utils, 'isSSR').mockReturnValue(false);
+      Object.defineProperty(utils, 'isSSR', { value: false })
       const setState = jest.fn();
       jest.spyOn(sharedState, 'useSharedState').mockReturnValue({
         state: shape,
@@ -392,8 +417,14 @@ describe('useUrlStateBase', () => {
   });
 
   describe('reset', () => {
+    afterEach(() => {
+      jest.useRealTimers()
+    })
     it('should reset after update', async () => {
-      jest.spyOn(utils, 'isSSR').mockReturnValue(false);
+      jest.useFakeTimers({
+        doNotFake: ['nextTick', 'setImmediate', 'setInterval'],
+      });
+      Object.defineProperty(utils, 'isSSR', { value: false })
 
 
       const { result } = renderHook(() => useUrlStateBase(shape, router));
@@ -401,7 +432,7 @@ describe('useUrlStateBase', () => {
       act(() => {
         result.current.updateUrl({ num: 50 });
       });
-      await new Promise(process.nextTick);
+      await advanceTimersByTime(700);
 
       expect(router.push).toHaveBeenCalledTimes(1)
       expect(result.current.state).toStrictEqual({ ...shape, num: 50 });
@@ -416,7 +447,7 @@ describe('useUrlStateBase', () => {
       act(() => {
         result.current.reset();
       })
-      await new Promise(process.nextTick);
+      await advanceTimersByTime(700);
 
       expect(router.replace).not.toHaveBeenCalled()
       expect(router.push).toHaveBeenCalledTimes(2)
@@ -426,7 +457,10 @@ describe('useUrlStateBase', () => {
     });
 
     it('from existing query params', async () => {
-      jest.spyOn(utils, 'isSSR').mockReturnValue(false);
+      jest.useFakeTimers({
+        doNotFake: ['nextTick', 'setImmediate', 'setInterval'],
+      });
+      Object.defineProperty(utils, 'isSSR', { value: false })
       const search = '?num=51';
       const originalLocation = window.location;
       jest.spyOn(window, 'location', 'get').mockImplementation(() => ({
@@ -439,7 +473,7 @@ describe('useUrlStateBase', () => {
       act(() => {
         result.current.reset();
       })
-      await new Promise(process.nextTick);
+      await advanceTimersByTime(700);
 
       expect(router.replace).not.toHaveBeenCalled()
       expect(router.push).toHaveBeenCalledTimes(1)
@@ -448,7 +482,10 @@ describe('useUrlStateBase', () => {
     });
 
     it('with replace', async () => {
-      jest.spyOn(utils, 'isSSR').mockReturnValue(false);
+      jest.useFakeTimers({
+        doNotFake: ['nextTick', 'setImmediate', 'setInterval'],
+      });
+      Object.defineProperty(utils, 'isSSR', { value: false })
       const search = '?num=51';
       const originalLocation = window.location;
       jest.spyOn(window, 'location', 'get').mockImplementation(() => ({
@@ -461,7 +498,7 @@ describe('useUrlStateBase', () => {
       act(() => {
         result.current.reset({ replace: true });
       })
-      await new Promise(process.nextTick);
+      await advanceTimersByTime(700);
 
       expect(router.push).not.toHaveBeenCalled()
       expect(router.replace).toHaveBeenCalledTimes(1)
@@ -472,7 +509,7 @@ describe('useUrlStateBase', () => {
 
   describe('back/forward history navigation', () => {
     it('should update state on back/forward', () => {
-      jest.spyOn(utils, 'isSSR').mockReturnValue(false);
+      Object.defineProperty(utils, 'isSSR', { value: false })
       const search = '?num=55';
       const originalLocation = window.location;
       jest

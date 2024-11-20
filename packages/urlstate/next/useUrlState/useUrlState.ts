@@ -115,7 +115,7 @@ export function useUrlState<T extends JSONCompatible>(
     reset: resetBase,
     getState,
   } = useUrlStateBase(_defaultState, router, ({ parse }) =>
-    isSSR()
+    isSSR
       ? parseSPObj(
           filterUnknownParams(_defaultState, _searchParams),
           _defaultState,

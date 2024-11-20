@@ -4,7 +4,7 @@ import { toHaveUrl } from '../testUtils';
 
 const urls = [
   '/test-ssr', //  expected hydration error
-  '/test-use-client', //  TODO: <<---error, shouldn't be ?
+  '/test-use-client',
   '/test-ssr-sp',
   'http://localhost:3001/test-ssr',
   'http://localhost:3001/test-use-client',
@@ -148,4 +148,37 @@ test.describe('main tests', () => {
       }
   });
   }
+
+
+  for (const url of urls) {
+    test(`fast updates(long key press) ${url}`, async ({ page }) => {
+
+      const errorLogs: unknown[] = [];
+      page.on('console', (message) => {
+        if (message.type() === 'error') {
+          errorLogs.push({ text: message.text(), url });
+        }
+      });
+
+      await page.goto(url);
+      await page.waitForSelector('button[name="Reload page"]');
+
+
+      const text = 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
+      await page
+        .getByLabel('name')
+        .pressSequentially(text, { delay: 0 });
+        await page.waitForTimeout(500);
+
+        await expect(page.url()).toContain(text)
+
+
+      await expect(page.locator('button[name="Reload page"]')).toBeVisible();
+
+      if (url === '/test-ssr-sp') {
+        await expect(errorLogs).toHaveLength(0);
+      }
+    });
+  }
+
 });
