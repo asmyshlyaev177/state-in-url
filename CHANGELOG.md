@@ -1,3 +1,10 @@
+## [4.1.2](https://github.com/asmyshlyaev177/state-in-url/compare/v4.1.1...v4.1.2) (2024-11-20)
+
+
+### Bug Fixes
+
+* fix history pushState/replaceState rate limits ([35d1398](https://github.com/asmyshlyaev177/state-in-url/commit/35d139843e8824f217cf59edbebbfada5c792b53))
+
 ## [4.1.1](https://github.com/asmyshlyaev177/state-in-url/compare/v4.1.0...v4.1.1) (2024-11-18)
 
 

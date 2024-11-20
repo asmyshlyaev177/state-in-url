@@ -1,1 +1,1 @@
-export{SYMBOLS}from"./constants.mjs";
+export{SYMBOLS,TIMEOUT}from"./constants.mjs";

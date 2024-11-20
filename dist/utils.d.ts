@@ -10,7 +10,7 @@ export type Type = "string" | "date" | "boolean" | "number" | "bigint" | "undefi
 export declare const typeOf: (val: unknown) => Type;
 export declare const isPrimitive: (val: unknown) => val is Simple;
 export type Simple = string | Date | boolean | number | null | undefined | Function | symbol;
-export declare const isSSR: () => boolean;
+export declare const isSSR: boolean;
 export type JSON = null | boolean | Date | number | string | {
     [prop: string]: JSON | JSON[];
 };
@@ -31,3 +31,4 @@ export interface Router {
     replace: (href: string, opts: object) => void;
 }
 export declare const routerHistory: Router;
+export declare const isSafari: boolean;
