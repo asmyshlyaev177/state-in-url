@@ -1,7 +1,7 @@
 typings.d.ts
 package.json
 playwright.config.ts
-rollup.config.js
+rollup.config.*
 .eslintrc.cjs
 *.test.ts
 *.test.tsx

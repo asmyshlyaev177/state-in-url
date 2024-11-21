@@ -162,7 +162,7 @@
       "command": "npm run dev:nextjs14"
     },
     "dev:lib": {
-      "command": "cross-env IS_DEVELOPMENT=true rollup -c rollup.config.js --bundleConfigAsCjs -w",
+      "command": "cross-env IS_DEVELOPMENT=true rollup -c rollup.config.mjs -w",
       "service": {
         "readyWhen": {
           "lineMatches": "created "
@@ -287,7 +287,7 @@
       "command": "cd packages/example-react && npm run build"
     },
     "build": {
-      "command": "rollup -c rollup.config.js --bundleConfigAsCjs",
+      "command": "rollup -c rollup.config.mjs",
       "dependencies": [
         "rmdist"
       ]
@@ -336,7 +336,6 @@
     "@commitlint/config-conventional": "^19.0.3",
     "@playwright/test": "^1.48.2",
     "@rollup/plugin-node-resolve": "^15.3.0",
-    "@rollup/plugin-terser": "^0.4.4",
     "@rollup/plugin-typescript": "^12.1.0",
     "@semantic-release/changelog": "^6.0.3",
     "@semantic-release/commit-analyzer": "^13.0.0",
@@ -376,6 +375,7 @@
     "prettier-plugin-tailwindcss": "^0.6.8",
     "release-it": "^17.6.0",
     "rollup": "^4.23.0",
+    "rollup-plugin-esbuild": "^6.1.1",
     "rollup-plugin-filesize": "^10.0.0",
     "rollup-plugin-sourcemaps": "^0.6.3",
     "semantic-release": "^24.1.0",

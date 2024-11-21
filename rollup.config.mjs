@@ -1,10 +1,10 @@
 import resolve from '@rollup/plugin-node-resolve';
-import terser from '@rollup/plugin-terser';
+import esbuild from 'rollup-plugin-esbuild'
 import sourcemaps from 'rollup-plugin-sourcemaps';
 import typescript from '@rollup/plugin-typescript';
 import filesize from 'rollup-plugin-filesize';
 import { glob } from 'glob'
-import config from './tsconfig.json'
+import config from './tsconfig.json' assert { type: "json" };
 
 const isProduction = !process.env.IS_DEVELOPMENT;
 const sourcemap = !isProduction;
@@ -25,7 +25,11 @@ const plugins = [
 
 
   !isProduction && sourcemaps(),
-  isProduction && terser({ ecma: '2022' }),
+  esbuild({
+    sourceMap: !isProduction, // default
+    minify: isProduction,
+    target: 'es2023', // default, or 'es20XX', 'esnext'
+  }),
   filesize(),
 ].filter(Boolean);
 
