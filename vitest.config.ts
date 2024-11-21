@@ -8,8 +8,9 @@ export default defineConfig({
     include: ["**/*.test.?(c|m)[jt]s?(x)"],
     coverage: {
       enabled: true,
+      include: ["packages/urlstate"],
       provider: "istanbul",
-      reportsDirectory: "coverage-reports",
+      reportsDirectory: "./coverage-reports",
       reporter: ["lcov", "json", "html"],
     },
     globals: true,

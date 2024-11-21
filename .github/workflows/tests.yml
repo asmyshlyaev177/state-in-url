@@ -75,7 +75,7 @@ jobs:
         run: npm run test:exports
 
       - name: Unit tests
-        run: npm run test:unit
+        run: npx tsc --noEmit && npx vitest --run --coverage
       - name: Run codacy-coverage-reporter
         uses: codacy/codacy-coverage-reporter-action@89d6c85cfafaec52c72b6c5e8b2878d33104c699 # v1.3.0
         continue-on-error: true
