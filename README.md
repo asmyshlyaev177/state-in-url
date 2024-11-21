@@ -594,7 +594,14 @@ const userState = {
 };
 
 export const useUserState = () => {
-  const { urlState, setUrl } = useUrlState(userState);
+  const { urlState, setUrl, reset } = useUrlState(userState);
+
+  // other logic
+
+  // reset query params when navigating to other page
+  React.useEffect(() => {
+    return reset
+  }, [])
 
   return { userState: urlState, setUserState: setUrl };;
 }
