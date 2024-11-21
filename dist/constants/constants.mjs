@@ -1,1 +1,1 @@
-import{isSafari as e}from"../utils.mjs";const d={date:"⏲",undefined:"∙undefined"},n=e?330:70;export{d as SYMBOLS,n as TIMEOUT};
+import{isSafari as e}from"../utils.mjs";const d={date:"\u23F2",undefined:"\u2219undefined"},i=e?330:70;export{d as SYMBOLS,i as TIMEOUT};

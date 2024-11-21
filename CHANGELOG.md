@@ -1,3 +1,10 @@
+## [4.1.3](https://github.com/asmyshlyaev177/state-in-url/compare/v4.1.2...v4.1.3) (2024-11-21)
+
+
+### Bug Fixes
+
+* use esbuild instead of terser ([59226b0](https://github.com/asmyshlyaev177/state-in-url/commit/59226b02d654067e858eae6333bf95dc79595ae2))
+
 ## [4.1.2](https://github.com/asmyshlyaev177/state-in-url/compare/v4.1.1...v4.1.2) (2024-11-20)
 
 

@@ -5,7 +5,7 @@ export declare const subscribers: {
     remove(obj: JSONCompatible, cb: Cb): void;
 };
 export declare const stateMap: {
-    get: <T extends JSONCompatible>(objKey: T) => T;
+    get: <T extends JSONCompatible | undefined>(objKey: T) => T | undefined;
     set: <T extends JSONCompatible>(objKey: T, value: T) => void;
 };
 export type Cb = () => void;

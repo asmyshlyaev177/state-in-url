@@ -1,1 +1,1 @@
-export{useSharedState}from"./useSharedState.mjs";
+import{useSharedState as t}from"./useSharedState.mjs";export{t as useSharedState};
