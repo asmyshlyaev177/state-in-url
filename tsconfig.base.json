@@ -15,11 +15,9 @@
     "allowImportingTsExtensions": true,
     "types": [
       "node",
-      "jest",
       "@testing-library/dom",
       "@testing-library/jest-dom",
-      "jest-environment-jsdom",
-      "@jest/globals"
+      "vitest/globals"
     ],
     "lib": [
       "ES2021",
@@ -65,8 +63,6 @@
     "dist",
     "**/dist",
     "tests",
-    "**/*.test.ts",
-    "**/*.test.tsx",
     "**/exportsTest.ts",
     "**/exportsTest.ts",
     "packages/urlstate/exportsTest.ts",

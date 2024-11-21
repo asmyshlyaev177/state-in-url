@@ -10,11 +10,13 @@ import { type JSONCompatible, type Simple, typeOf } from "../utils";
  *  * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/master/packages/urlstate/encoder#encode}
  */
 export function encode(payload: unknown): string {
+  if (typeof payload === "function" || typeof payload === "symbol") return "";
+
   if (isEncoded(payload)) {
     return payload as string;
   }
 
-  return JSON.stringify(payload, replacer)
+  return JSON.stringify(structuredClone(payload), replacer)
     .replace(/'/g, "%27")
     .replace(/"/g, "'");
 }
@@ -29,13 +31,13 @@ function replacer(_key: string, value: unknown): unknown {
   if (type === "object") {
     const _value = value as { [key: string]: unknown };
     Object.keys(_value).forEach((objKey) => {
-      _value[objKey] = replacer("", _value[objKey]);
+      _value[objKey] = replacer(_key, _value[objKey]);
     });
     return _value;
   }
   if (type === "array") {
     return (value as unknown as Array<unknown>).map(
-      (val) => replacer("", val) as Simple,
+      (val) => replacer(_key, val) as Simple,
     );
   }
 
@@ -44,9 +46,6 @@ function replacer(_key: string, value: unknown): unknown {
 
 export const encodePrimitive = (payload: Simple) => {
   switch (typeOf(payload)) {
-    case "function":
-    case "symbol":
-      return "";
     case "date":
       return SYMBOLS.date + new Date(payload as Date).toISOString();
     case "undefined":

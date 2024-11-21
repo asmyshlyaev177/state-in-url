@@ -34,7 +34,7 @@ describe('useUrlEncode', () => {
       arr: [1, 2, 3],
     };
 
-    it('stringify/parse', () => {
+    test('stringify/parse', () => {
       const {
         result: {
           current: { stringify, parse },
@@ -61,13 +61,13 @@ describe('useUrlEncode', () => {
       'str=%27string1%27&num=3333&float=3.14&bool2=true&obj=%7B%27test%27%3A123%7D&arr=%5B1%2C2%2C3%5D';
 
     describe('stringify', () => {
-      it('should return nothing if initial state not changed', () => {
+      test('should return nothing if initial state not changed', () => {
         const { result } = renderHook(() => useUrlEncode(stateShape));
 
         expect(result.current.stringify(stateShape)).toEqual('');
       });
 
-      it('should return stringify changed keys', () => {
+      test('should return stringify changed keys', () => {
         const { result } = renderHook(() => useUrlEncode(stateShape));
 
         expect(result.current.parse(result.current.stringify(state))).toEqual(
@@ -81,7 +81,7 @@ describe('useUrlEncode', () => {
       });
     });
 
-    it('parse', () => {
+    test('parse', () => {
       const { result } = renderHook(() => useUrlEncode(stateShape));
 
       const expected = result.current.parse(stateStr);
@@ -89,7 +89,7 @@ describe('useUrlEncode', () => {
     });
   });
 
-  it('invalid string', () => {
+  test('invalid string', () => {
     const invalidStr =
       '?tags=%5B%7B%27id%27%3A%273%27%2C%27value%27%3A%7B%27text%27%3A%27Tailwi';
     const shape: {
@@ -102,7 +102,7 @@ describe('useUrlEncode', () => {
   });
 
   describe('preserving existing queryParams', () => {
-    it('should return new string', () => {
+    test('should return new string', () => {
       const params = new URLSearchParams();
       params.set('key', 'value');
       const { result } = renderHook(() => useUrlEncode(stateShape));

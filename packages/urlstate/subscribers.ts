@@ -1,6 +1,6 @@
 import { type JSONCompatible } from "./utils";
 
-const _stateMap = new WeakMap<JSONCompatible, JSONCompatible>();
+const _stateMap = new WeakMap<JSONCompatible, JSONCompatible | undefined>();
 const _subscribers = new WeakMap<JSONCompatible, Cb[]>();
 
 // TODO: refactor to clarify how it works ?
@@ -27,8 +27,8 @@ export const subscribers = {
 };
 
 export const stateMap = {
-  get: function <T extends JSONCompatible>(objKey: T) {
-    return _stateMap.get(objKey) as T;
+  get: function <T extends JSONCompatible | undefined>(objKey: T): T | undefined {
+    return _stateMap.get(objKey as JSONCompatible) as T;
   },
   set: function <T extends JSONCompatible>(objKey: T, value: T) {
     _stateMap.set(objKey, value);

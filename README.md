@@ -82,7 +82,7 @@ This library is a good alternative for NUQS.
 - ✨ **Complex data**: Nested objects, dates and arrays, works same as JSON, but in URL
 - ☂ **Default values**: Giving you default values if parameter not in url
 - ⌨ **Organized**: All possible values defined at start, protect you from getting non existing key
-- **Fast**: Minimal rerenders, less than [1ms](https://github.com/asmyshlyaev177/state-in-url/blob/87c8c7c995c5cd7d9e7aa039c30bfe64b24abe4b/packages/urlstate/encoder/encoder.test.ts#L185) to encode and decode big object
+- **Fast**: Minimal rerenders, around [1ms](https://github.com/asmyshlyaev177/state-in-url/blob/87c8c7c995c5cd7d9e7aa039c30bfe64b24abe4b/packages/urlstate/encoder/encoder.test.ts#L185) to encode and decode big object
 - **Server Side Rendering**: Can use it in Server Components, Next.js 14 and 15 are supported
 - **Lightweight**: Zero dependencies, library less than 2KB
 - **DX**: Good developer experience, documentation, JSDoc comments, and examples

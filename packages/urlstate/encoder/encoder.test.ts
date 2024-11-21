@@ -7,23 +7,27 @@ import {
 } from './encoder';
 import { parseSPObj } from '../parseSPObj';
 import { type JSONCompatible } from '../utils';
-import { clone } from '../testUtils';
 
 describe('encoder', () => {
   describe('object', () => {
     describe('simple', () => {
-      const obj1 = { num: 123, float: 1.55, bool1: false, und: undefined };
-      const enc1 = "{'num':123,'float':1.55,'bool1':false,'und':'∙undefined'}"
+      const obj1 = { num: 123, float: 1.55, bool1: false, und: undefined, date: new Date(2024, 10, 1) };
+      const enc1 = "{'num':123,'float':1.55,'bool1':false,'und':'∙undefined','date':'⏲2024-10-31T20:00:00.000Z'}"
 
-      it('encode', () => {
+      test('encode', () => {
         expect(encode(obj1)).toEqual(
           enc1,
         );
       })
-      it('decode', () => {
-        const obj = clone(obj1)
+
+      test('decode', () => {
+        const obj = { ...obj1 }
         delete obj.und
-        expect(obj).toEqual(decode(enc1))
+        const decoded = decode<typeof obj>(enc1)
+        expect(decoded.date).toBeInstanceOf(Date)
+        const isoString = obj.date.toISOString()
+        expect(decoded.date.toISOString()).toStrictEqual(isoString)
+        expect(decoded).toEqual(obj)
       })
 
     });
@@ -31,21 +35,23 @@ describe('encoder', () => {
     describe('nested', () => {
       const obj2 = {
         dateStr: '2020-01-01T00:00:00.000Z',
+        dateObj: new Date(2019, 1, 1),
         nub: 3,
 
         prop: {
           dateStr: '2020-01-01T00:00:00.000Z',
+          dateObj: new Date(2021, 1, 1),
           num: 4,
           und: undefined,
           prop2: [1, '2', true]
         }
       }
-      const enc2 = "{'dateStr':'2020-01-01T00:00:00.000Z','nub':3,'prop':{'dateStr':'2020-01-01T00:00:00.000Z','num':4,'prop2':[1,'2',true]}}"
+      const enc2 = "{'dateStr':'2020-01-01T00:00:00.000Z','dateObj':'⏲2019-01-31T20:00:00.000Z','nub':3,'prop':{'dateStr':'2020-01-01T00:00:00.000Z','dateObj':'⏲2021-01-31T20:00:00.000Z','num':4,'und':'∙undefined','prop2':[1,'2',true]}}"
 
-      it('encode', () => {
-        expect(encode(clone(obj2))).toStrictEqual(enc2)
+      test('encode', () => {
+        expect(encode(structuredClone(obj2))).toStrictEqual(enc2)
       })
-      it('decode', () => {
+      test('decode', () => {
         const decoded = decode(enc2) as typeof obj2;
         expect(decoded).toEqual(obj2)
       })
@@ -74,26 +80,26 @@ describe('encoder', () => {
       };
       const enc3 = "{'num':123,'num2':3.14,'b1':true,'b2':false,'str':'test string','n':null,'obj1':{'obj2':{'str':'my_str','n':123,'n2':-12.3,'b':false,'b1':true,'dateIso':'2020-01-01T00:00:00.000Z'}},'dateIso':'2022-01-01T00:00:00.000Z'}"
 
-      it('encode', () => {
-        expect(encode(clone(obj3))).toStrictEqual(
+      test('encode', () => {
+        expect(encode(structuredClone(obj3))).toStrictEqual(
           enc3
         );
       })
-      it('decode', () => {
-        expect(clone(obj3)).toStrictEqual(decode(enc3))
+      test('decode', () => {
+        expect(structuredClone(obj3)).toStrictEqual(decode(enc3))
       })
 
     });
   });
 
   describe('array', () => {
-    it('simple', () => {
+    test('simple', () => {
       const obj = [123, 1.55, false];
       const expected = '[123,1.55,false]';
       expect(encode(obj)).toStrictEqual(expected);
     });
 
-    it('nested', () => {
+    test('nested', () => {
       const obj = [123, [45, true, { arr: [1, 2, { test: true }, null] }]];
 
       expect(encode(obj)).toStrictEqual(
@@ -101,7 +107,7 @@ describe('encoder', () => {
       );
     });
 
-    it('array with invalid value', () => {
+    test('array with invalid value', () => {
       const expected = [1, 'str'];
       expect(decode("[1,'str']", expected)).toStrictEqual(expected);
       expect(decode("[1,'str']")).toStrictEqual(expected);
@@ -109,24 +115,24 @@ describe('encoder', () => {
   });
 
   describe('string', () => {
-    it('simple', () => {
+    test('simple', () => {
       expect(encode('')).toStrictEqual("''");
       expect(encode('test')).toStrictEqual("'test'");
     });
 
-    it('special characters', () => {
+    test('special characters', () => {
       const str = '"test #?\t=\n[]{}()%.';
       expect(encode(str)).toStrictEqual("'\\'test #?\\t=\\n[]{}()%.'");
     });
 
-    it('single quote', () => {
+    test('single quote', () => {
       const str = "'";
       expect(encode(str)).toStrictEqual("'%27'");
     });
   });
 
   describe('number', () => {
-    it('integer and float', () => {
+    test('integer and float', () => {
       expect(encode(5)).toStrictEqual("5");
 
       expect(encode(5.55)).toStrictEqual("5.55");
@@ -134,97 +140,88 @@ describe('encoder', () => {
   });
 
   describe('date', () => {
-    it('instance', () => {
+    test('instance', () => {
       const d = new Date('2024-06-28T09:10:38.763Z');
       expect(encode(d)).toStrictEqual("'2024-06-28T09:10:38.763Z'");
     });
 
-    it('iso string', () => {
+    test('iso string', () => {
       const d = '2024-06-28T09:10:38.763Z';
       expect(encode(d)).toStrictEqual("'2024-06-28T09:10:38.763Z'");
     });
   });
 
-  it('boolean', () => {
+  test('boolean', () => {
     expect(encode(true)).toStrictEqual('true');
     expect(encode(false)).toStrictEqual('false');
   });
 
-  it('null', () => {
+  test('null', () => {
     expect(encode(null)).toStrictEqual('null');
   });
 
-  it('undefined', () => {
+  test('undefined', () => {
     expect(encode(undefined)).toStrictEqual("'∙undefined'");
   });
 
   // no sense to handle this
-  it('function', () => {
-    expect(encode(() => { })).toStrictEqual("''");
+  test('function', () => {
+    expect(encode(() => { })).toStrictEqual("");
   });
 
-  it('symbol', () => {
-    expect(encode(Symbol('a'))).toStrictEqual("''");
+  test('symbol', () => {
+    expect(encode(Symbol('a'))).toStrictEqual("");
   });
 });
 
 describe('encodePrimitive', () => {
   describe('string', () => {
-    it('simple', () => {
+    test('simple', () => {
       expect(encodePrimitive('')).toStrictEqual("");
       expect(encodePrimitive('test')).toStrictEqual("test");
     });
 
-    it('special characters', () => {
+    test('special characters', () => {
       const str = '"test #?\t=\n[]{}()%.';
       expect(encodePrimitive(str)).toStrictEqual('"test #?\t=\n[]{}()%.');
     });
 
-    it('single quote', () => {
+    test('single quote', () => {
       const str = "'";
       expect(encodePrimitive(str)).toStrictEqual("'");
     });
   });
 
   describe('number', () => {
-    it('integer and float', () => {
+    test('integer and float', () => {
       expect(encodePrimitive(5)).toStrictEqual(5);
       expect(encodePrimitive(5.55)).toStrictEqual(5.55);
     });
   });
 
   describe('date', () => {
-    it('instance', () => {
+    test('instance', () => {
       const d = new Date('2024-06-28T09:10:38.763Z');
       expect(encodePrimitive(d)).toStrictEqual('⏲2024-06-28T09:10:38.763Z');
     });
 
-    it('iso string', () => {
+    test('iso string', () => {
       const d = '2024-06-28T09:10:38.763Z';
       expect(encodePrimitive(d)).toStrictEqual("2024-06-28T09:10:38.763Z");
     });
   });
 
-  it('boolean', () => {
+  test('boolean', () => {
     expect(encodePrimitive(true)).toStrictEqual(true);
     expect(encodePrimitive(false)).toStrictEqual(false);
   });
 
-  it('null', () => {
+  test('null', () => {
     expect(encodePrimitive(null)).toStrictEqual(null);
   });
 
-  it('undefined', () => {
+  test('undefined', () => {
     expect(encodePrimitive(undefined)).toStrictEqual("∙undefined");
-  });
-
-  // no sense to handle this
-  it('function', () => {
-    expect(encodePrimitive(() => { })).toStrictEqual('');
-  });
-
-  it('symbol', () => {
-    expect(encodePrimitive(Symbol('a'))).toStrictEqual('');
   });
 })
 
@@ -267,7 +264,7 @@ describe('real life example', () => {
     preference: { language: 'en-us' },
   };
 
-  it('encode/decode', () => {
+  test('encode/decode', () => {
     const a1 = performance.now();
     const result = decode(encode(bigObj));
     const a2 = performance.now();
@@ -277,7 +274,7 @@ describe('real life example', () => {
 });
 
 describe('decodePrimitive', () => {
-  it('should encode with specia symbols', () => {
+  test('should encode with specia symbols', () => {
     expect(decodePrimitive('∙undefined')).toStrictEqual(undefined);
 
     const date = new Date('2024-06-28T09:10:38.763Z');
@@ -286,7 +283,7 @@ describe('decodePrimitive', () => {
     );
   });
 
-  it('should value for other types', () => {
+  test('should value for other types', () => {
     expect(decodePrimitive(null as unknown as string)).toStrictEqual(null);
     expect(decodePrimitive(false as unknown as string)).toStrictEqual(false);
     expect(decodePrimitive(true as unknown as string)).toStrictEqual(true);
@@ -310,25 +307,25 @@ describe('parseJSON', () => {
     obj1: { t: 123 },
   };
 
-  it('standard JSON without strings', () => {
+  test('standard JSON without strings', () => {
     // undefined stripped out in default JSON too, toStrictEqual preserves undefined
     expect(parseJSON(JSON.stringify(state))).toEqual(state);
   });
 
-  it('standard JSON', () => {
+  test('standard JSON', () => {
     expect(parseJSON(JSON.stringify({ ...state, str: 'string' }))).toEqual({
       ...state,
       str: 'string',
     });
   });
 
-  it('with encoded values', () => {
+  test('with encoded values', () => {
     const exp = JSON.parse(JSON.stringify(state))
     delete exp.u
     expect(parseJSON(encode(state).replace(/'/g, '"'))).toEqual(exp);
   });
 
-  it('should return fallback for invalid JSON', () => {
+  test('should return fallback for invalid JSON', () => {
     expect(parseJSON('invalid', '' as unknown as JSONCompatible)).toEqual('');
     expect(parseJSON('invalid')).toEqual(undefined);
   });
@@ -337,7 +334,7 @@ describe('parseJSON', () => {
 describe('parseSPObj', () => {
   const stateShape = { perPage: 10 };
 
-  it('should parse params to object', () => {
+  test('should parse params to object', () => {
     expect(parseSPObj({}, stateShape)).toStrictEqual(stateShape);
     expect(parseSPObj({ perPage: '20' }, stateShape)).toStrictEqual({
       perPage: 20,

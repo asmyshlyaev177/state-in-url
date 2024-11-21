@@ -52,7 +52,7 @@ export function useSharedState<T extends JSONCompatible>(
       const curr = stateMap.get(stateShape.current);
       const isFunc = typeof value === "function";
 
-      const newVal = isFunc ? value(curr) : { ...curr, ...value };
+      const newVal = isFunc ? value(curr as T) : { ...curr, ...value };
       if (isEqual(curr, newVal)) return void 0;
       stateMap.set(stateShape.current, newVal);
       subscribers.get(stateShape.current).forEach((sub) => sub());

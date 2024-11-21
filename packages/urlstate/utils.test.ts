@@ -1,78 +1,76 @@
 import { getParams, typeOf, assignValue, filterUnknownParamsClient, filterUnknown } from './utils';
 
-import { clone } from './testUtils';
-
 describe('typeOf', () => {
-  it('string', () => {
+  test('string', () => {
     expect(typeOf('')).toEqual('string');
     expect(typeOf('str')).toEqual('string');
     expect(typeOf('5')).toEqual('string');
   });
 
   describe('date', () => {
-    it('instance', () => {
+    test('instance', () => {
       const d = new Date();
       expect(typeOf(d)).toEqual('date');
     });
 
-    it('iso string (from JSON.stringify replacer)', () => {
+    test('iso string (from JSON.stringify replacer)', () => {
       const d = new Date();
       expect(typeOf(d.toISOString())).toEqual('string');
     });
   });
 
-  it('number', () => {
+  test('number', () => {
     expect(typeOf(5)).toEqual('number');
     expect(typeOf(3.14567)).toEqual('number');
   });
 
-  it('array', () => {
+  test('array', () => {
     expect(typeOf([])).toEqual('array');
   });
 
-  it('object', () => {
+  test('object', () => {
     expect(typeOf({})).toEqual('object');
   });
 
-  it('boolean', () => {
+  test('boolean', () => {
     expect(typeOf(false)).toEqual('boolean');
     expect(typeOf(true)).toEqual('boolean');
   });
 
-  it('null', () => {
+  test('null', () => {
     expect(typeOf(null)).toEqual('null');
   });
 
-  it('undefined', () => {
+  test('undefined', () => {
     expect(typeOf(undefined)).toEqual('undefined');
   });
 
-  it('symbol', () => {
+  test('symbol', () => {
     expect(typeOf(Symbol('a'))).toEqual('symbol');
   });
 
-  it('bigInt', () => {
+  test('bigInt', () => {
     expect(typeOf(1n)).toEqual('bigint');
   });
 
-  it('function', () => {
+  test('function', () => {
     expect(typeOf(() => {})).toEqual('function');
   });
 });
 
 describe('getParams', () => {
-  it('should return URLSearchParams instance', () => {
+  test('should return URLSearchParams instance', () => {
     expect(getParams('')).toBeInstanceOf(URLSearchParams);
   });
 
-  it('from string', () => {
+  test('from string', () => {
     const url = 'key1=value1&key2=value2';
     const url2 = `?${url}`;
     expect(getParams(url).toString()).toStrictEqual(url);
     expect(getParams(url2).toString()).toStrictEqual(url);
   });
 
-  it('from URLSearchParams', () => {
+  test('from URLSearchParams', () => {
     const url = 'key1=value1&key2=value2';
     const url2 = `?${url}`;
     const params = new URLSearchParams(url);
@@ -81,7 +79,7 @@ describe('getParams', () => {
     expect(getParams(params2).toString()).toStrictEqual(url);
   });
 
-  it('should extract query params from full path', () => {
+  test('should extract query params from full path', () => {
     const url1 = 'test=true';
     const url2 = `/?${url1}`;
     const url3 = `?${url1}`;
@@ -104,37 +102,37 @@ describe('assignValue', () => {
     }
   }
 
-  it('should assign a value', () => {
-    expect(clone(assignValue(shape, { ...shape, a1: 3 }))).toStrictEqual(clone({
+  test('should assign a value', () => {
+    expect(structuredClone(assignValue(shape, { ...shape, a1: 3 }))).toStrictEqual(structuredClone({
         ...shape,
         a1: 3,
       }))
   })
 
-  it('should return a new instance of object', () => {
+  test('should return a new instance of object', () => {
     const newVal = {}
     const result = assignValue(shape, newVal)
     expect(result === shape).toBeFalsy()
     expect(result === newVal).toBeFalsy()
   })
 
-  it('should override curr value with newValue', () => {
-      expect(clone(assignValue(shape, { a1: 3 }))).toStrictEqual(clone({ ...shape, a1: 3 }))
+  test('should override curr value with newValue', () => {
+    expect(structuredClone(assignValue(shape, { a1: 3 }))).toStrictEqual(structuredClone({ ...shape, a1: 3 }))
   })
 
-  it('should use value from shape as default', () => {
-      expect(clone(assignValue(shape, {}))).toStrictEqual(clone({ ...shape, a1: shape.a1 }))
+  test('should use value from shape as default', () => {
+    expect(structuredClone(assignValue(shape, {}))).toStrictEqual(structuredClone({ ...shape, a1: shape.a1 }))
   })
 })
 
 describe('filterUnknownParamsClient', () => {
   afterAll(() => {
-    jest.resetAllMocks()
+    vi.resetModules()
   })
 
-  it('should include only the keys that exist in the shape', () => {
+  test('should include only the keys that exist in the shape', () => {
     const originalLocation = window.location;
-    jest.spyOn(window, 'location', 'get').mockImplementation(() => ({
+    vi.spyOn(window, 'location', 'get').mockImplementation(() => ({
       ...originalLocation,
       search: "?foo=bar&baz=qux",
     }));
@@ -142,9 +140,9 @@ describe('filterUnknownParamsClient', () => {
     expect(result).toBe("foo=bar");
   });
 
-  it('should return an empty string if no keys match the shape', () => {
+  test('should return an empty string if no keys match the shape', () => {
     const originalLocation = window.location;
-    jest.spyOn(window, 'location', 'get').mockImplementation(() => ({
+    vi.spyOn(window, 'location', 'get').mockImplementation(() => ({
       ...originalLocation,
       search: "?foo=bar&baz=qux",
     }));
@@ -152,9 +150,9 @@ describe('filterUnknownParamsClient', () => {
     expect(result).toBe("");
   });
 
-  it('should handle an empty URL search string returning an empty string', () => {
+  test('should handle an empty URL search string returning an empty string', () => {
     const originalLocation = window.location;
-    jest.spyOn(window, 'location', 'get').mockImplementation(() => ({
+    vi.spyOn(window, 'location', 'get').mockImplementation(() => ({
       ...originalLocation,
       search: "",
     }));
@@ -162,9 +160,9 @@ describe('filterUnknownParamsClient', () => {
     expect(result).toBe("");
   });
 
-  it('should handle an empty shape returning an empty string', () => {
+  test('should handle an empty shape returning an empty string', () => {
     const originalLocation = window.location;
-    jest.spyOn(window, 'location', 'get').mockImplementation(() => ({
+    vi.spyOn(window, 'location', 'get').mockImplementation(() => ({
       ...originalLocation,
       search: "?foo=bar&baz=qux",
     }));
@@ -172,9 +170,9 @@ describe('filterUnknownParamsClient', () => {
     expect(result).toBe("");
   });
 
-  it('should handle special characters correctly', () => {
+  test('should handle special characters correctly', () => {
     const originalLocation = window.location;
-    jest.spyOn(window, 'location', 'get').mockImplementation(() => ({
+    vi.spyOn(window, 'location', 'get').mockImplementation(() => ({
       ...originalLocation,
       search: "?foo=bar%20baz&baz=qux",
     }));
@@ -182,9 +180,9 @@ describe('filterUnknownParamsClient', () => {
     expect(result).toBe("foo=bar+baz");
   });
 
-  it('should manage repeated keys and take the last one', () => {
+  test('should manage repeated keys and take the last one', () => {
     const originalLocation = window.location;
-    jest.spyOn(window, 'location', 'get').mockImplementation(() => ({
+    vi.spyOn(window, 'location', 'get').mockImplementation(() => ({
       ...originalLocation,
       search: "?foo=first&foo=second",
     }));
@@ -194,7 +192,7 @@ describe('filterUnknownParamsClient', () => {
 });
 
 describe('filterUnknown', () => {
-  it('filters out entries with keys not present in the shape', () => {
+  test('filters out entries with keys not present in the shape', () => {
     const shape = { a: '', b: '' };
     const entries: [string, string][] = [
       ['a', 'value1'],
@@ -208,7 +206,7 @@ describe('filterUnknown', () => {
     ]);
   });
 
-  it('returns an empty array if no keys match the shape', () => {
+  test('returns an empty array if no keys match the shape', () => {
     const shape = { x: '', y: '' };
     const entries: [string, string][] = [
       ['a', 'value1'],
@@ -218,7 +216,7 @@ describe('filterUnknown', () => {
     expect(result).toEqual([]);
   });
 
-  it('handles an empty shape object gracefully', () => {
+  test('handles an empty shape object gracefully', () => {
     const shape = {};
     const entries: [string, string][] = [
       ['a', 'value1'],
@@ -228,7 +226,7 @@ describe('filterUnknown', () => {
     expect(result).toEqual([]);
   });
 
-  it('handles an empty entries array gracefully', () => {
+  test('handles an empty entries array gracefully', () => {
     const shape = { a: '', b: '' };
     const entries: [string, string][] = [];
     const result = filterUnknown(shape, entries);
