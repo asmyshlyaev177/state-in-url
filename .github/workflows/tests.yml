@@ -35,7 +35,6 @@ jobs:
 
   installtest:
     name: installtest
-    needs: [ linkspector ]
     timeout-minutes: 20
     runs-on: ubuntu-24.04
     container:
