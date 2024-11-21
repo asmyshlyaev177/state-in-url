@@ -21,7 +21,8 @@ module.exports = {
         usePrettierrc: false,
         plugins: ["eslint-plugin-prettier-plugin-tailwindcss"]
       },
-    ]
+    ],
+    'react/display-name': 'off'
   },
   overrides: [
     {

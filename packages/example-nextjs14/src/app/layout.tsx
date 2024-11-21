@@ -21,6 +21,7 @@ export default async function RootLayout({
     <html lang="en">
       <link rel="preconnect" href="https://fonts.googleapis.com" />
       <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
+      {!isProd && <script src="https://unpkg.com/react-scan/dist/auto.global.js" async /> }
 
       {isVercel && <link rel="canonical" href={vercelUrl}></link>}
       <meta name="google-site-verification" content="NKunqTB4Sd_Bp6zoIbzKvw_WoGB-v2-MXxC5mbKJKJw" />

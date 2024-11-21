@@ -5,7 +5,7 @@ import { useUrlState } from 'state-in-url/next';
 
 import { SourceCodeBtn } from './components/SourceCodeBtn';
 
-export const Status = ({
+export const Status = React.memo(({
   className,
   sp,
   ghLink
@@ -49,4 +49,4 @@ export const Status = ({
       />
     </div>
   );
-};
+})

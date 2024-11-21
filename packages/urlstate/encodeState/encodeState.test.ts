@@ -2,14 +2,14 @@ import { decodeState, encodeState } from './encodeState';
 import { type JSONCompatible } from '../utils';
 
 describe('encodeState', () => {
-  it('should encode a simple state object', () => {
+  test('should encode a simple state object', () => {
     const state = { str: 'test', num: 123, bool: true };
     const expected = 'str=%27test%27&num=123&bool=true';
     expect(decodeState(encodeState(state))).toStrictEqual(state);
     expect(encodeState(state)).toEqual(expected);
   });
 
-  it('should encode a nested state object', () => {
+  test('should encode a nested state object', () => {
     const state = {
       str: 'test',
       num: 123,
@@ -22,7 +22,7 @@ describe('encodeState', () => {
     expect(encodeState(state)).toEqual(expected);
   });
 
-  it('should encode a state object with default values', () => {
+  test('should encode a state object with default values', () => {
     const state = { str: 'test', num: 123, bool: true, arr: [111, 'str'] };
     const defaults = { str: '', num: 0, bool: false };
 
@@ -40,7 +40,7 @@ describe('encodeState', () => {
     );
   });
 
-  it('should preserve existing params', () => {
+  test('should preserve existing params', () => {
     const state = { str: 'test', num: 123, bool: true };
     const existing = new URLSearchParams('key1=value1&key2=value2');
     const defaults = { str: '', num: 0, bool: false };
@@ -56,7 +56,7 @@ describe('encodeState', () => {
     ).toEqual('str=%27test%27&num=123&bool=true');
   });
 
-  it('should return an empty string for an empty state object', () => {
+  test('should return an empty string for an empty state object', () => {
     expect(encodeState({})).toEqual('');
     expect(encodeState(undefined as unknown as JSONCompatible)).toEqual('');
     expect(encodeState(null as unknown as JSONCompatible)).toEqual('');
@@ -64,14 +64,14 @@ describe('encodeState', () => {
 });
 
 describe('decodeState', () => {
-  it('should decode a simple state object', () => {
+  test('should decode a simple state object', () => {
     const uriString = "key1=%27value1%27&key2=%27value2%27";
     const expected = { key1: 'value1', key2: 'value2' };
     const result = decodeState(uriString, { key1: '', key2: '' });
     expect(result).toEqual(expected);
   });
 
-  it('should decode a state object with nested values', () => {
+  test('should decode a state object with nested values', () => {
     const uriString =
       'key1=%27value1%27&key2=%7B%27nestedKey%27%3A%27nestedValue%27%7D';
     const expected = { key1: 'value1', key2: { nestedKey: 'nestedValue' } };
@@ -79,7 +79,7 @@ describe('decodeState', () => {
     expect(result).toEqual(expected);
   });
 
-  it('should decode a state object with default values', () => {
+  test('should decode a state object with default values', () => {
     const expected = { key1: 'value1', key2: 'value2' };
     const defaults = { key1: '1', key2: '2' };
     expect(decodeState('', defaults)).toEqual(defaults);
@@ -89,7 +89,7 @@ describe('decodeState', () => {
     });
   });
 
-  it('should decode when one nested value invalid and parse invalid object as standard JSON', () => {
+  test('should decode when one nested value invalid and parse invalid object as standard JSON', () => {
     const state = { str: 'test', num: 123, bool: true, arr: [1, 'str'] };
     const defaults2 = { str: '', num: 0, bool: false, arr: [0, ''] };
     expect(
@@ -101,7 +101,7 @@ describe('decodeState', () => {
   });
 
   describe('invalid values(trimmed url string)', () => {
-    it('when one nested value invalid and replace with defaults', () => {
+    test('when one nested value invalid and replace with defaults', () => {
       const state = { str: 'test', num: 123, bool: true, arr: [1, 'str'] };
       const defaults2 = { str: '', num: 0, bool: false, arr: [0, ''] };
 
@@ -110,7 +110,7 @@ describe('decodeState', () => {
       ).toStrictEqual({ ...state, arr: defaults2.arr });
     });
 
-    it('when 2 values invalid and replace with defaults', () => {
+    test('when 2 values invalid and replace with defaults', () => {
       const state = { str: 'test', num: 123, bool: true, arr: [1, 'str'] };
       const defaults2 = { str: '', num: 0, bool: false, arr: [0, ''] };
 
@@ -120,7 +120,7 @@ describe('decodeState', () => {
     });
   });
 
-  it('should return an empty object for an empty URI string', () => {
+  test('should return an empty object for an empty URI string', () => {
     expect(decodeState('')).toEqual({});
     expect(decodeState(undefined as unknown as string)).toEqual({});
     expect(decodeState(null as unknown as string)).toEqual({});

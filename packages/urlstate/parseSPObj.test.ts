@@ -1,7 +1,7 @@
 import { parseSPObj } from './parseSPObj';
 
 describe('should decode server components searchParams', () => {
-  it('without errors', () => {
+  test('without errors', () => {
     const sp = {
       agree_to_terms: 'true',
       tags: "[{'id':'3','value':{'text':'TailwindCSS','time':'2024-07-07T13:51:18.069Z'}}]",
@@ -20,7 +20,7 @@ describe('should decode server components searchParams', () => {
     expect(parseSPObj(sp, form)).toStrictEqual(expected);
   });
 
-  it('invalid string', () => {
+  test('invalid string', () => {
     const sp = {
       agree_to_terms: 'true',
       tags: "[{'id':'3','value':{'text':'TailwindC",

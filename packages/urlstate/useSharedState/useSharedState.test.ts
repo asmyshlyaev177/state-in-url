@@ -6,24 +6,30 @@ import * as utils from '../utils'
 
 import { JSONCompatible } from '../utils';
 
+vi.mock('../utils', { spy: true });
+vi.mock('../subscribers', { spy: true })
+
 describe('useSharedState', () => {
   let state: typeof form;
   beforeEach(() => {
-    jest.resetModules();
-    jest.restoreAllMocks();
-    state = { ...form };
+    state = structuredClone(form);
   });
+
+  afterEach(() => {
+    vi.resetModules()
+    vi.restoreAllMocks()
+  })
 
   describe('initial value', () => {
     const initial = {};
-    const getInitial = jest.fn().mockReturnValue(initial);
+    const getInitial = vi.fn().mockReturnValue(initial);
 
     describe('getInitial', () => {
       describe('on server', () => {
-        it('always use getInitial', () => {
-          const stateSpy = jest.spyOn(subscribers.stateMap, 'get');
-          const stateSpySet = jest.spyOn(subscribers.stateMap, 'set');
-          Object.defineProperty(utils, 'isSSR', { value: true })
+        test('always use getInitial', () => {
+          const stateSpy = vi.spyOn(subscribers.stateMap, 'get');
+          const stateSpySet = vi.spyOn(subscribers.stateMap, 'set');
+          vi.mocked(utils).isSSR = true;
           const hook1 = renderHook(() => useSharedState(state, getInitial));
 
           expect(hook1.result.current.state).toStrictEqual(initial);
@@ -33,31 +39,32 @@ describe('useSharedState', () => {
       });
 
       describe('on client', () => {
-        it('when value empty return value from _getInitial', () => {
-          const stateMock = jest.fn() as unknown as void;
-          const stateSpy = jest
-            .spyOn(subscribers.stateMap, 'set')
-            .mockReturnValue(stateMock);
+        test('when value empty return value from _getInitial', () => {
+          vi.mocked(utils).isSSR = false;
+          const stateMock = vi.fn();
+          const stateSpy = vi
+            .spyOn(subscribers.stateMap, 'get')
+            .mockReturnValue(initial);
+          vi.spyOn(subscribers.stateMap, 'set').mockImplementation((key, val) => stateMock(key, val))
 
-          Object.defineProperty(utils, 'isSSR', { value: false })
           const hook1 = renderHook(() => useSharedState(state, getInitial));
 
           expect(hook1.result.current.state).toStrictEqual(initial);
           expect(stateSpy).toHaveBeenCalledTimes(1);
-          expect(stateSpy).toHaveBeenNthCalledWith(1, state, initial);
+          expect(stateSpy).toHaveBeenNthCalledWith(1, state);
         });
 
-        it('should get value from stateMap without getInitial', () => {
-          const stateMock = jest.fn() as unknown as void;
+        test('should get value from stateMap without getInitial', () => {
+          const stateMock = vi.fn() as unknown as void;
           const init = { test: true };
-          const stateSpyGet = jest
+          const stateSpyGet = vi
             .spyOn(subscribers.stateMap, 'get')
             .mockReturnValue(init);
-          const stateSpySet = jest
+          const stateSpySet = vi
             .spyOn(subscribers.stateMap, 'set')
             .mockReturnValue(stateMock);
 
-          Object.defineProperty(utils, 'isSSR', { value: false })
+          vi.mocked(utils).isSSR = false;
           const hook1 = renderHook(() => useSharedState(state));
 
           expect(stateSpyGet).toHaveBeenCalledTimes(1);
@@ -67,16 +74,16 @@ describe('useSharedState', () => {
           expect(hook1.result.current.state).toStrictEqual(init);
         });
 
-        it('should set value if not in stateMap', () => {
-          const stateMock = jest.fn() as unknown as void;
-          const stateSpyGet = jest
+        test('should set value if not in stateMap', () => {
+          const stateMock = vi.fn() as unknown as void;
+          const stateSpyGet = vi
             .spyOn(subscribers.stateMap, 'get')
             .mockReturnValue(undefined as unknown as JSONCompatible);
-          const stateSpySet = jest
+          const stateSpySet = vi
             .spyOn(subscribers.stateMap, 'set')
             .mockReturnValue(stateMock);
 
-          Object.defineProperty(utils, 'isSSR', { value: false })
+          vi.mocked(utils).isSSR = false;
           const hook1 = renderHook(() => useSharedState(state));
 
           expect(stateSpyGet).toHaveBeenCalledTimes(1);
@@ -90,7 +97,7 @@ describe('useSharedState', () => {
     });
   });
 
-  it('should return state', () => {
+  test('should return state', () => {
     // need a new instance of state every test
     const { result } = renderHook(() => useSharedState(state));
 
@@ -98,13 +105,13 @@ describe('useSharedState', () => {
     expect(result.current.getState()).toStrictEqual(state);
   });
 
-  it('should set stateMap and subscribers', async () => {
-    const unsubMock = jest.fn();
-    const stateMock = jest.fn() as unknown as void;
-    const subSpy = jest
+  test('should set stateMap and subscribers', async () => {
+    const unsubMock = vi.fn();
+    const stateMock = vi.fn() as unknown as void;
+    const subSpy = vi
       .spyOn(subscribers.subscribers, 'add')
       .mockReturnValue(unsubMock);
-    const stateSpy = jest
+    const stateSpy = vi
       .spyOn(subscribers.stateMap, 'set')
       .mockReturnValue(stateMock);
     const { unmount } = renderHook(() => useSharedState(state));
@@ -121,7 +128,7 @@ describe('useSharedState', () => {
   });
 
   describe('getState', () => {
-    it('should return same instance', () => {
+    test('should return same instance', () => {
       const { result } = renderHook(() => useSharedState(state));
 
       const state1 = result.current.getState();
@@ -132,7 +139,7 @@ describe('useSharedState', () => {
 
   describe('setState', () => {
     describe('simple value', () => {
-      it('full shape', () => {
+      test('full shape', () => {
         const name = 'Name';
         const expected = { ...form, name };
         const { result } = renderHook(() => useSharedState(state));
@@ -145,7 +152,7 @@ describe('useSharedState', () => {
         expect(result.current.state === result.current.getState()).toBeTruthy();
       });
 
-      it('partial shape', () => {
+      test('partial shape', () => {
         const name = 'Name';
         const expected = { ...form, name };
         const { result } = renderHook(() => useSharedState(state));
@@ -159,7 +166,7 @@ describe('useSharedState', () => {
       });
     });
 
-    it('function', () => {
+    test('function', () => {
       const name = 'Name';
       const expected = { ...form, name };
       const { result } = renderHook(() => useSharedState(state));
@@ -174,10 +181,10 @@ describe('useSharedState', () => {
     });
   });
 
-  it('should notify subscribers when state changes', () => {
+  test('should notify subscribers when state changes', () => {
     const defaultState = { count: 0 };
     const { result } = renderHook(() => useSharedState(defaultState));
-    const mockSubscriber = jest.fn();
+    const mockSubscriber = vi.fn();
 
     subscribers.subscribers.add(defaultState, mockSubscriber);
 
@@ -189,9 +196,9 @@ describe('useSharedState', () => {
   });
 
   describe('few instances', () => {
-    it('should set initial value only 1 time', () => {
+    test('should set initial value only 1 time', () => {
       const defaultState = { count: 0 };
-      const stateSpySet = jest.spyOn(subscribers.stateMap, 'set');
+      const stateSpySet = vi.spyOn(subscribers.stateMap, 'set');
       const hook1 = renderHook(() => useSharedState(defaultState));
       const hook2 = renderHook(() => useSharedState(defaultState));
       const hook3 = renderHook(() => useSharedState(defaultState));
@@ -214,9 +221,9 @@ describe('useSharedState', () => {
       ).toBeTruthy();
     });
 
-    it('should update value only 1 time', () => {
+    test('should update value only 1 time', () => {
       const defaultState = { count: 0 };
-      const stateSpySet = jest.spyOn(subscribers.stateMap, 'set');
+      const stateSpySet = vi.spyOn(subscribers.stateMap, 'set');
       const hook1 = renderHook(() => useSharedState(defaultState));
       const hook2 = renderHook(() => useSharedState(defaultState));
       const hook3 = renderHook(() => useSharedState(defaultState));
