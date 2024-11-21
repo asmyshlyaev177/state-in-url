@@ -11,6 +11,9 @@ module.exports = {
     "packages/example-nextjs14",
     "packages/example-nextjs15",
   ],
+  globals: {
+    vi: true
+  },
   rules: {
     'max-len': 'off',
     complexity: ['error', 12],
