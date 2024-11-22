@@ -7,12 +7,13 @@ Your feedback and contribution are important.
 
 ## Our Standards
 
-Examples of behavior that contributes to a positive environment for our
-community include:
+Examples of behavior that contributes to a positive environment for this software include:
 
 * Focusing on what is best for this software
 * Giving feedback and opinions about how it should work, reporting bugs
 * Admitting, fixing and learning from mistakes
+* Creating Pull Requests to fix or improve something
+* Discussing anything in a "Discussions" section
 
 Examples of unacceptable behavior include:
 
