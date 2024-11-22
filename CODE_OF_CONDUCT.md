@@ -5,31 +5,25 @@
 This software is free and open for everybody, regardless of anything.
 Your feedback and contribution are important.
 
-We pledge to act and interact in ways that contribute to an open, welcoming, and healthy community.
-
 ## Our Standards
 
 Examples of behavior that contributes to a positive environment for our
 community include:
 
 * Focusing on what is best for this software
-* Demonstrating empathy and kindness toward other people
-* Being respectful of differing opinions, viewpoints, and experiences
-* Giving and accepting constructive feedback
+* Giving feedback and opinions about how it should work, reporting bugs
 * Admitting, fixing and learning from mistakes
 
 Examples of unacceptable behavior include:
 
 * The use of sexualized language or imagery, and sexual attention or
   advances of any kind
-* Promoting any political, social or religious ideology
+* Promoting any political, social or religious ideology, woke and identity politics
 * Trolling, insulting or derogatory comments, and personal or political attacks
 * Public or private harassment/bullying
 * Spreading of false information
 * Publishing others' private information, such as a physical or email
   address, without their explicit permission
-* Other conduct which could reasonably be considered inappropriate in a
-  professional setting
 * Spam
 
 ## Enforcement Responsibilities
@@ -73,7 +67,7 @@ unprofessional in the community.
 
 **Consequence**: A private, written warning from community leaders, providing
 clarity around the nature of the violation and an explanation of why the
-behavior was inappropriate. A public apology may be requested.
+behavior was inappropriate.
 
 ### 2. Warning
 
