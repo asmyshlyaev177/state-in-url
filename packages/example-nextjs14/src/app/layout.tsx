@@ -26,6 +26,7 @@ export default async function RootLayout({
 
       {isVercel && <link rel="canonical" href={vercelUrl}></link>}
       <meta name="google-site-verification" content="NKunqTB4Sd_Bp6zoIbzKvw_WoGB-v2-MXxC5mbKJKJw" />
+      {isProd && isVercel && <Script src="/heatmap.js" strategy='afterInteractive'/>}
 
       <body className={`${roboto.className}`}>
         {children}
