@@ -1,5 +1,7 @@
 'use client'
+
 import Link from 'next/link'
+import clsx from 'clsx';
 import { usePathname, useRouter } from 'next/navigation'
 
 
@@ -24,9 +26,8 @@ export const Tabs = ({ entries, className = '' }: { entries: { text: string, url
       <ul className="text-sm font-medium text-center rounded-lg shadow flex flex-nowrap divide-gray-700 text-gray-400">
         {entries.map((en, ind, arr) => (
           <li key={en.text}>
-            <Link href={en.url} scroll={scroll} className={`max-sm:hidden w-full self-stretch focus-within:z-10`}>
-              <span className={`transition ${pathname === en.url && 'bg-orange-700 font-bold hover:bg-orange-600' || 'bg-gray-700 hover:bg-gray-800'} h-full justify-stretch inline-flex items-center w-full
-            transition sm:text-nowrap p-4 ${ind === 0 && 'rounded-s-lg' || ''} ${ind !== 0 && ind !== arr.length - 1 && 'border-r' || ''} ${ind === arr.length - 1 && 'border-s-0 rounded-e-lg' || ''}  border-gray-700 focus:ring-4 focus:ring-blue-300 active focus:outline-none  text-white`} aria-current="page">{en.text}</span>
+            <Link href={en.url} scroll={scroll} className="max-sm:hidden w-full self-stretch focus-within:z-10">
+              <span className={clsx("transition", pathname === en.url && "bg-orange-700 font-bold hover:bg-orange-600" || "bg-gray-700 hover:bg-gray-800", "h-full justify-stretch inline-flex items-center w-full transition sm:text-nowrap p-4", ind === 0 && 'rounded-s-lg' || '', ind !== 0 && ind !== arr.length - 1 && 'border-r' || '', ind === arr.length - 1 && 'border-s-0 rounded-e-lg' || '', "border-gray-700 focus:ring-4 focus:ring-blue-300 active focus:outline-none  text-white")} aria-current="page">{en.text}</span>
             </Link>
           </li>
 

@@ -10,7 +10,7 @@ export const RefreshButton = React.memo(
           window.location.reload();
         }}
         className={clsx(
-          `transition font-extrabold bg-orange-700 text-lg text-white`,
+          "transition font-extrabold bg-orange-700 text-lg text-white",
           className,
         )}
         name="Reload page"

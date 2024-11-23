@@ -1,6 +1,7 @@
 import { Analytics } from '@vercel/analytics/react';
 import { Roboto } from 'next/font/google';
 import { GoogleAnalytics } from '@next/third-parties/google'
+import Script from 'next/script'
 
 import { metadata as _metadata } from './seoStuff';
 import { isVercel, vercelUrl } from './domain';
@@ -25,9 +26,11 @@ export default async function RootLayout({
 
       {isVercel && <link rel="canonical" href={vercelUrl}></link>}
       <meta name="google-site-verification" content="NKunqTB4Sd_Bp6zoIbzKvw_WoGB-v2-MXxC5mbKJKJw" />
+
       <body className={`${roboto.className}`}>
         {children}
       </body>
+
       {isProd ? <GoogleAnalytics gaId="G-5N8Y565DXK" /> : null }
       {isProd && isVercel ? <Analytics /> : null}
     </html>

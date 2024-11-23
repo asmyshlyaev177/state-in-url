@@ -15,7 +15,7 @@ export const Field = ({
   return (
     <div
       className={clsx(
-        `block text-sm font-medium text-gray-700 mb-1 whitespace-nowrap`,
+        "block text-sm font-medium text-gray-700 mb-1 whitespace-nowrap",
         className,
       )}
     >

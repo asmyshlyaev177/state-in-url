@@ -1,4 +1,6 @@
 'use client';
+
+import clsx from 'clsx';
 import React from 'react';
 import { form } from 'shared/form';
 import { useUrlState } from 'state-in-url/next';
@@ -20,7 +22,7 @@ export const Status = React.memo(({
   });
 
   return (
-    <div className={`flex relative shadow-md hover:shadow-lg ${className} `}>
+    <div className={clsx("flex relative shadow-md hover:shadow-lg", className)}>
       <div className="font-semibold mb-2 ">
         Other client component
       </div>
@@ -28,9 +30,7 @@ export const Status = React.memo(({
 
       <div className="flex-none">
         <pre
-          className="h-[330px] text-sm overflow-y-scroll
-         text-gray-600 bg-white p-4 rounded-md shadow-inner
-          break-all whitespace-pre-wrap"
+          className="h-[330px] text-sm overflow-y-scroll text-gray-600 bg-white p-4 rounded-md shadow-inner break-all whitespace-pre-wrap"
           data-testid="parsed"
         >
           <div>{'{'}</div>
