@@ -1,6 +1,6 @@
 # API
 
-This module provides a custom React hook for managing state that is synchronized with URL search parameters in react-router@6 applications.
+This module provides a custom React hook for managing state that is synchronized with URL search parameters in react-router@6-7 applications.
 
 ## `useUrlState` hook
 

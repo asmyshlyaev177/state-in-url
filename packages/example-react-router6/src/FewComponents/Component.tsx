@@ -10,7 +10,7 @@ export const Component = () => {
   });
 
   return (
-    <div className="flex gap-2">
+    <div className="flex gap-2 flex-col w-fit">
       <h2>Per page select</h2>
       <select
         value={urlState.perPage}
@@ -18,6 +18,7 @@ export const Component = () => {
           setUrl((curr) => ({ ...curr, perPage: +ev.target.value }))
         }
         data-testid="select"
+        className="block text-black"
       >
         <option>10</option>
         <option>20</option>
