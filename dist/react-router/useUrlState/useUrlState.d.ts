@@ -7,8 +7,14 @@ import { type JSONCompatible } from "../../utils";
  * .
  */
 export declare function useUrlState<T extends JSONCompatible>({ defaultState: T, searchParams, replace, useHistory, }: OldParams<T>): {
+    /**
+     * @deprecated use `urlState`
+     */
     state: T;
     urlState: T;
+    /**
+     * @deprecated use `setState`
+     */
     updateState: (value: Partial<T> | ((currState: T) => T)) => void;
     setState: (value: Partial<T> | ((currState: T) => T)) => void;
     updateUrl: (value?: Partial<T> | ((currState: T) => T)) => void;
@@ -46,9 +52,46 @@ export declare function useUrlState<T extends JSONCompatible>({ defaultState: T,
  *  * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/master/packages/urlstate/react-router/useUrlState}
  */
 export declare function useUrlState<T extends JSONCompatible>(defaultState: T, params?: Params): {
+    /**
+     * State object. Don't mutate directly, use `setState` or `setUrl`
+     */
     urlState: T;
+    /**
+     * * Example:
+     * ```ts
+     * setState({ name: 'test' });
+     * // or
+     * setState(curr => ({ ...curr, name: 'test' }) );
+     * // can pass optional React-Router `NavigateOptions`
+     * setState(curr => ({ ...curr, name: 'test' }) );
+     *  ```
+     *
+     *  * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/master/packages/urlstate/react-router/useUrlState#updatestate}
+     */
     setState: (value: Partial<T> | ((currState: T) => T)) => void;
+    /**
+     * * Example:
+     * ```ts
+     * setUrl({ name: 'test' });
+     * // or
+     * setUrl(curr => ({ ...curr, name: 'test' }), { replace: true } );
+     * // can pass optional React-Router `NavigateOptions`
+     * setUrl(curr => ({ ...curr, name: 'test' }), { preventScrollReset: false } );
+     *  ```
+     *
+     *  * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/master/packages/urlstate/react-router/useUrlState#updateurl}
+     */
     setUrl: (value?: Partial<T> | ((currState: T) => T), options?: Params) => void;
+    /**
+     * * Example:
+     * ```ts
+     * reset();
+     * // or
+     * reset({ replace: false, preventScrollReset: false })
+     *  ```
+     *
+     *  * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/master/packages/urlstate/react-router/useUrlState#reset}
+     */
     reset: (options?: NavigateOptions & {
         [key: string]: unknown;
     }) => void;

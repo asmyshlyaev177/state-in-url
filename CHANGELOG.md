@@ -1,3 +1,10 @@
+## [4.1.5](https://github.com/asmyshlyaev177/state-in-url/compare/v4.1.4...v4.1.5) (2024-11-24)
+
+
+### Bug Fixes
+
+* fix JSDoc tooltips ([5fd9675](https://github.com/asmyshlyaev177/state-in-url/commit/5fd967540017f6b01babcb89f8c3464c6f805412))
+
 ## [4.1.4](https://github.com/asmyshlyaev177/state-in-url/compare/v4.1.3...v4.1.4) (2024-11-24)
 
 

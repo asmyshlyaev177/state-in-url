@@ -7,10 +7,19 @@ import { type JSONCompatible } from "../../utils";
  * .
  */
 export declare function useUrlState<T extends JSONCompatible>({ defaultState: T, searchParams, replace, scroll, useHistory, }: OldParams<T>): {
+    /**
+     * @deprecated use `urlState`
+     */
     state: T;
     urlState: T;
+    /**
+     * @deprecated use `setState`
+     */
     updateState: (value: Partial<T> | ((currState: T) => T)) => void;
     setState: (value: Partial<T> | ((currState: T) => T)) => void;
+    /**
+     * @deprecated use `setUrl`
+     */
     updateUrl: (value?: Partial<T> | ((currState: T) => T)) => void;
     setUrl: (value?: Partial<T> | ((currState: T) => T)) => void;
 };
@@ -49,9 +58,42 @@ export declare function useUrlState<T extends JSONCompatible>({ defaultState: T,
  *  * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/master/packages/urlstate/next/useUrlState}
  */
 export declare function useUrlState<T extends JSONCompatible>(defaultState: T, params?: Params): {
+    /**
+     * State object. Don't mutate directly, use `setState` or `setUrl`
+     */
     urlState: T;
+    /**
+     * * Example:
+     * ```ts
+     * setState({ name: 'test' });
+     * // or
+     * setState(curr => ({ ...curr, name: 'test' }) );
+     *  ```
+     *
+     *  * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/master/packages/urlstate/next/useUrlState#updatestate}
+     */
     setState: (value: Partial<T> | ((currState: T) => T)) => void;
+    /**
+     * * Example:
+     * ```ts
+     * setUrl({ name: 'test' });
+     * // or
+     * setUrl(curr => ({ ...curr, name: 'test' }), { replace: true, scroll: false  } );
+     *  ```
+     *
+     *  * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/master/packages/urlstate/next/useUrlState#updateurl}
+     */
     setUrl: (value?: Partial<T> | ((currState: T) => T), options?: Options) => void;
+    /**
+     * * Example:
+     * ```ts
+     * reset();
+     * // or
+     * reset({ replace: false, scroll: true })
+     *  ```
+     *
+     *  * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/master/packages/urlstate/next/useUrlState#reset}
+     */
     reset: (options?: Options & {
         [key: string]: unknown;
     }) => void;
