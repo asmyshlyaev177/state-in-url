@@ -27,7 +27,9 @@ export const subscribers = {
 };
 
 export const stateMap = {
-  get: function <T extends JSONCompatible | undefined>(objKey: T): T | undefined {
+  get: function <T extends JSONCompatible | undefined>(
+    objKey: T,
+  ): T | undefined {
     return _stateMap.get(objKey as JSONCompatible) as T;
   },
   set: function <T extends JSONCompatible>(objKey: T, value: T) {
