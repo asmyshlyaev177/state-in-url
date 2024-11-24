@@ -10,7 +10,7 @@ A custom React hook that manages state and synchronizes it with URL search param
 
 - `defaultState: object` - An object representing the default state values.
 - `replace?: boolean` - Control will `setUrl` use `replace` or `push` methods on router, default replace=true, can override by `updateUrl(stateObj, { replace: false })`
-- `options?: NavigateOptions` - `replace` arg and types from `NavigateOptions` of `react-router` type, same as options from `useNavigate`
+- `options?: NavigateOptions` - `replace` arg and types from [`NavigateOptions`](https://api.reactrouter.com/v7/interfaces/react_router.NavigateOptions.html) of `react-router` type, same as options from `useNavigate`
 - `useHistory` - Optionally can use window.history for navigation
 - `preventScrollReset` - Option from react-router navigate
 
@@ -57,7 +57,7 @@ Updates both the state and the URL.
 ### Parameters:
 
 - `value?: T | Partial<T> | (currState: T) => T` - Optional new state value or a function that receives the current state and returns the new state.
-- `options?: NavigateOptions` - Optional options object from react-router's `NavigateOptions` type.
+- `options?: NavigateOptions` - Optional options object from react-router's [`NavigateOptions`](https://api.reactrouter.com/v7/interfaces/react_router.NavigateOptions.html) type.
 
 ## `reset`
 
@@ -65,5 +65,5 @@ Updates both the state and the URL.
 
 ### Parameters:
 
-- `options?: NavigateOptions` - Optional options object from react-router's `NavigateOptions` type.
+- `options?: NavigateOptions` - Optional options object from react-router's [`NavigateOptions`](https://api.reactrouter.com/v7/interfaces/react_router.NavigateOptions.html) type.
 
