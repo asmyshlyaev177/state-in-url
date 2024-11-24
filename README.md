@@ -43,7 +43,7 @@ English | [한국어](./README.KO.md) | [简体中文](./README.CN.md)
 
 <hr />
 
-Add a </a>  <a href="https://stars.github.com/"><img src="https://raw.githubusercontent.com/acervenky/animated-github-badges/master/assets/starbadge.gif" width="35" height="35"></a>  and <a href="https://github.com/asmyshlyaev177" target="_blank">follow me</a> to support the project!
+Add a <a href="#"><img src="https://raw.githubusercontent.com/acervenky/animated-github-badges/master/assets/starbadge.gif" width="25" height="25"></a>  and <a href="https://github.com/asmyshlyaev177" target="_blank">follow me</a> to support the project!
 
 Will appreciate you feedback/opinion on [discussions](https://github.com/asmyshlyaev177/state-in-url/discussions/1)
 
