@@ -90,7 +90,7 @@ This library is a good alternative for NUQS.
 - **Lightweight**: Zero dependencies, library less than 2KB
 - **DX**: Good developer experience, documentation, JSDoc comments, and examples
 - **Framework Flexibility**: Hooks for `Next.js` and `react-router`, helpers to use it with other frameworks or pure JS
-- **Well tested**: Unit tests and Playwright tests for Chrome/Firefox/Safari
+- **Well tested**: [Unit tests and Playwright tests for Chrome/Firefox/Safari](https://github.com/asmyshlyaev177/state-in-url/actions/workflows/tests.yml)
 - **Permissive license**: MIT
 
 ## Table of content
