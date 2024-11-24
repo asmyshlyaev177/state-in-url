@@ -1,3 +1,10 @@
+## [4.1.4](https://github.com/asmyshlyaev177/state-in-url/compare/v4.1.3...v4.1.4) (2024-11-24)
+
+
+### Bug Fixes
+
+* minor fixes, works for react-router@7 as well ([2993f9a](https://github.com/asmyshlyaev177/state-in-url/commit/2993f9a62fd30a9f332ba8d8ba6c8edf1a7986c3))
+
 ## [4.1.3](https://github.com/asmyshlyaev177/state-in-url/compare/v4.1.2...v4.1.3) (2024-11-21)
 
 
