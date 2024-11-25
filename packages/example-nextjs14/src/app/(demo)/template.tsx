@@ -3,7 +3,6 @@ import React from 'react';
 
 import 'shared/styles.css';
 
-import { Tabs } from '../components/Tabs';
 import { Logo } from '../components/Logo';
 
 const Footer = dynamic(
@@ -18,7 +17,7 @@ export default async function Template({
 }) {
   return (
     <main className="page-main">
-      <div className="wrapper">
+      <div className="wrapper relative">
         <header className="header">
           <div className="wrapper">
             <div className="branding">
@@ -26,7 +25,7 @@ export default async function Template({
 
               <div className="text">
                 <h1 className="title">State in url</h1>
-                <p className="subtitle">State management and deep links</p>
+                <p className="subtitle">State management and URL sync</p>
               </div>
             </div>
 
@@ -36,8 +35,6 @@ export default async function Template({
           </div>
         </header>
 
-        <Tabs entries={TABS} className="sticky top-1" />
-
         {children}
       </div>
 
@@ -45,8 +42,3 @@ export default async function Template({
     </main>
   );
 }
-
-const TABS = [
-  { text: "Next.js", url: '/' },
-  { text: "react-router", url: '/react-router' },
-]

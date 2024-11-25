@@ -4,12 +4,15 @@ import {
 } from '@shikijs/transformers';
 import { type HighlighterCore } from 'shiki';
 import { createHighlighterCore } from 'shiki/core';
-import tsLang from 'shiki/langs/typescript.mjs';
+import markdown from 'shiki/langs/markdown.mjs'
+import tsx from 'shiki/langs/tsx.mjs';
 import githubTheme from 'shiki/themes/github-dark.mjs';
 import getWasm from 'shiki/wasm';
 
-export const createHighlighter = async () =>
-  await createHighlighterCore({
+import { Langs } from './types';
+
+export const createHighlighter = () =>
+  createHighlighterCore({
     themes: [
       {
         ...githubTheme,
@@ -33,32 +36,32 @@ export const createHighlighter = async () =>
         fg: 'var(--code-fg)',
       },
     ],
-    langs: [tsLang],
+    langs: [tsx, markdown],
     loadWasm: getWasm,
   });
 
 export let highlighter: HighlighterCore;
 
 
-export const highlight = async (content: string) => {
-  highlighter = await getHighlighter();
-
-  return (
-    highlighter?.codeToHtml?.(content, {
-      lang: 'typescript',
-      theme: 'github-dark',
-      transformers: [
-        transformerNotationHighlight(),
-        transformerNotationWordHighlight(),
-      ],
-    }) || ''
-  );
+export const highlight = (content: string, opts?: { lang?: Langs}) => {
+  return getHighlighter().then(hi => hi.codeToHtml?.(content, {
+    lang: opts?.lang || 'tsx',
+    theme: 'github-dark',
+    transformers: [
+      transformerNotationHighlight(),
+      transformerNotationWordHighlight(),
+    ],
+  }) || '')
 };
 
-async function getHighlighter() {
-  if (!highlighter) {
-    highlighter = await createHighlighter();
+function getHighlighter() {
+  if (highlighter) {
+    return Promise.resolve(highlighter)
   }
-  return highlighter
+
+  return createHighlighter().then(hi => {
+    highlighter = hi
+    return Promise.resolve(hi)
+  })
 }
 

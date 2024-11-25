@@ -1,5 +1,8 @@
-import { File } from './File';
+'use client';
+
+import { File } from '../components/File';
 import { CodeBlockState } from './CodeBlockState';
+import { tooltips } from './tooltips';
 
 export const CodeBlocks = () => {
   return (
@@ -15,6 +18,7 @@ export const CodeBlocks = () => {
       </div>
       <File
         name="ComponentA"
+        matchers={tooltips}
         content={`'use client';
 
 import { useUrlState } from 'state-in-url/next';// [!code highlight:1]
@@ -53,12 +57,14 @@ export const ComponentB = ({ searchParams }: { searchParams?: object }) => {
 // [!code word:urlState]
   return <div>name: {urlState.name}</div>
 };`}
+        matchers={tooltips}
       />
       <div className="codeTitle">
         3. Can create self-sufficient hook to manage slice of some state.
       </div>
       <File
         name="useFormState - custom hook"
+        matchers={tooltips}
         content={`'use client';
 
 import React from 'react';
@@ -97,7 +103,7 @@ export const useFormState = ({ searchParams }: { searchParams?: object }) => {//
   }, [setUrlBase]);
 
   return { urlState, setUrl, resetUrl: reset };
-};`}/>
+};`} />
     </div>
   );
 };

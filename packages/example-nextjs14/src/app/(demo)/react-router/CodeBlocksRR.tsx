@@ -1,5 +1,8 @@
-import { File } from './File';
-import { CodeBlockState } from './CodeBlockState';
+'use client';
+
+import { File } from '../../components/File';
+import { CodeBlockState } from '../CodeBlockState';
+import { tooltips } from '../tooltips';
 
 export const CodeBlocksRR = () => {
   return (
@@ -15,6 +18,7 @@ export const CodeBlocksRR = () => {
       </div>
       <File
         name="ComponentA"
+        matchers={tooltips}
         content={`import { useUrlState } from 'state-in-url/react-router';// [!code highlight:1]
 import { form } from './form';
 
@@ -39,6 +43,7 @@ export const ComponentA = () => {
       />
       <File
         name="ComponentB"
+        matchers={tooltips}
         content={`import { useUrlState } from 'state-in-url/react-router';// [!code highlight:1]
 import { form } from './form';
 
@@ -55,6 +60,7 @@ export const ComponentB = () => {
       </div>
       <File
         name="useFormState - custom hook"
+        matchers={tooltips}
         content={`import React from 'react';
 import { useUrlState } from 'state-in-url/react-router';
 

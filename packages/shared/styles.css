@@ -112,7 +112,7 @@
       }
 
       .codeBlock-wrapper {
-        @apply mt-14;
+        @apply mt-8;
       }
 
       .codeBlock-loader {

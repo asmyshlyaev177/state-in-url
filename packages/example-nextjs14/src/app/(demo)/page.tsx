@@ -3,9 +3,10 @@ import React from 'react';
 
 import { DemoPart } from '../DemoPart';
 import { Description } from '../components/Description';
+import { Tabs } from '../components/Tabs';
 
 const CodeBlocks = dynamicImport(
-  () => import('../components/CodeBlocksNext')
+  () => import('./CodeBlocksNext')
     .then((mod) => mod.CodeBlocks),
   {
     loading: () => <div className="codeBlock-wrapper codeBlock-loader"></div>,
@@ -16,9 +17,10 @@ export default async function Home({ searchParams }: { searchParams: object }) {
   return (
     <>
       <DemoPart searchParams={searchParams} />
+
+      <Tabs className="sticky top-1 mt-12" />
+
       <section className="codeBlock-wrapper">
-        {/* TODO:Shiki is a little shitty https://github.com/vercel/next.js/issues/64434
-         try https://codehike.org/docs/code/twoslash */}
         <CodeBlocks />
       </section>
 
