@@ -25,7 +25,7 @@ export declare function useUrlState<T extends JSONCompatible>({ defaultState: T,
  *
  * @param {JSONCompatible<T>} [defaultState] Fallback (default) values for state
  * @param {Object} params - Object with other parameters
- * @param {NavigateOptions} params.NavigateOptions See type from `react-router-dom`
+ * @param {NavigateOptions} params.NavigateOptions See type from [`react-router-dom`](https://api.reactrouter.com/v7/interfaces/react_router.NavigateOptions.html)
  * @param {boolean} params.replace replace URL or push, default `true`
  * @param {boolean} params.useHistory use window.history for navigation, default `false`
  * @param {boolean} params.preventScrollReset keep scroll position, default `true`
@@ -61,8 +61,6 @@ export declare function useUrlState<T extends JSONCompatible>(defaultState: T, p
      * ```ts
      * setState({ name: 'test' });
      * // or
-     * setState(curr => ({ ...curr, name: 'test' }) );
-     * // can pass optional React-Router `NavigateOptions`
      * setState(curr => ({ ...curr, name: 'test' }) );
      *  ```
      *
