@@ -26,7 +26,7 @@ export const Description = () => (
       There are more hooks and helpers to deal with serialization/decoding of data.
     </div>
 
-    <div className="mt-8">Check out <a href="https://github.com/asmyshlyaev177/state-in-url" target="_blank" rel="noopener" className="text-blue-600 hover:underline">GitHub page</a>. <span className="font-semibold">Give Us a star.</span></div>
+    <div className="mt-8">Check out <a href="https://github.com/asmyshlyaev177/state-in-url" target="_blank" rel="noopener" className="text-blue-600 hover:underline">GitHub page</a>. <span className="font-semibold">Give me a star.</span></div>
 
     <h4 className='mt-12 mb-6 font-semibold'>Share this on social networks to help the library, purely voluntarily :)</h4>
     <Share />
