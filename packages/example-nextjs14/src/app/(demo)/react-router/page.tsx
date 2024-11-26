@@ -3,7 +3,7 @@ import React from 'react';
 
 import { DemoPart } from '../../DemoPart';
 import { Description } from '../../components/Description';
-import { Tabs } from '../../components/Tabs';
+import { TabsBlock } from '../TabsBlock';
 
 const CodeBlocks = dynamicImport(
   () => import('./CodeBlocksRR').then((mod) => mod.CodeBlocksRR),
@@ -17,7 +17,7 @@ export default async function Home({ searchParams }: { searchParams: object }) {
     <>
       <DemoPart searchParams={searchParams}/>
 
-      <Tabs className="sticky top-1 mt-12" />
+      <TabsBlock />
 
       <section className="codeBlock-wrapper">
         <CodeBlocks />

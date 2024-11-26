@@ -37,11 +37,10 @@
 @layer components {
   .page-main {
     @apply text-black;
-    @apply bg-gradient-to-b
-     from-orange-200 to-orange-400 p-4;
+    @apply bg-gradient-to-b from-orange-200 to-orange-400 p-4;
 
     & > .wrapper {
-      @apply flex flex-col items-center container ml-auto mr-auto  bg-gradient-to-t from-stone-50 to-white w-full p-2 py-8  xl:max-w-[1100px] lg:px-[4em] rounded-lg lg:pt-6;
+      @apply flex flex-col items-center container ml-auto mr-auto bg-gradient-to-t from-stone-50 to-white w-full p-2 py-8  xl:max-w-[1100px] lg:px-[4em] rounded-lg lg:pt-6;
 
       & > .header {
         @apply min-h-[35vh] md:min-h-[25vh] flex flex-col items-center mb-8;
@@ -95,6 +94,13 @@
 
           .urlBox {
             @apply my-3;
+
+            & input {
+              border: 1px solid gray;
+              box-shadow: none;
+              outline: none;
+              cursor: default;
+            }
           }
         }
 

@@ -13,7 +13,7 @@ export const UrlBox = () => {
   }, [sp]);
 
   return (
-    <form>
+    <form className='outline-none focus-visible:outline-none'>
       <input
         id="url"
         readOnly

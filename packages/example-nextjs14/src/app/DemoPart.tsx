@@ -36,6 +36,9 @@ export function DemoPart({ searchParams }: { searchParams: object }) {
           <div className="urlBox">
             <UrlBox />
           </div>
+
+          <div className="relative w-[max-content] font-mono before:absolute before:inset-0 before:animate-typewriter before:bg-white after:absolute after:inset-0 after:w-[0.125em] after:animate-caret after:bg-black">Type something in a form, changes reflected in URL and state instantly.</div>
+
         </header>
 
         <section className="form-components">

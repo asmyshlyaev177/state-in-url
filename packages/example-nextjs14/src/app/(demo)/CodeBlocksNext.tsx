@@ -7,7 +7,7 @@ import { tooltips } from './tooltips';
 export const CodeBlocks = () => {
   return (
     <div className="flex flex-col gap-4">
-      <h2 className='text-3xl text-center' >Quick start</h2>
+      <h3 className='text-3xl text-center' >Quick start</h3>
       <div className="codeTitle">
         1. Define the state
       </div>
