@@ -1,4 +1,4 @@
-import { Analytics } from '@vercel/analytics/react';
+// import { Analytics } from '@vercel/analytics/react';
 import { Roboto } from 'next/font/google';
 import { GoogleAnalytics } from '@next/third-parties/google'
 import Script from 'next/script'
@@ -33,7 +33,7 @@ export default async function RootLayout({
       </body>
 
       {isProd ? <GoogleAnalytics gaId="G-5N8Y565DXK" /> : null }
-      {isProd && isVercel ? <Analytics /> : null}
+      {/* {isProd && isVercel ? <Analytics /> : null} */}
     </html>
   );
 }

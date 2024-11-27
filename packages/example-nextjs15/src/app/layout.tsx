@@ -1,10 +1,9 @@
-import { Analytics } from '@vercel/analytics/react';
 import type { Metadata } from 'next';
 import { Roboto } from 'next/font/google';
 
 import 'shared/styles.css';
 
-import { isVercel, netifyUrl, vercelUrl } from './domain';
+import { netifyUrl, vercelUrl } from './domain';
 const roboto = Roboto({
   subsets: ['latin'],
   weight: '400',
@@ -24,7 +23,6 @@ export default async function RootLayout({
       <link rel="canonical" href={vercelUrl}></link>
       <link rel="alternate" href={netifyUrl}></link>
       <body className={`${roboto.className}`}>{children}</body>
-      {isVercel ? <Analytics /> : null}
     </html>
   );
 }
