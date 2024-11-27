@@ -24,7 +24,7 @@ export const FakeTypes = ({ matchers, id }: { matchers?: Matcher[], id: string }
   React.useEffect(() => {
     const codeBlock = document.querySelector(`[id="${id}"]`)
 
-    if (codeBlock && !(codeBlock as HTMLDivElement).onmouseover) {
+    if (codeBlock && !(codeBlock as HTMLDivElement).onmousemove) {
       const matchTooltips = (ev: MouseEvent) => {
         // @ts-expect-error fots
         const text = (ev?.target?.textContent || '').trim();
