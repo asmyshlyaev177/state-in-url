@@ -65,3 +65,4 @@ function getHighlighter() {
   })
 }
 
+const _warmUp = getHighlighter()

@@ -1,10 +1,17 @@
-'use client'
-import React from 'react';
-
-import { useFloating, autoUpdate, useClientPoint, offset } from '@floating-ui/react';
+import dynamicImport from 'next/dynamic';
 
 import { Code } from './Code';
-import { type Matcher, type Tooltip } from '../types';
+import { type Matcher } from '../types';
+
+import { stringToHash } from '../utils';
+
+const FakeTypes = dynamicImport(
+  () => import('./FakeTypes')
+    .then((mod) => mod.FakeTypes),
+  {
+    loading: () => null,
+  },
+);
 
 export const File = ({
   name,
@@ -15,39 +22,7 @@ export const File = ({
   content: string;
   matchers?: Matcher[]
 }) => {
-  const [tooltip, setTooltip] = React.useState<{ x: number, y: number, nodes: Tooltip[] }>({ nodes: [], x: 0, y: 0 });
-
-  const { refs, floatingStyles, context } = useFloating({
-    whileElementsMounted: autoUpdate,
-    placement: 'top',
-    middleware: [
-      offset({ mainAxis: 20, crossAxis: 50 })
-    ]
-  });
-  useClientPoint(context,
-    { x: tooltip.x, y: tooltip.y }
-  )
-
-  const matchTooltips = (ev: React.MouseEvent) => {
-    // @ts-expect-error fots
-    const text = (ev?.target?.textContent || '').trim();
-    // @ts-expect-error fots
-    const next = (ev?.target?.nextSibling?.textContent || '').trim()
-
-    // if (text?.length < 12) {
-    //   console.log(`${text}${next}`, { ev, context })
-    // }
-
-    const match = matchers?.find(el => el[0] === `${text}${next}`)
-
-    if (match) {
-      if (match[1] !== tooltip.nodes) {
-        setTooltip({ nodes: match[1], x: ev.clientX, y: ev.clientY })
-      }
-    } else if (tooltip.nodes.length) {
-      setTooltip(curr => ({ ...curr, nodes: [] }))
-    }
-  }
+  const id = stringToHash(content);
 
   return (
     <div
@@ -67,21 +42,9 @@ export const File = ({
 
       </div>
 
-      {tooltip.nodes.length ? <div
-        style={floatingStyles}
-        ref={refs.setFloating}
-        className="text-[12px] p-4 absolute bg-slate-800 rounded-md max-w-[600px] transition-none border border-slate-500"
-      >
-        {tooltip.nodes.map((node, ind) => (
-          <Code content={node.text} lang={node.lang} key={ind} />
-        ))}
-      </div> : null}
+        <FakeTypes matchers={matchers} id={id}/>
 
-      <div onMouseMove={matchTooltips}>
-
-        <Code content={content} className="bg-gray-800 max-sm:text-[0.7rem] max-sm:p-2 font-mono p-5 text-current" />
-
-      </div>
+        <Code content={content} id={id} className="bg-gray-800 max-sm:text-[0.7rem] max-sm:p-2 font-mono p-5 text-current" />
 
     </div>
   );

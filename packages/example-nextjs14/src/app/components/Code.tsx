@@ -1,18 +1,15 @@
-'use client'
-import React from 'react';
+'use server'
 
 import { highlight } from '../highlighter';
 import { Langs } from '../types';
 
-export const Code = ({ content, lang, ...rest }: { content: string, lang?: Langs } & React.ComponentPropsWithoutRef<'div'>) => {
+export const Code = async ({ content, lang, id, ...rest }: { content: string, lang?: Langs, id?: string } & React.ComponentPropsWithoutRef<'div'>) => {
+  const text = await highlight(content, { lang })
 
-  const [text, setText] = React.useState('');
-
-  React.useEffect(() => {
-    highlight(content, { lang }).then(setText)
-  }, [content, lang])
-
-  return text ?
-  <div dangerouslySetInnerHTML={{ __html: text }} {...rest}></div>
-  : <div {...rest}>{content.split('\n').map((el, ind) => (<div key={ind}>{el || '_'}</div>))}</div>
+  return <div id={id}>{text ?
+    <div dangerouslySetInnerHTML={{ __html: text }} {...rest}></div>
+    : <div {...rest}>{content.split('\n')
+      .map((el, ind) => (<div key={ind}>{el || '_'}</div>))}
+    </div>}
+  </div>
 }

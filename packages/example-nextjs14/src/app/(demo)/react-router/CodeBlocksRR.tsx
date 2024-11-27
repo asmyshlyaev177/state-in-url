@@ -1,5 +1,3 @@
-'use client';
-
 import { File } from '../../components/File';
 import { CodeBlockState } from '../CodeBlockState';
 import { tooltips } from '../tooltips';

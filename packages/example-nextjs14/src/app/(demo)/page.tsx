@@ -1,17 +1,8 @@
-import dynamicImport from 'next/dynamic';
-import React from 'react';
 
 import { DemoPart } from '../DemoPart';
 import { Description } from '../components/Description';
 import { TabsBlock } from './TabsBlock';
-
-const CodeBlocks = dynamicImport(
-  () => import('./CodeBlocksNext')
-    .then((mod) => mod.CodeBlocks),
-  {
-    loading: () => <div className="codeBlock-wrapper codeBlock-loader"></div>,
-  },
-);
+import { CodeBlocks } from './CodeBlocksNext';
 
 export default async function Home({ searchParams }: { searchParams: object }) {
   return (
