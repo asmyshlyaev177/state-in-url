@@ -322,6 +322,7 @@ describe('parseJSON', () => {
   test('with encoded values', () => {
     const exp = JSON.parse(JSON.stringify(state))
     delete exp.u
+
     expect(parseJSON(encode(state).replace(/'/g, '"'))).toEqual(exp);
   });
 
