@@ -1,3 +1,10 @@
+## [4.1.7](https://github.com/asmyshlyaev177/state-in-url/compare/v4.1.6...v4.1.7) (2024-11-28)
+
+
+### Bug Fixes
+
+* bump version ([c0bc971](https://github.com/asmyshlyaev177/state-in-url/commit/c0bc971e5a58b88f17d50523ecc1683406b11bce))
+
 ## [4.1.6](https://github.com/asmyshlyaev177/state-in-url/compare/v4.1.5...v4.1.6) (2024-11-26)
 
 

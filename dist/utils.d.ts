@@ -27,8 +27,8 @@ export declare function filterUnknownParams<T extends object>(shape: T, searchPa
 export declare function filterUnknown<T extends object>(shape: T, entries: [key: string, value: string][]): string[][];
 export declare function assignValue<T extends object>(shape: T, newVal: Partial<T>): T;
 export interface Router {
-    push: (href: string, opts: object) => void;
-    replace: (href: string, opts: object) => void;
+    push: (href: string, opts?: object) => void;
+    replace: (href: string, opts?: object) => void;
 }
 export declare const routerHistory: Router;
 export declare const isSafari: boolean;
