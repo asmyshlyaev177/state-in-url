@@ -151,9 +151,9 @@ export function useUrlState<T extends JSONCompatible>(
       _useHistory
         ? routerHistory
         : {
-            replace: (url: string, options: NavigateOptions) =>
+            replace: (url: string, options?: NavigateOptions) =>
               navigate(url, { ...defOpts, ...options }),
-            push: (url: string, options: NavigateOptions) =>
+            push: (url: string, options?: NavigateOptions) =>
               navigate(url, { ...defOpts, ...options }),
           },
     [navigate],

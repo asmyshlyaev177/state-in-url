@@ -164,13 +164,14 @@ test.describe('main tests', () => {
       await page.waitForSelector('button[name="Reload page"]');
 
 
-      const text = 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
+      const alpha = "abcdefghijklmnopqrstuvwxyz"
+      const text = alpha.repeat(5)
       await page
         .getByLabel('name')
         .pressSequentially(text, { delay: 0 });
         await page.waitForTimeout(500);
 
-        await expect(page.url()).toContain(text)
+        await expect(page.url().split('?')[1]).toEqual(`name=%27${text}%27`)
 
 
       await expect(page.locator('button[name="Reload page"]')).toBeVisible();

@@ -97,7 +97,6 @@ export function useUrlStateBase<T extends JSONCompatible>(
       const currUrl = `${window.location.pathname}${window.location.search}${window.location.hash}`;
       if (newUrl === currUrl) return;
 
-      let upd: (typeof queue.current)[0] | undefined;
       setState(newVal);
 
       const replace = options?.replace;
@@ -105,21 +104,14 @@ export function useUrlStateBase<T extends JSONCompatible>(
       queue.current.push([replace ? "replace" : "push", newUrl, options]);
 
       clearTimeout(timer.current);
-
       timer.current = setTimeout(() => {
         queueMicrotask(() => {
-          while (queue.current.length) {
-            const currUpd = queue.current.shift();
-            if (!!currUpd && currUpd?.[1] !== upd?.[1]) {
-              upd = currUpd;
-            }
-          }
+          if (!queue.current.length) return;
+          const upd = queue.current.at(-1);
+          queue.current = [];
 
-          // @ts-expect-error fots
-          const [method, url, opts] = upd || {};
-          upd = undefined;
-          // @ts-expect-error fots
-          method && router[method](url, opts);
+          const [method, url, opts] = upd || [];
+          router[method!](url!, opts);
         });
       }, TIMEOUT);
     },
