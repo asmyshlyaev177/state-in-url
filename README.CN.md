@@ -347,6 +347,7 @@ function SettingsComponent() {
 
 - 将您的状态形状定义为常量，以确保一致性
 - 使用TypeScript以增强类型安全性和自动完成功能
+- 使用TypeScript以增强类型安全性和自动完成功能
 - 避免在URL参数中存储敏感信息
 - 使用`updateState`进行频繁更新，使用`updateUrl`同步更改到URL
 - 在Next.js中使用`Suspence`包装客户端组件
