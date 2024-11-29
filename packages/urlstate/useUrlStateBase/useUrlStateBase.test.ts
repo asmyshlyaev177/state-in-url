@@ -244,7 +244,7 @@ describe('useUrlStateBase', () => {
 
         expect(result.current.state).toStrictEqual({ ...shape, num: 50 });
         expect(router.push).toHaveBeenCalledTimes(1);
-        expect(router.push).toHaveBeenNthCalledWith(1, '/?num=50', undefined);
+        expect(router.push).toHaveBeenNthCalledWith(1, '/?num=50', {});
       });
 
       test('partial shape', async () => {
@@ -262,7 +262,7 @@ describe('useUrlStateBase', () => {
 
         expect(result.current.state).toStrictEqual({ ...shape, num: 50 });
         expect(router.push).toHaveBeenCalledTimes(1);
-        expect(router.push).toHaveBeenNthCalledWith(1, '/?num=50', undefined);
+        expect(router.push).toHaveBeenNthCalledWith(1, '/?num=50', {});
       });
 
       test('no arg, should reset', async () => {
@@ -283,7 +283,7 @@ describe('useUrlStateBase', () => {
 
         expect(result.current.state).toStrictEqual({ ...shape, num: 50 });
         expect(router.push).toHaveBeenCalledTimes(1);
-        expect(router.push).toHaveBeenNthCalledWith(1, '/?num=50', undefined);
+        expect(router.push).toHaveBeenNthCalledWith(1, '/?num=50', {});
       });
     });
 
@@ -302,7 +302,7 @@ describe('useUrlStateBase', () => {
 
       expect(result.current.state).toStrictEqual({ ...shape, num: 50 });
       expect(router.push).toHaveBeenCalledTimes(1);
-      expect(router.push).toHaveBeenNthCalledWith(1, '/?num=50', undefined);
+      expect(router.push).toHaveBeenNthCalledWith(1, '/?num=50', {});
     });
 
     test('do not update if url same', () => {
@@ -340,7 +340,7 @@ describe('useUrlStateBase', () => {
       await vi.advanceTimersByTime(700);
 
       expect(router.push).toHaveBeenCalledTimes(1);
-      expect(router.push).toHaveBeenNthCalledWith(1, `/?num=55${hash}`, undefined);
+      expect(router.push).toHaveBeenNthCalledWith(1, `/?num=55${hash}`, {});
     });
 
     test('replace and options', async () => {
@@ -458,7 +458,7 @@ describe('useUrlStateBase', () => {
 
       expect(router.replace).not.toHaveBeenCalled()
       expect(router.push).toHaveBeenCalledTimes(2)
-      expect(router.push).toHaveBeenLastCalledWith('/', undefined)
+      expect(router.push).toHaveBeenLastCalledWith('/', {})
 
       expect(result.current.state).toStrictEqual(shape);
     });
@@ -486,7 +486,7 @@ describe('useUrlStateBase', () => {
 
       expect(router.replace).not.toHaveBeenCalled()
       expect(router.push).toHaveBeenCalledTimes(1)
-      expect(router.push).toHaveBeenLastCalledWith('/', undefined)
+      expect(router.push).toHaveBeenLastCalledWith('/', {})
       expect(result.current.state).toStrictEqual(shape);
     });
 
