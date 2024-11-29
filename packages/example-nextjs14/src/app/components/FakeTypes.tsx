@@ -32,7 +32,7 @@ export const FakeTypes = ({ matchers, id }: { matchers?: Matcher[], id: string }
         const next = (ev?.target?.nextSibling?.textContent || '').trim()
 
         // if (text?.length < 12) {
-        //   console.log(`${text}${next}`, { ev, context })
+          // console.log({ ev, context, text, next })
         // }
 
         const match = matchers?.find(el => el[0] === `${text}${next}`)
@@ -41,7 +41,7 @@ export const FakeTypes = ({ matchers, id }: { matchers?: Matcher[], id: string }
           if (match[1] !== tooltip.nodes) {
             setTooltip({ nodes: match[1], x: ev.clientX, y: ev.clientY })
           }
-        } else if (tooltip.nodes.length) {
+        } else if (tooltip.nodes.length || text.length > 20 && !next) {
           setTooltip(curr => ({ ...curr, nodes: [] }))
         }
       }
@@ -50,7 +50,7 @@ export const FakeTypes = ({ matchers, id }: { matchers?: Matcher[], id: string }
       (codeBlock as HTMLDivElement).onmouseleave = () => setTooltip(curr => ({...curr, nodes: []}));
 
     }
-  }, [id, tooltip.nodes, matchers])
+  }, [id, tooltip.nodes, matchers, context])
 
   return tooltip.nodes.length ? <div
     style={floatingStyles}

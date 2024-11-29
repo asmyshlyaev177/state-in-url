@@ -37,7 +37,7 @@ export function DemoPart({ searchParams }: { searchParams: object }) {
             <UrlBox />
           </div>
 
-          <div className="relative w-[max-content] font-mono before:absolute before:inset-0 before:animate-typewriter before:bg-white after:absolute after:inset-0 after:w-[0.125em] after:animate-caret after:bg-black">Type something in a form, changes reflected in URL and state instantly.</div>
+          <div className="relative ml-12 place-content-center flex animate-text bg-gradient-to-r from-purple-600 via-yellow-600 to-orange-600 bg-clip-text text-transparent w-full max-w-[15rem] font-bold select-none">Try to type something <span className='block text-[30px] leading-7 font-bold text-black animate-bounce -mb-2'>↓</span></div>
 
         </header>
 
