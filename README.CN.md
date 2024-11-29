@@ -1,4 +1,4 @@
-[English](./README.md) | [한국어](./README.KO.md) | 简体中文
+[English](./README.md) | [한국어](./README.KO.md) | Chinese
 
 <div align="center">
   <img src="/assets/Logo_big.png?raw=true" alt="state-in-url logo"/>
