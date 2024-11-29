@@ -84,13 +84,13 @@ export function useUrlStateBase<T extends JSONCompatible>(
 
   const updateUrl = React.useCallback(
     (value?: Parameters<typeof setState>[0], options?: Options) => {
-      const isFunc = typeof value === "function";
-
-      const newVal = isFunc
-        ? value(getState())
-        : value
-          ? { ...getState(), ...value }
-          : getState();
+      const newVal =
+        typeof value === "function"
+          ? value(getState())
+          : {
+              ...getState(),
+              ...value,
+            };
       const qStr = stringify(newVal, getOtherParams(defaultState));
 
       const newUrl = `${window.location.pathname}${qStr.length ? "?" : ""}${qStr}${window.location.hash}`;
@@ -99,9 +99,8 @@ export function useUrlStateBase<T extends JSONCompatible>(
 
       setState(newVal);
 
-      const replace = options?.replace;
-      delete options?.replace;
-      queue.current.push([replace ? "replace" : "push", newUrl, options]);
+      const { replace, ..._rest } = options || {};
+      queue.current.push([replace ? "replace" : "push", newUrl, _rest]);
 
       clearTimeout(timer.current);
       timer.current = setTimeout(() => {
