@@ -12,7 +12,8 @@ module.exports = {
     "packages/example-nextjs15",
   ],
   globals: {
-    vi: true
+    vi: true,
+    vitest: true
   },
   rules: {
     'max-len': 'off',
