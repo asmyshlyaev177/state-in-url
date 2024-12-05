@@ -382,7 +382,7 @@
     "semantic-release": "^24.1.0",
     "standard-version": "^9.5.0",
     "ts-node": "^10.9.2",
-    "typescript": "^5.3.3",
+    "typescript": "^5.7.2",
     "unplugin-auto-import": "^0.18.5",
     "vitest": "^2.1.5",
     "wait-on": "^8.0.1",

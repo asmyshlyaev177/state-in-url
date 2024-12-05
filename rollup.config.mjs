@@ -4,7 +4,7 @@ import sourcemaps from 'rollup-plugin-sourcemaps';
 import typescript from '@rollup/plugin-typescript';
 import filesize from 'rollup-plugin-filesize';
 import { glob } from 'glob'
-import config from './tsconfig.json' assert { type: "json" };
+import config from './tsconfig.json' with { type: "json" };
 
 const isProduction = !process.env.IS_DEVELOPMENT;
 const sourcemap = !isProduction;
