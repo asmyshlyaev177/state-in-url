@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "ES2023",
+    "target": "ES2022",
     "outDir": "./dist",
     "declaration": true,
     "declarationDir": "dist",
@@ -21,7 +21,7 @@
     ],
     "lib": [
       "ES2021",
-      "ES2023",
+      "ES2022",
       "ES2021.String",
       "DOM",
       "DOM.Iterable",
