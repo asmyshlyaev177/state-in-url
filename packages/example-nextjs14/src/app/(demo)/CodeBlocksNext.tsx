@@ -24,7 +24,8 @@ import { form } from './form';
 
 export const ComponentA = () => {
   // see docs for all possible params https://github.com/asmyshlyaev177/state-in-url/tree/master/packages/urlstate/next/useUrlState
-  const { urlState, setState, setUrl } = useUrlState(form);// [!code highlight:1]
+  // useHistory: false to update sp on server component
+  const { urlState, setState, setUrl } = useUrlState(form, { useHistory: true }); // [!code highlight:1]
 
   return <>
     <input

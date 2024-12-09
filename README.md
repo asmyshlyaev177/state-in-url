@@ -171,7 +171,7 @@ import { userState } from './userState';
 
 function MyComponent() {
   // can pass `replace` arg, it's control will `setUrl` will use `rounter.push` or `router.replace`, default replace=true
-  // can pass `searchParams` from server components
+  // can pass `searchParams` from server components, pass `useHistory: false` if you need to fetch smt in the server component
   const { urlState, setUrl, setState, reset } = useUrlState(userState);
 
   return (

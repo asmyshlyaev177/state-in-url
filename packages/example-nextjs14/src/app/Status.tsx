@@ -78,7 +78,7 @@ function renderObject(obj: object | Array<SimpleVal> | SimpleVal, level = 0, par
 
   if (type === 'object') {
     return (
-      <span className='relative'>
+      <span className='relative' key={`${JSON.stringify(obj)}`}>
         <span>{'{'}</span>
         {Object.entries(obj as Object).map(([key, val])=> (
           <div style={{ marginLeft: (level + 2) * mult }} key={key} className=''>
