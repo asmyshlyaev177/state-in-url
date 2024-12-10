@@ -1,6 +1,6 @@
+import React from "react";
 import { useRouter } from "next/navigation";
 import { useSearchParams } from "next/navigation";
-import React from "react";
 
 import { parseSPObj } from "../../parseSPObj";
 import { useUrlStateBase } from "../../useUrlStateBase";
@@ -147,9 +147,28 @@ export function useUrlState<T extends JSONCompatible>(
         }
       : { scroll: params?.scroll, replace: params?.replace };
 
-  const router = (_useHistory === undefined ? true : !!_useHistory)
-    ? routerHistory
-    : useRouter();
+  const nextRouter = useRouter();
+
+  const router = React.useMemo(
+    () => ({
+      push: (...args: Parameters<typeof nextRouter.push>) => {
+        if (_useHistory === undefined ? true : !!_useHistory) {
+          routerHistory.push(...args);
+        } else {
+          nextRouter.push(...args);
+        }
+      },
+      replace: (...args: Parameters<typeof nextRouter.replace>) => {
+        if (_useHistory === undefined ? true : !!_useHistory) {
+          routerHistory.replace(...args);
+        } else {
+          nextRouter.replace(...args);
+        }
+      },
+    }),
+    [nextRouter],
+  );
+
   const {
     state,
     updateState,
@@ -174,7 +193,7 @@ export function useUrlState<T extends JSONCompatible>(
   );
 
   const sp = useSearchParams();
-  React.useEffect(() => {
+  React.useLayoutEffect(() => {
     updateState(
       filterUnknownParams(
         _defaultState,

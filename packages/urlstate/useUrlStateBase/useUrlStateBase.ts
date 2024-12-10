@@ -102,17 +102,19 @@ export function useUrlStateBase<T extends JSONCompatible>(
       const { replace, ..._rest } = options || {};
       queue.current.push([replace ? "replace" : "push", newUrl, _rest]);
 
+      // TODO: run instantly first time OR run leading calls first and wait after
+      // can try to use Promise instead
       clearTimeout(timer.current);
-      timer.current = setTimeout(() => {
-        queueMicrotask(() => {
-          if (!queue.current.length) return;
+
+      queueMicrotask(() => {
+        if (!queue.current.length) return;
+        timer.current = setTimeout(() => {
           const upd = queue.current.at(-1);
           queue.current = [];
 
-          const [method, url, opts] = upd || [];
-          router[method!](url!, opts);
-        });
-      }, TIMEOUT);
+          router[upd![0]](upd![1], upd![2]);
+        }, TIMEOUT);
+      });
     },
     [router, stringify, getState],
   );

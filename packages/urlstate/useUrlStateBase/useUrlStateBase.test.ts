@@ -241,6 +241,7 @@ describe('useUrlStateBase', () => {
         });
 
         await vi.advanceTimersByTime(700);
+        await vi.advanceTimersByTime(700);
 
         expect(result.current.state).toStrictEqual({ ...shape, num: 50 });
         expect(router.push).toHaveBeenCalledTimes(1);
@@ -258,6 +259,7 @@ describe('useUrlStateBase', () => {
           result.current.updateUrl({ num: 50 });
         });
 
+        await vi.advanceTimersByTime(700);
         await vi.advanceTimersByTime(700);
 
         expect(result.current.state).toStrictEqual({ ...shape, num: 50 });
@@ -280,6 +282,7 @@ describe('useUrlStateBase', () => {
         });
 
         await vi.advanceTimersByTime(700);
+        await vi.advanceTimersByTime(700);
 
         expect(result.current.state).toStrictEqual({ ...shape, num: 50 });
         expect(router.push).toHaveBeenCalledTimes(1);
@@ -298,6 +301,7 @@ describe('useUrlStateBase', () => {
         result.current.updateUrl((curr) => ({ ...curr, num: 50 }));
       });
 
+      await vi.advanceTimersByTime(700);
       await vi.advanceTimersByTime(700);
 
       expect(result.current.state).toStrictEqual({ ...shape, num: 50 });
@@ -338,6 +342,7 @@ describe('useUrlStateBase', () => {
       });
 
       await vi.advanceTimersByTime(700);
+      await vi.advanceTimersByTime(700);
 
       expect(router.push).toHaveBeenCalledTimes(1);
       expect(router.push).toHaveBeenNthCalledWith(1, `/?num=55${hash}`, {});
@@ -359,6 +364,7 @@ describe('useUrlStateBase', () => {
         });
       });
 
+      await vi.advanceTimersByTime(700);
       await vi.advanceTimersByTime(700);
 
       expect(result.current.state).toStrictEqual(newState);
@@ -439,6 +445,7 @@ describe('useUrlStateBase', () => {
         result.current.updateUrl({ num: 50 });
       });
       await vi.advanceTimersByTime(700);
+      await vi.advanceTimersByTime(700);
 
       expect(router.push).toHaveBeenCalledTimes(1)
       expect(result.current.state).toStrictEqual({ ...shape, num: 50 });
@@ -454,6 +461,7 @@ describe('useUrlStateBase', () => {
       act(() => {
         result.current.reset();
       })
+      await vi.advanceTimersByTime(700);
       await vi.advanceTimersByTime(700);
 
       expect(router.replace).not.toHaveBeenCalled()
@@ -483,6 +491,7 @@ describe('useUrlStateBase', () => {
         result.current.reset();
       })
       await vi.advanceTimersByTime(700);
+      await vi.advanceTimersByTime(700);
 
       expect(router.replace).not.toHaveBeenCalled()
       expect(router.push).toHaveBeenCalledTimes(1)
@@ -510,6 +519,7 @@ describe('useUrlStateBase', () => {
       act(() => {
         result.current.reset({ replace: true });
       })
+      await vi.advanceTimersByTime(700);
       await vi.advanceTimersByTime(700);
 
       expect(router.push).not.toHaveBeenCalled()
