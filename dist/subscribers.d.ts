@@ -6,6 +6,6 @@ export declare const subscribers: {
 };
 export declare const stateMap: {
     get: <T extends JSONCompatible | undefined>(objKey: T) => T | undefined;
-    set: <T extends JSONCompatible>(objKey: T, value: T) => void;
+    set: <T_1 extends JSONCompatible>(objKey: T_1, value: T_1) => void;
 };
 export type Cb = () => void;

@@ -1,3 +1,10 @@
+## [4.1.8](https://github.com/asmyshlyaev177/state-in-url/compare/v4.1.7...v4.1.8) (2024-12-10)
+
+
+### Bug Fixes
+
+* fix bug with state out of sync with useHistory: true ([072712f](https://github.com/asmyshlyaev177/state-in-url/commit/072712f358c4cd8ddd9bcaa91133673bb35da2e0))
+
 ## [4.1.7](https://github.com/asmyshlyaev177/state-in-url/compare/v4.1.6...v4.1.7) (2024-11-28)
 
 
