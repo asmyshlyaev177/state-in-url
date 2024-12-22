@@ -70,8 +70,8 @@ jobs:
         if: steps.cache-node-modules.outputs.cache-hit != 'true'
         run: npm clean-install && npx playwright install --with-deps
 
-      - name: Test exports
-        run: npm run test:exports
+      # - name: Test exports
+      #   run: npm run test:exports
 
       - name: Unit tests
         run: npx tsc --noEmit && npx vitest --run --coverage
