@@ -1,3 +1,10 @@
+## [4.1.10](https://github.com/asmyshlyaev177/state-in-url/compare/v4.1.9...v4.1.10) (2025-01-30)
+
+
+### Bug Fixes
+
+* setState in 'reset' ([b376aa3](https://github.com/asmyshlyaev177/state-in-url/commit/b376aa3315a5bfabf739798c364cbfce43d37c37))
+
 ## [4.1.9](https://github.com/asmyshlyaev177/state-in-url/compare/v4.1.8...v4.1.9) (2025-01-30)
 
 
