@@ -92,13 +92,13 @@ export function useUrlStateBase<T extends JSONCompatible>(
               ...value,
             };
 
-      setState(newVal);
-
       const qStr = stringify(newVal, getOtherParams(defaultState));
 
       const newUrl = `${window.location.pathname}${qStr.length ? "?" : ""}${qStr}${window.location.hash}`;
       const currUrl = `${window.location.pathname}${window.location.search}${window.location.hash}`;
       if (newUrl === currUrl) return;
+
+      setState(newVal);
 
       const { replace, ..._rest } = options || {};
       queue.current.push([replace ? "replace" : "push", newUrl, _rest]);
@@ -122,6 +122,7 @@ export function useUrlStateBase<T extends JSONCompatible>(
 
   const reset = React.useCallback(
     (options?: Options) => {
+      setState(defaultState);
       updateUrl(defaultState, options);
     },
     [updateUrl, setState],
