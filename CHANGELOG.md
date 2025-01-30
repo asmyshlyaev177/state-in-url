@@ -1,3 +1,10 @@
+## [4.1.9](https://github.com/asmyshlyaev177/state-in-url/compare/v4.1.8...v4.1.9) (2025-01-30)
+
+
+### Bug Fixes
+
+* reset state independent from URL in 'reset' cb ([9392a19](https://github.com/asmyshlyaev177/state-in-url/commit/9392a19b3863bc73469ceaf32ae5aa686b5845c5))
+
 ## [4.1.8](https://github.com/asmyshlyaev177/state-in-url/compare/v4.1.7...v4.1.8) (2024-12-10)
 
 
