@@ -499,6 +499,30 @@ describe('useUrlStateBase', () => {
       expect(result.current.state).toStrictEqual(shape);
     });
 
+    test('reset state independent from URL', async () => {
+      vi.useFakeTimers({
+        toFake: ['setTimeout']
+      });
+      vi.mocked(utils).isSSR = false;
+
+      const { result } = renderHook(() => useUrlStateBase(shape, router));
+
+      act(() => {
+        result.current.updateState({ str: 'test'});
+      })
+      expect(result.current.state).toStrictEqual({...shape, str: 'test' });
+
+      act(() => {
+        result.current.reset();
+      })
+      await vi.advanceTimersByTime(700);
+      await vi.advanceTimersByTime(700);
+
+      expect(router.replace).not.toHaveBeenCalled()
+      expect(router.push).not.toHaveBeenCalledTimes(1)
+      expect(result.current.state).toStrictEqual(shape);
+    });
+
     test('with replace', async () => {
       vi.useFakeTimers({
         toFake: ['setTimeout']
