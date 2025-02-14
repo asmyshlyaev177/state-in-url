@@ -4,6 +4,7 @@ import { usePathname } from 'next/navigation';
 import { ErrorBoundary, type FallbackProps } from "react-error-boundary";
 
 import { GithubLink } from './components/GithubLink';
+import { NpmLink } from './components/NpmLink';
 import { UrlBox } from './components/UrlBox';
 import { Form } from './Form';
 import { Status } from './Status';
@@ -29,6 +30,7 @@ export function DemoPart({ searchParams }: { searchParams: object }) {
           <div className="wrapper">
             <h2 className="title">useUrlState - demo with <Word>{isReactRouter ? 'react-router' : 'Next.js'}</Word></h2>
             <div className="github-link">
+              <NpmLink />
               <GithubLink />
             </div>
           </div>

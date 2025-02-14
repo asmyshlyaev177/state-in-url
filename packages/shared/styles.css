@@ -88,7 +88,7 @@
             }
 
             .github-link {
-              @apply order-first min-[450px]:order-last max-[450px]:basis-full flex justify-end;
+              @apply order-first min-[450px]:order-last max-[450px]:basis-full flex justify-end gap-1;
             }
           }
 
