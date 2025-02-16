@@ -57,7 +57,7 @@ Share if it useful for you.
 
   </div>
 
-![Just Show Me Code!](#useurlstate)
+[Just Show Me Code!](#useurlstate)
 
 ## Why use `state-in-url`?
 
