@@ -57,6 +57,8 @@ Share if it useful for you.
 
   </div>
 
+![Just Show Me Code!](#useurlstate)
+
 ## Why use `state-in-url`?
 
 Store any user state in query parameters; imagine JSON in a browser URL. All of it with keeping types and structure of data, e.g. numbers will be decoded as numbers not strings, dates as dates, etc, objects and arrays supported.
