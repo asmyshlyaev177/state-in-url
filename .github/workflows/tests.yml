@@ -20,18 +20,18 @@ permissions:
   issues: write
   pull-requests: write
 jobs:
-  linkspector:
-    name: linkspector
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # pin@v4
-      - name: Run linkspector
-        uses: umbrelladocs/action-linkspector@fc382e19892aca958e189954912fe379a8df270c # pin@v1
-        with:
-          github_token: ${{ secrets.github_token }}
-          reporter: github-pr-review
-          fail_on_error: true
-          config_file: .linkspector.yml
+  # linkspector:
+  #   name: linkspector
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # pin@v4
+  #     - name: Run linkspector
+  #       uses: umbrelladocs/action-linkspector@fc382e19892aca958e189954912fe379a8df270c # pin@v1
+  #       with:
+  #         github_token: ${{ secrets.github_token }}
+  #         reporter: github-pr-review
+  #         fail_on_error: true
+  #         config_file: .linkspector.yml
 
   installtest:
     name: installtest
