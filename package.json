@@ -355,6 +355,7 @@
     "babel-plugin-module-resolver": "^5.0.2",
     "chokidar": "^4.0.1",
     "commitizen": "^4.3.0",
+    "commitlint": "^19.8.0",
     "conventional-recommended-bump": "^10.0.0",
     "cross-env": "^7.0.3",
     "cz": "^1.8.2",
