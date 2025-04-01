@@ -19,9 +19,9 @@ import { encode } from 'state-in-url/encoder';
 
 // to params
 const params = new URLSearchParams();
-Object.entries(state).forEach(([key, value]) => {
+for (const [key, value] of Object.entries(state)) {
   params.set(key, encode(value));
-});
+}
 const str = params.toString();
 ```
 

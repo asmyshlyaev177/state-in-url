@@ -22,12 +22,12 @@ export function encodeState<T extends JSONCompatible>(
   paramsToKeep?: string | URLSearchParams,
 ) {
   const params = getParams(paramsToKeep);
-  Object.entries(state || {}).forEach(([key, value]) => {
+  for (const [key, value] of Object.entries(state || {})) {
     const initialVal = defaults?.[key as keyof typeof defaults];
     if (JSON.stringify(value) !== JSON.stringify(initialVal)) {
       params.set(key, encode(value));
     }
-  });
+  }
   return params.toString();
 }
 

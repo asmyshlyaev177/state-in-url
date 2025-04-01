@@ -143,9 +143,9 @@ function getOtherParams<T extends object>(shape: T) {
   const allParams = new URLSearchParams(search);
   const params = new URLSearchParams();
 
-  allParams.forEach(
-    (value, key) => !shapeKeys.includes(key) && params.set(key, value),
-  );
+  for (const [key, value] of allParams) {
+    !shapeKeys.includes(key) && params.set(key, value);
+  }
   return params;
 }
 

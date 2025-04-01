@@ -30,9 +30,10 @@ function replacer(_key: string, value: unknown): unknown {
 
   if (type === "object") {
     const _value = value as { [key: string]: unknown };
-    Object.keys(_value).forEach((objKey) => {
+
+    for (const objKey of Object.keys(_value)) {
       _value[objKey] = replacer(_key, _value[objKey]);
-    });
+    }
     return _value;
   }
   if (type === "array") {
