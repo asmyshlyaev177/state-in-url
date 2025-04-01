@@ -83,9 +83,13 @@ export const isEqual = (val1: unknown, val2: unknown) =>
 export function filterUnknownParamsClient<T extends object>(shape: T) {
   const shapeParams = new URLSearchParams();
 
-  filterUnknown(shape, [
+  const filtered = filterUnknown(shape, [
     ...new URLSearchParams(window.location.search).entries(),
-  ]).forEach(([key, value]) => shapeParams.set(key, value));
+  ]);
+
+  for (const [key, value] of filtered) {
+    shapeParams.set(key, value);
+  }
 
   return shapeParams.toString();
 }
@@ -120,11 +124,12 @@ export function filterUnknown<T extends object>(
 export function assignValue<T extends object>(shape: T, newVal: Partial<T>) {
   const result: T = Object.assign({}, shape);
 
-  Object.entries(shape).forEach(([key]) => {
+  for (const [key] of Object.entries(shape)) {
     const _key = key as keyof T;
     const valExists = newVal[_key] !== undefined;
     result[_key] = (valExists ? newVal[_key] : shape[_key]) as T[keyof T];
-  });
+  }
+
   return result;
 }
 
