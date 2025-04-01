@@ -1,3 +1,10 @@
+## [4.1.11](https://github.com/asmyshlyaev177/state-in-url/compare/v4.1.10...v4.1.11) (2025-04-01)
+
+
+### Bug Fixes
+
+* fix loops ([6d61a7d](https://github.com/asmyshlyaev177/state-in-url/commit/6d61a7d1697236fffa67c6bd1932f8dbb4223e79))
+
 ## [4.1.10](https://github.com/asmyshlyaev177/state-in-url/compare/v4.1.9...v4.1.10) (2025-01-30)
 
 
