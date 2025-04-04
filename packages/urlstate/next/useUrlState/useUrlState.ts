@@ -175,14 +175,14 @@ export function useUrlState<T extends JSONCompatible>(
     updateUrl: updateUrlBase,
     reset: resetBase,
     getState,
-  } = useUrlStateBase(_defaultState, router, ({ parse }) =>
-    isSSR
+  } = useUrlStateBase(_defaultState, router, ({ parse }) => {
+    return isSSR
       ? parseSPObj(
           filterUnknownParams(_defaultState, _searchParams),
           _defaultState,
         )
-      : parse(filterUnknownParamsClient(_defaultState)),
-  );
+      : parse(filterUnknownParamsClient(_defaultState, _searchParams));
+  });
 
   const defOpts = React.useMemo(() => ({ ...defaultOptions, ..._opts }), []);
 
