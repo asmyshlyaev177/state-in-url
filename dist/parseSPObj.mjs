@@ -1,1 +1,1 @@
-import{decode as c}from"./encoder/encoder.mjs";function o(r,t){return{...t,...s(JSON.stringify(r),t)}}function s(r,t){try{return JSON.parse(r,i)}catch{return t}}const i=(r,t)=>{const e=typeof t=="string",n=e&&c(t?.replace?.(/'/g,'"'));return r&&e?n:t};export{o as parseSPObj};
+import{decode as c}from"./encoder/encoder.mjs";function o(n,t){return{...t,...s(JSON.stringify(n),t)}}function s(n,t){try{return JSON.parse(n,i)}catch{return t}}const i=(n,t)=>{const r=typeof t==="string";const e=r&&c(t?.replace?.(/'/g,'"'));return n&&r?e:t};export{o as parseSPObj};

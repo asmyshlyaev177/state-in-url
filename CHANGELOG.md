@@ -1,3 +1,10 @@
+## [4.1.14](https://github.com/asmyshlyaev177/state-in-url/compare/v4.1.13...v4.1.14) (2025-04-04)
+
+
+### Bug Fixes
+
+* fix esbuild minification bug ([dc8112d](https://github.com/asmyshlyaev177/state-in-url/commit/dc8112d982e12a7ace6dad26e456c86bffa0c790))
+
 ## [4.1.13](https://github.com/asmyshlyaev177/state-in-url/compare/v4.1.12...v4.1.13) (2025-04-04)
 
 
