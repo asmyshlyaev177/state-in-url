@@ -27,7 +27,9 @@ const plugins = [
   !isProduction && sourcemaps(),
   esbuild({
     sourceMap: !isProduction, // default
-    minify: isProduction,
+    minify: false,
+    minifyWhitespace: isProduction,
+    minifyIdentifiers: isProduction,
     target: 'es2023', // default, or 'es20XX', 'esnext'
   }),
   filesize(),
