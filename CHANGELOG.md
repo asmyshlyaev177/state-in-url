@@ -3,6 +3,14 @@
 
 ### Features
 
+* another bump ([048b7f7](https://github.com/asmyshlyaev177/state-in-url/commit/048b7f7d86364b6fe7b446ebbe1a7b88162de906))
+* bump version ([07fa148](https://github.com/asmyshlyaev177/state-in-url/commit/07fa1484b8684453aff6c2671fd5998073096dfa))
+
+# [4.2.0](https://github.com/asmyshlyaev177/state-in-url/compare/v4.1.17...v4.2.0) (2025-04-04)
+
+
+### Features
+
 * bump version ([07fa148](https://github.com/asmyshlyaev177/state-in-url/commit/07fa1484b8684453aff6c2671fd5998073096dfa))
 
 ## [4.1.17](https://github.com/asmyshlyaev177/state-in-url/compare/v4.1.16...v4.1.17) (2025-04-04)
