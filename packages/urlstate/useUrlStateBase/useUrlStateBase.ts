@@ -68,7 +68,9 @@ export function useUrlStateBase<T extends JSONCompatible>(
   useInsertionEffect(() => {
     // for history navigation
     const popCb = () => {
-      const newVal = parse(filterUnknownParamsClient(defaultState));
+      const newVal = parse(
+        filterUnknownParamsClient(defaultState, getSearch()),
+      );
       setState(newVal);
     };
 
@@ -163,4 +165,8 @@ interface OptionsObject {
 
 export interface Options extends OptionsObject {
   replace?: boolean;
+}
+
+function getSearch() {
+  return (typeof window !== "undefined" && window.location.search) || "";
 }

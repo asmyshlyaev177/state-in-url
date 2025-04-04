@@ -25,8 +25,7 @@
       "ES2021.String",
       "DOM",
       "DOM.Iterable",
-      "ESNext",
-      "ESNext.String"
+      "ESNext"
     ],
     "jsx": "preserve",
     "module": "ESNext",

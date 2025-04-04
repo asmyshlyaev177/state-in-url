@@ -80,11 +80,16 @@ export type UnknownObj = object | { [key: string]: unknown };
 export const isEqual = (val1: unknown, val2: unknown) =>
   JSON.stringify(val1) === JSON.stringify(val2);
 
-export function filterUnknownParamsClient<T extends object>(shape: T) {
+export function filterUnknownParamsClient<T extends object>(
+  shape: T,
+  params: string | URLSearchParams | Record<string, string> | object,
+) {
   const shapeParams = new URLSearchParams();
 
   const filtered = filterUnknown(shape, [
-    ...new URLSearchParams(window.location.search).entries(),
+    ...new URLSearchParams(
+      (params as string | URLSearchParams | Record<string, string>) || "",
+    ).entries(),
   ]);
 
   for (const [key, value] of filtered) {

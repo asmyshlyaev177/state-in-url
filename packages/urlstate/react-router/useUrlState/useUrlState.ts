@@ -159,6 +159,8 @@ export function useUrlState<T extends JSONCompatible>(
     [navigate],
   );
 
+  const [sp] = useSearchParams();
+
   const {
     state,
     updateState,
@@ -166,7 +168,7 @@ export function useUrlState<T extends JSONCompatible>(
     getState,
     reset: resetBase,
   } = useUrlStateBase(_defaultState, router, ({ parse }) =>
-    parse(filterUnknownParamsClient(_defaultState)),
+    parse(filterUnknownParamsClient(_defaultState, sp.entries())),
   );
 
   const updateUrl = React.useCallback(
@@ -174,8 +176,6 @@ export function useUrlState<T extends JSONCompatible>(
       updateUrlBase(value, { ...defOpts, ...options }),
     [updateUrlBase],
   );
-
-  const [sp] = useSearchParams();
 
   React.useEffect(() => {
     updateState(

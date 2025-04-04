@@ -132,61 +132,37 @@ describe('filterUnknownParamsClient', () => {
 
   test('should include only the keys that exist in the shape', () => {
     const originalLocation = window.location;
-    vi.spyOn(window, 'location', 'get').mockImplementation(() => ({
-      ...originalLocation,
-      search: "?foo=bar&baz=qux",
-    }));
-    const result = filterUnknownParamsClient({ foo: '', dummy: '' });
+    const result = filterUnknownParamsClient({ foo: '', dummy: '' }, "?foo=bar&baz=qux");
     expect(result).toBe("foo=bar");
   });
 
   test('should return an empty string if no keys match the shape', () => {
     const originalLocation = window.location;
-    vi.spyOn(window, 'location', 'get').mockImplementation(() => ({
-      ...originalLocation,
-      search: "?foo=bar&baz=qux",
-    }));
-    const result = filterUnknownParamsClient({ noKey: '' });
+    const result = filterUnknownParamsClient({ noKey: '' }, "?foo=bar&baz=qux");
     expect(result).toBe("");
   });
 
   test('should handle an empty URL search string returning an empty string', () => {
     const originalLocation = window.location;
-    vi.spyOn(window, 'location', 'get').mockImplementation(() => ({
-      ...originalLocation,
-      search: "",
-    }));
-    const result = filterUnknownParamsClient({ someKey: '' });
+    const result = filterUnknownParamsClient({ someKey: '' }, "");
     expect(result).toBe("");
   });
 
   test('should handle an empty shape returning an empty string', () => {
     const originalLocation = window.location;
-    vi.spyOn(window, 'location', 'get').mockImplementation(() => ({
-      ...originalLocation,
-      search: "?foo=bar&baz=qux",
-    }));
-    const result = filterUnknownParamsClient({});
+    const result = filterUnknownParamsClient({}, "");
     expect(result).toBe("");
   });
 
   test('should handle special characters correctly', () => {
     const originalLocation = window.location;
-    vi.spyOn(window, 'location', 'get').mockImplementation(() => ({
-      ...originalLocation,
-      search: "?foo=bar%20baz&baz=qux",
-    }));
-    const result = filterUnknownParamsClient({ foo: '' });
+    const result = filterUnknownParamsClient({ foo: '' }, "?foo=bar%20baz&baz=qux");
     expect(result).toBe("foo=bar+baz");
   });
 
   test('should manage repeated keys and take the last one', () => {
     const originalLocation = window.location;
-    vi.spyOn(window, 'location', 'get').mockImplementation(() => ({
-      ...originalLocation,
-      search: "?foo=first&foo=second",
-    }));
-    const result = filterUnknownParamsClient({ foo: '' });
+    const result = filterUnknownParamsClient({ foo: '' }, "?foo=first&foo=second");
     expect(result).toBe("foo=second");
   });
 });
