@@ -127,23 +127,6 @@ jobs:
       - name: build packages
         run: npx cross-env TEST=true npm run build:packages
 
-      - name: Cache dependencies
-        id: cache
-        uses: actions/cache/save@d4323d4df104b026a6aa633fdb11d772146be0bf # v4.1.2
-        if: always()
-        with:
-          path: |
-            ./dist
-            ./packages/example-react-router6/dist
-            ./packages/example-react-router6/package.json
-            ./packages/example-react/dist
-            ./packages/example-react/package.json
-            ./packages/example-nextjs14/package.json
-            ./packages/example-nextjs14/.next
-            ./packages/example-nextjs15/package.json
-            ./packages/example-nextjs15/.next
-          key: modules-2-${{ github.sha }}-${{ github.run_id }}
-
   testint:
     needs: [ build ]
     name: testint
@@ -172,23 +155,9 @@ jobs:
             ./node_modules
           key: modules-1-${{ hashFiles('./package-lock.json') }}
 
-      - uses: actions/cache/restore@d4323d4df104b026a6aa633fdb11d772146be0bf # v4.1.2
-        id: cache
-        with:
-          path: |
-            ./dist
-            ./packages/example-react-router6/dist
-            ./packages/example-react-router6/package.json
-            ./packages/example-react/dist
-            ./packages/example-react/package.json
-            ./packages/example-nextjs14/package.json
-            ./packages/example-nextjs14/.next
-            ./packages/example-nextjs15/package.json
-            ./packages/example-nextjs15/.next
-          key: modules-2-${{ github.sha }}-${{ github.run_id }}
-
       - name: Run Playwright tests
         run: |
+          npm clean-install && npx playwright install --with-deps && \
           npm run start:ci & \
           npx wait-on http://localhost:3000 && \
           npx wait-on http://localhost:3001 && \
@@ -277,21 +246,6 @@ jobs:
             ./node_modules
           key: modules-1-${{ hashFiles('./package-lock.json') }}
 
-      - uses: actions/cache/restore@d4323d4df104b026a6aa633fdb11d772146be0bf # v4.1.2
-        id: cache
-        with:
-          path: |
-            ./dist
-            ./packages/example-react-router6/dist
-            ./packages/example-react-router6/package.json
-            ./packages/example-react/dist
-            ./packages/example-react/package.json
-            ./packages/example-nextjs14/package.json
-            ./packages/example-nextjs14/.next
-            ./packages/example-nextjs15/package.json
-            ./packages/example-nextjs15/.next
-          key: modules-2-${{ github.sha }}-${{ github.run_id }}
-
       - name: Verify the integrity of provenance attestations and registry signatures for installed dependencies
         run: npm audit signatures
       # - name: Debug
@@ -312,7 +266,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: npx semantic-release
+        run: npm install && npm run build && npx semantic-release
   # cleanup:
   #   name: cleanup
   #   needs: [release, merge-reports]
