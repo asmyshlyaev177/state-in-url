@@ -1,3 +1,10 @@
+## [4.1.13](https://github.com/asmyshlyaev177/state-in-url/compare/v4.1.12...v4.1.13) (2025-04-04)
+
+
+### Bug Fixes
+
+* fix parsing qs params on the client ([c71d690](https://github.com/asmyshlyaev177/state-in-url/commit/c71d690afa6ffe143c29d71adf495916d0641c1b))
+
 ## [4.1.12](https://github.com/asmyshlyaev177/state-in-url/compare/v4.1.11...v4.1.12) (2025-04-04)
 
 
