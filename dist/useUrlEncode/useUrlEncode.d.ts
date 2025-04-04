@@ -30,7 +30,7 @@ console.log(state); // Output: { name: 'Tom' }
  *
  *  * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/master/packages/urlstate/useUrlEncode#parse}
  */
-    parse: (strOrSearchParams: string | URLSearchParams) => T;
+    parse: (strOrSearchParams: string | URLSearchParams) => typeof stateShape;
     /**
 Converts a state object to a URL query string.
 * * Example:

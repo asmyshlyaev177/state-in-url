@@ -1,3 +1,10 @@
+## [4.1.12](https://github.com/asmyshlyaev177/state-in-url/compare/v4.1.11...v4.1.12) (2025-04-04)
+
+
+### Bug Fixes
+
+* update rollup and esbuild ([03e865b](https://github.com/asmyshlyaev177/state-in-url/commit/03e865be356192e0f509f004758bed6f268f9a62))
+
 ## [4.1.11](https://github.com/asmyshlyaev177/state-in-url/compare/v4.1.10...v4.1.11) (2025-04-01)
 
 

@@ -37,7 +37,7 @@ export declare function useUrlStateBase<T extends JSONCompatible>(defaultState: 
     parse: ReturnType<typeof useUrlEncode<T>>["parse"];
 }) => T): {
     updateState: (value: Partial<T> | ((currState: T) => T)) => void;
-    updateUrl: (value?: Partial<T> | ((currState: T) => T) | undefined, options?: Options) => void;
+    updateUrl: (value?: Parameters<(value: Partial<T> | ((currState: T) => T)) => void>[0], options?: Options) => void;
     state: T;
     reset: (options?: Options) => void;
     getState: () => T;
