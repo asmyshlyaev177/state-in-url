@@ -1,3 +1,10 @@
+## [4.1.16](https://github.com/asmyshlyaev177/state-in-url/compare/v4.1.15...v4.1.16) (2025-04-04)
+
+
+### Bug Fixes
+
+* bump version, yarn not always correctly resolve it ([46308bc](https://github.com/asmyshlyaev177/state-in-url/commit/46308bcf3e771701eea29543632b2fbbafcf201d))
+
 ## [4.1.15](https://github.com/asmyshlyaev177/state-in-url/compare/v4.1.14...v4.1.15) (2025-04-04)
 
 
