@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "babel-plugin-react-compiler": "^19.0.0-beta-6fc168f-20241025",
-    "next": "^15.2.2",
+    "next": "^15.2.4",
     "react": "^19.0.0-rc-603e6108-20241029",
     "react-dom": "^19.0.0-rc-603e6108-20241029"
   },
