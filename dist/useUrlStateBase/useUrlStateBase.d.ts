@@ -35,7 +35,7 @@ import { type JSONCompatible, type Router } from "../utils";
  */
 export declare function useUrlStateBase<T extends JSONCompatible>(defaultState: T, router: Router, getInitialState?: ({ parse, }: {
     parse: ReturnType<typeof useUrlEncode<T>>["parse"];
-}) => T): {
+}) => T, basename?: string): {
     updateState: (value: Partial<T> | ((currState: T) => T)) => void;
     updateUrl: (value?: Parameters<(value: Partial<T> | ((currState: T) => T)) => void>[0], options?: Options) => void;
     state: T;

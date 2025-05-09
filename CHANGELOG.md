@@ -1,3 +1,10 @@
+## [4.3.1](https://github.com/asmyshlyaev177/state-in-url/compare/v4.3.0...v4.3.1) (2025-05-09)
+
+
+### Bug Fixes
+
+* use `basename` for react-router ([ef0e90a](https://github.com/asmyshlyaev177/state-in-url/commit/ef0e90ae9095f9519cd816a689f7b87436c41a8f)), closes [#52](https://github.com/asmyshlyaev177/state-in-url/issues/52)
+
 # [4.3.0](https://github.com/asmyshlyaev177/state-in-url/compare/v4.2.1...v4.3.0) (2025-04-04)
 
 
