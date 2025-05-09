@@ -581,4 +581,111 @@ describe('useUrlStateBase', () => {
       expect(result.current.state).toStrictEqual({ ...shape, num: 55 });
     });
   });
+
+  describe('basename prop', () => {
+    test('basename /base and url /base', async () => {
+      vi.useFakeTimers({
+        toFake: ['setTimeout']
+      });
+      vi.mocked(utils).isSSR = false;
+      const pathname = '/base';
+
+      const originalLocation = window.location;
+      vi.spyOn(window, 'location', 'get').mockImplementation(() => ({
+        ...originalLocation,
+        pathname,
+        search: '',
+        hash: '',
+      }));
+
+      const { result } = renderHook(() => useUrlStateBase(shape, router, undefined, '/base'));
+
+      act(() => {
+        result.current.updateUrl({ ...shape, num: 50 });
+      });
+
+      await vi.advanceTimersByTime(700);
+      await vi.advanceTimersByTime(700);
+
+      expect(result.current.state).toStrictEqual({ ...shape, num: 50 });
+      expect(router.push).toHaveBeenCalledTimes(1);
+      expect(router.push).toHaveBeenNthCalledWith(1, '/?num=50', {});
+    });
+
+    test('basename /base and url /base/other', async () => {
+      vi.useFakeTimers({
+        toFake: ['setTimeout']
+      });
+
+      const pathname = '/base/other';
+
+      const originalLocation = window.location;
+      vi.spyOn(window, 'location', 'get').mockImplementation(() => ({
+        ...originalLocation,
+        pathname,
+        search: '',
+        hash: '',
+      }));
+      vi.mocked(utils).isSSR = false;
+      const { result } = renderHook(() => useUrlStateBase(shape, router, undefined, '/base'));
+
+      act(() => {
+        result.current.updateUrl({ ...shape, num: 50 });
+      });
+
+      await vi.advanceTimersByTime(700);
+      await vi.advanceTimersByTime(700);
+
+      expect(result.current.state).toStrictEqual({ ...shape, num: 50 });
+      expect(router.push).toHaveBeenCalledTimes(1);
+      expect(router.push).toHaveBeenNthCalledWith(1, '/other?num=50', {});
+    });
+
+    test('basename / and url /', async () => {
+      vi.useFakeTimers({
+        toFake: ['setTimeout']
+      });
+      vi.mocked(utils).isSSR = false;
+      const pathname = '/';
+
+      const originalLocation = window.location;
+      vi.spyOn(window, 'location', 'get').mockImplementation(() => ({
+        ...originalLocation,
+        pathname,
+        search: '',
+        hash: '',
+      }));
+      const { result } = renderHook(() => useUrlStateBase(shape, router, undefined, '/'));
+
+      act(() => {
+        result.current.updateUrl({ ...shape, num: 50 });
+      });
+
+      await vi.advanceTimersByTime(700);
+      await vi.advanceTimersByTime(700);
+
+      expect(result.current.state).toStrictEqual({ ...shape, num: 50 });
+      expect(router.push).toHaveBeenCalledTimes(1);
+      expect(router.push).toHaveBeenNthCalledWith(1, '/?num=50', {});
+    });
+
+    test('basename empty', async () => {
+      vi.useFakeTimers({
+        toFake: ['setTimeout']
+      });
+      vi.mocked(utils).isSSR = false;
+      const { result } = renderHook(() => useUrlStateBase(shape, router, undefined, ''));
+
+      act(() => {
+        result.current.updateUrl({ ...shape, num: 50 });
+      });
+
+      await vi.advanceTimersByTime(700);
+      await vi.advanceTimersByTime(700);
+
+      expect(result.current.state).toStrictEqual({ ...shape, num: 50 });
+      expect(router.push).toHaveBeenCalledTimes(1);
+      expect(router.push).toHaveBeenNthCalledWith(1, '/?num=50', {});
+    });
+  })
 });

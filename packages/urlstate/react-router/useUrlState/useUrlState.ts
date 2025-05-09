@@ -1,6 +1,7 @@
 import React from "react";
 import {
   type NavigateOptions,
+  useHref,
   useNavigate,
   useSearchParams,
 } from "react-router-dom";
@@ -161,14 +162,20 @@ export function useUrlState<T extends JSONCompatible>(
 
   const [sp] = useSearchParams();
 
+  const basename = useHref("/");
+
   const {
     state,
     updateState,
     updateUrl: updateUrlBase,
     getState,
     reset: resetBase,
-  } = useUrlStateBase(_defaultState, router, ({ parse }) =>
-    parse(filterUnknownParamsClient(_defaultState, sp.entries())),
+  } = useUrlStateBase(
+    _defaultState,
+    router,
+    ({ parse }) =>
+      parse(filterUnknownParamsClient(_defaultState, sp.entries())),
+    basename,
   );
 
   const updateUrl = React.useCallback(
