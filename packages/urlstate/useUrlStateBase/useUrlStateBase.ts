@@ -52,6 +52,7 @@ export function useUrlStateBase<T extends JSONCompatible>(
   }: {
     parse: ReturnType<typeof useUrlEncode<T>>["parse"];
   }) => T,
+  basename?: string,
 ) {
   const { parse, stringify } = useUrlEncode(defaultState);
   const { state, getState, setState } = useSharedState(
@@ -96,8 +97,9 @@ export function useUrlStateBase<T extends JSONCompatible>(
 
       const qStr = stringify(newVal, getOtherParams(defaultState));
 
-      const newUrl = `${window.location.pathname}${qStr.length ? "?" : ""}${qStr}${window.location.hash}`;
-      const currUrl = `${window.location.pathname}${window.location.search}${window.location.hash}`;
+      const base = removeBasename(window.location.pathname, basename);
+      const newUrl = `${base}${qStr.length ? "?" : ""}${qStr}${window.location.hash}`;
+      const currUrl = `${base}${window.location.search}${window.location.hash}`;
       if (newUrl === currUrl) return;
 
       setState(newVal);
@@ -169,4 +171,13 @@ export interface Options extends OptionsObject {
 
 function getSearch() {
   return (typeof window !== "undefined" && window.location.search) || "";
+}
+
+function removeBasename(path: string, basename?: string) {
+  if (!basename || basename === "/") {
+    return path;
+  }
+
+  const result = path.slice(basename.length);
+  return result.startsWith("/") ? result : "/" + result;
 }
