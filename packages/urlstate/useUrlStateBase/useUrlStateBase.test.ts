@@ -609,7 +609,7 @@ describe('useUrlStateBase', () => {
 
       expect(result.current.state).toStrictEqual({ ...shape, num: 50 });
       expect(router.push).toHaveBeenCalledTimes(1);
-      expect(router.push).toHaveBeenNthCalledWith(1, '/?num=50', {});
+      expect(router.push).toHaveBeenNthCalledWith(1, '?num=50', {});
     });
 
     test('basename /base and url /base/other', async () => {

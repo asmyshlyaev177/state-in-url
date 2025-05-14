@@ -178,6 +178,5 @@ function removeBasename(path: string, basename?: string) {
     return path;
   }
 
-  const result = path.slice(basename.length);
-  return result.startsWith("/") ? result : "/" + result;
+  return path.slice(basename.length);
 }
