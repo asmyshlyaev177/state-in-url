@@ -1,3 +1,10 @@
+## [4.3.2](https://github.com/asmyshlyaev177/state-in-url/compare/v4.3.1...v4.3.2) (2025-05-14)
+
+
+### Bug Fixes
+
+* fix basename for react-router, second try ([38d8c3f](https://github.com/asmyshlyaev177/state-in-url/commit/38d8c3f024ddef827146db39e33f12f4c581a236)), closes [#52](https://github.com/asmyshlyaev177/state-in-url/issues/52)
+
 ## [4.3.1](https://github.com/asmyshlyaev177/state-in-url/compare/v4.3.0...v4.3.1) (2025-05-09)
 
 
