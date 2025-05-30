@@ -67,7 +67,7 @@ export const metadata = {
     description: meta.description,
     images: [
       {
-        url: `${vercelUrl}/social_banner.png`,
+        url: `${vercelUrl}/images/logo.svg`,
         width: 1280,
         height: 640,
         alt: 'state-in-url library image',
