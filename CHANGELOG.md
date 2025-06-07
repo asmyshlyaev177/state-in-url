@@ -1,3 +1,10 @@
+## [4.3.3](https://github.com/asmyshlyaev177/state-in-url/compare/v4.3.2...v4.3.3) (2025-06-07)
+
+
+### Bug Fixes
+
+* **useurlstatebase:** fix possible empty upd issue ([e87f091](https://github.com/asmyshlyaev177/state-in-url/commit/e87f091e92e3e254f9bea810ef188f7909c95807)), closes [#57](https://github.com/asmyshlyaev177/state-in-url/issues/57)
+
 ## [4.3.2](https://github.com/asmyshlyaev177/state-in-url/compare/v4.3.1...v4.3.2) (2025-05-14)
 
 
