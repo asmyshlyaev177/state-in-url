@@ -13,36 +13,6 @@ import {
 } from "../../utils";
 
 /**
- * @deprecated .
- * * use format `useUrlState(defaultState, { ...otherParams })`
- *
- * .
- */
-export function useUrlState<T extends JSONCompatible>({
-  defaultState: T,
-  searchParams,
-  replace,
-  scroll,
-  useHistory,
-}: OldParams<T>): {
-  /**
-   * @deprecated use `urlState`
-   */
-  state: T;
-  urlState: T;
-  /**
-   * @deprecated use `setState`
-   */
-  updateState: (value: Partial<T> | ((currState: T) => T)) => void;
-  setState: (value: Partial<T> | ((currState: T) => T)) => void;
-  /**
-   * @deprecated use `setUrl`
-   */
-  updateUrl: (value?: Partial<T> | ((currState: T) => T)) => void;
-  setUrl: (value?: Partial<T> | ((currState: T) => T)) => void;
-};
-
-/**
  * NextJS hook. Returns `urlState`, `setState`, and `setUrl` functions
  *
  * @param {JSONCompatible<T>} [defaultState] Fallback (default) values for state
@@ -123,43 +93,24 @@ export function useUrlState<T extends JSONCompatible>(
 };
 
 export function useUrlState<T extends JSONCompatible>(
-  defaultState: T | OldParams<T>,
+  defaultState: T,
   params?: Params,
 ) {
-  const _defaultState = (
-    "defaultState" in defaultState ? defaultState.defaultState : defaultState
-  ) as T;
-  const _searchParams = (
-    "defaultState" in defaultState
-      ? defaultState.searchParams
-      : params?.searchParams
-  ) as object;
-  const _useHistory = (
-    "defaultState" in defaultState
-      ? defaultState.useHistory
-      : params?.useHistory
-  ) as boolean;
-  const _opts =
-    "defaultState" in defaultState
-      ? {
-          scroll: defaultState.scroll as boolean,
-          replace: defaultState.replace as boolean,
-        }
-      : { scroll: params?.scroll, replace: params?.replace };
+  const useHistory = params?.useHistory;
 
   const nextRouter = useRouter();
 
   const router = React.useMemo(
     () => ({
       push: (...args: Parameters<typeof nextRouter.push>) => {
-        if (_useHistory === undefined ? true : !!_useHistory) {
+        if (useHistory === undefined ? true : !!useHistory) {
           routerHistory.push(...args);
         } else {
           nextRouter.push(...args);
         }
       },
       replace: (...args: Parameters<typeof nextRouter.replace>) => {
-        if (_useHistory === undefined ? true : !!_useHistory) {
+        if (useHistory === undefined ? true : !!useHistory) {
           routerHistory.replace(...args);
         } else {
           nextRouter.replace(...args);
@@ -170,21 +121,28 @@ export function useUrlState<T extends JSONCompatible>(
   );
 
   const {
-    state,
-    updateState,
+    state: urlState,
+    updateState: setState,
     updateUrl: updateUrlBase,
     reset: resetBase,
     getState,
-  } = useUrlStateBase(_defaultState, router, ({ parse }) => {
+  } = useUrlStateBase(defaultState, router, ({ parse }) => {
     return isSSR
       ? parseSPObj(
-          filterUnknownParams(_defaultState, _searchParams),
-          _defaultState,
+          filterUnknownParams(defaultState, params?.searchParams),
+          defaultState,
         )
-      : parse(filterUnknownParamsClient(_defaultState, _searchParams));
+      : parse(filterUnknownParamsClient(defaultState, params?.searchParams));
   });
 
-  const defOpts = React.useMemo(() => ({ ...defaultOptions, ..._opts }), []);
+  const defOpts = React.useMemo(
+    () => ({
+      ...defaultOptions,
+      scroll: params?.scroll,
+      replace: params?.replace,
+    }),
+    [],
+  );
 
   const setUrl = React.useCallback(
     (value?: Parameters<typeof updateUrlBase>[0], options?: Options) =>
@@ -194,12 +152,12 @@ export function useUrlState<T extends JSONCompatible>(
 
   const sp = useSearchParams();
   React.useLayoutEffect(() => {
-    updateState(
+    setState(
       filterUnknownParams(
-        _defaultState,
+        defaultState,
         parseSPObj(
           Object.fromEntries([...sp.entries()]),
-          _defaultState,
+          defaultState,
         ) as Partial<T>,
       ),
     );
@@ -213,12 +171,9 @@ export function useUrlState<T extends JSONCompatible>(
   );
 
   return {
-    setState: updateState,
-    updateState,
+    setState,
     setUrl,
-    updateUrl: setUrl,
-    urlState: state,
-    state,
+    urlState,
     reset,
     getState,
   };
@@ -237,14 +192,6 @@ const defaultOptions = {
   replace: true,
   scroll: false,
 };
-
-interface OldParams<T> {
-  defaultState: T;
-  searchParams?: object;
-  replace?: boolean;
-  scroll?: boolean;
-  useHistory?: boolean;
-}
 
 type Params = {
   searchParams?: object;

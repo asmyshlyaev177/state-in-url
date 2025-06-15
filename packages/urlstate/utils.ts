@@ -82,7 +82,7 @@ export const isEqual = (val1: unknown, val2: unknown) =>
 
 export function filterUnknownParamsClient<T extends object>(
   shape: T,
-  params: string | URLSearchParams | Record<string, string> | object,
+  params?: string | URLSearchParams | Record<string, string> | object,
 ) {
   const shapeParams = new URLSearchParams();
 
