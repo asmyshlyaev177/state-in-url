@@ -12,7 +12,7 @@ const clearScreen = { watch: { clearScreen: false } };
 
 console.log({ isProduction, sourcemap });
 
-const external = ['react', 'react-dom', 'next/navigation', 'react-router', 'react-router-dom', '@remix-run']
+const external = ['react', 'react-dom', 'next/navigation', 'react-router', 'react-router-dom', '@remix-run', '@remix-run/node', '@remix-run/react']
 
 const plugins = [
   resolve({
@@ -30,7 +30,7 @@ const plugins = [
     minify: false,
     minifyWhitespace: isProduction,
     minifyIdentifiers: isProduction,
-    target: 'es2023', // default, or 'es20XX', 'esnext'
+    target: 'es2022', // default, or 'es20XX', 'esnext'
   }),
   filesize(),
 ].filter(Boolean);

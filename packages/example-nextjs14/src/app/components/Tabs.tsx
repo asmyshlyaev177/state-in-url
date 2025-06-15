@@ -40,4 +40,5 @@ export const Tabs = ({ className = '' }: { className: string }) => {
 const TABS = [
   { text: "Next.js", url: '/' },
   { text: "react-router", url: '/react-router' },
+  { text: "remix", url: '/remix' },
 ]

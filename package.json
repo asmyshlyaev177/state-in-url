@@ -1,7 +1,7 @@
 {
   "name": "state-in-url",
   "version": "4.3.3",
-  "description": "Store state in URL as in object, types and structure are preserved, with TS validation. Same API as React.useState, wthout any hasssle or boilerplate. Next.js@14-15 and react-router@6-7.",
+  "description": "Store state in URL as in object, types and structure are preserved, with TS validation. Same API as React.useState, wthout any hasssle or boilerplate. Next.js@14-15, react-router@6-7, and remix@2.",
   "homepage": "https://state-in-url.dev",
   "repository": {
     "type": "git",
@@ -30,7 +30,8 @@
     "packages/example-nextjs14",
     "packages/example-nextjs15",
     "packages/example-react",
-    "packages/example-react-router6"
+    "packages/example-react-router6",
+    "packages/example-remix2"
   ],
   "files": [
     "dist"
@@ -48,6 +49,10 @@
     "./react-router": {
       "types": "./dist/react-router/index.d.ts",
       "default": "./dist/react-router/index.mjs"
+    },
+    "./remix": {
+      "types": "./dist/remix/index.d.ts",
+      "default": "./dist/remix/index.mjs"
     },
     "./encodeState": {
       "types": "./dist/encodeState/index.d.ts",
@@ -80,11 +85,14 @@
     "test:int": "wireit",
     "test:int:ci": "wireit",
     "test:exports": "npm run build && npx babel-node --extensions .js,.mjs,.ts,.mts --config-file ./babel.config.json -- ./packages/urlstate/exportsTest.ts",
+    "install:all": "npm install",
+    "install:ci": "npm ci",
     "test": "wireit",
     "tsc": "wireit",
     "dev": "wireit",
     "dev:lib": "wireit",
     "dev:nextjs14": "wireit",
+    "dev:remix2": "wireit",
     "bump": "npx standard-version --no-verify",
     "build": "wireit",
     "build:demo": "wireit",
@@ -99,7 +107,7 @@
     "kill-vite": "wireit",
     "kill": "wireit",
     "rmdist": "rm -rf dist",
-    "cleanup": "rm -rf dist .wireit node_modules test-results playwright-report coverage-reports nyc_coverage packages/example-nextjs14/node_modules packages/example-nextjs14/.next packages/example-nextjs15/node_modules packages/example-nextjs15/.next packages/example-react/node_modules packages/example-react-router6/node_modules",
+    "cleanup": "rm -rf dist .wireit node_modules test-results playwright-report coverage-reports nyc_coverage packages/example-nextjs14/node_modules packages/example-nextjs14/.next packages/example-nextjs15/node_modules packages/example-nextjs15/.next packages/example-react/node_modules packages/example-react-router6/node_modules packages/example-remix2/node_modules",
     "reinstall": "npm run cleanup && npm install",
     "setup": "playwright install --with-deps",
     "prepack": "npm run build && cp package.json dist/package.json && npm run build:demo",
@@ -151,6 +159,7 @@
       "dependencies": [
         "dev:lib",
         "dev:react",
+        "dev:remix2",
         "dev:router6",
         "dev:nextjs15"
       ],
@@ -176,6 +185,10 @@
       "command": "cd packages/example-react-router6 && npm run dev",
       "service": true
     },
+    "dev:remix2": {
+      "command": "cd packages/example-remix2 && PORT=3003 npm run dev",
+      "service": true
+    },
     "dev:nextjs14": {
       "command": "cd packages/example-nextjs14 && npm run dev --turbo",
       "service": true
@@ -192,6 +205,12 @@
     },
     "build:router6": {
       "command": "cd packages/example-react-router6 && npm run build",
+      "dependencies": [
+        "build"
+      ]
+    },
+    "build:remix2": {
+      "command": "cd packages/example-remix2 && npm run build",
       "dependencies": [
         "build"
       ]
@@ -241,6 +260,17 @@
       "command": "npx vite preview --port 5181 packages/example-react-router6",
       "service": true
     },
+    "start:remix2": {
+      "command": "cd packages/example-remix2 && npm run start",
+      "dependencies": [
+        "build:remix2"
+      ],
+      "service": true
+    },
+    "start:remix2:ci": {
+      "command": "cd packages/example-remix2 && npm run start",
+      "service": true
+    },
     "start:demo15": {
       "dependencies": [
         "build:next15"
@@ -257,7 +287,8 @@
       "dependencies": [
         "start:demo",
         "start:react",
-        "start:router6"
+        "start:router6",
+        "start:remix2"
       ],
       "service": true
     },
@@ -266,7 +297,8 @@
       "dependencies": [
         "start:demo:ci",
         "start:react:ci",
-        "start:router6:ci"
+        "start:router6:ci",
+        "start:remix2:ci"
       ],
       "service": true
     },
@@ -280,7 +312,8 @@
         "build:react",
         "build:demo:tests",
         "build:next15",
-        "build:router6"
+        "build:router6",
+        "build:remix2"
       ]
     },
     "build:react": {
@@ -404,6 +437,8 @@
     "decode",
     "Next.js",
     "react-router",
+    "remix",
+    "remixjs",
     "url",
     "url synchronization",
     "url sync",

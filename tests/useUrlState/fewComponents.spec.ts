@@ -11,6 +11,10 @@ const urls = [
   [
     'http://localhost:5181/few-components/1',
     'http://localhost:5181/few-components/2',
+  ],
+  [
+    'http://localhost:5182/few-components/1',
+    'http://localhost:5182/few-components/2',
   ]
 ];
 

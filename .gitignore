@@ -1,5 +1,6 @@
 node_modules
 .next
+/.cache
 dist
 /dist/
 /test-results/
@@ -7,7 +8,7 @@ dist
 /blob-report/
 /playwright/.cache/
 .wireit
-/packages/example-remix/build
+/packages/example-remix2/build
 /packages/example-nextjs14/public/react.html
 /packages/example-nextjs14/public/react-router.html
 .vercel

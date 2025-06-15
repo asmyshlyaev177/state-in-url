@@ -1,6 +1,6 @@
 # API
 
-This module provides a custom React hook for managing state that is synchronized with URL search parameters in react-router@6-7 applications.
+This module provides a custom React hook for managing state that is synchronized with URL search parameters in remix@2 applications.
 
 ## `useUrlState` hook
 
@@ -26,7 +26,7 @@ An object containing:
 ### Example
 
 ```typescript
-import { useUrlState } from 'state-in-url/react-router';
+import { useUrlState } from 'state-in-url/remix';
 
 const form = { name: '', age: 0 };
 const { urlState, setState, setUrl } = useUrlState(form);

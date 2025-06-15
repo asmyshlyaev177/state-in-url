@@ -629,7 +629,7 @@ See [Contributing doc](CONTRIBUTING.md)
 
 - [x] hook for `Next.js`
 - [x] hook for `react-router`
-- [ ] hook for `remix`
+- [x] hook for `remix`
 - [ ] hook for `svelte`
 - [ ] hook for `astro`
 - [ ] hook for store state in hash ?

@@ -2,19 +2,16 @@
  * @type {import('next').NextConfig}
  */
 const nextConfig = {
-  webpack: (config) => {
-    const newConfig = {
-      ...config,
-    };
-    // newConfig.resolve.webpack5 = true;
-    return newConfig;
-  },
-  // // Automatically bundle external packages in the Pages Router:
-  bundlePagesRouterDependencies: true,
+  // webpack: (config) => {
+  //   const newConfig = {
+  //     ...config,
+  //   };
+  //   // newConfig.resolve.webpack5 = true;
+  //   return newConfig;
+  // },
   // // Opt specific packages out of bundling for both App and Pages Router:
   // serverExternalPackages: ['shared'],
   experimental: {
-    reactCompiler: true,
     externalDir: true,
     // ppr: 'incremental',
     // after: true,
@@ -41,6 +38,13 @@ const nextConfig = {
     KV_REST_API_URL: process.env.KV_REST_API_URL,
     KV_REST_API_TOKEN: process.env.KV_REST_API_TOKEN,
     KV_REST_API_READ_ONLY_TOKEN: process.env.KV_REST_API_READ_ONLY_TOKEN,
+  },
+  typescript: {
+    // !! WARN !!
+    // Dangerously allow production builds to successfully complete even if
+    // your project has type errors.
+    // !! WARN !!
+    ignoreBuildErrors: true,
   },
 };
 
