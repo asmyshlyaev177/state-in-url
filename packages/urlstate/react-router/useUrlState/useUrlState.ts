@@ -17,32 +17,6 @@ import {
 } from "../../utils";
 
 /**
- * @deprecated .
- * * use format `useUrlState(defaultState, { ...otherParams })`
- *
- * .
- */
-export function useUrlState<T extends JSONCompatible>({
-  defaultState: T,
-  searchParams,
-  replace,
-  useHistory,
-}: OldParams<T>): {
-  /**
-   * @deprecated use `urlState`
-   */
-  state: T;
-  urlState: T;
-  /**
-   * @deprecated use `setState`
-   */
-  updateState: (value: Partial<T> | ((currState: T) => T)) => void;
-  setState: (value: Partial<T> | ((currState: T) => T)) => void;
-  updateUrl: (value?: Partial<T> | ((currState: T) => T)) => void;
-  setUrl: (value?: Partial<T> | ((currState: T) => T)) => void;
-};
-
-/**
  * React-router hook. Returns `urlState`, `setState`, and `setUrl` functions
  *
  * @param {JSONCompatible<T>} [defaultState] Fallback (default) values for state
@@ -122,34 +96,24 @@ export function useUrlState<T extends JSONCompatible>(
 };
 
 export function useUrlState<T extends JSONCompatible>(
-  defaultState: T | OldParams<T>,
+  defaultState: T,
   params?: Params,
 ) {
-  const _defaultState = (
-    "defaultState" in defaultState ? defaultState.defaultState : defaultState
-  ) as T;
-  const _useHistory = (
-    "defaultState" in defaultState
-      ? defaultState.useHistory
-      : params?.useHistory
-  ) as boolean;
-  const _opts =
-    "defaultState" in defaultState
-      ? {
-          replace: defaultState.replace as boolean,
-          preventScrollReset: defaultState.preventScrollReset as boolean,
-        }
-      : {
-          replace: params?.replace,
-          preventScrollReset: params?.preventScrollReset as boolean,
-        };
+  const useHistory = params?.useHistory;
 
-  const defOpts = React.useMemo(() => ({ ...defaultOpts, ..._opts }), []);
+  const defOpts = React.useMemo(
+    () => ({
+      ...defaultOpts,
+      replace: params?.replace,
+      preventScrollReset: params?.preventScrollReset as boolean,
+    }),
+    [],
+  );
 
   const navigate = useNavigate();
   const router = React.useMemo(
     () =>
-      _useHistory
+      useHistory
         ? routerHistory
         : {
             replace: (url: string, options?: NavigateOptions) =>
@@ -165,34 +129,33 @@ export function useUrlState<T extends JSONCompatible>(
   const basename = useHref("/");
 
   const {
-    state,
-    updateState,
+    state: urlState,
+    updateState: setState,
     updateUrl: updateUrlBase,
     getState,
     reset: resetBase,
   } = useUrlStateBase(
-    _defaultState,
+    defaultState,
     router,
-    ({ parse }) =>
-      parse(filterUnknownParamsClient(_defaultState, sp.entries())),
+    ({ parse }) => parse(filterUnknownParamsClient(defaultState, sp.entries())),
     basename,
   );
 
-  const updateUrl = React.useCallback(
+  const setUrl = React.useCallback(
     (value?: Parameters<typeof updateUrlBase>[0], options?: NavigateOptions) =>
       updateUrlBase(value, { ...defOpts, ...options }),
     [updateUrlBase],
   );
 
   React.useEffect(() => {
-    updateState(
+    setState(
       assignValue(
-        _defaultState,
+        defaultState,
         filterUnknownParams(
-          _defaultState,
+          defaultState,
           parseSPObj(
             Object.fromEntries([...sp.entries()]),
-            _defaultState,
+            defaultState,
           ) as Partial<T>,
         ),
       ),
@@ -207,15 +170,9 @@ export function useUrlState<T extends JSONCompatible>(
   );
 
   return {
-    setState: updateState,
-    updateState,
-    setUrl: updateUrl,
-    /**
-     * @deprecated use `setUrl`
-     */
-    updateUrl,
-    urlState: state,
-    state,
+    setState,
+    setUrl,
+    urlState,
     reset,
     getState,
   };
@@ -225,13 +182,6 @@ const defaultOpts: NavigateOptions = {
   replace: true,
   preventScrollReset: true,
 };
-
-type OldParams<T> = {
-  defaultState: T;
-  useHistory?: boolean;
-  searchParams?: object;
-  replace?: boolean;
-} & NavigateOptions;
 
 interface Params extends NavigateOptions {
   useHistory?: boolean;
