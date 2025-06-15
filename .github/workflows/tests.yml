@@ -68,7 +68,7 @@ jobs:
           key: modules-1-${{ hashFiles('./package-lock.json') }}
       - name: Install dependencies
         if: steps.cache-node-modules.outputs.cache-hit != 'true'
-        run: npm clean-install && npx playwright install --with-deps
+        run: npm ci && npx playwright install --with-deps
 
       # - name: Test exports
       #   run: npm run test:exports
@@ -136,6 +136,8 @@ jobs:
             ./dist
             ./packages/example-react-router6/dist
             ./packages/example-react-router6/package.json
+            ./packages/example-remix2/package.json
+            ./packages/example-remix2/build
             ./packages/example-react/dist
             ./packages/example-react/package.json
             ./packages/example-nextjs14/package.json
@@ -148,14 +150,14 @@ jobs:
     needs: [ build ]
     name: testint
     runs-on: ubuntu-24.04
-    timeout-minutes: 30
+    timeout-minutes: 20
     container:
       image: mcr.microsoft.com/playwright:v1.48.2-noble
     strategy:
       fail-fast: false
       matrix:
-        shardIndex: [ 1, 2 ]
-        shardTotal: [ 2 ]
+        shardIndex: [ 1, 2, 3 ]
+        shardTotal: [ 3 ]
     steps:
       - name: Harden Runner
         uses: step-security/harden-runner@91182cccc01eb5e619899d80e4e971d6181294a7 # v2.10.1
@@ -179,6 +181,8 @@ jobs:
             ./dist
             ./packages/example-react-router6/dist
             ./packages/example-react-router6/package.json
+            ./packages/example-remix2/package.json
+            ./packages/example-remix2/build
             ./packages/example-react/dist
             ./packages/example-react/package.json
             ./packages/example-nextjs14/package.json
@@ -284,6 +288,8 @@ jobs:
             ./dist
             ./packages/example-react-router6/dist
             ./packages/example-react-router6/package.json
+            ./packages/example-remix2/package.json
+            ./packages/example-remix2/build
             ./packages/example-react/dist
             ./packages/example-react/package.json
             ./packages/example-nextjs14/package.json

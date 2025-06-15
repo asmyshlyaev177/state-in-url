@@ -28,9 +28,9 @@ export default async function RootLayout({
 }
 
 const meta = {
-  title: 'state-in-url sState management and URL sync',
+  title: 'state-in-url State management and URL sync',
   description:
-    'Easily share state between unrelated React components, with IDE autocomplete and TS validation. Without any hasssle or boilerplate.',
+    'Easily share state between unrelated React components, with IDE autocomplete and TS validation. Without any hassle or boilerplate. For Next.js 14/15, React Router 6/7, and Remix 2',
 };
 
 export const metadata = {
@@ -38,7 +38,7 @@ export const metadata = {
   description: meta.description,
   openGraph: {
     url: vercelUrl,
-    siteName: 'Next.js',
+    siteName: 'state-in-url.dev',
     title: meta.title,
     description: meta.description,
     images: [

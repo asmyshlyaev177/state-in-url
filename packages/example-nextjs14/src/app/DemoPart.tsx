@@ -15,9 +15,8 @@ import { Word } from './components/Word';
 
 export function DemoPart({ searchParams }: { searchParams: object }) {
   const pathname = usePathname()
-  const isReactRouter = !!pathname.match('react-router');
 
-  const urls = sourceUrls[isReactRouter ? 'reactRouter' : 'next']
+  const { routerKind, urls } = getUrls(pathname)
 
   return (
     <>
@@ -28,7 +27,7 @@ export function DemoPart({ searchParams }: { searchParams: object }) {
       <section className="demo">
         <header className="header">
           <div className="wrapper">
-            <h2 className="title">useUrlState - demo with <Word>{isReactRouter ? 'react-router' : 'Next.js'}</Word></h2>
+            <h2 className="title">useUrlState - demo with <Word>{routerKind}</Word></h2>
             <div className="github-link">
               <NpmLink />
               <GithubLink />
@@ -70,13 +69,26 @@ function fallbackRender({ error, resetErrorBoundary }: FallbackProps) {
   );
 }
 
+function getUrls(pathname: string) {
+  let routerKind: keyof typeof sourceUrls = 'next.js'
+  if (pathname.startsWith('/react-router')) routerKind = 'react-router';
+  else if (pathname.startsWith('/remix')) routerKind = 'remix.js';
+  else routerKind = 'next.js';
+  const urls = sourceUrls[routerKind]
+  return { routerKind, urls }
+}
+
 const sourceUrls = {
-  next: {
+  'next.js': {
     form: 'https://github.com/asmyshlyaev177/state-in-url/blob/master/packages/example-nextjs14/src/app/Form.tsx',
     status: 'https://github.com/asmyshlyaev177/state-in-url/blob/master/packages/example-nextjs14/src/app/Status.tsx'
   },
-  reactRouter: {
+  'react-router': {
     form: 'https://github.com/asmyshlyaev177/state-in-url/blob/master/packages/example-react-router6/src/Form-for-test.tsx',
     status: 'https://github.com/asmyshlyaev177/state-in-url/blob/master/packages/example-react-router6/src/Status-for-test.tsx'
+  },
+  'remix.js': {
+    form: 'https://github.com/asmyshlyaev177/state-in-url/blob/master/packages/example-remix2/app/routes/Form-for-test.tsx',
+    status: 'https://github.com/asmyshlyaev177/state-in-url/blob/master/packages/example-remix2/app/routes/Status-for-test.tsx'
   }
 } as const;
