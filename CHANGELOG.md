@@ -1,3 +1,21 @@
+# [5.0.0](https://github.com/asmyshlyaev177/state-in-url/compare/v4.3.3...v5.0.0) (2025-06-16)
+
+
+### Code Refactoring
+
+* remove deprecated params format ([bd24bf9](https://github.com/asmyshlyaev177/state-in-url/commit/bd24bf95b30a9ed62ad9a4436cac3dbd08fb5d8a))
+
+
+### Features
+
+* **remix:** example for remix@2 with SSR ([8f0bd48](https://github.com/asmyshlyaev177/state-in-url/commit/8f0bd48d2d370754793c7ea112ddcec6c6c11635))
+
+
+### BREAKING CHANGES
+
+* old format `useUrlState(allParamsObj)` is removed. Use format described in a
+documentation, it uses new format for a while.
+
 ## [4.3.3](https://github.com/asmyshlyaev177/state-in-url/compare/v4.3.2...v4.3.3) (2025-06-07)
 
 

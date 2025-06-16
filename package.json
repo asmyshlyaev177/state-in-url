@@ -1,6 +1,6 @@
 {
   "name": "state-in-url",
-  "version": "4.3.3",
+  "version": "5.0.0",
   "description": "Store state in URL as in object, types and structure are preserved, with TS validation. Same API as React.useState, wthout any hasssle or boilerplate. Next.js@14-15, react-router@6-7, and remix@2.",
   "homepage": "https://state-in-url.dev",
   "repository": {

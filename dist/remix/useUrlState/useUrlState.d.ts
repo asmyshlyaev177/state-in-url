@@ -1,7 +1,7 @@
 import { type NavigateOptions } from "react-router-dom";
 import { type JSONCompatible } from "../../utils";
 /**
- * React-router hook. Returns `urlState`, `setState`, and `setUrl` functions
+ * Remix hook. Returns `urlState`, `setState`, and `setUrl` functions
  *
  * @param {JSONCompatible<T>} [defaultState] Fallback (default) values for state
  * @param {Object} params - Object with other parameters
@@ -29,7 +29,7 @@ import { type JSONCompatible } from "../../utils";
  * // same as setState(form) with setUrl(form)
  *  ```
  *
- *  * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/master/packages/urlstate/react-router/useUrlState}
+ *  * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/master/packages/urlstate/remix/useUrlState}
  */
 export declare function useUrlState<T extends JSONCompatible>(defaultState: T, params?: Params): {
     /**
@@ -44,7 +44,7 @@ export declare function useUrlState<T extends JSONCompatible>(defaultState: T, p
      * setState(curr => ({ ...curr, name: 'test' }) );
      *  ```
      *
-     *  * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/master/packages/urlstate/react-router/useUrlState#updatestate}
+     *  * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/master/packages/urlstate/remix/useUrlState#updatestate}
      */
     setState: (value: Partial<T> | ((currState: T) => T)) => void;
     /**
@@ -57,7 +57,7 @@ export declare function useUrlState<T extends JSONCompatible>(defaultState: T, p
      * setUrl(curr => ({ ...curr, name: 'test' }), { preventScrollReset: false } );
      *  ```
      *
-     *  * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/master/packages/urlstate/react-router/useUrlState#updateurl}
+     *  * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/master/packages/urlstate/remix/useUrlState#updateurl}
      */
     setUrl: (value?: Partial<T> | ((currState: T) => T), options?: Params) => void;
     /**
@@ -68,7 +68,7 @@ export declare function useUrlState<T extends JSONCompatible>(defaultState: T, p
      * reset({ replace: false, preventScrollReset: false })
      *  ```
      *
-     *  * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/master/packages/urlstate/react-router/useUrlState#reset}
+     *  * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/master/packages/urlstate/remix/useUrlState#reset}
      */
     reset: (options?: NavigateOptions & {
         [key: string]: unknown;

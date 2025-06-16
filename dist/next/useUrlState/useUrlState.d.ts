@@ -1,29 +1,6 @@
 import { useRouter } from "next/navigation";
 import { type JSONCompatible } from "../../utils";
 /**
- * @deprecated .
- * * use format `useUrlState(defaultState, { ...otherParams })`
- *
- * .
- */
-export declare function useUrlState<T extends JSONCompatible>({ defaultState: T, searchParams, replace, scroll, useHistory, }: OldParams<T>): {
-    /**
-     * @deprecated use `urlState`
-     */
-    state: T;
-    urlState: T;
-    /**
-     * @deprecated use `setState`
-     */
-    updateState: (value: Partial<T> | ((currState: T) => T)) => void;
-    setState: (value: Partial<T> | ((currState: T) => T)) => void;
-    /**
-     * @deprecated use `setUrl`
-     */
-    updateUrl: (value?: Partial<T> | ((currState: T) => T)) => void;
-    setUrl: (value?: Partial<T> | ((currState: T) => T)) => void;
-};
-/**
  * NextJS hook. Returns `urlState`, `setState`, and `setUrl` functions
  *
  * @param {JSONCompatible<T>} [defaultState] Fallback (default) values for state
@@ -102,13 +79,6 @@ type Router = ReturnType<typeof useRouter>;
 type RouterOptions = NonNullable<Parameters<Router["push"]>[1] | Parameters<Router["replace"]>[1]>;
 interface Options extends RouterOptions {
     replace?: boolean;
-}
-interface OldParams<T> {
-    defaultState: T;
-    searchParams?: object;
-    replace?: boolean;
-    scroll?: boolean;
-    useHistory?: boolean;
 }
 type Params = {
     searchParams?: object;
