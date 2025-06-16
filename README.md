@@ -102,6 +102,7 @@ This library is a good alternative for NUQS.
 - [Installation](#installation)
 - [useUrlState hook](#useurlstate)
 - - [Next.js](#useurlstate-hook-for-nextjs)
+- - [Remix](#useurlstate-hook-for-remixjs)
 - - [React-Router](#useurlstate-hook-for-react-router)
 - [Other helpers](#other-hooks-and-helpers)
 - - [`useUrlStateBase` for other routers](#useurlstatebase-hook-for-others-routers)
@@ -453,6 +454,93 @@ function SettingsComponent() {
 ```
 
 </details>
+
+### useUrlState hook for Remix.js
+
+API is same as for Next.js version, except can pass options from [NavigateOptions](https://github.com/remix-run/react-router/blob/bc693ed9f39170bda13b9e1b282fb8e9d5925f66/packages/react-router/lib/context.ts#L99) type.
+
+[API Docs](packages/urlstate/remix/useUrlState)
+
+#### Example
+
+```typescript
+export const form: Form = {
+  name: '',
+  age: undefined,
+  agree_to_terms: false,
+  tags: [],
+};
+
+type Form = {
+  name: string;
+  age?: number;
+  agree_to_terms: boolean;
+  tags: { id: string; value: { text: string; time: Date } }[];
+};
+
+```
+
+```typescript
+import { useUrlState } from 'state-in-url/remix';
+
+import { form } from './form';
+
+function TagsComponent() {
+  const { urlState, setUrl, setState } = useUrlState(form);
+
+  const onChangeTags = React.useCallback(
+    (tag: (typeof tags)[number]) => {
+      setUrl((curr) => ({
+        ...curr,
+        tags: curr.tags.find((t) => t.id === tag.id)
+          ? curr.tags.filter((t) => t.id !== tag.id)
+          : curr.tags.concat(tag),
+      }));
+    },
+    [setUrl],
+  );
+
+  return (
+    <div>
+      <Field text="Tags">
+        <div className="flex flex-wrap gap-2">
+          {tags.map((tag) => (
+            <Tag
+              active={!!urlState.tags.find((t) => t.id === tag.id)}
+              text={tag.value.text}
+              onClick={() => onChangeTags(tag)}
+              key={tag.id}
+            />
+          ))}
+        </div>
+      </Field>
+
+      <input value={urlState.name}
+        onChange={(ev) => { setState(curr => ({ ...curr, name: ev.target.value })) }}
+        // Can update state immediately but sync change to url as needed
+        onBlur={() => setUrl()}
+      />
+    </div>
+  );
+}
+
+const tags = [
+  {
+    id: '1',
+    value: { text: 'React.js', time: new Date('2024-07-17T04:53:17.000Z') },
+  },
+  {
+    id: '2',
+    value: { text: 'Next.js', time: new Date('2024-07-18T04:53:17.000Z') },
+  },
+  {
+    id: '3',
+    value: { text: 'TailwindCSS', time: new Date('2024-07-19T04:53:17.000Z') },
+  },
+];
+```
+
+[Example code](packages/example-remix2/app/routes/Form-for-test.tsx)
 
 ### useUrlState hook for React-Router
 
