@@ -9,7 +9,7 @@ A custom React hook that manages state and synchronizes it with URL search param
 ### Parameters
 
 - `defaultState: object` - An object representing the default state values.
-- `sp?: object` - Optional search params object from Next.js server component.
+- `searchParams?: object` - Optional search params object from Next.js server component.
 - `replace?: boolean` - Control will `setUrl` use `replace` or `push` methods on router, default replace=true, can override by `setUrl(stateObj, { replace: false })`
 - `useHistory` - Optionally can use window.history for navigation, `true` by default no _rsc requests <https://github.com/vercel/next.js/discussions/59167>
 - `scroll?: boolean` - option from Next.js router push/replace
