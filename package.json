@@ -87,7 +87,7 @@
     "./utils": {
       "types": "./dist/utils.d.ts",
       "default": "./dist/utils.mjs",
-      "require": "./dist/utilsjss"
+      "require": "./dist/utils.js"
     }
   },
   "types": "./dist/index.d.ts",
