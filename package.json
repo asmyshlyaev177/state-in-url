@@ -36,47 +36,58 @@
   "files": [
     "dist"
   ],
-  "main": "dist/index.mjs",
+  "main": "./dist/index.js",
+  "module": "dist/index.mjs",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "default": "./dist/index.mjs"
+      "default": "./dist/index.mjs",
+      "require": "./dist/index.js"
     },
     "./next": {
       "types": "./dist/next/index.d.ts",
-      "default": "./dist/next/index.mjs"
+      "default": "./dist/next/index.mjs",
+      "require": "./dist/next/index.js"
     },
     "./react-router": {
       "types": "./dist/react-router/index.d.ts",
-      "default": "./dist/react-router/index.mjs"
+      "default": "./dist/react-router/index.mjs",
+      "require": "./dist/react-router/index.js"
     },
     "./remix": {
       "types": "./dist/remix/index.d.ts",
-      "default": "./dist/remix/index.mjs"
+      "default": "./dist/remix/index.mjs",
+      "require": "./dist/remix/index.js"
     },
     "./encodeState": {
       "types": "./dist/encodeState/index.d.ts",
-      "default": "./dist/encodeState/index.mjs"
+      "default": "./dist/encodeState/index.mjs",
+      "require": "./dist/encodeState/index.js"
     },
     "./encoder": {
       "types": "./dist/encoder/index.d.ts",
-      "default": "./dist/encoder/index.mjs"
+      "default": "./dist/encoder/index.mjs",
+      "require": "./dist/encoder/index.js"
     },
     "./useSharedState": {
       "types": "./dist/useSharedState/index.d.ts",
-      "default": "./dist/useSharedState/index.mjs"
+      "default": "./dist/useSharedState/index.mjs",
+      "require": "./dist/useSharedState/index.js"
     },
     "./useUrlEncode": {
       "types": "./dist/useUrlEncode/index.d.ts",
-      "default": "./dist/useUrlEncode/index.mjs"
+      "default": "./dist/useUrlEncode/index.mjs",
+      "require": "./dist/useUrlEncode/index.js"
     },
     "./useUrlStateBase": {
       "types": "./dist/useUrlStateBase/index.d.ts",
-      "default": "./dist/useUrlStateBase/index.mjs"
+      "default": "./dist/useUrlStateBase/index.mjs",
+      "require": "./dist/useUrlStateBase/index.js"
     },
     "./utils": {
       "types": "./dist/utils.d.ts",
-      "default": "./dist/utils.mjs"
+      "default": "./dist/utils.mjs",
+      "require": "./dist/utilsjss"
     }
   },
   "types": "./dist/index.d.ts",
