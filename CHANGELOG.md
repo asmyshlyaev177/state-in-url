@@ -1,3 +1,10 @@
+# [5.1.0](https://github.com/asmyshlyaev177/state-in-url/compare/v5.0.0...v5.1.0) (2025-06-19)
+
+
+### Features
+
+* **rollup:** enable CJS output ([bde2bf1](https://github.com/asmyshlyaev177/state-in-url/commit/bde2bf196d6042f0ec952b06fc788a6caf618700))
+
 # [5.0.0](https://github.com/asmyshlyaev177/state-in-url/compare/v4.3.3...v5.0.0) (2025-06-16)
 
 
