@@ -35,19 +35,29 @@ const plugins = [
   filesize(),
 ].filter(Boolean);
 
-export default [
-  {
-    input: glob.sync("packages/urlstate/**/index.ts"),
-    plugins,
-    external,
-    output: [{
+const bundle = (config) => ({
+  sourcemap,
+  preserveModules: true,
+  preserveModulesRoot: './packages/urlstate',
+  ...config,
+});
+
+export default {
+  input: glob.sync("packages/urlstate/**/index.ts"),
+  output: [
+    bundle({
       dir: 'dist',
       format: 'es',
-      sourcemap,
-      preserveModules: true,
-      preserveModulesRoot: './packages/urlstate',
       entryFileNames: '[name].mjs'
-    }],
-    ...clearScreen,
-  },
-];
+    }),
+    bundle({
+      dir: 'dist',
+      format: 'cjs',
+      entryFileNames: '[name].js',
+      interop: 'auto'
+    })
+  ],
+  ...clearScreen,
+  plugins,
+  external,
+}
