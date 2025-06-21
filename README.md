@@ -728,6 +728,11 @@ See [Contributing doc](CONTRIBUTING.md)
 
 ## [Changelog](CHANGELOG.md)
 
+## Mentions
+
+ - [This Week in React](https://thisweekinreact.com/newsletter/209)
+ - [JavaScript Weekly](https://javascriptweekly.com/issues/741)
+
 ## License
 
 This project is licensed under the [MIT license](LICENSE).
