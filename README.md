@@ -730,8 +730,9 @@ See [Contributing doc](CONTRIBUTING.md)
 
 ## Mentions
 
- - [This Week in React](https://thisweekinreact.com/newsletter/209)
+ - [This Week in React 209](https://thisweekinreact.com/newsletter/209)
  - [JavaScript Weekly](https://javascriptweekly.com/issues/741)
+ - [This Week in React 240](https://thisweekinreact.com/newsletter/240)
 
 ## License
 
