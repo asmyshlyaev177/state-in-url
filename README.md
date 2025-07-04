@@ -104,6 +104,7 @@ This library is a good alternative for NUQS.
 - - [Next.js](#useurlstate-hook-for-nextjs)
 - - [Remix](#useurlstate-hook-for-remixjs)
 - - [React-Router](#useurlstate-hook-for-react-router)
+- [Recipes](#recipes)
 - [Other helpers](#other-hooks-and-helpers)
 - - [`useUrlStateBase` for other routers](#useurlstatebase-hook-for-others-routers)
 - - [`useSharedState` hook for React.js/Next.js](#usesharedstate-hook-for-reactjs)
@@ -202,164 +203,6 @@ function MyComponent() {
   )
 }
 ```
-
-##### Custom hook to work with slice of state conveniently
-<details>
-  <Summary>Example</Summary>
-
-  ```typescript
-'use client';
-
-import React from 'react';
-import { useUrlState } from 'state-in-url/next';
-
-const form: Form = {
-    name: '',
-    age: undefined,
-    agree_to_terms: false,
-    tags: [],
-};
-
-type Form = {
-    name: string;
-    age?: number;
-    agree_to_terms: boolean;
-    tags: {id: string; value: {text: string; time: Date } }[];
-};
-
-export const useFormState = ({ searchParams }: { searchParams?: object }) => {
-    const { urlState, setUrl: setUrlBase, reset } = useUrlState(form, {
-      searchParams,
-    });
-
-    // first navigation will push new history entry
-    // all following will just replace that entry
-    // this way will have history with only 2 entries - ['/url', '/url?key=param']
-
-    const replace = React.useRef(false);
-    const setUrl = React.useCallback((
-        state: Parameters<typeof setUrlBase>[0],
-        opts?: Parameters<typeof setUrlBase>[1]
-      ) => {
-        setUrlBase(state, { replace: replace.current, ...opts });
-        replace.current = true;
-    }, [setUrlBase]);
-
-    return { urlState, setUrl, resetUrl: reset };
-};
-  ```
-</details>
-
-<hr />
-
-##### With complex state shape
-
-<details>
-  <Summary>Example</Summary>
-
-```typescript
-export const form: Form = {
-  name: '',
-  age: undefined,
-  agree_to_terms: false,
-  tags: [],
-};
-
-type Form = {
-  name: string;
-  age?: number;
-  agree_to_terms: boolean;
-  tags: { id: string; value: { text: string; time: Date } }[];
-};
-```
-
-```typescript
-'use client'
-import { useUrlState } from 'state-in-url/next';
-
-import { form } from './form';
-
-function TagsComponent() {
-  // `urlState` will infer from Form type!
-  const { urlState, setUrl } = useUrlState(form);
-
-  const onChangeTags = React.useCallback(
-    (tag: (typeof tags)[number]) => {
-      setUrl((curr) => ({
-        ...curr,
-        tags: curr.tags.find((t) => t.id === tag.id)
-          ? curr.tags.filter((t) => t.id !== tag.id)
-          : curr.tags.concat(tag),
-      }));
-    },
-    [setUrl],
-  );
-
-  return (
-    <div>
-      <Field text="Tags">
-        <div className="flex flex-wrap gap-2">
-          {tags.map((tag) => (
-            <Tag
-              active={!!urlState.tags.find((t) => t.id === tag.id)}
-              text={tag.value.text}
-              onClick={() => onChangeTags(tag)}
-              key={tag.id}
-            />
-          ))}
-        </div>
-      </Field>
-    </div>
-  );
-}
-
-const tags = [
-  {
-    id: '1',
-    value: { text: 'React.js', time: new Date('2024-07-17T04:53:17.000Z') },
-  },
-  {
-    id: '2',
-    value: { text: 'Next.js', time: new Date('2024-07-18T04:53:17.000Z') },
-  },
-  {
-    id: '3',
-    value: { text: 'TailwindCSS', time: new Date('2024-07-19T04:53:17.000Z') },
-  },
-];
-```
-
-[Demo page example code](https://github.com/asmyshlyaev177/state-in-url/blob/master/packages/example-nextjs14/src/app/Form.tsx)
-</details>
-
-##### Update state only and sync to URL manually
-
-<details>
-  <Summary>Example</Summary>
-
-  ```typescript
-
-  const timer = React.useRef(0 as unknown as NodeJS.Timeout);
-  React.useEffect(() => {
-    clearTimeout(timer.current);
-    timer.current = setTimeout(() => {
-      // will compare state by content not by reference and fire update only for new values
-      setUrl(urlState);
-    }, 500);
-
-    return () => {
-      clearTimeout(timer.current);
-    };
-  }, [urlState, setUrl]);
-```
-
-Syncing state `onBlur` will be more aligned with real world usage.
-
-```typescript
-<input onBlur={() => updateUrl()} .../>
-```
-
-</details>
 
 ##### With server side rendering
 
@@ -628,6 +471,165 @@ const tags = [
 ```
 
 [Example code](packages/example-react-router6/src/Form-for-test.tsx)
+
+## Recipes
+##### Custom hook to work with slice of state conveniently
+<details>
+  <Summary>Example</Summary>
+
+  ```typescript
+'use client';
+
+import React from 'react';
+import { useUrlState } from 'state-in-url/next';
+
+const form: Form = {
+    name: '',
+    age: undefined,
+    agree_to_terms: false,
+    tags: [],
+};
+
+type Form = {
+    name: string;
+    age?: number;
+    agree_to_terms: boolean;
+    tags: {id: string; value: {text: string; time: Date } }[];
+};
+
+export const useFormState = ({ searchParams }: { searchParams?: object }) => {
+    const { urlState, setUrl: setUrlBase, reset } = useUrlState(form, {
+      searchParams,
+    });
+
+    // first navigation will push new history entry
+    // all following will just replace that entry
+    // this way will have history with only 2 entries - ['/url', '/url?key=param']
+
+    const replace = React.useRef(false);
+    const setUrl = React.useCallback((
+        state: Parameters<typeof setUrlBase>[0],
+        opts?: Parameters<typeof setUrlBase>[1]
+      ) => {
+        setUrlBase(state, { replace: replace.current, ...opts });
+        replace.current = true;
+    }, [setUrlBase]);
+
+    return { urlState, setUrl, resetUrl: reset };
+};
+  ```
+</details>
+
+<hr />
+
+##### With complex state shape
+
+<details>
+  <Summary>Example</Summary>
+
+```typescript
+export const form: Form = {
+  name: '',
+  age: undefined,
+  agree_to_terms: false,
+  tags: [],
+};
+
+type Form = {
+  name: string;
+  age?: number;
+  agree_to_terms: boolean;
+  tags: { id: string; value: { text: string; time: Date } }[];
+};
+```
+
+```typescript
+'use client'
+import { useUrlState } from 'state-in-url/next';
+
+import { form } from './form';
+
+function TagsComponent() {
+  // `urlState` will infer from Form type!
+  const { urlState, setUrl } = useUrlState(form);
+
+  const onChangeTags = React.useCallback(
+    (tag: (typeof tags)[number]) => {
+      setUrl((curr) => ({
+        ...curr,
+        tags: curr.tags.find((t) => t.id === tag.id)
+          ? curr.tags.filter((t) => t.id !== tag.id)
+          : curr.tags.concat(tag),
+      }));
+    },
+    [setUrl],
+  );
+
+  return (
+    <div>
+      <Field text="Tags">
+        <div className="flex flex-wrap gap-2">
+          {tags.map((tag) => (
+            <Tag
+              active={!!urlState.tags.find((t) => t.id === tag.id)}
+              text={tag.value.text}
+              onClick={() => onChangeTags(tag)}
+              key={tag.id}
+            />
+          ))}
+        </div>
+      </Field>
+    </div>
+  );
+}
+
+const tags = [
+  {
+    id: '1',
+    value: { text: 'React.js', time: new Date('2024-07-17T04:53:17.000Z') },
+  },
+  {
+    id: '2',
+    value: { text: 'Next.js', time: new Date('2024-07-18T04:53:17.000Z') },
+  },
+  {
+    id: '3',
+    value: { text: 'TailwindCSS', time: new Date('2024-07-19T04:53:17.000Z') },
+  },
+];
+```
+
+[Demo page example code](https://github.com/asmyshlyaev177/state-in-url/blob/master/packages/example-nextjs14/src/app/Form.tsx)
+</details>
+
+##### Update state only and sync to URL manually
+
+<details>
+  <Summary>Example</Summary>
+
+  ```typescript
+
+  const timer = React.useRef(0 as unknown as NodeJS.Timeout);
+  React.useEffect(() => {
+    clearTimeout(timer.current);
+    timer.current = setTimeout(() => {
+      // will compare state by content not by reference and fire update only for new values
+      setUrl(urlState);
+    }, 500);
+
+    return () => {
+      clearTimeout(timer.current);
+    };
+  }, [urlState, setUrl]);
+```
+
+Syncing state `onBlur` will be more aligned with real world usage.
+
+```typescript
+<input onBlur={() => updateUrl()} .../>
+```
+
+</details>
 
 ## Other hooks and helpers
 
