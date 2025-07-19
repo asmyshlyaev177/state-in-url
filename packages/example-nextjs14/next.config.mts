@@ -6,6 +6,12 @@ const nextConfig = {
       ...config,
     } as NextConfig;
     newConfig.resolve.webpack5 = true;
+    newConfig.resolve.fallback = {
+      ...config.resolve.fallback,
+      fs: false,
+      net: false,
+      tls: false,
+    }
     return newConfig;
   },
   transpilePackages: ['shared', 'shared/components', 'shared/components/Input', 'shared/components/Input.tsx', 'shared/components/Input', 'shared/components/Input.tsx'],
@@ -13,6 +19,9 @@ const nextConfig = {
 
   basePath: '',
   experimental: {
+    browsersListForSwc: true,
+    legacyBrowsers: false,
+    polyfillsOptimization: true,
     externalDir: true,
     ppr: true,
     // serverComponentsExternalPackages: ["state-in-url", "urlstate"],
@@ -33,10 +42,6 @@ const nextConfig = {
   },
   env: {
     VERCEL: process.env.VERCEL,
-    KV_URL: process.env.KV_URL,
-    KV_REST_API_URL: process.env.KV_REST_API_URL,
-    KV_REST_API_TOKEN: process.env.KV_REST_API_TOKEN,
-    KV_REST_API_READ_ONLY_TOKEN: process.env.KV_REST_API_READ_ONLY_TOKEN,
   },
 };
 

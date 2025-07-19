@@ -1,7 +1,9 @@
 import { Suspense } from 'react';
 
-import { Comp1 } from './Comp1';
-import { Comp2 } from './Comp2';
+import dynamic from 'next/dynamic';
+
+const Comp1 = dynamic(() => import('./Comp1').then(mod => mod.Comp1))
+const Comp2 = dynamic(() => import('./Comp2').then(mod => mod.Comp2))
 
 const Page = () => {
   return (

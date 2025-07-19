@@ -11,8 +11,6 @@ const roboto = Roboto({
   display: 'swap',
 });
 
-export const revalidate = 60 * 60 * 48; // 48 hours
-
 export default async function RootLayout({
   children,
 }: Readonly<{

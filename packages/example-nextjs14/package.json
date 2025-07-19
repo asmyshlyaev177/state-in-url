@@ -42,5 +42,16 @@
     "tailwindcss": "^3.4.10",
     "typescript": "^5",
     "typescript-plugin-css-modules": "^5.1.0"
-  }
+  },
+  "browserslist": [
+    "last 5 Chrome versions",
+    "last 5 ChromeAndroid versions",
+    "last 3 Firefox versions",
+    "last 3 FirefoxAndroid versions",
+    "Firefox ESR",
+    "last 2 Safari major versions",
+    "last 2 iOS major versions",
+    "> 5%",
+    "not dead"
+  ]
 }

@@ -1,5 +1,8 @@
-import { Form } from '../../Form-for-test';
-import { Status } from '../../Status-for-test';
+import dynamic from 'next/dynamic';
+
+const Form = dynamic(() => import('../../Form-for-test').then(mod => mod.Form))
+const Status = dynamic(() => import('../../Status-for-test').then(mod => mod.Status))
+
 
 export default async function Home({ searchParams }: { searchParams: object }) {
   return (
