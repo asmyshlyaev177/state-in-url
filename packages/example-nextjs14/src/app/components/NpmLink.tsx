@@ -13,6 +13,7 @@ export const NpmLink = (
     <a
       href="https://www.npmjs.com/package/state-in-url"
       target="_blank"
+      aria-label='NPM link'
       className={clsx("inline-flex items-center px-2 py-[2px] border border-transparent text-sm font-medium rounded-md text-white bg-gray-800 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500", className)}
       {...rest}
     >
