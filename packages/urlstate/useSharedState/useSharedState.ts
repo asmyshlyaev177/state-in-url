@@ -18,7 +18,7 @@ import { isEqual, isSSR, type JSONCompatible } from "../utils";
  *
  * setState({ name: 'test' });
  * // OR
- * setState(curr => ({ ...curr, name: 'test' }))
+ * setState((curr, initialState) => ({ ...curr, name: 'test' }))
  *  ```
  *  * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/master/packages/urlstate/useSharedState}
  */
@@ -47,12 +47,17 @@ export function useSharedState<T extends JSONCompatible>(
     (
       value:
         | Partial<T>
-        | ((currState: typeof stateShape.current) => typeof stateShape.current),
+        | ((
+            currState: typeof stateShape.current,
+            defaultState: typeof stateShape.current,
+          ) => typeof stateShape.current),
     ): void => {
       const curr = stateMap.get(stateShape.current);
       const isFunc = typeof value === "function";
 
-      const newVal = isFunc ? value(curr as T) : { ...curr, ...value };
+      const newVal = isFunc
+        ? value(curr as T, defaultState)
+        : { ...curr, ...value };
       if (isEqual(curr, newVal)) return void 0;
       stateMap.set(stateShape.current, newVal);
       subscribers.get(stateShape.current).forEach((sub) => sub());

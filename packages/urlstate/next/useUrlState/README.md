@@ -37,8 +37,14 @@ setState({ name: 'test' });
 // API same as React.useState
 setState(currVal => ({ ...currVal, name: 'test' }) );
 
+// reset state
+setState((_curr, initial) => initial);
+
 // Update state and URL
 setUrl({ name: 'test' }, { replace: false, scroll: true });
+
+// reset state and URL
+setUrl((_curr, initial) => initial);
 ```
 
 ## `setState`
@@ -47,7 +53,7 @@ Updates the state without modifying the URL.
 
 ### Parameters `setState`
 
-- `value: T | Partial<T> | T => T` - New state value or a function that receives the current state and returns the new state.
+- `value: Partial<T> | (curr: T, initial: T) => T` - New state value or a function that receives the current state, initial state, and returns the new state.
 
 ## `setUrl`
 
@@ -55,7 +61,7 @@ Updates both the state and the URL.
 
 ### Parameters `setUrl`
 
-- `value?: T | Partial<T> | (currState: T) => T` - Optional new state value or a function that receives the current state and returns the new state.
+- `value?: (Partial<T> | (curr: T, initial: T) => T, options)` - Optional new state value or a function that receives the current state, initial state, and returns the new state.
 - `options?: Options` - Optional options object. When `replace` is true it will use router.replace. Nextjs `scroll` is `false` by default.
 
 ## `reset`

@@ -33,12 +33,17 @@ const { urlState, setState, setUrl } = useUrlState(form);
 
 // Update state without changing URL
 setState({ name: 'test' });
-
-// options from type `NavigateOptions` from 'react-router`
 setState(currVal => ({ ...currVal, name: 'test' }) );
 
+// reset state
+setState((_curr, initial) => initial);
+
 // Update state and URL
+// options from type `NavigateOptions` from 'react-router`
 setUrl({ name: 'test' }, { replace: false, preventScrollReset: false });
+
+// reset state and URL
+setUrl((_curr, initial) => initial);
 ```
 
 ## `setState`
@@ -47,7 +52,7 @@ Updates the state without modifying the URL.
 
 ### Parameters `setState`
 
-- `value: T | Partial<T> | T => T` - New state value or a function that receives the current state and returns the new state.
+- `value: Partial<T> | (curr: T, initial: T) => T` - New state value or a function that receives the current state, initial state, and returns the new state.
 - `...NavigateOptions` - props from NavigateOptions of `react-router` type, same as options from `useNavigate`
 
 ## `setUrl`
@@ -56,7 +61,7 @@ Updates both the state and the URL.
 
 ### Parameters `setUrl`
 
-- `value?: T | Partial<T> | (currState: T) => T` - Optional new state value or a function that receives the current state and returns the new state.
+- `value?: (Partial<T> | (curr: T, initial: T) => T, options)` - Optional new state value or a function that receives the current state, initial state, and returns the new state.
 - `options?: NavigateOptions` - Optional options object from react-router's [`NavigateOptions`](https://api.reactrouter.com/v7/interfaces/react_router.NavigateOptions.html) type.
 
 ## `reset`

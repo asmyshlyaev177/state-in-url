@@ -36,6 +36,9 @@ export const ComponentA = () => {
       onChange={(ev) => { setState(curr => ({ ...curr, name: ev.target.value })) }}
       onBlur={() => setUrl()}
     />
+    <button onClick={() => setUrl((curr, initial) => initial)}>
+      Reset
+    </button>
     </>
 };`}
       />

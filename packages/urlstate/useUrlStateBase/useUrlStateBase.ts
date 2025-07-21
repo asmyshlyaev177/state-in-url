@@ -33,7 +33,7 @@ import {
  * );
  *
  * updateState({ name: 'John' });
- * updateState(curr => ({ ...curr, name: 'John' }));
+ * updateState((curr, initialState) => ({ ...curr, name: 'John' }));
  * updateUrl({ name: 'John' }, { replace: true });
  * updateUrl(curr => ({ ...curr, name: 'John' }), { replace: true });
  * reset()
@@ -89,7 +89,7 @@ export function useUrlStateBase<T extends JSONCompatible>(
     (value?: Parameters<typeof setState>[0], options?: Options) => {
       const newVal =
         typeof value === "function"
-          ? value(getState())
+          ? value(getState(), defaultState)
           : {
               ...getState(),
               ...value,

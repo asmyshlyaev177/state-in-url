@@ -99,27 +99,46 @@ This library is a good alternative for NUQS.
 
 ## Table of content
 
-- [Installation](#installation)
-- [useUrlState hook](#useurlstate)
-- - [Next.js](#useurlstate-hook-for-nextjs)
-- - [Remix](#useurlstate-hook-for-remixjs)
-- - [React-Router](#useurlstate-hook-for-react-router)
-- [Recipes](#recipes)
-- [Other helpers](#other-hooks-and-helpers)
-- - [`useUrlStateBase` for other routers](#useurlstatebase-hook-for-others-routers)
-- - [`useSharedState` hook for React.js/Next.js](#usesharedstate-hook-for-reactjs)
-- - [`useUrlEncode` for React.js](#useurlencode-hook-for-reactjs)
-- - [`encodeState` and `decodeState` for pure JS usage](#encodestate-and-decodestate-helpers)
-- - [Low-level `encode` and `decode` functions](#encode-and-decode-helpers)
-- [Best practices](#best-practices)
-- - [Gotchas](#gotchas)
-- [Other](#other)
-- - [Roadmap](#roadmap)
-- - [Contributing](#contribute-andor-run-locally)
-- - [Contact & Support](#contact--support)
-- - [Changelog](#changelog)
-- - [License](#license)
-- - [Inspiration](#inspiration)
+- [State in url](#state-in-url)
+- [Demo](#demo)
+  - [Why use `state-in-url`?](#why-use-state-in-url)
+    - [Use cases](#use-cases)
+    - [Features](#features)
+  - [Table of content](#table-of-content)
+  - [installation](#installation)
+    - [1. Install package](#1-install-package)
+    - [2. Edit tsconfig.json](#2-edit-tsconfigjson)
+  - [useUrlState](#useurlstate)
+    - [useUrlState hook for Next.js](#useurlstate-hook-for-nextjs)
+      - [Usage examples](#usage-examples)
+        - [Basic](#basic)
+        - [With server side rendering](#with-server-side-rendering)
+        - [Using hook in `layout` component](#using-hook-in-layout-component)
+        - [With arbitrary state shape (not recommended)](#with-arbitrary-state-shape-not-recommended)
+    - [useUrlState hook for Remix.js](#useurlstate-hook-for-remixjs)
+      - [Example](#example)
+    - [useUrlState hook for React-Router](#useurlstate-hook-for-react-router)
+      - [Example](#example-1)
+  - [Recipes](#recipes)
+        - [Custom hook to work with slice of state conveniently](#custom-hook-to-work-with-slice-of-state-conveniently)
+        - [With complex state shape](#with-complex-state-shape)
+        - [Update state only and sync to URL manually](#update-state-only-and-sync-to-url-manually)
+  - [Other hooks and helpers](#other-hooks-and-helpers)
+    - [`useUrlStateBase` hook for others routers](#useurlstatebase-hook-for-others-routers)
+    - [`useSharedState` hook for React.js](#usesharedstate-hook-for-reactjs)
+    - [`useUrlEncode` hook for React.js](#useurlencode-hook-for-reactjs)
+    - [`encodeState` and `decodeState` helpers](#encodestate-and-decodestate-helpers)
+    - [`encode` and `decode` helpers](#encode-and-decode-helpers)
+  - [Best Practices](#best-practices)
+  - [Gotchas](#gotchas)
+  - [Other](#other)
+    - [Contribute and/or run locally](#contribute-andor-run-locally)
+  - [Roadmap](#roadmap)
+  - [Contact \& Support](#contact--support)
+  - [Changelog](#changelog)
+  - [Mentions](#mentions)
+  - [License](#license)
+  - [Inspiration](#inspiration)
 
 ## installation
 
@@ -176,7 +195,7 @@ import { userState } from './userState';
 function MyComponent() {
   // can pass `replace` arg, it's control will `setUrl` will use `rounter.push` or `router.replace`, default replace=true
   // can pass `searchParams` from server components, pass `useHistory: false` if you need to fetch smt in the server component
-  const { urlState, setUrl, setState, reset } = useUrlState(userState);
+  const { urlState, setUrl, setState } = useUrlState(userState);
 
   return (
     <div>
@@ -195,7 +214,7 @@ function MyComponent() {
         onBlur={() => setUrl()}
       />
 
-      <button onClick={reset}>
+      <button onClick={() => setUrl((_, initial) => initial)}>
         Reset
       </button>
 

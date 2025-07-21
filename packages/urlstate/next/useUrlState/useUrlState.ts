@@ -38,10 +38,11 @@ import {
  * setState({ name: 'test' });
  * setUrl({ name: 'test' }, { replace: true, scroll: true });
  * setUrl(curr => ({ ...curr, name: 'test' }), { replace: true, scroll: true });
- * // reset state and url
+ * // RESET state and url
+ * setUrl((_curr, initialState) => initialState);
+ * // Or
  * reset();
  * reset({ replace: true });
- * // same as setState(form) with setUrl(form)
  *  ```
  *
  *  * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/master/packages/urlstate/next/useUrlState}
@@ -64,19 +65,21 @@ export function useUrlState<T extends JSONCompatible>(
    *
    *  * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/master/packages/urlstate/next/useUrlState#updatestate}
    */
-  setState: (value: Partial<T> | ((currState: T) => T)) => void;
+  setState: (value: Partial<T> | ((currState: T, initial: T) => T)) => void;
   /**
    * * Example:
    * ```ts
    * setUrl({ name: 'test' });
    * // or
-   * setUrl(curr => ({ ...curr, name: 'test' }), { replace: true, scroll: false  } );
+   * setUrl((curr) => ({ ...curr, name: 'test' }), { replace: true, scroll: false  } );
+   *  * Reset
+   *  setUrl((_curr, initialState) => initialState, { replace: true, scroll: false  } );
    *  ```
    *
    *  * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/master/packages/urlstate/next/useUrlState#updateurl}
    */
   setUrl: (
-    value?: Partial<T> | ((currState: T) => T),
+    value?: Partial<T> | ((currState: T, initialState: T) => T),
     options?: Options,
   ) => void;
   /**

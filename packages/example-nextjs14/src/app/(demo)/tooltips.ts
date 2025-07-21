@@ -56,9 +56,14 @@ import useUrlState`, lang: 'tsx'
   descTooltip
 ]
 
-const setStateTooltip: Tooltip[] = [{ text: `const setState: (value: Partial<Form> | ((currState: Form) => Form)) => void`, lang: 'tsx' }, descTooltip]
+const setStateTooltip: Tooltip[] = [{ text: `const setState: (value:
+  Partial<Form> |
+  ((currState: Form, initial: Form) => Form)) => void`, lang: 'tsx' }, descTooltip]
 
-const setUrlTooltip: Tooltip[] = [{ text: `const setUrl: (value?: Partial<Form> | ((currState: Form) => Form) | undefined, options?: Options) => void`, lang: 'tsx' }, descTooltip]
+const setUrlTooltip: Tooltip[] = [{ text: `const setUrl: (value?:
+  Partial<Form> |
+  ((currState: Form, initial: Form) => Form),
+  options?: Options) => void`, lang: 'tsx' }, descTooltip]
 
 const resetTooltip: Tooltip[] = [{
   text: `const reset: (options?: Options & {
@@ -73,6 +78,9 @@ export const tooltips: Matcher[] = [
   ['form}', formTooltip],
   ['form);', formTooltip],
   ['form, {', formTooltip],
+  ['curr', formTooltip],
+  ['(curr', formTooltip],
+  ['initial)', formTooltip],
   ['useUrlState(', useUrlStateTooltip],
   [
     'urlState,', urlStateTooltip
@@ -103,6 +111,9 @@ export const tooltips: Matcher[] = [
     'setState(', setStateTooltip
   ],
   [
+    'setState((', setStateTooltip
+  ],
+  [
     'setState}', setStateTooltip
   ],
   [
@@ -113,6 +124,9 @@ export const tooltips: Matcher[] = [
   ],
   [
     'setUrl({', setUrlTooltip
+  ],
+  [
+    'setUrl((', setUrlTooltip
   ],
   [
     'setUrl()}', setUrlTooltip

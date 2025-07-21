@@ -33,10 +33,12 @@ export const Form = ({ className }: { className?: string }) => {
       setState(urlState);
       setState((st) => st);
       setState((st) => ({ ...st, age: 18 }));
+      setState((_st, initial) => initial);
       setUrl(urlState);
       setUrl((st) => ({ ...st, age: 18 }));
       setUrl(urlState, { replace: true });
       setUrl((st) => ({ ...st, age: 18 }), { replace: true });
+      setUrl((_st, initial) => initial);
       reset();
       reset({ replace: false, preventScrollReset: true });
     }
@@ -129,7 +131,7 @@ export const Form = ({ className }: { className?: string }) => {
             </div>
           </Field>
 
-          <Button onClick={reset} dataTestId="sync-default">
+          <Button onClick={() => setUrl((_, initial) => initial)} dataTestId="sync-default">
             Reset state
           </Button>
           <Button

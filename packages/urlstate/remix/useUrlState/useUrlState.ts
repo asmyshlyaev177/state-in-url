@@ -35,10 +35,11 @@ import {
  * setUrl({ name: 'test' }, { replace: true });
  * // similar to React.useState
  * setUrl(curr => ({ ...curr, name: 'test' }), { replace: true });
- * // reset state and url
+ * // RESET state and url
+ * setUrl((_curr, initialState) => initialState);
+ * // Or
  * reset();
  * reset({ replace: true });
- * // same as setState(form) with setUrl(form)
  *  ```
  *
  *  * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/master/packages/urlstate/remix/useUrlState}
@@ -56,18 +57,18 @@ export function useUrlState<T extends JSONCompatible>(
    * ```ts
    * setState({ name: 'test' });
    * // or
-   * setState(curr => ({ ...curr, name: 'test' }) );
+   * setState((curr, initial) => ({ ...curr, name: 'test' }) );
    *  ```
    *
    *  * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/master/packages/urlstate/remix/useUrlState#updatestate}
    */
-  setState: (value: Partial<T> | ((currState: T) => T)) => void;
+  setState: (value: Partial<T> | ((currState: T, initial: T) => T)) => void;
   /**
    * * Example:
    * ```ts
    * setUrl({ name: 'test' });
    * // or
-   * setUrl(curr => ({ ...curr, name: 'test' }), { replace: true } );
+   * setUrl((curr, initial) => ({ ...curr, name: 'test' }), { replace: true } );
    * // can pass optional React-Router `NavigateOptions`
    * setUrl(curr => ({ ...curr, name: 'test' }), { preventScrollReset: false } );
    *  ```
@@ -75,7 +76,7 @@ export function useUrlState<T extends JSONCompatible>(
    *  * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/master/packages/urlstate/remix/useUrlState#updateurl}
    */
   setUrl: (
-    value?: Partial<T> | ((currState: T) => T),
+    value?: Partial<T> | ((currState: T, initial: T) => T),
     options?: Params,
   ) => void;
   /**
