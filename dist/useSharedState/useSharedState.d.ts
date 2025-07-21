@@ -13,12 +13,12 @@ import { type JSONCompatible } from "../utils";
  *
  * setState({ name: 'test' });
  * // OR
- * setState(curr => ({ ...curr, name: 'test' }))
+ * setState((curr, initialState) => ({ ...curr, name: 'test' }))
  *  ```
  *  * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/master/packages/urlstate/useSharedState}
  */
 export declare function useSharedState<T extends JSONCompatible>(defaultState: T, _getInitial?: () => T): {
     state: T;
     getState: () => T;
-    setState: (value: Partial<T> | ((currState: T) => T)) => void;
+    setState: (value: Partial<T> | ((currState: T, defaultState: T) => T)) => void;
 };

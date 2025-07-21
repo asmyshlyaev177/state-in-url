@@ -1,3 +1,10 @@
+# [5.2.0](https://github.com/asmyshlyaev177/state-in-url/compare/v5.1.0...v5.2.0) (2025-07-21)
+
+
+### Features
+
+* better reset, now `setState` and `setUrl` pass `initialState` as second parameter to func ([2ad795b](https://github.com/asmyshlyaev177/state-in-url/commit/2ad795b656f71d4ab7eeb325f9947887197bb520))
+
 # [5.1.0](https://github.com/asmyshlyaev177/state-in-url/compare/v5.0.0...v5.1.0) (2025-06-19)
 
 
