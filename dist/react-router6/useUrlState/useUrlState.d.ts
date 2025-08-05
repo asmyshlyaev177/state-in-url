@@ -1,4 +1,4 @@
-import { type NavigateOptions } from "react-router";
+import { type NavigateOptions } from "react-router-dom";
 import { type JSONCompatible } from "../../utils";
 /**
  * React-router hook. Returns `urlState`, `setState`, and `setUrl` functions

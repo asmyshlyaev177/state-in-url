@@ -1,3 +1,15 @@
+# [6.0.0](https://github.com/asmyshlyaev177/state-in-url/compare/v5.2.0...v6.0.0) (2025-08-05)
+
+
+### Bug Fixes
+
+* **react-router:** separate package for react-router6 ([99ee6ec](https://github.com/asmyshlyaev177/state-in-url/commit/99ee6ec54d0d5f32024e37e38b04171f14a0ddf2))
+
+
+### BREAKING CHANGES
+
+* **react-router:** update import for react-router 6 to `state-in-url/react-router6`
+
 # [5.2.0](https://github.com/asmyshlyaev177/state-in-url/compare/v5.1.0...v5.2.0) (2025-07-21)
 
 
