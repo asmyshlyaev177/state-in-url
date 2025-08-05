@@ -5,6 +5,7 @@ import path from 'path';
 import { decode, encode } from '../../dist/encoder';
 import { decodeState, encodeState } from '../../dist/encodeState';
 import { useUrlState } from '../../dist/next';
+import { useUrlState as useUrlStateRR6 } from '../../dist/react-router6';
 import { useUrlState as useUrlStateRR } from '../../dist/react-router';
 import { useUrlState as useUrlStateRemix } from '../../dist/remix';
 import { useSharedState } from '../../dist/useSharedState';
@@ -28,6 +29,10 @@ assert(loadFile('/react-router/useUrlState/useUrlState.d.ts').length > 15, error
 assert.ok(useUrlState, errorMsg);
 assert(loadFile('/next/useUrlState/useUrlState.d.ts').length > 15, errorMsg);
 
+
+// React router 6
+assert.ok(useUrlStateRR6, errorMsg);
+assert(loadFile('/react-router6/useUrlState/useUrlState.d.ts').length > 15, errorMsg);
 
 // React router
 assert.ok(useUrlStateRR, errorMsg);

@@ -1,6 +1,6 @@
 import React from "react";
 import { form } from "shared/form";
-import { useUrlState } from "state-in-url/react-router6";
+import { useUrlState } from "state-in-url/react-router";
 
 const Status = ({ className }: { className?: string }) => {
   const { urlState } = useUrlState(form);

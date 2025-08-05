@@ -31,6 +31,7 @@
     "packages/example-nextjs15",
     "packages/example-react",
     "packages/example-react-router6",
+    "packages/example-react-router7",
     "packages/example-remix2"
   ],
   "files": [
@@ -48,6 +49,11 @@
       "types": "./dist/next/index.d.ts",
       "default": "./dist/next/index.mjs",
       "require": "./dist/next/index.js"
+    },
+    "./react-router6": {
+      "types": "./dist/react-router6/index.d.ts",
+      "default": "./dist/react-router6/index.mjs",
+      "require": "./dist/react-router6/index.js"
     },
     "./react-router": {
       "types": "./dist/react-router/index.d.ts",
@@ -118,7 +124,7 @@
     "kill-vite": "wireit",
     "kill": "wireit",
     "rmdist": "rm -rf dist",
-    "cleanup": "rm -rf dist .wireit node_modules test-results playwright-report coverage-reports nyc_coverage packages/example-nextjs14/node_modules packages/example-nextjs14/.next packages/example-nextjs15/node_modules packages/example-nextjs15/.next packages/example-react/node_modules packages/example-react-router6/node_modules packages/example-remix2/node_modules",
+    "cleanup": "rm -rf dist .wireit node_modules test-results playwright-report coverage-reports nyc_coverage packages/example-nextjs14/node_modules packages/example-nextjs14/.next packages/example-nextjs15/node_modules packages/example-nextjs15/.next packages/example-react/node_modules packages/example-react-router6/node_modules packages/example-react-router7/node_modules packages/example-remix2/node_modules",
     "reinstall": "npm run cleanup && npm install",
     "setup": "playwright install --with-deps",
     "prepack": "npm run build && cp package.json dist/package.json && npm run build:demo",
@@ -172,6 +178,7 @@
         "dev:react",
         "dev:remix2",
         "dev:router6",
+        "dev:router7",
         "dev:nextjs15"
       ],
       "service": {
@@ -196,6 +203,10 @@
       "command": "cd packages/example-react-router6 && npm run dev",
       "service": true
     },
+    "dev:router7": {
+      "command": "cd packages/example-react-router7 && npm run dev",
+      "service": true
+    },
     "dev:remix2": {
       "command": "cd packages/example-remix2 && PORT=3003 npm run dev",
       "service": true
@@ -216,6 +227,12 @@
     },
     "build:router6": {
       "command": "cd packages/example-react-router6 && npm run build",
+      "dependencies": [
+        "build"
+      ]
+    },
+    "build:router7": {
+      "command": "cd packages/example-react-router7 && npm run build",
       "dependencies": [
         "build"
       ]
@@ -271,6 +288,17 @@
       "command": "npx vite preview --port 5181 packages/example-react-router6",
       "service": true
     },
+    "start:router7": {
+      "command": "npx vite preview --port 5183 packages/example-react-router7",
+      "dependencies": [
+        "build:router7"
+      ],
+      "service": true
+    },
+    "start:router7:ci": {
+      "command": "npx vite preview --port 5183 packages/example-react-router7",
+      "service": true
+    },
     "start:remix2": {
       "command": "cd packages/example-remix2 && npm run start",
       "dependencies": [
@@ -299,6 +327,7 @@
         "start:demo",
         "start:react",
         "start:router6",
+        "start:router7",
         "start:remix2"
       ],
       "service": true
@@ -309,6 +338,7 @@
         "start:demo:ci",
         "start:react:ci",
         "start:router6:ci",
+        "start:router7:ci",
         "start:remix2:ci"
       ],
       "service": true
@@ -324,6 +354,7 @@
         "build:demo:tests",
         "build:next15",
         "build:router6",
+        "build:router7",
         "build:remix2"
       ]
     },
@@ -488,5 +519,8 @@
     "decode url",
     "fast"
   ],
-  "packageManager": "npm@10.8.2"
+  "packageManager": "npm@10.8.2",
+  "dependencies": {
+    "react-router": "^7.7.1"
+  }
 }

@@ -134,16 +134,11 @@ jobs:
         with:
           path: |
             ./dist
-            ./packages/example-react-router6/dist
-            ./packages/example-react-router6/package.json
-            ./packages/example-remix2/package.json
-            ./packages/example-remix2/build
-            ./packages/example-react/dist
-            ./packages/example-react/package.json
-            ./packages/example-nextjs14/package.json
-            ./packages/example-nextjs14/.next
-            ./packages/example-nextjs15/package.json
-            ./packages/example-nextjs15/.next
+            **/dist
+            **/package.json
+            ./package.json
+            **/build
+            **/.next
           key: modules-2-${{ github.sha }}-${{ github.run_id }}
 
   testint:
@@ -179,16 +174,11 @@ jobs:
         with:
           path: |
             ./dist
-            ./packages/example-react-router6/dist
-            ./packages/example-react-router6/package.json
-            ./packages/example-remix2/package.json
-            ./packages/example-remix2/build
-            ./packages/example-react/dist
-            ./packages/example-react/package.json
-            ./packages/example-nextjs14/package.json
-            ./packages/example-nextjs14/.next
-            ./packages/example-nextjs15/package.json
-            ./packages/example-nextjs15/.next
+            **/dist
+            **/package.json
+            ./package.json
+            **/build
+            **/.next
           key: modules-2-${{ github.sha }}-${{ github.run_id }}
 
       - name: Run Playwright tests
@@ -286,16 +276,11 @@ jobs:
         with:
           path: |
             ./dist
-            ./packages/example-react-router6/dist
-            ./packages/example-react-router6/package.json
-            ./packages/example-remix2/package.json
-            ./packages/example-remix2/build
-            ./packages/example-react/dist
-            ./packages/example-react/package.json
-            ./packages/example-nextjs14/package.json
-            ./packages/example-nextjs14/.next
-            ./packages/example-nextjs15/package.json
-            ./packages/example-nextjs15/.next
+            **/dist
+            **/package.json
+            ./package.json
+            **/build
+            **/.next
           key: modules-2-${{ github.sha }}-${{ github.run_id }}
 
       - name: Verify the integrity of provenance attestations and registry signatures for installed dependencies

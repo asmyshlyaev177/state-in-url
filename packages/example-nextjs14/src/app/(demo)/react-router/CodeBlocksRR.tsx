@@ -18,6 +18,8 @@ export const CodeBlocksRR = () => {
         name="ComponentA"
         matchers={tooltips}
         content={`import { useUrlState } from 'state-in-url/react-router';// [!code highlight:1]
+// for react-router v6
+// import { useUrlState } from 'state-in-url/react-router6';
 import { form } from './form';
 
 export const ComponentA = () => {
