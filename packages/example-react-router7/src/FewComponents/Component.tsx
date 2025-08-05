@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { useUrlState } from "state-in-url/react-router6";
+import { useUrlState } from "state-in-url/react-router";
 
 import { stateShape } from "./stateShape";
 

@@ -4,7 +4,7 @@ import {
   useHref,
   useNavigate,
   useSearchParams,
-} from "react-router";
+} from "react-router-dom";
 
 import { parseSPObj } from "../../parseSPObj";
 import { useUrlStateBase } from "../../useUrlStateBase";

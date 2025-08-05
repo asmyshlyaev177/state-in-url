@@ -11,6 +11,7 @@ const urls = [
   'http://localhost:3001/test-ssr-sp',
   'http://localhost:5181',
   'http://localhost:5182',
+  'http://localhost:5183',
 ];
 
   for (const url of urls) {
