@@ -3,6 +3,7 @@ import { useSearchParams } from "react-router-dom";
 import { Field, Input, RefreshButton, Tag } from "../../../shared/components";
 import { form } from "../../../shared/form";
 import { useUrlState } from "state-in-url/remix";
+import { usePrevious } from "../../../shared/usePrevious";
 
 export const Form = ({ className }: { className?: string }) => {
   const [sp] = useSearchParams();
@@ -77,6 +78,21 @@ export const Form = ({ className }: { className?: string }) => {
     },
     [setUrl],
   );
+
+
+  // same reference
+  const setUrlStable = React.useRef(setUrl);
+  const setUrlPrev = usePrevious(setUrl);
+  const setStatePrev = usePrevious(setState);
+  const setStateStable = React.useRef(setState);
+
+  const [isError, setIsError] = React.useState(false);
+  const isInit = setUrlPrev
+  const isEqual = (setUrlStable.current !== setUrlPrev || setUrlPrev !== setUrl || setStateStable.current !== setState || setStatePrev !== setState)
+  if (isInit && isEqual && !isError) {
+    setIsError(true)
+  }
+  if (isError) return null;
 
   return (
     <div className={className}>

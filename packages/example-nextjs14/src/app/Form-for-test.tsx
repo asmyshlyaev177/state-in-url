@@ -3,6 +3,7 @@ import { useSearchParams } from 'next/navigation';
 import React from 'react';
 import { Field, Input, RefreshButton, Tag } from 'shared/components';
 import { form } from 'shared/form';
+import { usePrevious } from 'shared/usePrevious';
 import { useUrlState } from 'state-in-url/next';
 
 export const Form = ({
@@ -52,8 +53,8 @@ export const Form = ({
       reset()
       reset({ replace: false, scroll: true })
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [setUrl, setState, urlState, reset]);
+
   const onChangeAge = React.useCallback(
     (ev: React.ChangeEvent<HTMLInputElement>) => {
       const val = +ev.target.value;
@@ -88,6 +89,20 @@ export const Form = ({
     },
     [setUrl],
   );
+
+  // same reference
+  const setUrlStable = React.useRef(setUrl);
+  const setUrlPrev = usePrevious(setUrl);
+  const setStatePrev = usePrevious(setState);
+  const setStateStable = React.useRef(setState);
+
+  const [isError, setIsError] = React.useState(false);
+  const isInit = setUrlPrev
+  const isEqual = (setUrlStable.current !== setUrlPrev || setUrlPrev !== setUrl || setStateStable.current !== setState || setStatePrev !== setState)
+  if (isInit && isEqual && !isError) {
+      setIsError(true)
+  }
+  if (isError) return null;
 
   return (
     <div className={className}>
