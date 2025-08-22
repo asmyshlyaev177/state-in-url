@@ -41,59 +41,59 @@
   "module": "dist/index.mjs",
   "exports": {
     ".": {
+      "require": "./dist/index.js",
       "types": "./dist/index.d.ts",
-      "default": "./dist/index.mjs",
-      "require": "./dist/index.js"
+      "default": "./dist/index.mjs"
     },
     "./next": {
+      "require": "./dist/next/index.js",
       "types": "./dist/next/index.d.ts",
-      "default": "./dist/next/index.mjs",
-      "require": "./dist/next/index.js"
+      "default": "./dist/next/index.mjs"
     },
     "./react-router6": {
+      "require": "./dist/react-router6/index.js",
       "types": "./dist/react-router6/index.d.ts",
-      "default": "./dist/react-router6/index.mjs",
-      "require": "./dist/react-router6/index.js"
+      "default": "./dist/react-router6/index.mjs"
     },
     "./react-router": {
+      "require": "./dist/react-router/index.js",
       "types": "./dist/react-router/index.d.ts",
-      "default": "./dist/react-router/index.mjs",
-      "require": "./dist/react-router/index.js"
+      "default": "./dist/react-router/index.mjs"
     },
     "./remix": {
+      "require": "./dist/remix/index.js",
       "types": "./dist/remix/index.d.ts",
-      "default": "./dist/remix/index.mjs",
-      "require": "./dist/remix/index.js"
+      "default": "./dist/remix/index.mjs"
     },
     "./encodeState": {
+      "require": "./dist/encodeState/index.js",
       "types": "./dist/encodeState/index.d.ts",
-      "default": "./dist/encodeState/index.mjs",
-      "require": "./dist/encodeState/index.js"
+      "default": "./dist/encodeState/index.mjs"
     },
     "./encoder": {
+      "require": "./dist/encoder/index.js",
       "types": "./dist/encoder/index.d.ts",
-      "default": "./dist/encoder/index.mjs",
-      "require": "./dist/encoder/index.js"
+      "default": "./dist/encoder/index.mjs"
     },
     "./useSharedState": {
+      "require": "./dist/useSharedState/index.js",
       "types": "./dist/useSharedState/index.d.ts",
-      "default": "./dist/useSharedState/index.mjs",
-      "require": "./dist/useSharedState/index.js"
+      "default": "./dist/useSharedState/index.mjs"
     },
     "./useUrlEncode": {
+      "require": "./dist/useUrlEncode/index.js",
       "types": "./dist/useUrlEncode/index.d.ts",
-      "default": "./dist/useUrlEncode/index.mjs",
-      "require": "./dist/useUrlEncode/index.js"
+      "default": "./dist/useUrlEncode/index.mjs"
     },
     "./useUrlStateBase": {
+      "require": "./dist/useUrlStateBase/index.js",
       "types": "./dist/useUrlStateBase/index.d.ts",
-      "default": "./dist/useUrlStateBase/index.mjs",
-      "require": "./dist/useUrlStateBase/index.js"
+      "default": "./dist/useUrlStateBase/index.mjs"
     },
     "./utils": {
+      "require": "./dist/utils.js",
       "types": "./dist/utils.d.ts",
-      "default": "./dist/utils.mjs",
-      "require": "./dist/utils.js"
+      "default": "./dist/utils.mjs"
     }
   },
   "types": "./dist/index.d.ts",
