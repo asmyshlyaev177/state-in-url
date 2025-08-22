@@ -1,3 +1,10 @@
+## [6.0.1](https://github.com/asmyshlyaev177/state-in-url/compare/v6.0.0...v6.0.1) (2025-08-22)
+
+
+### Bug Fixes
+
+* **exports:** fix default order in exports ([b56363d](https://github.com/asmyshlyaev177/state-in-url/commit/b56363d250096af9ecb002b7ec606e635f2135ab))
+
 # [6.0.0](https://github.com/asmyshlyaev177/state-in-url/compare/v5.2.0...v6.0.0) (2025-08-05)
 
 
