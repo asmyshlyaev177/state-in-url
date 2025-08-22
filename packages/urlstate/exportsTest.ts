@@ -63,4 +63,19 @@ assert.ok(encode, errorMsg);
 assert(loadFile('/encoder/encoder.d.ts').length > 15, errorMsg);
 assert.ok(decode, errorMsg);
 
+// Test that 'default' field is last in all exports
+const packageJsonPath = path.join(__dirname, '../../package.json');
+const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
+const exports = packageJson.exports;
+
+Object.keys(exports).forEach(exportPath => {
+  const exportObj = exports[exportPath];
+  if (typeof exportObj === 'object' && exportObj.default) {
+    const keys = Object.keys(exportObj);
+    const lastKey = keys[keys.length - 1];
+    assert.strictEqual(lastKey, 'default', 
+      `Export '${exportPath}': 'default' field should be last, but found '${lastKey}' as last field`);
+  }
+});
+
 
