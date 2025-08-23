@@ -4,7 +4,7 @@ import { GoogleAnalytics } from '@next/third-parties/google'
 import Script from 'next/script'
 
 import { metadata as _metadata } from './seoStuff';
-import { isVercel, vercelUrl } from './domain';
+import { isVercel, vercelUrl, siteUrl } from './domain';
 import { isProd } from '../../../../consts'
 const roboto = Roboto({
   subsets: ['latin'],
@@ -29,6 +29,9 @@ export default async function RootLayout({
       {isVercel && <link rel="canonical" href={vercelUrl}></link>}
       <meta name="google-site-verification" content="NKunqTB4Sd_Bp6zoIbzKvw_WoGB-v2-MXxC5mbKJKJw" />
       {isProd && isVercel && <Script src="/heatmap.js" strategy='afterInteractive'/>}
+
+      <link rel="alternate" type="text/markdown" href={`${siteUrl}/llms.txt`} title="LLM-friendly version" />
+      <meta name="llms-txt" content={`${siteUrl}/llms.txt`} />
 
       <body className={`${roboto.className}`}>
         {children}
