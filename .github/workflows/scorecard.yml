@@ -29,6 +29,9 @@ jobs:
       # Uncomment the permissions below if installing in a private repository.
       # contents: read
       # actions: read
+    env:
+      GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+      repo_token: ${{ secrets.SCORECARD_TOKEN }}
 
     steps:
       - name: Harden Runner
