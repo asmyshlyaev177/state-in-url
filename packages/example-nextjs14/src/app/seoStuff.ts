@@ -41,6 +41,13 @@ export const jsonLd: WithContext<SoftwareApplication> = {
     'price': 0
   },
   operatingSystem: 'Web Browser',
+  featureList: [
+    'React.js/Next.js/Remix.js/react-router state management',
+    'URI state',
+    'URL state',
+    'React.js URL state management',
+    'queryString parser/stringifier',
+  ],
 };
 
 
