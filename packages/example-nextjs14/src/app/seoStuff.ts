@@ -17,7 +17,7 @@ export const jsonLd: WithContext<SoftwareApplication> = {
     '@type': 'Person',
     name: 'asmyshlyaev177',
     identifier: 'https://github.com/asmyshlyaev177',
-    url: 'https://www.linkedin.com/in/asmyshlyaev177/',
+    url: 'https://asmyshlyaev177.dev/',
   },
   thumbnailUrl:
     'https://github.com/asmyshlyaev177/state-in-url/blob/master/assets/Demo-gif.gif',

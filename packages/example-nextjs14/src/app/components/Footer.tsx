@@ -17,7 +17,7 @@ export const Footer = () => (
       >
         llms.txt
       </a>
-      <a href="https://github.com/asmyshlyaev177" target="_blank" rel="noopener">
+      <a href="https://asmyshlyaev177.dev" target="_blank" rel="noopener">
         © asmyshlyaev177 {new Date().getFullYear()}
       </a>
       <div className="text-center">MIT</div>
