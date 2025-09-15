@@ -761,6 +761,10 @@ See [Contributing doc](CONTRIBUTING.md)
 
 This project is licensed under the [MIT license](LICENSE).
 
+## Personal website
+
+[Portfolio site](https://asmyshlyaev177.dev)
+
 ## Inspiration
 
 [NUQS](https://github.com/47ng/nuqs)
