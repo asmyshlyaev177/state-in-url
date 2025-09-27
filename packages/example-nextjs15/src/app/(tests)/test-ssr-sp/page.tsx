@@ -1,9 +1,9 @@
 import { Form } from '../../Form-for-test';
 import { Status } from '../../Status-for-test';
 
-import { type SearchParams } from '../../types';
+import { type SearchParamsProm } from 'shared/types';
 
-export default async function Home({ searchParams }: { searchParams: SearchParams }) {
+export default async function Home({ searchParams }: { searchParams: SearchParamsProm }) {
   const params = await searchParams
 
   return (

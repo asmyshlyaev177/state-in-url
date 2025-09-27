@@ -1,3 +1,3 @@
 import React from "react";
 
-export const useInsertionEffect = React.useInsertionEffect || React.useEffect;
+export const useInsertionEffect = React?.useInsertionEffect || React.useEffect;

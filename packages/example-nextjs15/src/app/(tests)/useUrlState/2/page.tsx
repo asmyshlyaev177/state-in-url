@@ -5,9 +5,9 @@ import React from 'react';
 import { Comp1 } from '../Comp1';
 import LinkClient from '../LinkClient';
 
-import { type SearchParams } from '../../../types';
+import { type SearchParamsProm } from 'shared/types';
 
-export default async function Page({ searchParams }: { searchParams: SearchParams }) {
+export default async function Page({ searchParams }: { searchParams: SearchParamsProm }) {
   const params = await searchParams
 
   return (
