@@ -3,9 +3,8 @@ import dynamic from 'next/dynamic';
 const Form = dynamic(() => import('../../Form-for-test').then(mod => mod.Form))
 const Status = dynamic(() => import('../../Status-for-test').then(mod => mod.Status))
 
-import { type SearchParams } from 'shared/types';
 
-export default async function Home({ searchParams }: { searchParams: SearchParams}) {
+export default async function Home() {
   return (
     <div className="bg-white rounded-lg shadow-2xl p-8 max-w-4xl w-full">
       <header className="mb-8 flex justify-between items-center">

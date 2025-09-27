@@ -6,7 +6,9 @@ import { useSharedState } from "../useSharedState";
 import { useUrlEncode } from "../useUrlEncode";
 import {
   filterUnknownParamsClient,
+  getSearch,
   type JSONCompatible,
+  popstateEv,
   type Router,
 } from "../utils";
 
@@ -79,9 +81,10 @@ export function useUrlStateBase<T extends JSONCompatible>(
 
     return () => {
       window.removeEventListener(popstateEv, popCb);
+
       clearTimeout(timer.current);
     };
-  }, [setState]);
+  }, []);
 
   const queue = React.useRef<UpdateQueueItem[]>([]);
 
@@ -158,18 +161,12 @@ type UpdateQueueItem = [
   opts?: Partial<Options>,
 ];
 
-const popstateEv = "popstate";
-
 interface OptionsObject {
   [key: string]: unknown;
 }
 
 export interface Options extends OptionsObject {
   replace?: boolean;
-}
-
-function getSearch() {
-  return (typeof window !== "undefined" && window.location.search) || "";
 }
 
 function removeBasename(path: string, basename?: string) {

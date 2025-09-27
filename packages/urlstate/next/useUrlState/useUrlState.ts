@@ -1,12 +1,12 @@
 import React from "react";
-import { useRouter } from "next/navigation";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 import { parseSPObj } from "../../parseSPObj";
 import { useUrlStateBase } from "../../useUrlStateBase";
 import {
   filterUnknownParams,
   filterUnknownParamsClient,
+  getSearch,
   isSSR,
   type JSONCompatible,
   routerHistory,
@@ -135,8 +135,26 @@ export function useUrlState<T extends JSONCompatible>(
           filterUnknownParams(defaultState, params?.searchParams),
           defaultState,
         )
-      : parse(filterUnknownParamsClient(defaultState, params?.searchParams));
+      : parse(
+          filterUnknownParamsClient(
+            defaultState,
+            params?.searchParams || getSearch(),
+          ),
+        );
   });
+
+  const sp = useSearchParams();
+  React.useEffect(() => {
+    setState(
+      filterUnknownParams(
+        defaultState,
+        parseSPObj(
+          Object.fromEntries([...sp.entries()]),
+          defaultState,
+        ) as Partial<T>,
+      ),
+    );
+  }, [sp]);
 
   const defOpts = React.useMemo(
     () => ({
@@ -152,19 +170,6 @@ export function useUrlState<T extends JSONCompatible>(
       updateUrlBase(value, { ...defOpts, ...options }),
     [updateUrlBase],
   );
-
-  const sp = useSearchParams();
-  React.useLayoutEffect(() => {
-    setState(
-      filterUnknownParams(
-        defaultState,
-        parseSPObj(
-          Object.fromEntries([...sp.entries()]),
-          defaultState,
-        ) as Partial<T>,
-      ),
-    );
-  }, [sp]);
 
   const reset = React.useCallback(
     (options?: Options & { [key: string]: unknown }) => {

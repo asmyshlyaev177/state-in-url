@@ -50,6 +50,7 @@ export type Simple =
   | undefined
   // eslint-disable-next-line @typescript-eslint/ban-types
   | Function
+  | undefined
   | symbol;
 
 export const isSSR = typeof window === "undefined";
@@ -63,17 +64,15 @@ export type JSON =
   | { [prop: string]: JSON | JSON[] };
 
 export type JSONCompatible = {
-  [prop: string]: JSON | JSON[];
+  [prop: string]: JSON | JSON[] | undefined;
 };
 
 export const getParams = (strOrSearchParams?: string | URLSearchParams) =>
   new URLSearchParams(
     typeof strOrSearchParams === "string"
-      ? getQueryFromHref(strOrSearchParams)
+      ? strOrSearchParams.split("?")?.[1] || strOrSearchParams
       : strOrSearchParams?.toString?.() || "",
   );
-
-const getQueryFromHref = (str: string) => str.split("?")?.[1] || str || "";
 
 export type UnknownObj = object | { [key: string]: unknown };
 
@@ -153,3 +152,9 @@ export const routerHistory: Router = {
 };
 
 export const isSafari = /apple/i.test((!isSSR && navigator?.userAgent) || "");
+
+export const popstateEv = "popstate";
+
+export function getSearch() {
+  return isSSR ? "" : window.location.search;
+}
