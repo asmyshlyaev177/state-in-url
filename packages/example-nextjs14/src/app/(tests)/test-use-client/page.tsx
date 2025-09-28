@@ -16,10 +16,10 @@ export default function Home() {
       </header>
 
       <div className="flex flex-col md:flex-row gap-8">
-        <Suspense>
+        <Suspense fallback={null}>
           <Form className="flex max-h-[850px] flex-col md:flex-row gap-8 basis-1/2" />
         </Suspense>
-        <Suspense>
+        <Suspense fallback={null}>
           <Status
             className="flex-1 max-h-[450px] bg-gray-100
              rounded-lg p-4 flex flex-col shadow-md border border-grey

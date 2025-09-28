@@ -10,10 +10,10 @@ const Page = () => {
         <h2>Page for testing purposes</h2>
       </div>
       <div className="flex gap-4">
-        <Suspense>
+        <Suspense fallback={null}>
           <Comp1 className="basis-1/2" />
         </Suspense>
-        <Suspense>
+        <Suspense fallback={null}>
           <Comp2 className="basis-1/2" />
         </Suspense>
       </div>
