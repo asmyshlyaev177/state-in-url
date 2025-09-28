@@ -1,4 +1,4 @@
-import { getParams, typeOf, assignValue, filterUnknownParamsClient, filterUnknown } from './utils';
+import { getParams, typeOf, assignValue, filterUnknownParamsClient, filterUnknown, filterUnknownParams, isPrimitive, getSearch } from './utils';
 
 describe('typeOf', () => {
   test('string', () => {
@@ -207,5 +207,167 @@ describe('filterUnknown', () => {
     const entries: [string, string][] = [];
     const result = filterUnknown(shape, entries);
     expect(result).toEqual([]);
+  });
+});
+
+describe('filterUnknownParams', () => {
+  test('filters out properties not present in shape', () => {
+    const shape = { name: '', age: 0 };
+    const searchParams = { name: 'John', age: '30', unknown: 'value' };
+    const result = filterUnknownParams(shape, searchParams);
+    expect(result).toEqual({ name: 'John', age: '30' });
+  });
+
+  test('handles empty searchParams object', () => {
+    const shape = { name: '', age: 0 };
+    const searchParams = {};
+    const result = filterUnknownParams(shape, searchParams);
+    expect(result).toEqual({});
+  });
+
+  test('handles undefined searchParams', () => {
+    const shape = { name: '', age: 0 };
+    const result = filterUnknownParams(shape, undefined);
+    expect(result).toEqual({});
+  });
+
+  test('handles empty shape object', () => {
+    const shape = {};
+    const searchParams = { name: 'John', age: '30' };
+    const result = filterUnknownParams(shape, searchParams);
+    expect(result).toEqual({});
+  });
+
+  test('preserves all properties that exist in shape', () => {
+    const shape = { a: '', b: '', c: '' };
+    const searchParams = { a: 'value1', b: 'value2', c: 'value3' };
+    const result = filterUnknownParams(shape, searchParams);
+    expect(result).toEqual({ a: 'value1', b: 'value2', c: 'value3' });
+  });
+
+  test('handles complex nested shape object', () => {
+    const shape = { user: { name: '' }, settings: { theme: '' } };
+    const searchParams = { 'user.name': 'John', 'settings.theme': 'dark', unknown: 'value' };
+    const result = filterUnknownParams(shape, searchParams);
+    expect(result).toEqual({});
+  });
+
+  test('handles shape with different value types', () => {
+    const shape = { str: '', num: 0, bool: false, date: new Date(), obj: {} };
+    const searchParams = { str: 'text', num: '42', bool: 'true', date: '2023-01-01', extra: 'remove' };
+    const result = filterUnknownParams(shape, searchParams);
+    expect(result).toEqual({ str: 'text', num: '42', bool: 'true', date: '2023-01-01' });
+  });
+});
+
+describe('isPrimitive', () => {
+  test('returns true for string values', () => {
+    expect(isPrimitive('')).toBe(true);
+    expect(isPrimitive('hello')).toBe(true);
+    expect(isPrimitive('123')).toBe(true);
+  });
+
+  test('returns true for number values', () => {
+    expect(isPrimitive(0)).toBe(true);
+    expect(isPrimitive(42)).toBe(true);
+    expect(isPrimitive(-1)).toBe(true);
+    expect(isPrimitive(3.14)).toBe(true);
+    expect(isPrimitive(Infinity)).toBe(true);
+    expect(isPrimitive(NaN)).toBe(true);
+  });
+
+  test('returns true for boolean values', () => {
+    expect(isPrimitive(true)).toBe(true);
+    expect(isPrimitive(false)).toBe(true);
+  });
+
+  test('returns true for null', () => {
+    expect(isPrimitive(null)).toBe(true);
+  });
+
+  test('returns true for undefined', () => {
+    expect(isPrimitive(undefined)).toBe(true);
+  });
+
+  test('returns true for symbol values', () => {
+    expect(isPrimitive(Symbol('test'))).toBe(true);
+    expect(isPrimitive(Symbol.for('global'))).toBe(true);
+  });
+
+  test('returns true for bigint values', () => {
+    expect(isPrimitive(1n)).toBe(true);
+    expect(isPrimitive(BigInt(123))).toBe(true);
+  });
+
+  test('returns true for Date objects', () => {
+    expect(isPrimitive(new Date())).toBe(true);
+    expect(isPrimitive(new Date('2023-01-01'))).toBe(true);
+  });
+
+  test('returns true for function values', () => {
+    expect(isPrimitive(() => {})).toBe(true);
+    expect(isPrimitive(function() {})).toBe(true);
+    expect(isPrimitive(Math.max)).toBe(true);
+  });
+
+  test('returns false for plain objects', () => {
+    expect(isPrimitive({})).toBe(false);
+    expect(isPrimitive({ key: 'value' })).toBe(false);
+    expect(isPrimitive({ a: 1, b: 2 })).toBe(false);
+  });
+
+  test('returns false for arrays', () => {
+    expect(isPrimitive([])).toBe(false);
+    expect(isPrimitive([1, 2, 3])).toBe(false);
+    expect(isPrimitive(['a', 'b', 'c'])).toBe(false);
+    expect(isPrimitive([{}])).toBe(false);
+  });
+
+  test('returns false for complex objects', () => {
+    expect(isPrimitive(new Map())).toBe(false);
+    expect(isPrimitive(new Set())).toBe(false);
+    expect(isPrimitive(/regex/)).toBe(false);
+    expect(isPrimitive(new Error())).toBe(false);
+  });
+
+  test('handles edge cases', () => {
+    expect(isPrimitive(Object.create(null))).toBe(false);
+    expect(isPrimitive(new String('test'))).toBe(false);
+    expect(isPrimitive(new Number(42))).toBe(false);
+    expect(isPrimitive(new Boolean(true))).toBe(false);
+  });
+});
+
+describe('getSearch', () => {
+  test('should return window.location.search in browser environment', () => {
+    const originalLocation = window.location;
+
+    Object.defineProperty(window, 'location', {
+      value: { search: '?test=true&foo=bar' },
+      writable: true
+    });
+
+    expect(getSearch()).toBe('?test=true&foo=bar');
+
+    Object.defineProperty(window, 'location', {
+      value: originalLocation,
+      writable: true
+    });
+  });
+
+  test('should return empty string when no search parameters', () => {
+    const originalLocation = window.location;
+
+    Object.defineProperty(window, 'location', {
+      value: { search: '' },
+      writable: true
+    });
+
+    expect(getSearch()).toBe('');
+
+    Object.defineProperty(window, 'location', {
+      value: originalLocation,
+      writable: true
+    });
   });
 });
