@@ -135,6 +135,7 @@ export function useUrlState<T extends JSONCompatible>(
     updateUrl: updateUrlBase,
     getState,
     reset: resetBase,
+    pendingUrlUpdate,
   } = useUrlStateBase(
     defaultState,
     router,
@@ -149,18 +150,20 @@ export function useUrlState<T extends JSONCompatible>(
   );
 
   React.useEffect(() => {
-    setState(
-      assignValue(
-        defaultState,
-        filterUnknownParams(
+    if (!pendingUrlUpdate()) {
+      setState(
+        assignValue(
           defaultState,
-          parseSPObj(
-            Object.fromEntries([...sp.entries()]),
+          filterUnknownParams(
             defaultState,
-          ) as Partial<T>,
+            parseSPObj(
+              Object.fromEntries([...sp.entries()]),
+              defaultState,
+            ) as Partial<T>,
+          ),
         ),
-      ),
-    );
+      );
+    }
   }, [sp]);
 
   const reset = React.useCallback(
@@ -184,7 +187,7 @@ const defaultOpts: NavigateOptions = {
   preventScrollReset: true,
 };
 
-interface Params extends NavigateOptions {
+export interface Params extends NavigateOptions {
   useHistory?: boolean;
   searchParams?: object;
   replace?: boolean;

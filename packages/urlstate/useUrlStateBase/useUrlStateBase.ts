@@ -46,6 +46,8 @@ import {
  * * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/integrations/packages/urlstate/useUrlStateBase}
  */
 
+let timer: NodeJS.Timeout | undefined = undefined;
+
 export function useUrlStateBase<T extends JSONCompatible>(
   defaultState: T,
   router: Router,
@@ -64,9 +66,6 @@ export function useUrlStateBase<T extends JSONCompatible>(
         parse,
       }) || defaultState,
   );
-  const timer = React.useRef<ReturnType<typeof setTimeout> | undefined>(
-    undefined,
-  );
 
   useInsertionEffect(() => {
     // for history navigation
@@ -81,8 +80,6 @@ export function useUrlStateBase<T extends JSONCompatible>(
 
     return () => {
       window.removeEventListener(popstateEv, popCb);
-
-      clearTimeout(timer.current);
     };
   }, []);
 
@@ -110,17 +107,17 @@ export function useUrlStateBase<T extends JSONCompatible>(
       const { replace, ..._rest } = options || {};
       queue.current.push([replace ? "replace" : "push", newUrl, _rest]);
 
-      clearTimeout(timer.current);
+      clearTimeout(timer);
+      timer = undefined;
 
       const upd = queue.current.filter(Boolean).at(-1);
       if (upd) {
-        queueMicrotask(() => {
-          timer.current = setTimeout(() => {
-            queue.current = [];
+        timer = setTimeout(() => {
+          queue.current = [];
 
-            router[upd[0]](upd[1], upd[2]);
-          }, TIMEOUT);
-        });
+          router[upd[0]](upd[1], upd[2]);
+          timer = undefined;
+        }, TIMEOUT);
       }
     },
     [router, stringify, getState],
@@ -140,6 +137,7 @@ export function useUrlStateBase<T extends JSONCompatible>(
     state,
     reset,
     getState,
+    pendingUrlUpdate: () => timer !== undefined,
   };
 }
 

@@ -129,6 +129,7 @@ export function useUrlState<T extends JSONCompatible>(
     updateUrl: updateUrlBase,
     reset: resetBase,
     getState,
+    pendingUrlUpdate,
   } = useUrlStateBase(defaultState, router, ({ parse }) => {
     return isSSR
       ? parseSPObj(
@@ -145,15 +146,18 @@ export function useUrlState<T extends JSONCompatible>(
 
   const sp = useSearchParams();
   React.useEffect(() => {
-    setState(
-      filterUnknownParams(
-        defaultState,
-        parseSPObj(
-          Object.fromEntries([...sp.entries()]),
+    // when multiple instances of hook used, can be race condition with URL updates
+    if (!pendingUrlUpdate()) {
+      setState(
+        filterUnknownParams(
           defaultState,
-        ) as Partial<T>,
-      ),
-    );
+          parseSPObj(
+            Object.fromEntries([...sp.entries()]),
+            defaultState,
+          ) as Partial<T>,
+        ),
+      );
+    }
   }, [sp]);
 
   const defOpts = React.useMemo(
@@ -192,7 +196,7 @@ type RouterOptions = NonNullable<
   Parameters<Router["push"]>[1] | Parameters<Router["replace"]>[1]
 >;
 
-interface Options extends RouterOptions {
+export interface Options extends RouterOptions {
   replace?: boolean;
 }
 
@@ -201,7 +205,7 @@ const defaultOptions = {
   scroll: false,
 };
 
-type Params = {
+export type Params = {
   searchParams?: object;
   replace?: boolean;
   scroll?: boolean;
