@@ -14,12 +14,14 @@ export function UseStateComp({ showCheckbox = true }: { showCheckbox?: boolean})
     setUrl({ showForm: ev.target.checked })
   }, [setUrl])
 
+  const uid = React.useId();
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: "12px"}}>
-      <Field id="valueInput" text="value">
-        <Input id='valueInput' name="valueInput" value={urlState.value} onChange={onChangeVal} type="number" data-testid="valueInput" />
+      <Field id={`valueInput-${uid}`} text="value">
+        <Input id='valueInput' name={`valueInput-${uid}`} value={urlState.value} onChange={onChangeVal} type="number" data-testid="valueInput" />
       </Field>
+
 
       {showCheckbox && <Field id="showForm" text="show form">
         <Input

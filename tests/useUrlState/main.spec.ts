@@ -199,7 +199,7 @@ test.describe('main tests', () => {
 test.describe('useHook - race condition', () => {
   for (const url of useHookUrls) {
     test(`useHook ${url}`, async ({ page }) => {
-      await page.goto('/useHook-race-condition');
+      await page.goto(url);
       await page.waitForSelector('[data-testid="showForm"]');
 
       // Initially, second component should not be visible
@@ -235,7 +235,7 @@ test.describe('useHook - race condition', () => {
 
       // Parse the updates array and verify it contains boolean values tracking showForm state
       const updates = JSON.parse(updatesText || '[]');
-      expect(updates).toEqual([false, false, true, true])
+        expect(updates).toEqual([false, true, true])
     })
   }
 })

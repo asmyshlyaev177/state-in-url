@@ -101,10 +101,11 @@ export function useUrlState<T extends JSONCompatible>(
   const defOpts = React.useMemo(
     () => ({
       ...defaultOpts,
-      replace: params?.replace,
-      preventScrollReset: params?.preventScrollReset as boolean,
+      replace: params?.replace ?? defaultOpts.replace,
+      preventScrollReset:
+        params?.preventScrollReset ?? defaultOpts.preventScrollReset,
     }),
-    [],
+    [params?.replace, params?.preventScrollReset],
   );
 
   const navigate = useNavigate();

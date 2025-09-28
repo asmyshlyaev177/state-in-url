@@ -22,10 +22,14 @@ export default defineConfig({
   // workers: process.env.CI ? 1 : undefined,
   workers: process.env.CI ? 1 : 3,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  reporter: [
+  reporter: !!process.env.CI ? [
     ['list'],
+    ['blob'],
     ['html', { open: 'never', outputFolder: './playwright-report' }],
-  ],
+  ] : [
+    ['list'],
+  ['html', { open: 'never', outputFolder: './playwright-report' }]
+],
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
@@ -46,7 +50,7 @@ export default defineConfig({
 
     {
       name: 'firefox',
-      use: { ...devices['Desktop Firefox'], launchOptions: { firefoxUserPrefs: { "fission.webContentIsolationStrategy": 1, "accessibility.force_disabled" : 1} } },
+      use: { ...devices['Desktop Firefox'], launchOptions: { firefoxUserPrefs: { "fission.webContentIsolationStrategy": 1, "accessibility.force_disabled": 1 } } },
     },
 
     {

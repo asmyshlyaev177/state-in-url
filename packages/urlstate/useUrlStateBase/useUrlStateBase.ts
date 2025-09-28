@@ -46,7 +46,7 @@ import {
  * * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/integrations/packages/urlstate/useUrlStateBase}
  */
 
-let timer: NodeJS.Timeout | undefined = undefined;
+let timer: ReturnType<typeof setTimeout> | undefined;
 
 export function useUrlStateBase<T extends JSONCompatible>(
   defaultState: T,
@@ -105,7 +105,7 @@ export function useUrlStateBase<T extends JSONCompatible>(
       setState(newVal);
 
       const { replace, ..._rest } = options || {};
-      queue.current.push([replace ? "replace" : "push", newUrl, _rest]);
+      queue.current = [[replace ? "replace" : "push", newUrl, _rest]];
 
       clearTimeout(timer);
       timer = undefined;
