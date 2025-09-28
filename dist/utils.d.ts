@@ -11,11 +11,11 @@ export declare const typeOf: (val: unknown) => Type;
 export declare const isPrimitive: (val: unknown) => val is Simple;
 export type Simple = string | Date | boolean | number | null | undefined | Function | symbol;
 export declare const isSSR: boolean;
-export type JSON = null | boolean | Date | number | string | {
+export type JSON = null | boolean | Date | number | string | undefined | {
     [prop: string]: JSON | JSON[];
 };
 export type JSONCompatible = {
-    [prop: string]: JSON | JSON[];
+    [prop: string]: JSON | JSON[] | undefined;
 };
 export declare const getParams: (strOrSearchParams?: string | URLSearchParams) => URLSearchParams;
 export type UnknownObj = object | {
@@ -32,3 +32,5 @@ export interface Router {
 }
 export declare const routerHistory: Router;
 export declare const isSafari: boolean;
+export declare const popstateEv = "popstate";
+export declare function getSearch(): string;

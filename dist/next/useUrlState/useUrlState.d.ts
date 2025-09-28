@@ -80,10 +80,10 @@ export declare function useUrlState<T extends JSONCompatible>(defaultState: T, p
 };
 type Router = ReturnType<typeof useRouter>;
 type RouterOptions = NonNullable<Parameters<Router["push"]>[1] | Parameters<Router["replace"]>[1]>;
-interface Options extends RouterOptions {
+export interface Options extends RouterOptions {
     replace?: boolean;
 }
-type Params = {
+export type Params = {
     searchParams?: object;
     replace?: boolean;
     scroll?: boolean;

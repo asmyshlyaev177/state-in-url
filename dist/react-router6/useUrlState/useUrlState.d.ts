@@ -75,9 +75,9 @@ export declare function useUrlState<T extends JSONCompatible>(defaultState: T, p
         [key: string]: unknown;
     }) => void;
 };
-interface Params extends NavigateOptions {
+export declare const defaultOpts: NavigateOptions;
+export interface Params extends NavigateOptions {
     useHistory?: boolean;
     searchParams?: object;
     replace?: boolean;
 }
-export {};

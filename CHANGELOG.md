@@ -1,3 +1,11 @@
+## [6.0.2](https://github.com/asmyshlyaev177/state-in-url/compare/v6.0.1...v6.0.2) (2025-09-28)
+
+
+### Bug Fixes
+
+* fix bugs with laggy state when using multiple hook instances ([f987669](https://github.com/asmyshlyaev177/state-in-url/commit/f987669dc2aa1b075407a70c02ae856660793eac))
+* use searchParams from client even if not passed, allow undefined in base types ([de3e244](https://github.com/asmyshlyaev177/state-in-url/commit/de3e2444df2cea4f785059ba71f5bd2ffe1b1fa3))
+
 ## [6.0.1](https://github.com/asmyshlyaev177/state-in-url/compare/v6.0.0...v6.0.1) (2025-08-22)
 
 
