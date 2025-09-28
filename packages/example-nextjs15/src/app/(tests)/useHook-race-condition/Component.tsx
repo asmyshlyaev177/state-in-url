@@ -31,11 +31,11 @@ export function Component() {
       }}>Reload</button>
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: "12px" }}>
-        <Suspense>
+        <Suspense fallback={null}>
           <UseStateComp />
         </Suspense>
 
-        <Suspense>
+        <Suspense fallback={null}>
           {urlState.showForm && <UseStateComp showCheckbox={false} />}
         </Suspense>
       </div>
