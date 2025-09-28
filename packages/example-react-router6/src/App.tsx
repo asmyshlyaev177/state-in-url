@@ -23,6 +23,9 @@ function App() {
       <Link to="/few-components/1" className="text-black">
         Few components
       </Link>
+      <Link to="/useHook-race-condition" className="text-black ml-4">
+        Race Condition Test
+      </Link>
     </div>
   );
 }
