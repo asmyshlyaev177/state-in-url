@@ -16,6 +16,7 @@ export default function robots(): MetadataRoute.Robots {
         '/useUrlState/',
         '/useUrlState/1/',
         '/useUrlState/2/',
+        '/useHook-race-condition/'
       ],
     },
     sitemap: `${siteUrl}/sitemap.xml`,

@@ -25,19 +25,20 @@ export function UseStateComp({
     [setUrl],
   );
 
+  const uid = React.useId();
+
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-      <Field id="valueInput" text="value">
+      <Field id={`valueInput-${uid}`} text="value">
         <Input
           id="valueInput"
-          name="valueInput"
+          name={`valueInput-${uid}`}
           value={urlState.value}
           onChange={onChangeVal}
           type="number"
           data-testid="valueInput"
         />
       </Field>
-
       {showCheckbox && (
         <Field id="showForm" text="show form">
           <Input

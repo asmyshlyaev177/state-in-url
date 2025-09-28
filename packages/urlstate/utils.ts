@@ -50,7 +50,6 @@ export type Simple =
   | undefined
   // eslint-disable-next-line @typescript-eslint/ban-types
   | Function
-  | undefined
   | symbol;
 
 export const isSSR = typeof window === "undefined";
@@ -61,6 +60,7 @@ export type JSON =
   | Date
   | number
   | string
+  | undefined
   | { [prop: string]: JSON | JSON[] };
 
 export type JSONCompatible = {
@@ -143,10 +143,14 @@ export interface Router {
 
 export const routerHistory: Router = {
   push: (str) => {
-    window && window.history.pushState(null, "", str);
+    if (typeof window !== "undefined") {
+      window.history.pushState(null, "", str);
+    }
   },
   replace: (str) => {
-    window && window.history.replaceState(null, "", str);
+    if (typeof window !== "undefined") {
+      window.history.replaceState(null, "", str);
+    }
   },
 };
 

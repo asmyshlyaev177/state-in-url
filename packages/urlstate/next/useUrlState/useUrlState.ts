@@ -160,14 +160,12 @@ export function useUrlState<T extends JSONCompatible>(
     }
   }, [sp]);
 
-  const defOpts = React.useMemo(
-    () => ({
-      ...defaultOptions,
-      scroll: params?.scroll,
-      replace: params?.replace,
-    }),
-    [],
-  );
+  const defOpts = React.useMemo(() => {
+    const opts = { ...defaultOptions };
+    if (params?.scroll !== undefined) opts.scroll = params.scroll;
+    if (params?.replace !== undefined) opts.replace = params.replace;
+    return opts;
+  }, [params?.scroll, params?.replace]);
 
   const setUrl = React.useCallback(
     (value?: Parameters<typeof updateUrlBase>[0], options?: Options) =>
