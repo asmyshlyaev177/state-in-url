@@ -98,7 +98,6 @@ export function filterUnknownParamsClient<T extends object>(
   return shapeParams.toString();
 }
 
-// TODO: tests
 export function filterUnknownParams<T extends object>(
   shape: T,
   searchParams?: object,
