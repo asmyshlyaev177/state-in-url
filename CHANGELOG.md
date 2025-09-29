@@ -1,3 +1,10 @@
+## [6.0.3](https://github.com/asmyshlyaev177/state-in-url/compare/v6.0.2...v6.0.3) (2025-09-29)
+
+
+### Bug Fixes
+
+* fix possible rare memory leak and minor perf improvements ([2356d08](https://github.com/asmyshlyaev177/state-in-url/commit/2356d08e79de6eb66252ee2b8504aafbb3d2049e))
+
 ## [6.0.2](https://github.com/asmyshlyaev177/state-in-url/compare/v6.0.1...v6.0.2) (2025-09-28)
 
 
