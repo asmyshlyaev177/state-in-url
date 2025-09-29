@@ -22,7 +22,9 @@ export function encodeState<T extends JSONCompatible>(
   paramsToKeep?: string | URLSearchParams,
 ) {
   const params = getParams(paramsToKeep);
-  for (const [key, value] of Object.entries(state || {})) {
+  const entries = Object.entries(state || {});
+  for (let i = 0; i < entries.length; i++) {
+    const [key, value] = entries[i];
     const initialVal = defaults?.[key as keyof typeof defaults];
     if (JSON.stringify(value) !== JSON.stringify(initialVal)) {
       params.set(key, encode(value));

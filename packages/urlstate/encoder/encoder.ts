@@ -1,6 +1,10 @@
 import { SYMBOLS } from "../constants";
 import { type JSONCompatible, type Simple, typeOf } from "../utils";
 
+const QUOTE_REGEX = /'/g;
+const DOUBLE_QUOTE_REGEX = /"/g;
+const ENCODED_QUOTE_REGEX = /%27/g;
+
 /**
  * Encode any JSON serializable value to URL friendly string
  *
@@ -17,8 +21,8 @@ export function encode(payload: unknown): string {
   }
 
   return JSON.stringify(structuredClone(payload), replacer)
-    .replace(/'/g, "%27")
-    .replace(/"/g, "'");
+    .replace(QUOTE_REGEX, "%27")
+    .replace(DOUBLE_QUOTE_REGEX, "'");
 }
 
 function replacer(_key: string, value: unknown): unknown {
@@ -67,7 +71,7 @@ export const encodePrimitive = (payload: Simple) => {
  */
 export function decode<T>(payload: string, fallback?: T) {
   return parseJSON(
-    payload.replace(/'/g, '"').replace(/%27/g, "'"),
+    payload.replace(QUOTE_REGEX, '"').replace(ENCODED_QUOTE_REGEX, "'"),
     fallback as JSONCompatible,
   ) as T;
 }

@@ -99,21 +99,24 @@ export function useUrlState<T extends JSONCompatible>(
   defaultState: T,
   params?: Params,
 ) {
-  const useHistory = params?.useHistory;
+  const isHistory = React.useMemo(
+    () => (params?.useHistory === undefined ? true : !!params?.useHistory),
+    [],
+  );
 
   const nextRouter = useRouter();
 
   const router = React.useMemo(
     () => ({
       push: (...args: Parameters<typeof nextRouter.push>) => {
-        if (useHistory === undefined ? true : !!useHistory) {
+        if (isHistory) {
           routerHistory.push(...args);
         } else {
           nextRouter.push(...args);
         }
       },
       replace: (...args: Parameters<typeof nextRouter.replace>) => {
-        if (useHistory === undefined ? true : !!useHistory) {
+        if (isHistory) {
           routerHistory.replace(...args);
         } else {
           nextRouter.replace(...args);

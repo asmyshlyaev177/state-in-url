@@ -46,7 +46,17 @@ import {
  * * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/integrations/packages/urlstate/useUrlStateBase}
  */
 
+// Global timer for "last update wins" behavior across all hook instances
 let timer: ReturnType<typeof setTimeout> | undefined;
+// Track active update info to prevent memory leaks
+let pendingUpdate:
+  | {
+      router: Router;
+      method: "push" | "replace";
+      url: string;
+      opts?: Partial<Options>;
+    }
+  | undefined;
 
 export function useUrlStateBase<T extends JSONCompatible>(
   defaultState: T,
@@ -70,10 +80,7 @@ export function useUrlStateBase<T extends JSONCompatible>(
   useInsertionEffect(() => {
     // for history navigation
     const popCb = () => {
-      const newVal = parse(
-        filterUnknownParamsClient(defaultState, getSearch()),
-      );
-      setState(newVal);
+      setState(parse(filterUnknownParamsClient(defaultState, getSearch())));
     };
 
     window.addEventListener(popstateEv, popCb);
@@ -82,8 +89,6 @@ export function useUrlStateBase<T extends JSONCompatible>(
       window.removeEventListener(popstateEv, popCb);
     };
   }, []);
-
-  const queue = React.useRef<UpdateQueueItem[]>([]);
 
   const updateUrl = React.useCallback(
     (value?: Parameters<typeof setState>[0], options?: Options) => {
@@ -105,20 +110,27 @@ export function useUrlStateBase<T extends JSONCompatible>(
       setState(newVal);
 
       const { replace, ..._rest } = options || {};
-      queue.current = [[replace ? "replace" : "push", newUrl, _rest]];
 
       clearTimeout(timer);
       timer = undefined;
 
-      const upd = queue.current.filter(Boolean).at(-1);
-      if (upd) {
-        timer = setTimeout(() => {
-          queue.current = [];
+      pendingUpdate = {
+        router,
+        method: replace ? "replace" : "push",
+        url: newUrl,
+        opts: _rest,
+      };
 
-          router[upd[0]](upd[1], upd[2]);
-          timer = undefined;
-        }, TIMEOUT);
-      }
+      timer = setTimeout(() => {
+        if (pendingUpdate) {
+          pendingUpdate.router[pendingUpdate.method](
+            pendingUpdate.url,
+            pendingUpdate.opts,
+          );
+          pendingUpdate = undefined;
+        }
+        timer = undefined;
+      }, TIMEOUT);
     },
     [router, stringify, getState],
   );
@@ -152,12 +164,6 @@ function getOtherParams<T extends object>(shape: T) {
   }
   return params;
 }
-
-type UpdateQueueItem = [
-  method: "push" | "replace",
-  url: string,
-  opts?: Partial<Options>,
-];
 
 interface OptionsObject {
   [key: string]: unknown;

@@ -69,11 +69,7 @@ export function useSharedState<T extends JSONCompatible>(
     const cb = () => {
       _setState(stateMap.get(stateShape.current) || stateShape.current);
     };
-    const unsub = subscribers.add(stateShape.current, cb);
-
-    return () => {
-      unsub();
-    };
+    return subscribers.add(stateShape.current, cb);
   }, []);
 
   // get state without deps
