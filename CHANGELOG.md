@@ -1,3 +1,10 @@
+## [6.0.4](https://github.com/asmyshlyaev177/state-in-url/compare/v6.0.3...v6.0.4) (2025-09-30)
+
+
+### Bug Fixes
+
+* remove test files from dist ([55e10b9](https://github.com/asmyshlyaev177/state-in-url/commit/55e10b9c71ca233b736fd86f6bc16469db6607b7))
+
 ## [6.0.3](https://github.com/asmyshlyaev177/state-in-url/compare/v6.0.2...v6.0.3) (2025-09-29)
 
 
