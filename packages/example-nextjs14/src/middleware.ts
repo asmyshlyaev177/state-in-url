@@ -50,114 +50,211 @@ export const config = {
   matcher: ['/useUrlState/:path*', '/'],
 };
 
-const LLMS_TXT_CONTENT = `# state-in-url: React Hook for State Management
+const LLMS_TXT_CONTENT = `# state-in-url
 
-## About state-in-url
+A React hook library for storing complex state objects in browser URLs with full TypeScript type preservation.
 
-name = state-in-url
-description = "React hook to store complex state object in a browser URL preserving types of data"
-npm: https://www.npmjs.com/package/state-in-url
-github: https://github.com/asmyshlyaev177/state-in-url
-website: https://state-in-url.dev
-docs: https://raw.githubusercontent.com/asmyshlyaev177/state-in-url/refs/heads/master/README.md
+## What It Does
 
-## Supported frameworks and documentation
- - Next.js v14-v15 - https://raw.githubusercontent.com/asmyshlyaev177/state-in-url/refs/heads/master/packages/urlstate/next/useUrlState/README.md
- - React-router v7 - https://raw.githubusercontent.com/asmyshlyaev177/state-in-url/refs/heads/master/packages/urlstate/react-router/useUrlState/README.md
- - React-router v6 - https://raw.githubusercontent.com/asmyshlyaev177/state-in-url/refs/heads/master/packages/urlstate/react-router6/useUrlState/README.md
- - Remix.js v2 - https://raw.githubusercontent.com/asmyshlyaev177/state-in-url/refs/heads/master/packages/urlstate/remix/useUrlState/README.md
+state-in-url synchronizes React state with URL query parameters, enabling:
+- State sharing between unrelated components without prop drilling or context
+- State persistence across page reloads via URL
+- Shareable links that preserve application state
+- Type-safe state management with full TypeScript inference
 
-## API
+## Package Information
 
-Hook: "useUrlState" for storing state and syncronizing it with browser's URI in query params (search params)
+- **NPM:** https://www.npmjs.com/package/state-in-url
+- **GitHub:** https://github.com/asmyshlyaev177/state-in-url
+- **Website:** https://state-in-url.dev
+- **Main Documentation:** https://raw.githubusercontent.com/asmyshlyaev177/state-in-url/refs/heads/master/README.md
 
-## Installation and import
+## Supported Frameworks
 
-- Installation: \`npm i state-in-url\`
-- Import for Next.js: \`import { useUrlState } from "state-in-url/next";\`
-- Import for React-router@6: \`import { useUrlState } from "state-in-url/react-router6";\`
-- Import for React-router@7: \`import { useUrlState } from "state-in-url/react-router";\`
-- Import for Remix.js: \`import { useUrlState } from "state-in-url/remix";\`
+| Framework | Versions | Documentation |
+|-----------|----------|---------------|
+| Next.js | v14-v15 | https://raw.githubusercontent.com/asmyshlyaev177/state-in-url/refs/heads/master/packages/urlstate/next/useUrlState/README.md |
+| React Router | v7 | https://raw.githubusercontent.com/asmyshlyaev177/state-in-url/refs/heads/master/packages/urlstate/react-router/useUrlState/README.md |
+| React Router | v6 | https://raw.githubusercontent.com/asmyshlyaev177/state-in-url/refs/heads/master/packages/urlstate/react-router6/useUrlState/README.md |
+| Remix | v2 | https://raw.githubusercontent.com/asmyshlyaev177/state-in-url/refs/heads/master/packages/urlstate/remix/useUrlState/README.md |
 
-## Usage
+## Installation
 
-\`\`\`ts
-type InitialState = {
-  foo: string;
-  bar: boolean;
+\`\`\`bash
+npm install state-in-url
+\`\`\`
+
+## Import Paths by Framework
+
+\`\`\`typescript
+// Next.js
+import { useUrlState } from "state-in-url/next";
+
+// React Router v7
+import { useUrlState } from "state-in-url/react-router";
+
+// React Router v6
+import { useUrlState } from "state-in-url/react-router6";
+
+// Remix
+import { useUrlState } from "state-in-url/remix";
+\`\`\`
+
+## Core API: useUrlState Hook
+
+The primary hook for state management synchronized with URL query parameters.
+
+**Returns:**
+- \`urlState\`: Current state object with full type inference
+- \`setState\`: Updates state immediately (batched URL sync)
+- \`setUrl\`: Syncs state to URL immediately
+
+## Basic Usage Example
+
+\`\`\`typescript
+// 1. Define state type using 'type', not 'interface'
+type FormState = {
+  searchQuery: string;
+  isFiltered: boolean;
+  page: number;
 };
 
-const initialStateValue: InitialState = { foo: "bar", bar: false };
+// 2. Create initial state as static const (never from props/functions)
+const initialState: FormState = {
+  searchQuery: "",
+  isFiltered: false,
+  page: 1
+};
 
-function SomeReactComponent() {
-  const { urlState, setUrl, setState } = useUrlState(initialStateValue);
+function SearchComponent() {
+  const { urlState, setState, setUrl } = useUrlState(initialState);
 
   return (
     <div>
-      // access state value, types of values are infered from InitialState with full Typescript validation
-      Value is {urlState.foo}
+      {/* Read state - fully typed */}
+      <p>Current search: {urlState.searchQuery}</p>
+      <p>Page: {urlState.page}</p>
 
-      // set state value with URL update
-      <button onClick={() => setState({ bar: true })}>Set bool value</button>
-      // sync state between components instantly, update URL on blur
-      <input value={urlState.value} onChange={(ev) => { setState(curr => ({ ...curr, foo: ev.target.value })) }} onBlur={() => setUrl()}>
-      // reset state
-      <button onClick={() => setUrl((_, initialState) => initialState)}>reset</button>
+      {/* Update state + URL immediately */}
+      <button onClick={() => setUrl({ page: urlState.page + 1 })}>
+        Next Page
+      </button>
+
+      {/* Update state instantly, sync URL on blur */}
+      <input
+        value={urlState.searchQuery}
+        onChange={(e) => setState({ searchQuery: e.target.value })}
+        onBlur={() => setUrl()}
+      />
+
+      {/* Reset to initial state */}
+      <button onClick={() => setUrl((_, initial) => initial)}>
+        Reset
+      </button>
     </div>
-  )
+  );
 }
 \`\`\`
 
-## IMPORTANT notes
+## Advanced Usage Patterns
 
-- Define state type as \`type\`, not as \`interface\`.
-- Always define initialState as a static const, never use an object which reference can change, e.g. not from props, function returns, or object destructuring.
-- Never store any sensetive data like API keys or env variables with useUrlState.
-- Only serializable by JSON.stringify values can be stored.
-- Can use few hooks with different states at the same time, as long as state top level keys are not overlaping. Values from other states will be preserved, unrelated query parameters will be preserved as well.
-- Updates are throttled, but for best user experience often updated elements like inputs, better to update state with \`setState\` and sync values to url with \`setUrl\` separately.
-- For Next.js Server Components better to pass \`searchParams\` object \`useUrlState(initialState, { searchParams })\` to avoid hydration errors
+### Functional Updates
 
-## Best Practice
+\`\`\`typescript
+// Using previous state
+setUrl(prev => ({ ...prev, page: prev.page + 1 }));
 
-To stay organized, it’s best practice to centralize your state objects and hooks in a separate file.
-
-1- Create a useSomeState.ts file:
-
-\`\`\`ts
-// import useUrlState hook
-
-type SomeState = {
-  value: number;
-  strValue: string;
-  arr: [];
-  obj: {}
-};
-
-const initialState: SomeState = {
-  value: 0,
-  strValue: '',
-  arr: [],
-  obj: {}
-};
-
-export const useSomeState = () => {
-  const { urlState, setUrl, setState } = useUrlState(initialState);
-
-  return { urlState, setUrl, setState };
-};
+// Accessing initial state
+setUrl((prev, initial) => ({ ...prev, ...initial }));
+setState((prev, initial) => initial); // full reset
 \`\`\`
 
-2- Import into your component or hook: \`import { useSomeState } from "./useSomeState";\`
-3- Access state values via \`urlState.value\`
-4- Update state value via \`setUrl({ value: 123 })\`, or using prevState syntax \`setUrl(prevState => ({ ...prevState, value: value + 1 }))\`
-5- Can update state value and sync it to the URL manually with \`setState(newState); setUrl();\`
-6- Can reset state values to initial with \`setUrl((_prevState, initialState) => initialState)\` and \`setState((_prevState, initialState) => initialState)\`
+### Separate State Updates and URL Sync
 
-Any component using: useSomeState will now share the same state.
+For frequently updated inputs, update state immediately and sync URL separately:
 
-## Additional documentation
+\`\`\`typescript
+<input
+  value={urlState.query}
+  onChange={(e) => setState({ query: e.target.value })} // instant
+  onBlur={() => setUrl()} // sync to URL when done
+/>
+\`\`\`
 
-- Full documentation can be found in main README.md file on GitHub repository, there are examples, and links to separate .md files for all hooks and frameworks. - Usage examples and links to documentation also provided via JSDOC comments.
+### Next.js Server Components
+
+Pass \`searchParams\` to avoid hydration errors:
+
+\`\`\`typescript
+export default function Page({ searchParams }: { searchParams: Record<string, string> }) {
+  const { urlState, setUrl } = useUrlState(initialState, { searchParams });
+  // ...
+}
+\`\`\`
+
+## Recommended Pattern: Centralized State
+
+Create custom hooks in separate files for better organization:
+
+\`\`\`typescript
+// hooks/useSearchState.ts
+import { useUrlState } from "state-in-url/next";
+
+type SearchState = {
+  query: string;
+  filters: string[];
+  sortBy: "name" | "date";
+};
+
+const initialState: SearchState = {
+  query: "",
+  filters: [],
+  sortBy: "name"
+};
+
+export function useSearchState() {
+  return useUrlState(initialState);
+}
+\`\`\`
+
+\`\`\`typescript
+// Any component
+import { useSearchState } from "@/hooks/useSearchState";
+
+function SearchResults() {
+  const { urlState, setUrl } = useSearchState();
+  // State is automatically shared across all components using this hook
+}
+\`\`\`
+
+## Critical Constraints and Limitations
+
+1. **Type Definition:** Always use \`type\`, never \`interface\`
+2. **Initial State:** Must be a static const, never from props/functions/destructuring
+3. **Serialization:** Only JSON-serializable values (no functions, class instances, etc.)
+4. **Security:** Never store sensitive data (API keys, tokens, passwords)
+5. **Multiple Hooks:** Can use multiple hooks if top-level keys don't overlap
+6. **URL Preservation:** Unrelated query parameters are preserved
+7. **Throttling:** Updates are throttled for performance
+
+## State Updates Behavior
+
+- \`setState()\`: Updates state immediately, URL sync expected to be done manually
+- \`setUrl()\`: Syncs state to URL immediately
+- Both support functional updates with access to previous and initial state
+- URL updates trigger state synchronization across all components using the same hook
+
+## Type Safety
+
+All state operations have full TypeScript type inference:
+- \`urlState\` matches the shape of your initial state type
+- \`setState\` and \`setUrl\` validate against your type
+- Nested object properties are fully typed
+
+## Documentation Resources
+
+- Main README with comprehensive examples: GitHub repository
+- Framework-specific guides: See documentation links per framework above
+- JSDoc comments: Available in IDE for all exported functions
 `;
 
