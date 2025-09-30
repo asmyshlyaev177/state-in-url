@@ -1,8 +1,34 @@
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 
-export function middleware(request: NextRequest) {
+// Auto-generated from public/llms.txt by scripts/generate-middleware-content.js
+
+export async function middleware(request: NextRequest) {
   const url = new URL(request.url);
+  const acceptHeader = request.headers.get('accept') || '';
+
+  // Check if the request prefers markdown/plain text over HTML
+  const acceptsMarkdown = acceptHeader.includes('text/markdown');
+  const acceptsPlainText = acceptHeader.includes('text/plain');
+  const acceptsHtml = acceptHeader.includes('text/html');
+
+  // Serve markdown if text/plain or text/markdown is requested before text/html
+  const shouldServeMarkdown =
+    (acceptsMarkdown || acceptsPlainText) &&
+    (!acceptsHtml ||
+     acceptHeader.indexOf('text/markdown') < acceptHeader.indexOf('text/html') ||
+     acceptHeader.indexOf('text/plain') < acceptHeader.indexOf('text/html'));
+
+  if (shouldServeMarkdown && url.pathname === '/') {
+    return new NextResponse(LLMS_TXT_CONTENT, {
+      status: 200,
+      headers: {
+        'Content-Type': acceptsMarkdown ? 'text/markdown; charset=utf-8' : 'text/plain; charset=utf-8',
+        'Cache-Control': 'public, max-age=3600',
+      },
+    });
+  }
+
   // .search and .searchParams are incorrect
   const sp = (request.url?.includes?.('_next') ? '' : request.url)?.split?.('?')?.[1] || '';
 
@@ -21,5 +47,117 @@ export function middleware(request: NextRequest) {
 
 // issue with using shiki, because can't load wasm
 export const config = {
-  matcher: ['/useUrlState/:path*'],
+  matcher: ['/useUrlState/:path*', '/'],
 };
+
+const LLMS_TXT_CONTENT = `# state-in-url: React Hook for State Management
+
+## About state-in-url
+
+name = state-in-url
+description = "React hook to store complex state object in a browser URL preserving types of data"
+npm: https://www.npmjs.com/package/state-in-url
+github: https://github.com/asmyshlyaev177/state-in-url
+website: https://state-in-url.dev
+docs: https://raw.githubusercontent.com/asmyshlyaev177/state-in-url/refs/heads/master/README.md
+
+## Supported frameworks and documentation
+ - Next.js v14-v15 - https://raw.githubusercontent.com/asmyshlyaev177/state-in-url/refs/heads/master/packages/urlstate/next/useUrlState/README.md
+ - React-router v7 - https://raw.githubusercontent.com/asmyshlyaev177/state-in-url/refs/heads/master/packages/urlstate/react-router/useUrlState/README.md
+ - React-router v6 - https://raw.githubusercontent.com/asmyshlyaev177/state-in-url/refs/heads/master/packages/urlstate/react-router6/useUrlState/README.md
+ - Remix.js v2 - https://raw.githubusercontent.com/asmyshlyaev177/state-in-url/refs/heads/master/packages/urlstate/remix/useUrlState/README.md
+
+## API
+
+Hook: "useUrlState" for storing state and syncronizing it with browser's URI in query params (search params)
+
+## Installation and import
+
+- Installation: \`npm i state-in-url\`
+- Import for Next.js: \`import { useUrlState } from "state-in-url/next";\`
+- Import for React-router@6: \`import { useUrlState } from "state-in-url/react-router6";\`
+- Import for React-router@7: \`import { useUrlState } from "state-in-url/react-router";\`
+- Import for Remix.js: \`import { useUrlState } from "state-in-url/remix";\`
+
+## Usage
+
+\`\`\`ts
+type InitialState = {
+  foo: string;
+  bar: boolean;
+};
+
+const initialStateValue: InitialState = { foo: "bar", bar: false };
+
+function SomeReactComponent() {
+  const { urlState, setUrl, setState } = useUrlState(initialStateValue);
+
+  return (
+    <div>
+      // access state value, types of values are infered from InitialState with full Typescript validation
+      Value is {urlState.foo}
+
+      // set state value with URL update
+      <button onClick={() => setState({ bar: true })}>Set bool value</button>
+      // sync state between components instantly, update URL on blur
+      <input value={urlState.value} onChange={(ev) => { setState(curr => ({ ...curr, foo: ev.target.value })) }} onBlur={() => setUrl()}>
+      // reset state
+      <button onClick={() => setUrl((_, initialState) => initialState)}>reset</button>
+    </div>
+  )
+}
+\`\`\`
+
+## IMPORTANT notes
+
+- Define state type as \`type\`, not as \`interface\`.
+- Always define initialState as a static const, never use an object which reference can change, e.g. not from props, function returns, or object destructuring.
+- Never store any sensetive data like API keys or env variables with useUrlState.
+- Only serializable by JSON.stringify values can be stored.
+- Can use few hooks with different states at the same time, as long as state top level keys are not overlaping. Values from other states will be preserved, unrelated query parameters will be preserved as well.
+- Updates are throttled, but for best user experience often updated elements like inputs, better to update state with \`setState\` and sync values to url with \`setUrl\` separately.
+- For Next.js Server Components better to pass \`searchParams\` object \`useUrlState(initialState, { searchParams })\` to avoid hydration errors
+
+## Best Practice
+
+To stay organized, it’s best practice to centralize your state objects and hooks in a separate file.
+
+1- Create a useSomeState.ts file:
+
+\`\`\`ts
+// import useUrlState hook
+
+type SomeState = {
+  value: number;
+  strValue: string;
+  arr: [];
+  obj: {}
+};
+
+const initialState: SomeState = {
+  value: 0,
+  strValue: '',
+  arr: [],
+  obj: {}
+};
+
+export const useSomeState = () => {
+  const { urlState, setUrl, setState } = useUrlState(initialState);
+
+  return { urlState, setUrl, setState };
+};
+\`\`\`
+
+2- Import into your component or hook: \`import { useSomeState } from "./useSomeState";\`
+3- Access state values via \`urlState.value\`
+4- Update state value via \`setUrl({ value: 123 })\`, or using prevState syntax \`setUrl(prevState => ({ ...prevState, value: value + 1 }))\`
+5- Can update state value and sync it to the URL manually with \`setState(newState); setUrl();\`
+6- Can reset state values to initial with \`setUrl((_prevState, initialState) => initialState)\` and \`setState((_prevState, initialState) => initialState)\`
+
+Any component using: useSomeState will now share the same state.
+
+## Additional documentation
+
+- Full documentation can be found in main README.md file on GitHub repository, there are examples, and links to separate .md files for all hooks and frameworks. - Usage examples and links to documentation also provided via JSDOC comments.
+`;
+

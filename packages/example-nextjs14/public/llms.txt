@@ -7,13 +7,13 @@ description = "React hook to store complex state object in a browser URL preserv
 npm: https://www.npmjs.com/package/state-in-url
 github: https://github.com/asmyshlyaev177/state-in-url
 website: https://state-in-url.dev
-docs: https://github.com/asmyshlyaev177/state-in-url/README.md
+docs: https://raw.githubusercontent.com/asmyshlyaev177/state-in-url/refs/heads/master/README.md
 
 ## Supported frameworks and documentation
- - Next.js v14-v15 - https://github.com/asmyshlyaev177/state-in-url/tree/master/packages/urlstate/next/useUrlState/README.md
- - React-router v7 - https://github.com/asmyshlyaev177/state-in-url/tree/master/packages/urlstate/react-router/useUrlState/README.md
- - React-router v6 - https://github.com/asmyshlyaev177/state-in-url/tree/master/packages/urlstate/react-router6/useUrlState/README.md
- - Remix.js v2 - https://github.com/asmyshlyaev177/state-in-url/tree/master/packages/urlstate/remix/useUrlState/README.md
+ - Next.js v14-v15 - https://raw.githubusercontent.com/asmyshlyaev177/state-in-url/refs/heads/master/packages/urlstate/next/useUrlState/README.md
+ - React-router v7 - https://raw.githubusercontent.com/asmyshlyaev177/state-in-url/refs/heads/master/packages/urlstate/react-router/useUrlState/README.md
+ - React-router v6 - https://raw.githubusercontent.com/asmyshlyaev177/state-in-url/refs/heads/master/packages/urlstate/react-router6/useUrlState/README.md
+ - Remix.js v2 - https://raw.githubusercontent.com/asmyshlyaev177/state-in-url/refs/heads/master/packages/urlstate/remix/useUrlState/README.md
 
 ## API
 
@@ -56,7 +56,7 @@ function SomeReactComponent() {
 }
 ```
 
-## Important notes
+## IMPORTANT notes
 
 - Define state type as `type`, not as `interface`.
 - Always define initialState as a static const, never use an object which reference can change, e.g. not from props, function returns, or object destructuring.
