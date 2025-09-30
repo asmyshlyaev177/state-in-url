@@ -1,3 +1,5 @@
+# State in url
+
 [English](./README.md) | [한국어](./README.KO.md) | 简体中文
 
 <div align="center">
@@ -23,31 +25,29 @@
 [![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/asmyshlyaev177/state-in-url/badge)](https://scorecard.dev/viewer/?uri=github.com/asmyshlyaev177/state-in-url)
 [![OpenSSF Best Practices](https://www.bestpractices.dev/projects/9679/badge)](https://www.bestpractices.dev/projects/9679)
 [![license](https://img.shields.io/github/license/asmyshlyaev177/state-in-url.svg?style=flat-square)](https://github.com/asmyshlyaev177/state-in-url/blob/master/LICENSE)
-<!-- or by embedding this in your HTML:
-<a href="https://www.bestpractices.dev/projects/9679"><img src="https://www.bestpractices.dev/projects/9679/badge"></a>  -->
 
 </div>
 
 <div align="center">
 
-<h4 align="center">如果您发现漏洞或有功能需求，请随时提交issue</h4>
+<h4 align="center">如果您发现了 bug 或想请求新功能,请随时提交 issue</h4>
 
 ![Demo-gif](https://github.com/asmyshlyaev177/state-in-url/blob/master/assets/Demo-gif.gif)
 
-# 演示页面
+# 演示
 
-<a href="https://state-in-url.dev" target="_blank">演示页面</a> |
+<a href="https://state-in-url.dev" target="_blank">演示</a> |
 <a href="https://state-in-url.netlify.app/" target="_blank">镜像链接</a>
 
-<a href="https://github.com/asmyshlyaev177/state-in-url/blob/master/Limits.md"  target="_blank">URI 长度限制： <b>安全上限为 12KB</b> </a>
+<a href="https://github.com/asmyshlyaev177/state-in-url/blob/master/Limits.md"  target="_blank">URI 大小限制,<b>最多 12KB</b> 是安全的</a>
 
 <hr />
 
-点个 <a href="#"><img src="https://raw.githubusercontent.com/acervenky/animated-github-badges/master/assets/starbadge.gif" width="25" height="25"></a>  并且 <a href="https://github.com/asmyshlyaev177" target="_blank">关注我</a> 来支持这个项目!
+添加一个 <a href="#"><img src="https://raw.githubusercontent.com/acervenky/animated-github-badges/master/assets/starbadge.gif" width="25" height="25"></a> 并<a href="https://github.com/asmyshlyaev177" target="_blank">关注我</a>以支持该项目!
 
-非常感激在[discussions](https://github.com/asmyshlyaev177/state-in-url/discussions/1)上提交你的反馈或意见
+非常欢迎您在[讨论区](https://github.com/asmyshlyaev177/state-in-url/discussions/1)分享您的反馈/意见
 
-如果觉得有用，就分享一下吧。
+如果对您有用,请分享。
 [X.com](https://twitter.com/intent/tweet?&url=https://github.com/asmyshlyaev177/state-in-url)
 [LinkedIn](https://www.linkedin.com/sharing/share-offsite/?url=https://github.com/asmyshlyaev177/state-in-url)
 [FB](https://www.facebook.com/sharer.php?u=https://github.com/asmyshlyaev177/state-in-url)
@@ -57,69 +57,89 @@
 
   </div>
 
-[直接给我看代码!](#useurlstate)
+[直接看代码!](#useurlstate)
 
 ## 为什么使用 `state-in-url`?
 
-将任何用户状态存储在查询参数中；想象一下在浏览器 URL 中嵌入 JSON 数据，同时保持数据的类型和结构。例如数字会被解码为数字而不是字符串，日期会被解码为日期，支持对象和数组等复杂结构。
-简单、快速，并且支持静态 TypeScript 验证。深度链接（即 URL 同步）变得轻而易举。
+在查询参数中存储任何用户状态;想象一下在浏览器 URL 中使用 JSON。所有这些都保持数据的类型和结构,例如数字将被解码为数字而不是字符串,日期作为日期,支持对象和数组。
+简单明了、快速,并提供静态 TypeScript 验证。轻松实现深层链接(又名 URL 同步)。
 
-提供了适用于 Next.js 和 react-router 的 `useUrlState` 钩子，以及适用于其他 JavaScript 场景的辅助工具。
-由于现代浏览器支持超长的 URL，而用户并不关心查询字符串（通常的操作是全选、复制和粘贴）。
+包含用于 Next.js 和 react-router 的 `useUrlState` hook,以及用于任何其他 JS 框架的辅助函数。
+由于现代浏览器支持巨大的 URL,用户也不关心查询字符串(这是一个全选和复制/粘贴的工作流程)。
 
-是时候将查询字符串用于状态管理了，正如它最初的设计初衷。
-这个库为你处理了所有繁琐的工作。
+是时候使用查询字符串进行状态管理了,正如它最初的用途。
+这个库为您完成所有繁琐的工作。
 
 这个库是 NUQS 的一个很好的替代品。
 
 ### 使用场景
 
-- 将未保存的用户表单或页面筛选条件存储在 URL 中
+- 在 URL 中存储未保存的用户表单或页面筛选器
 - 将 URL 与 React 状态同步
-- 在不修改 URI 的情况下，直接在无关的客户端组件之间同步数据
-- 支持共享包含应用状态的 URL（深度链接，URL 状态同步）
-- 轻松实现页面刷新后的状态持久化
+- 只需在不相关的客户端组件之间同步数据,而无需触及 URI
+- 带有应用程序状态的可共享 URL(深层链接、URL 状态同步)
+- 轻松实现跨页面重新加载的状态持久化
 
 ### 特性
 
-- 🧩 **简单易用**：无需提供者（providers）、reducers 或样板代码，API 类似 `React.useState`，几乎没有学习成本。
-- 📘 **TypeScript 验证/自动补全**：状态是一个对象，根据 TypeScript 定义，IDE 和测试中会自动进行静态验证。
-- ✨ **支持复杂数据**：嵌套对象、日期和数组，像 JSON 一样工作，但存储在 URL 中。
-- ☂ **默认值支持**：如果 URL 中没有参数，会自动使用默认值。
-- ⌨ **结构化定义**：所有可能的值在开始时定义，避免访问不存在的键。
-- **兼容性**：保留第三方查询参数不变。
-- **灵活性**：同一页面可以使用多个状态对象，只需使用不同的键。
-- **快速**：最小化重新渲染，编码和解码大对象仅需约 [1ms](https://github.com/asmyshlyaev177/state-in-url/blob/87c8c7c995c5cd7d9e7aa039c30bfe64b24abe4b/packages/urlstate/encoder/encoder.test.ts#L185)。
-- **服务端渲染支持**：可在 Server Components 中使用，支持 Next.js 14 和 15。
-- **轻量级**：零依赖，库大小小于 2KB。
-- **开发者体验优化**：提供良好的文档、JSDoc 注释和示例。
-- **框架灵活性**：提供 `Next.js` 和 `react-router` 的钩子，以及适用于其他框架或纯 JavaScript 的辅助工具。
-- **全面测试**：包含单元测试和针对 Chrome/Firefox/Safari 的 Playwright 测试（[测试详情](https://github.com/asmyshlyaev177/state-in-url/actions/workflows/tests.yml)）。
-- **宽松的许可证**：MIT 许可证，可自由使用。
+- 🧩 **简单**: 无需 providers、reducers、样板代码或新概念,API 类似于 `React.useState`
+- 📘 **TypeScript 验证/自动完成**: 状态只是一个对象,根据 TypeScript 定义在 IDE/测试中自动静态验证
+- ✨ **复杂数据**: 嵌套对象、日期和数组,与 JSON 工作方式相同,但在 URL 中
+- ☂ **默认值**: 如果参数不在 url 中,为您提供默认值
+- ⌨ **有序**: 所有可能的值在开始时定义,防止您获取不存在的键
+- **兼容**: 将保持第三方查询参数不变
+- **灵活**: 可以在同一页面上使用多个状态对象,只需使用不同的键
+- **快速**: 最少的重新渲染,大约[1ms](https://github.com/asmyshlyaev177/state-in-url/blob/87c8c7c995c5cd7d9e7aa039c30bfe64b24abe4b/packages/urlstate/encoder/encoder.test.ts#L185)来编码和解码大对象
+- **服务器端渲染**: 可以在服务器组件中使用,支持 Next.js 14 和 15
+- **轻量级**: 零依赖,库小于 2KB
+- **开发体验**: 良好的开发者体验、文档、JSDoc 注释和示例
+- **框架灵活性**: 为 `Next.js` 和 `react-router` 提供 hooks,以及用于其他框架或纯 JS 的辅助函数
+- **经过充分测试**: [Chrome/Firefox/Safari 的单元测试和 Playwright 测试](https://github.com/asmyshlyaev177/state-in-url/actions/workflows/tests.yml)
+- **宽松许可证**: MIT
 
 ## 目录
 
-- [安装](#安装)  
-- [`useUrlState` 钩子](#useurlstate)  
-  - [Next.js 专用](#nextjs-专用的-useUrlState-钩子)  
-  - [React-Router 专用](#React-Router-专用的-useUrlState-钩子)  
-- [其他辅助工具](#其他钩子和辅助工具)  
-  - [其他路由器的 `useUrlStateBase` 钩子](#其他路由器的-useUrlStateBase-钩子)  
-  - [React.js/Next.js 的 `useSharedState` 钩子](#reactjs-的-useSharedState-钩子)  
-  - [React.js 的 `useUrlEncode` 钩子](#reactjs-的-useUrlEncode-钩子)  
-  - [纯 JS 使用的 `encodeState` 和 `decodeState` 辅助函数](#encodeState-和-decodeState-辅助函数)  
-  - [底层 `encode` 和 `decode` 函数](#encode-和-decode-辅助函数)  
-- [最佳实践](#最佳实践)  
-  - [注意事项](#注意事项)  
-- [其他](#其他)  
-  - [路线图](#路线图)  
-  - [贡献指南](#贡献指南与本地运行说明)  
-  - [联系与支持](#联系与支持)  
-  - [更新日志](#更新日志)  
-  - [许可证](#许可证)  
-  - [灵感来源](#灵感来源)  
-
----
+- [State in url](#state-in-url)
+- [演示](#演示)
+  - [为什么使用 `state-in-url`?](#为什么使用-state-in-url)
+    - [使用场景](#使用场景)
+    - [特性](#特性)
+  - [目录](#目录)
+  - [安装](#安装)
+    - [1. 安装包](#1-安装包)
+    - [2. 编辑 tsconfig.json](#2-编辑-tsconfigjson)
+  - [useUrlState](#useurlstate)
+    - [用于 Next.js 的 useUrlState hook](#用于-nextjs-的-useurlstate-hook)
+      - [使用示例](#使用示例)
+        - [基础用法](#基础用法)
+        - [使用服务器端渲染](#使用服务器端渲染)
+        - [在 `layout` 组件中使用 hook](#在-layout-组件中使用-hook)
+        - [使用任意状态形状(不推荐)](#使用任意状态形状不推荐)
+    - [用于 Remix.js 的 useUrlState hook](#用于-remixjs-的-useurlstate-hook)
+      - [示例](#示例)
+    - [用于 React-Router 的 useUrlState hook](#用于-react-router-的-useurlstate-hook)
+      - [示例](#示例-1)
+  - [实用技巧](#实用技巧)
+        - [自定义 hook 以便捷地处理状态切片](#自定义-hook-以便捷地处理状态切片)
+        - [使用复杂状态形状](#使用复杂状态形状)
+        - [仅更新状态并手动同步到 URL](#仅更新状态并手动同步到-url)
+  - [其他 hooks 和辅助函数](#其他-hooks-和辅助函数)
+    - [`useUrlStateBase` hook 用于其他路由器](#useurlstatebase-hook-用于其他路由器)
+    - [`useSharedState` hook 用于 React.js](#usesharedstate-hook-用于-reactjs)
+    - [`useUrlEncode` hook 用于 React.js](#useurlencode-hook-用于-reactjs)
+    - [`encodeState` 和 `decodeState` 辅助函数](#encodestate-和-decodestate-辅助函数)
+    - [`encode` 和 `decode` 辅助函数](#encode-和-decode-辅助函数)
+  - [最佳实践](#最佳实践)
+  - [注意事项](#注意事项)
+  - [其他](#其他)
+    - [贡献和/或本地运行](#贡献和或本地运行)
+  - [路线图](#路线图)
+  - [联系和支持](#联系和支持)
+  - [更新日志](#更新日志)
+  - [提及](#提及)
+  - [许可证](#许可证)
+  - [个人网站](#个人网站)
+  - [灵感来源](#灵感来源)
 
 ## 安装
 
@@ -134,36 +154,34 @@ yarn add state-in-url
 pnpm add state-in-url
 ```
 
-### 2. 编辑 `tsconfig.json`
+### 2. 编辑 tsconfig.json
 
-在 `tsconfig.json` 的 `compilerOptions` 中设置 `"moduleResolution": "Bundler"`，或 `"moduleResolution": "Node16"`，或 `"moduleResolution": "NodeNext"`。  
-可能还需要设置 `"module": "ES2022"` 或 `"module": "ESNext"`。
+在 `tsconfig.json` 的 `compilerOptions` 中设置 `"moduleResolution": "Bundler"`,或 `"moduleResolution": "Node16"`,或 `"moduleResolution": "NodeNext"`。
+可能需要设置 `"module": "ES2022"`,或 `"module": "ESNext"`
 
----
+## useUrlState
 
-## `useUrlState`
+主 hook,接受初始状态作为参数,返回状态对象、更新 url 的回调以及仅更新状态的回调。
+使用相同 `state` 对象的所有组件都会自动同步。
 
-主钩子，接收初始状态作为参数，返回状态对象、更新 URL 的回调函数以及仅更新状态的回调函数。  
-所有使用相同 `state` 对象的组件会自动同步。
-
-### Next.js 专用的 `useUrlState` 钩子
+### 用于 Next.js 的 useUrlState hook
 
 [完整 API 文档](packages/urlstate/next/useUrlState)
 
-[React-Router 示例](#React-Router-专用的-useUrlState-钩子)
+[React-Router 示例](#用于-react-router-的-useurlstate-hook)
 
 #### 使用示例
 
 ##### 基础用法
 
-1. 定义状态结构及默认值
+1. 使用默认值定义状态形状
 
  ```typescript
  // userState.ts
- // 只有与默认值不同的参数会被放入 URL。
+ // 只有与默认值不同的参数才会进入 url。
  export const userState: UserState = { name: '', age: 0 }
 
- // 使用 `Type` 而非 `Interface`！
+ // 使用 `Type` 而不是 `Interface`!
  type UserState = { name: string, age: number }
  ```
 
@@ -176,15 +194,15 @@ import { useUrlState } from 'state-in-url/next';
 import { userState } from './userState';
 
 function MyComponent() {
-  // 可以传递 `replace` 参数，控制 `setUrl` 使用 `router.push` 还是 `router.replace`，默认为 replace=true
-  // 可以传递 `searchParams` 从服务端组件传入，如果需要从服务端组件获取数据，传递 `useHistory: false`
-  const { urlState, setUrl, setState, reset } = useUrlState(userState);
+  // 可以传递 `replace` 参数,它控制 `setUrl` 是否使用 `router.push` 或 `router.replace`,默认 replace=true
+  // 可以从服务器组件传递 `searchParams`,如果需要在服务器组件中获取数据,则传递 `useHistory: false`
+  const { urlState, setUrl, setState } = useUrlState(userState);
 
   return (
     <div>
-      // 如果 URL 为空，urlState.name 将返回 `userState` 的默认值
+      // 如果 url 为空,urlState.name 将返回 `userState` 的默认值
       <input value={urlState.name}
-        // 与 React.useState 相同的 API，例如 setUrl(currVal => currVal + 1)
+        // 与 React.useState 相同的 API,例如 setUrl(currVal => currVal + 1)
         onChange={(ev) => setUrl({ name: ev.target.value }) }
       />
       <input value={urlState.age}
@@ -193,11 +211,11 @@ function MyComponent() {
 
       <input value={urlState.name}
         onChange={(ev) => { setState(curr => ({ ...curr, name: ev.target.value })) }}
-        // 可以立即更新状态，但根据需要同步到 URL
+        // 可以立即更新状态,但根据需要将更改同步到 url
         onBlur={() => setUrl()}
       />
 
-      <button onClick={reset}>
+      <button onClick={() => setUrl((_, initial) => initial)}>
         重置
       </button>
 
@@ -206,7 +224,278 @@ function MyComponent() {
 }
 ```
 
-##### 自定义钩子以方便处理状态片段
+##### 使用服务器端渲染
+
+<details>
+  <Summary>示例</Summary>
+
+```typescript
+export default async function Home({ searchParams }: { searchParams: object }) {
+  return (
+    <Form searchParams={searchParams} />
+  )
+}
+
+// Form.tsx
+'use client'
+import React from 'react';
+import { useUrlState } from 'state-in-url/next';
+import { form } from './form';
+
+const Form = ({ searchParams }: { searchParams: object }) => {
+  const { urlState, setState, setUrl } = useUrlState(form, { searchParams });
+}
+```
+
+</details>
+
+##### 在 `layout` 组件中使用 hook
+
+<details>
+  <Summary>示例</Summary>
+  这是一个棘手的部分,因为带有 app router 的 nextjs 不允许从服务器端访问 searchParams。有一个使用 middleware 的解决方法,但它不够完美,可能在 nextjs 更新后停止工作。
+
+```typescript
+// 添加到适当的 `layout.tsx`
+export const runtime = 'edge';
+
+// middleware.ts
+import type { NextRequest } from 'next/server';
+import { NextResponse } from 'next/server';
+
+export function middleware(request: NextRequest) {
+  const url = request.url?.includes('_next') ? null : request.url;
+  const sp = url?.split?.('?')?.[1] || '';
+
+  const response = NextResponse.next();
+
+  if (url !== null) {
+    response.headers.set('searchParams', sp);
+  }
+
+  return response;
+}
+
+// 目标布局组件
+import { headers } from 'next/headers';
+import { decodeState } from 'state-in-url/encodeState';
+
+export default async function Layout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  const sp = headers().get('searchParams') || '';
+
+  return (
+    <div>
+      <Comp1 searchParams={decodeState(sp, stateShape)} />
+      {children}
+    </div>
+  );
+}
+
+
+```
+
+</details>
+
+##### 使用任意状态形状(不推荐)
+
+<details>
+  <Summary>示例</Summary>
+
+```typescript
+'use client'
+import { useUrlState } from 'state-in-url/next';
+
+const someObj = {};
+
+function SettingsComponent() {
+  const { urlState, setUrl, setState } = useUrlState<object>(someObj);
+}
+```
+
+</details>
+
+### 用于 Remix.js 的 useUrlState hook
+
+API 与 Next.js 版本相同,但可以传递 [NavigateOptions](https://github.com/remix-run/react-router/blob/bc693ed9f39170bda13b9e1b282fb8e9d5925f66/packages/react-router/lib/context.ts#L99) 类型的选项。
+
+[API 文档](packages/urlstate/remix/useUrlState)
+
+#### 示例
+
+```typescript
+export const form: Form = {
+  name: '',
+  age: undefined,
+  agree_to_terms: false,
+  tags: [],
+};
+
+type Form = {
+  name: string;
+  age?: number;
+  agree_to_terms: boolean;
+  tags: { id: string; value: { text: string; time: Date } }[];
+};
+
+```
+
+```typescript
+import { useUrlState } from 'state-in-url/remix';
+
+import { form } from './form';
+
+function TagsComponent() {
+  const { urlState, setUrl, setState } = useUrlState(form);
+
+  const onChangeTags = React.useCallback(
+    (tag: (typeof tags)[number]) => {
+      setUrl((curr) => ({
+        ...curr,
+        tags: curr.tags.find((t) => t.id === tag.id)
+          ? curr.tags.filter((t) => t.id !== tag.id)
+          : curr.tags.concat(tag),
+      }));
+    },
+    [setUrl],
+  );
+
+  return (
+    <div>
+      <Field text="标签">
+        <div className="flex flex-wrap gap-2">
+          {tags.map((tag) => (
+            <Tag
+              active={!!urlState.tags.find((t) => t.id === tag.id)}
+              text={tag.value.text}
+              onClick={() => onChangeTags(tag)}
+              key={tag.id}
+            />
+          ))}
+        </div>
+      </Field>
+
+      <input value={urlState.name}
+        onChange={(ev) => { setState(curr => ({ ...curr, name: ev.target.value })) }}
+        // 可以立即更新状态,但根据需要将更改同步到 url
+        onBlur={() => setUrl()}
+      />
+    </div>
+  );
+}
+
+const tags = [
+  {
+    id: '1',
+    value: { text: 'React.js', time: new Date('2024-07-17T04:53:17.000Z') },
+  },
+  {
+    id: '2',
+    value: { text: 'Next.js', time: new Date('2024-07-18T04:53:17.000Z') },
+  },
+  {
+    id: '3',
+    value: { text: 'TailwindCSS', time: new Date('2024-07-19T04:53:17.000Z') },
+  },
+];
+```
+
+[示例代码](packages/example-remix2/app/routes/Form-for-test.tsx)
+
+### 用于 React-Router 的 useUrlState hook
+
+API 与 Next.js 版本相同,但可以传递 [NavigateOptions](https://github.com/remix-run/react-router/blob/bc693ed9f39170bda13b9e1b282fb8e9d5925f66/packages/react-router/lib/context.ts#L99) 类型的选项。
+
+[API 文档](packages/urlstate/react-router/useUrlState)
+
+#### 示例
+
+```typescript
+export const form: Form = {
+  name: '',
+  age: undefined,
+  agree_to_terms: false,
+  tags: [],
+};
+
+type Form = {
+  name: string;
+  age?: number;
+  agree_to_terms: boolean;
+  tags: { id: string; value: { text: string; time: Date } }[];
+};
+
+```
+
+```typescript
+import { useUrlState } from 'state-in-url/react-router';
+// 对于 react-router v6
+// import { useUrlState } from 'state-in-url/react-router6';
+
+import { form } from './form';
+
+function TagsComponent() {
+  const { urlState, setUrl, setState } = useUrlState(form);
+
+  const onChangeTags = React.useCallback(
+    (tag: (typeof tags)[number]) => {
+      setUrl((curr) => ({
+        ...curr,
+        tags: curr.tags.find((t) => t.id === tag.id)
+          ? curr.tags.filter((t) => t.id !== tag.id)
+          : curr.tags.concat(tag),
+      }));
+    },
+    [setUrl],
+  );
+
+  return (
+    <div>
+      <Field text="标签">
+        <div className="flex flex-wrap gap-2">
+          {tags.map((tag) => (
+            <Tag
+              active={!!urlState.tags.find((t) => t.id === tag.id)}
+              text={tag.value.text}
+              onClick={() => onChangeTags(tag)}
+              key={tag.id}
+            />
+          ))}
+        </div>
+      </Field>
+
+      <input value={urlState.name}
+        onChange={(ev) => { setState(curr => ({ ...curr, name: ev.target.value })) }}
+        // 可以立即更新状态,但根据需要将更改同步到 url
+        onBlur={() => setUrl()}
+      />
+    </div>
+  );
+}
+
+const tags = [
+  {
+    id: '1',
+    value: { text: 'React.js', time: new Date('2024-07-17T04:53:17.000Z') },
+  },
+  {
+    id: '2',
+    value: { text: 'Next.js', time: new Date('2024-07-18T04:53:17.000Z') },
+  },
+  {
+    id: '3',
+    value: { text: 'TailwindCSS', time: new Date('2024-07-19T04:53:17.000Z') },
+  },
+];
+```
+
+[示例代码](packages/example-react-router6/src/Form-for-test.tsx)
+
+## 实用技巧
+##### 自定义 hook 以便捷地处理状态切片
 <details>
   <Summary>示例</Summary>
 
@@ -235,9 +524,9 @@ export const useFormState = ({ searchParams }: { searchParams?: object }) => {
       searchParams,
     });
 
-    // 第一次导航会推送新的历史记录
-    // 后续导航将替换该记录
-    // 这样历史记录中只有两个条目 - ['/url', '/url?key=param']
+    // 第一次导航将推送新的历史记录条目
+    // 所有后续操作将仅替换该条目
+    // 这样历史记录中只有 2 个条目 - ['/url', '/url?key=param']
 
     const replace = React.useRef(false);
     const setUrl = React.useCallback((
@@ -255,7 +544,7 @@ export const useFormState = ({ searchParams }: { searchParams?: object }) => {
 
 <hr />
 
-##### 复杂状态结构
+##### 使用复杂状态形状
 
 <details>
   <Summary>示例</Summary>
@@ -283,7 +572,7 @@ import { useUrlState } from 'state-in-url/next';
 import { form } from './form';
 
 function TagsComponent() {
-  // `urlState` 会从 Form 类型推断！
+  // `urlState` 将从 Form 类型推断!
   const { urlState, setUrl } = useUrlState(form);
 
   const onChangeTags = React.useCallback(
@@ -332,7 +621,7 @@ const tags = [
 ];
 ```
 
-[示例页面代码](https://github.com/asmyshlyaev177/state-in-url/blob/master/packages/example-nextjs14/src/app/Form.tsx)
+[演示页面示例代码](https://github.com/asmyshlyaev177/state-in-url/blob/master/packages/example-nextjs14/src/app/Form.tsx)
 </details>
 
 ##### 仅更新状态并手动同步到 URL
@@ -346,7 +635,7 @@ const tags = [
   React.useEffect(() => {
     clearTimeout(timer.current);
     timer.current = setTimeout(() => {
-      // 会比较状态内容而非引用，仅对新值触发更新
+      // 将按内容而不是引用比较状态,仅对新值触发更新
       setUrl(urlState);
     }, 500);
 
@@ -356,7 +645,7 @@ const tags = [
   }, [urlState, setUrl]);
 ```
 
-在 `onBlur` 时同步状态更符合实际使用场景。
+在 `onBlur` 时同步状态将更符合实际使用情况。
 
 ```typescript
 <input onBlur={() => updateUrl()} .../>
@@ -364,200 +653,17 @@ const tags = [
 
 </details>
 
-##### 服务端渲染
+## 其他 hooks 和辅助函数
 
-<details>
-  <Summary>示例</Summary>
+### `useUrlStateBase` hook 用于其他路由器
 
-```typescript
-export default async function Home({ searchParams }: { searchParams: object }) {
-  return (
-    <Form searchParams={searchParams} />
-  )
-}
-
-// Form.tsx
-'use client'
-import React from 'react';
-import { useUrlState } from 'state-in-url/next';
-import { form } from './form';
-
-const Form = ({ searchParams }: { searchParams: object }) => {
-  const { urlState, setState, setUrl } = useUrlState(form, { searchParams });
-}
-```
-
-</details>
-
-##### 在 `layout` 组件中使用钩子
-
-<details>
-  <Summary>示例</Summary>
-  这是一个棘手的部分，因为 Next.js 的 app router 不允许从服务端访问 searchParams。可以使用中间件解决，但不够优雅，且可能在 Next.js 更新后失效。
-
-```typescript
-// 添加到适当的 `layout.tsc`
-export const runtime = 'edge';
-
-// middleware.ts
-import type { NextRequest } from 'next/server';
-import { NextResponse } from 'next/server';
-
-export function middleware(request: NextRequest) {
-  const url = request.url?.includes('_next') ? null : request.url;
-  const sp = url?.split?.('?')?.[1] || '';
-
-  const response = NextResponse.next();
-
-  if (url !== null) {
-    response.headers.set('searchParams', sp);
-  }
-
-  return response;
-}
-
-// 目标布局组件
-import { headers } from 'next/headers';
-import { decodeState } from 'state-in-url/encodeState';
-
-export default async function Layout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  const sp = headers().get('searchParams') || '';
-
-  return (
-    <div>
-      <Comp1 searchParams={decodeState(sp, stateShape)} />
-      {children}
-    </div>
-  );
-}
-
-
-```
-
-</details>
-
-##### 任意状态结构（不推荐）
-
-<details>
-  <Summary>示例</Summary>
-
-```typescript
-'use client'
-import { useUrlState } from 'state-in-url/next';
-
-const someObj = {};
-
-function SettingsComponent() {
-  const { urlState, setUrl, setState } = useUrlState<object>(someObj);
-}
-```
-
-</details>
-
-### React-Router 专用的 `useUrlState` 钩子
-
-API 与 Next.js 版本相同，只是可以传递 [NavigateOptions](https://github.com/remix-run/react-router/blob/bc693ed9f39170bda13b9e1b282fb8e9d5925f66/packages/react-router/lib/context.ts#L99) 类型的选项。
-
-[API 文档](packages/urlstate/react-router/useUrlState)
-
-#### 示例
-
-```typescript
-export const form: Form = {
-  name: '',
-  age: undefined,
-  agree_to_terms: false,
-  tags: [],
-};
-
-type Form = {
-  name: string;
-  age?: number;
-  agree_to_terms: boolean;
-  tags: { id: string; value: { text: string; time: Date } }[];
-};
-
-```
-
-```typescript
-import { useUrlState } from 'state-in-url/react-router';
-
-import { form } from './form';
-
-function TagsComponent() {
-  const { urlState, setUrl, setState } = useUrlState(form);
-
-  const onChangeTags = React.useCallback(
-    (tag: (typeof tags)[number]) => {
-      setUrl((curr) => ({
-        ...curr,
-        tags: curr.tags.find((t) => t.id === tag.id)
-          ? curr.tags.filter((t) => t.id !== tag.id)
-          : curr.tags.concat(tag),
-      }));
-    },
-    [setUrl],
-  );
-
-  return (
-    <div>
-      <Field text="标签">
-        <div className="flex flex-wrap gap-2">
-          {tags.map((tag) => (
-            <Tag
-              active={!!urlState.tags.find((t) => t.id === tag.id)}
-              text={tag.value.text}
-              onClick={() => onChangeTags(tag)}
-              key={tag.id}
-            />
-          ))}
-        </div>
-      </Field>
-
-      <input value={urlState.name}
-        onChange={(ev) => { setState(curr => ({ ...curr, name: ev.target.value })) }}
-        // 可以立即更新状态，但根据需要同步到 URL
-        onBlur={() => setUrl()}
-      />
-    </div>
-  );
-}
-
-const tags = [
-  {
-    id: '1',
-    value: { text: 'React.js', time: new Date('2024-07-17T04:53:17.000Z') },
-  },
-  {
-    id: '2',
-    value: { text: 'Next.js', time: new Date('2024-07-18T04:53:17.000Z') },
-  },
-  {
-    id: '3',
-    value: { text: 'TailwindCSS', time: new Date('2024-07-19T04:53:17.000Z') },
-  },
-];
-```
-
-[示例代码](packages/example-react-router6/src/Form-for-test.tsx)
-
----
-
-## 其他钩子和辅助工具
-
-### 其他路由器的 `useUrlStateBase` 钩子
-
-用于创建与其他路由器（如 react-router 或 tanstack router）兼容的 `useUrlState` 钩子。
+用于使用其他路由器(例如 react-router 或 tanstack router)创建自己的 `useUrlState` hooks 的 Hooks。
 
 [API 文档](packages/urlstate/useUrlStateBase)
 
-### React.js 的 `useSharedState` 钩子
+### `useSharedState` hook 用于 React.js
 
-用于在任何 React 组件之间共享状态的钩子，已在 Next.js 和 Vite 中测试。
+在任何 React 组件之间共享状态的 Hook,已在 Next.js 和 Vite 中测试。
 
 ```typescript
 'use client'
@@ -572,7 +678,7 @@ function SettingsComponent() {
 
 [API 文档](packages/urlstate/useSharedState/README.md)
 
-### React.js 的 `useUrlEncode` 钩子
+### `useUrlEncode` hook 用于 React.js
 
 [API 文档](packages/urlstate/useUrlEncode/README.md)
 
@@ -584,16 +690,14 @@ function SettingsComponent() {
 
 [API 文档](packages/urlstate/encoder/README.md)
 
----
-
 ## 最佳实践
 
-- 将状态结构定义为常量
-- 使用 TypeScript 增强类型安全和自动补全
-- 避免在 URL 参数中存储敏感信息（如 SSN、API 密钥等）
-- 使用此 [扩展](https://marketplace.visualstudio.com/items?itemName=yoavbls.pretty-ts-errors) 以获得可读的 TS 错误提示
+- 将状态形状定义为常量
+- 使用 TypeScript 以增强类型安全和自动完成
+- 避免在 URL 参数中存储敏感信息(SSN、API 密钥等)
+- 使用此[扩展](https://marketplace.visualstudio.com/items?itemName=yoavbls.pretty-ts-errors)以获得可读的 TS 错误
 
-可以为状态片段创建状态钩子，并在应用程序中重复使用。例如：
+可以为状态切片创建状态 hooks,并在整个应用程序中重用它们。例如:
 ```Typescript
 type UserState = {
   name: string;
@@ -623,36 +727,44 @@ export const useUserState = () => {
 
 ## 注意事项
 
-1. 只能传递可序列化的值，`Function`、`BigInt` 或 `Symbol` 无法使用，`ArrayBuffer` 等也可能无法使用。任何可以序列化为 JSON 的内容都可以使用。
-2. Vercel 服务器限制标头大小（查询字符串和其他内容）为 **14KB**，因此请将 URL 状态保持在约 5000 字以内。<https://vercel.com/docs/errors/URL_TOO_LONG>
-3. 已在 `next.js` 14/15 的 app router 中测试，暂无支持 pages 的计划。
-
----
+1. 只能传递可序列化的值,`Function`、`BigInt` 或 `Symbol` 不起作用,可能像 `ArrayBuffer` 这样的东西也不行。所有可以序列化为 JSON 的内容都可以工作。
+2. Vercel 服务器将标头大小(查询字符串和其他内容)限制为 **14KB**,因此请将 URL 状态保持在约 5000 个字以下。<https://vercel.com/docs/errors/URL_TOO_LONG>
+3. 已在带有 app router 的 `next.js` 14/15 中测试,没有计划支持 pages。
 
 ## 其他
 
-### 贡献指南与本地运行说明
+### 贡献和/或本地运行
 
-参见 [贡献文档](CONTRIBUTING.md)
+参见[贡献文档](CONTRIBUTING.md)
 
 ## 路线图
 
-- [x] `Next.js` 钩子
-- [x] `react-router` 钩子
-- [ ] `remix` 钩子
-- [ ] `svelte` 钩子
-- [ ] `astro` 钩子
-- [ ] 在 hash 中存储状态的钩子？
+- [x] 用于 `Next.js` 的 hook
+- [x] 用于 `react-router` 的 hook
+- [x] 用于 `remix` 的 hook
+- [ ] 用于 `svelte` 的 hook
+- [ ] 用于 `astro` 的 hook
+- [ ] 用于在 hash 中存储状态的 hook ?
 
-## 联系与支持
+## 联系和支持
 
-- 创建 [GitHub issue](https://github.com/asmyshlyaev177/state-in-url/issues) 以报告错误、请求功能或提出问题
+- 创建 [GitHub issue](https://github.com/asmyshlyaev177/state-in-url/issues) 用于错误报告、功能请求或问题咨询
 
 ## [更新日志](CHANGELOG.md)
 
+## 提及
+
+ - [This Week in React 209](https://thisweekinreact.com/newsletter/209)
+ - [JavaScript Weekly](https://javascriptweekly.com/issues/741)
+ - [This Week in React 240](https://thisweekinreact.com/newsletter/240)
+
 ## 许可证
 
-本项目采用 [MIT 许可证](LICENSE)。
+该项目根据 [MIT 许可证](LICENSE)授权。
+
+## 个人网站
+
+[作品集网站](https://asmyshlyaev177.dev)
 
 ## 灵感来源
 
