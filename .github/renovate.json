@@ -1,33 +1,17 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": [
-    "config:recommended",
-    ":semanticCommits"
-  ],
-  "includePaths": [
-    "packages/urlstate"
-  ],
-  "minimumReleaseAge": "3 days",
-  "baseBranchPatterns": [
-    "master"
-  ],
-  "enabledManagers": [
-    "npm"
-  ],
+  "extends": ["config:recommended", ":semanticCommits"],
+  "includePaths": ["packages/urlstate", "packages/example-nextjs14"],
+  "minimumReleaseAge": "2 days",
+  "baseBranchPatterns": ["master"],
+  "enabledManagers": ["npm"],
   "packageRules": [
     {
-      "matchDepTypes": [
-        "dependencies"
-      ],
+      "matchDepTypes": ["dependencies"],
       "groupName": "all non-major dependencies",
       "groupSlug": "all-minor-patch",
-      "matchPackageNames": [
-        "*"
-      ],
-      "matchUpdateTypes": [
-        "minor",
-        "patch"
-      ]
+      "matchPackageNames": ["*"],
+      "matchUpdateTypes": ["minor", "patch"]
     }
   ]
 }
