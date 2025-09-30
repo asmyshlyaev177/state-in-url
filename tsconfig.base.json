@@ -63,7 +63,6 @@
     "**/dist",
     "tests",
     "**/exportsTest.ts",
-    "**/exportsTest.ts",
     "packages/urlstate/exportsTest.ts",
     "packages/example-remix2",
     "exportsTest.ts"

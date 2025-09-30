@@ -43,7 +43,7 @@ const bundle = (config) => ({
 });
 
 export default {
-  input: glob.sync("packages/urlstate/**/index.ts"),
+  input: glob.sync("packages/urlstate/**/index.ts", { ignore: "**/*.test.*" }),
   output: [
     bundle({
       dir: 'dist',

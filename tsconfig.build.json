@@ -3,5 +3,6 @@
   "compilerOptions": {
     "rootDir": "./packages/urlstate"
   },
-  "include": ["typings.d.ts", "packages/urlstate", "packages/urlstate/**/*"]
+  "include": ["typings.d.ts", "packages/urlstate", "packages/urlstate/**/*"],
+  "exclude": ["**/*.test.*"]
 }
