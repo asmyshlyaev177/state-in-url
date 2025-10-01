@@ -75,7 +75,7 @@ This library is a good alternative for NUQS.
 ### Use cases
 
 - Store unsaved user forms or page filters in URL
-- Sycn URL with React state
+- Sync URL with React state
 - Just sync data between unrelated client components without touching URI
 - Shareable URLs with application state (Deep linking, URL state synchronization)
 - Easy state persistence across page reloads
