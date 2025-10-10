@@ -40,10 +40,10 @@ const delay = 1
       ]
     }`;
 
+    await page.waitForTimeout(80)
     // syncing state but not url
     await expect(page.getByTestId('parsed')).toHaveText(expectedText);
 
-    // TODO: can't reproduce in real browser, but flaky in test
       await page.getByTestId("sync-default").click({ force: true })
       await page.waitForTimeout(300)
       await page.getByTestId("sync-default").click({ force: true })
