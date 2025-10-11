@@ -11,12 +11,14 @@ export const subscribers = {
   },
   add(obj: JSONCompatible, cb: Cb) {
     const cbs = this.get(obj);
-    _subscribers.set(obj, cbs.concat(cb));
+    _subscribers.set(obj, [...cbs, cb]);
 
     return () => this.remove(obj, cb);
   },
   remove(obj: JSONCompatible, cb: Cb) {
     const cbs = this.get(obj);
+    if (!cbs) return;
+
     const newCbs = cbs.filter((_cb) => _cb !== cb);
     if (newCbs.length) {
       _subscribers.set(obj, newCbs);

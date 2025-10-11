@@ -1,9 +1,11 @@
 import { SYMBOLS } from "../constants";
 import { type JSONCompatible, type Simple, typeOf } from "../utils";
 
-const QUOTE_REGEX = /'/g;
-const DOUBLE_QUOTE_REGEX = /"/g;
-const ENCODED_QUOTE_REGEX = /%27/g;
+const ENCODE_REGEX = /['"]/g;
+const ENCODE_QUOTE_MAP: Record<string, string> = { "'": "%27", '"': "'" };
+const DECODE_REGEX = /'|%27/g;
+const DECODE_QUOTE_MAP: Record<string, string> = { "'": '"', "%27": "'" };
+const ENC_REG = new RegExp(`^(${SYMBOLS.undefined}|${SYMBOLS.date})`);
 
 /**
  * Encode any JSON serializable value to URL friendly string
@@ -20,9 +22,10 @@ export function encode(payload: unknown): string {
     return payload as string;
   }
 
-  return JSON.stringify(structuredClone(payload), replacer)
-    .replace(QUOTE_REGEX, "%27")
-    .replace(DOUBLE_QUOTE_REGEX, "'");
+  return JSON.stringify(payload, replacer).replace(
+    ENCODE_REGEX,
+    (match) => ENCODE_QUOTE_MAP[match],
+  );
 }
 
 function replacer(_key: string, value: unknown): unknown {
@@ -34,11 +37,12 @@ function replacer(_key: string, value: unknown): unknown {
 
   if (type === "object") {
     const _value = value as { [key: string]: unknown };
+    const result: { [key: string]: unknown } = {};
 
     for (const objKey of Object.keys(_value)) {
-      _value[objKey] = replacer(_key, _value[objKey]);
+      result[objKey] = replacer(_key, _value[objKey]);
     }
-    return _value;
+    return result;
   }
   if (type === "array") {
     return (value as unknown as Array<unknown>).map(
@@ -71,7 +75,7 @@ export const encodePrimitive = (payload: Simple) => {
  */
 export function decode<T>(payload: string, fallback?: T) {
   return parseJSON(
-    payload.replace(QUOTE_REGEX, '"').replace(ENCODED_QUOTE_REGEX, "'"),
+    payload.replace(DECODE_REGEX, (match) => DECODE_QUOTE_MAP[match]),
     fallback as JSONCompatible,
   ) as T;
 }
@@ -107,7 +111,6 @@ export const decodePrimitive = (str: string) => {
   return str;
 };
 
-const encReg = new RegExp(`^(${SYMBOLS.undefined}|${SYMBOLS.date})`);
-const isEncoded = (val: unknown) => encReg.test(String(val));
+const isEncoded = (val: unknown) => ENC_REG.test(String(val));
 
 export type CustomDecoded = ReturnType<typeof decodePrimitive>;

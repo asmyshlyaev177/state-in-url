@@ -22,9 +22,10 @@ export function encodeState<T extends JSONCompatible>(
   paramsToKeep?: string | URLSearchParams,
 ) {
   const params = getParams(paramsToKeep);
-  const entries = Object.entries(state || {});
-  for (let i = 0; i < entries.length; i++) {
-    const [key, value] = entries[i];
+  const keys = Object.keys(state || {});
+  for (let i = 0; i < keys.length; i++) {
+    const key = keys[i];
+    const value = state[key as keyof T];
     const initialVal = defaults?.[key as keyof typeof defaults];
     if (JSON.stringify(value) !== JSON.stringify(initialVal)) {
       params.set(key, encode(value));
@@ -51,13 +52,11 @@ export function decodeState<T extends JSONCompatible>(
   uriString: string | URLSearchParams,
   defaults?: T,
 ) {
-  return {
-    ...(defaults || {}),
-    ...Object.fromEntries(
-      [...getParams(uriString).entries()].map(([key, value]) => {
-        const fallback = defaults?.[key as keyof typeof defaults];
-        return [key, decode(value, fallback) ?? fallback];
-      }),
-    ),
-  } as undefined extends T ? UnknownObj : T;
+  const result: Record<string, unknown> = Object.assign({}, defaults || {});
+  const params = getParams(uriString);
+  for (const [key, value] of params) {
+    const fallback = defaults?.[key as keyof typeof defaults];
+    result[key] = decode(value, fallback) ?? fallback;
+  }
+  return result as undefined extends T ? UnknownObj : T;
 }

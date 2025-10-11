@@ -20,19 +20,15 @@ export type Type =
  * `function`, `symbol`, `array`
  */
 export const typeOf = (val: unknown): Type => {
-  const nativeType = typeof val;
-  const isNull = val === null;
-  const isArray = Array.isArray(val);
-  const isDate = val instanceof Date;
-  const isObject = !isNull && !isDate && !isArray && nativeType === "object";
+  if (val === null) return "null";
 
-  return (
-    (isNull && "null") ||
-    (isDate && "date") ||
-    (isArray && "array") ||
-    (isObject && "object") ||
-    nativeType
-  );
+  const nativeType = typeof val;
+  if (nativeType !== "object") return nativeType;
+
+  if (Array.isArray(val)) return "array";
+  if (val instanceof Date) return "date";
+
+  return "object";
 };
 
 export const isPrimitive = (val: unknown): val is Simple => {
@@ -67,17 +63,69 @@ export type JSONCompatible = {
   [prop: string]: JSON | JSON[] | undefined;
 };
 
-export const getParams = (strOrSearchParams?: string | URLSearchParams) =>
-  new URLSearchParams(
-    typeof strOrSearchParams === "string"
-      ? strOrSearchParams.split("?")?.[1] || strOrSearchParams
-      : strOrSearchParams?.toString?.() || "",
-  );
+export const getParams = (strOrSearchParams?: string | URLSearchParams) => {
+  if (strOrSearchParams instanceof URLSearchParams) {
+    return strOrSearchParams;
+  }
+  if (typeof strOrSearchParams === "string") {
+    const idx = strOrSearchParams.indexOf("?");
+    return new URLSearchParams(
+      idx === -1 ? strOrSearchParams : strOrSearchParams.slice(idx + 1),
+    );
+  }
+  return new URLSearchParams();
+};
 
 export type UnknownObj = object | { [key: string]: unknown };
 
-export const isEqual = (val1: unknown, val2: unknown) =>
-  JSON.stringify(val1) === JSON.stringify(val2);
+const isEqualArray = (arr1: unknown[], arr2: unknown[]): boolean => {
+  if (arr1.length !== arr2.length) return false;
+  return arr1.every((item, idx) => isEqual(item, arr2[idx]));
+};
+
+const isEqualObject = (
+  obj1: Record<string, unknown>,
+  obj2: Record<string, unknown>,
+): boolean => {
+  const keys1 = Object.keys(obj1);
+  const keys2 = Object.keys(obj2);
+
+  if (keys1.length !== keys2.length) return false;
+  return keys1.every((key) => isEqual(obj1[key], obj2[key]));
+};
+
+export const isEqual = (val1: unknown, val2: unknown): boolean => {
+  // Fast path: reference equality
+  if (val1 === val2) return true;
+
+  // Fast path: null/undefined checks
+  if (val1 == null || val2 == null) return false;
+
+  const type1 = typeOf(val1);
+  const type2 = typeOf(val2);
+
+  // Different types can't be equal
+  if (type1 !== type2) return false;
+
+  // Fast path for primitives (already checked === above, so must be different)
+  if (isPrimitive(val1)) return false;
+
+  // For arrays
+  if (type1 === "array") {
+    return isEqualArray(val1 as unknown[], val2 as unknown[]);
+  }
+
+  // For objects
+  if (type1 === "object") {
+    return isEqualObject(
+      val1 as Record<string, unknown>,
+      val2 as Record<string, unknown>,
+    );
+  }
+
+  // Fallback to JSON.stringify for dates and other edge cases
+  return JSON.stringify(val1) === JSON.stringify(val2);
+};
 
 export function filterUnknownParamsClient<T extends object>(
   shape: T,
