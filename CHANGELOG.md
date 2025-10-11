@@ -1,3 +1,10 @@
+## [6.0.5](https://github.com/asmyshlyaev177/state-in-url/compare/v6.0.4...v6.0.5) (2025-10-11)
+
+
+### Bug Fixes
+
+* few perfomance optimizations ([4f8f4e5](https://github.com/asmyshlyaev177/state-in-url/commit/4f8f4e5eda2dd44e82b7eb7fdb443d6e1d126454))
+
 ## [6.0.4](https://github.com/asmyshlyaev177/state-in-url/compare/v6.0.3...v6.0.4) (2025-09-30)
 
 
