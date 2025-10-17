@@ -294,42 +294,13 @@ jobs:
         run: |
           git config --global user.email "github-release-bot@example.com"
           git config --global user.name "Release Workflow"
-      - name: Initialise the NPM config
-        run: npm config set //registry.npmjs.org/:_authToken $NPM_TOKEN
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+      # - name: Initialise the NPM config
+        # run: npm config set //registry.npmjs.org/:_authToken $NPM_TOKEN
+        # env:
+          # NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Release
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          # NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: npx semantic-release
-
-
-  # cleanup:
-  #   name: cleanup
-  #   needs: [release, merge-reports]
-  #   runs-on: ubuntu-24.04
-  #   if: always() && github.ref == 'refs/heads/master'
-  #   timeout-minutes: 10
-  #   permissions:
-  #    #   See also: https://docs.github.com/en/rest/actions/cache?apiVersion=2022-11-28#delete-a-github-actions-cache-for-a-repository-using-a-cache-id
-  #     actions: write
-  #     contents: read
-  #   steps:
-  #     - name: Harden Runner
-  #       uses: step-security/harden-runner@c6295a65d1254861815972266d5933fd6e532bdf # v2.11.1
-  #       with:
-  #         egress-policy: audit
-
-  #     - name: Check out code
-  #       uses: actions/checkout@08eba0b27e820071cde6df949e0beb9ba4906955 # v4.2.2
-
-  #     - name: Cleanup
-  #       run: |
-  #         set +e
-  #         echo "Deleting caches..."
-  #         gh cache delete modules-2-${{ github.sha }}-${{ github.run_id }}
-  #         echo "Done"
-  #       env:
-  #         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
