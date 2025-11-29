@@ -38,7 +38,6 @@ export function DemoPart({ searchParams }: { searchParams: object }) {
         </header>
 
         <section className="form-components">
-          <React.Suspense>
             <ErrorBoundary fallbackRender={fallbackRender}>
               <Form className="form" searchParams={searchParams} ghLink={urls.form} />
             </ErrorBoundary>
@@ -47,7 +46,6 @@ export function DemoPart({ searchParams }: { searchParams: object }) {
               <Status className="status" sp={searchParams} ghLink={urls.status} />
             </ErrorBoundary>
 
-          </React.Suspense>
         </section>
       </section>
     </>
