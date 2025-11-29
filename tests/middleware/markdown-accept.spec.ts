@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test';
 
-test.describe('Markdown Accept Header', () => {
+test.describe('Markdown Accept Header (landing only)', () => {
   test.skip(({ browserName }) => browserName !== 'chromium', 'Chromium only');
 
   test('should return markdown when Accept header is text/markdown', async ({ request }) => {

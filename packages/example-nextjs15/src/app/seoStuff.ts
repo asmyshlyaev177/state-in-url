@@ -10,7 +10,7 @@ export const jsonLd: WithContext<SoftwareApplication> = {
   '@type': 'SoftwareApplication',
   name: 'state-in-url',
   description:
-    'NPM Library to store complex state objects in browser URL, while preserving types and structure, solution for deep links and URL state synchronization, for Next.JS14/15 and React-router, hooks for pure React.',
+    'NPM Library to store complex state objects in browser URL, while preserving types and structure, solution for deep links and URL state synchronization, for Next.JS 14-16 and React-router, hooks for pure React.',
   accessibilityControl: 'textual',
   accessMode: 'textual',
   author: {

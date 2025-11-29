@@ -1,0 +1,52 @@
+{
+  "name": "example-nextjs16",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "npm run generate-middleware && next dev --port 3002",
+    "build": "npm run generate-middleware && next build",
+    "start": "next start --port 3002",
+    "lint": "next lint",
+    "generate-middleware": "node scripts/generate-middleware-content.cjs"
+  },
+  "dependencies": {
+    "babel-plugin-react-compiler": "^19.0.0-beta-6fc168f-20241025",
+    "next": "^16.0.5",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "react-error-boundary": "^4.1.2",
+    "react-share": "^5.1.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/forms": "^0.5.9",
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "@types/react-syntax-highlighter": "^15.5.13",
+    "clsx": "^2.1.1",
+    "css-loader": "^7.1.2",
+    "eslint": "^8",
+    "eslint-config-next": "^16.0.5",
+    "postcss": "^8",
+    "postcss-import": "^16.1.0",
+    "postcss-loader": "^8.1.1",
+    "postcss-nesting": "^13.0.0",
+    "prettier": "^3.3.2",
+    "sharp": "^0.33.5",
+    "tailwindcss": "^3.4.10",
+    "typescript": "^5",
+    "typescript-plugin-css-modules": "^5.1.0"
+  },
+  "type": "module",
+  "browserslist": [
+    "last 5 Chrome versions",
+    "last 5 ChromeAndroid versions",
+    "last 3 Firefox versions",
+    "last 3 FirefoxAndroid versions",
+    "Firefox ESR",
+    "last 2 Safari major versions",
+    "last 2 iOS major versions",
+    "> 5%",
+    "not dead"
+  ]
+}

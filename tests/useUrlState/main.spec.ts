@@ -9,6 +9,9 @@ const urls = [
   'http://localhost:3001/test-ssr',
   'http://localhost:3001/test-use-client',
   'http://localhost:3001/test-ssr-sp',
+  'http://localhost:3002/test-ssr',
+  'http://localhost:3002/test-use-client',
+  'http://localhost:3002/test-ssr-sp',
   'http://localhost:5181',
   'http://localhost:5182',
   'http://localhost:5183',
@@ -17,6 +20,7 @@ const urls = [
 const useHookUrls = [
   '/useHook-race-condition',
   'http://localhost:3001/useHook-race-condition',
+  'http://localhost:3002/useHook-race-condition',
   'http://localhost:5181/useHook-race-condition',
   'http://localhost:5182/useHook-race-condition',
   'http://localhost:5183/useHook-race-condition',

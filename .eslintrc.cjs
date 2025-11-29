@@ -10,6 +10,7 @@ module.exports = {
     "node_modules",
     "packages/example-nextjs14",
     "packages/example-nextjs15",
+    "packages/example-nextjs16",
   ],
   globals: {
     vi: true,

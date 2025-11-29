@@ -29,6 +29,7 @@
     "packages/urlstate",
     "packages/example-nextjs14",
     "packages/example-nextjs15",
+    "packages/example-nextjs16",
     "packages/example-react",
     "packages/example-react-router6",
     "packages/example-react-router7",
@@ -110,6 +111,7 @@
     "dev:lib": "wireit",
     "dev:nextjs14": "wireit",
     "dev:nextjs15": "wireit",
+    "dev:nextjs16": "wireit",
     "dev:remix2": "wireit",
     "bump": "npx standard-version --no-verify",
     "build": "wireit",
@@ -125,7 +127,7 @@
     "kill-vite": "wireit",
     "kill": "wireit",
     "rmdist": "rm -rf dist",
-    "cleanup": "rm -rf dist .wireit node_modules test-results playwright-report coverage-reports nyc_coverage packages/example-nextjs14/node_modules packages/example-nextjs14/.next packages/example-nextjs15/node_modules packages/example-nextjs15/.next packages/example-react/node_modules packages/example-react-router6/node_modules packages/example-react-router7/node_modules packages/example-remix2/node_modules",
+    "cleanup": "rm -rf dist .wireit node_modules test-results playwright-report coverage-reports nyc_coverage packages/example-nextjs14/node_modules packages/example-nextjs14/.next packages/example-nextjs15/node_modules packages/example-nextjs15/.next packages/example-nextjs16/node_modules packages/example-nextjs16/.next packages/example-react/node_modules packages/example-react-router6/node_modules packages/example-react-router7/node_modules packages/example-remix2/node_modules",
     "reinstall": "npm run cleanup && npm install",
     "setup": "playwright install --with-deps",
     "prepack": "npm run build && cp package.json dist/package.json && npm run build:demo",
@@ -133,6 +135,23 @@
     "prepare": "npx husky"
   },
   "wireit": {
+    "dev": {
+      "dependencies": [
+        "dev:lib",
+        "dev:react",
+        "dev:remix2",
+        "dev:router6",
+        "dev:router7",
+        "dev:nextjs16",
+        "start:demo14"
+      ],
+      "service": {
+        "readyWhen": {
+          "lineMatches": "http://localhost:3000"
+        }
+      },
+      "command": "npm run dev:nextjs15"
+    },
     "test": {
       "dependencies": [
         "tsc",
@@ -173,22 +192,6 @@
       ],
       "command": "npx vitest"
     },
-    "dev": {
-      "dependencies": [
-        "dev:lib",
-        "dev:react",
-        "dev:remix2",
-        "dev:router6",
-        "dev:router7",
-        "start:demo14"
-      ],
-      "service": {
-        "readyWhen": {
-          "lineMatches": "http://localhost:3000"
-        }
-      },
-      "command": "npm run dev:nextjs15"
-    },
     "dev:lib": {
       "command": "cross-env IS_DEVELOPMENT=true rollup -c rollup.config.mjs -w",
       "service": {
@@ -220,6 +223,10 @@
       "command": "cd packages/example-nextjs15 && npm run dev --turbo",
       "service": true
     },
+    "dev:nextjs16": {
+      "command": "cd packages/example-nextjs16 && npm run dev --turbo",
+      "service": true
+    },
     "build:next14": {
       "command": "cd packages/example-nextjs14 && npm run build",
       "dependencies": [
@@ -228,6 +235,12 @@
     },
     "build:next15": {
       "command": "cd packages/example-nextjs15 && npm run build",
+      "dependencies": [
+        "build"
+      ]
+    },
+    "build:next16": {
+      "command": "cd packages/example-nextjs16 && npm run build",
       "dependencies": [
         "build"
       ]
@@ -339,10 +352,22 @@
       "command": "cd packages/example-nextjs15 && npm run start",
       "service": true
     },
+    "start:demo16": {
+      "dependencies": [
+        "build:next16"
+      ],
+      "command": "cd packages/example-nextjs16 && npm run start",
+      "service": true
+    },
+    "start:demo16:ci": {
+      "command": "cd packages/example-nextjs16 && npm run start",
+      "service": true
+    },
     "start": {
       "command": "npm run start:demo15",
       "dependencies": [
         "start:demo14",
+        "start:demo16",
         "start:react",
         "start:router6",
         "start:router7",
@@ -354,6 +379,7 @@
       "command": "npm run start:demo15:ci",
       "dependencies": [
         "start:demo14:ci",
+        "start:demo16:ci",
         "start:react:ci",
         "start:router6:ci",
         "start:router7:ci",
@@ -371,6 +397,7 @@
         "build:react",
         "build:demo:tests",
         "build:next14",
+        "build:next16",
         "build:router6",
         "build:router7",
         "build:remix2"

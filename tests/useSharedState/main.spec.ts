@@ -4,6 +4,7 @@ const urls = [
   'http://localhost:5180',
   '/useSharedState',
   'http://localhost:3001/useSharedState',
+  'http://localhost:3002/useSharedState',
 ];
 
 test.describe('main tests', () => {
