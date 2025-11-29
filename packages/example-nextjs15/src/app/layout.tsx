@@ -22,29 +22,29 @@ export default async function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <link rel="preconnect" href="https://fonts.googleapis.com" />
-      <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
-      {/* {!isProd && <script src="https://unpkg.com/react-scan/dist/auto.global.js" async /> } */}
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
+        {/* {!isProd && <script src="https://unpkg.com/react-scan/dist/auto.global.js" async /> } */}
 
-      {isVercel && <link rel="canonical" href={vercelUrl}></link>}
-      <meta name="google-site-verification" content="NKunqTB4Sd_Bp6zoIbzKvw_WoGB-v2-MXxC5mbKJKJw" />
-      {/* {isProd && isVercel && <Script src="/heatmap.js" strategy='afterInteractive'/>} */}
-      <meta name="title" content={_metadata.title as string}></meta>
-      <meta name="description" content={_metadata.description || ''}></meta>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
+        {isVercel && <link rel="canonical" href={vercelUrl}></link>}
+        <meta name="google-site-verification" content="NKunqTB4Sd_Bp6zoIbzKvw_WoGB-v2-MXxC5mbKJKJw" />
+        {/* {isProd && isVercel && <Script src="/heatmap.js" strategy='afterInteractive'/>} */}
+        <meta name="title" content={_metadata.title as string}></meta>
+        <meta name="description" content={_metadata.description || ''}></meta>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
 
-      <link rel="alternate" type="text/markdown" href={`${siteUrl}/llms.txt`} title="LLM-friendly version" />
-      <meta name="llms-txt" content={`${siteUrl}/llms.txt`} />
-
+        <link rel="alternate" type="text/markdown" href={`${siteUrl}/llms.txt`} title="LLM-friendly version" />
+        <meta name="llms-txt" content={`${siteUrl}/llms.txt`} />
+      </head>
       <body className={`${roboto.className}`}>
         {children}
+        {isProd && isVercel ? <GoogleAnalytics gaId="G-5N8Y565DXK" /> : null }
+        {/* {isProd && isVercel ? <Analytics /> : null} */}
       </body>
-
-      {isProd && isVercel ? <GoogleAnalytics gaId="G-5N8Y565DXK" /> : null }
-      {/* {isProd && isVercel ? <Analytics /> : null} */}
     </html>
   );
 }

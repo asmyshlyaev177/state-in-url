@@ -109,6 +109,7 @@
     "dev": "wireit",
     "dev:lib": "wireit",
     "dev:nextjs14": "wireit",
+    "dev:nextjs15": "wireit",
     "dev:remix2": "wireit",
     "bump": "npx standard-version --no-verify",
     "build": "wireit",
