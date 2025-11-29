@@ -24,10 +24,6 @@ const nextConfig = {
     polyfillsOptimization: true,
     externalDir: true,
     ppr: true,
-    // serverComponentsExternalPackages: ["state-in-url", "urlstate"],
-    // optimizePackageImports: {
-    //   'shiki'
-    // }
   },
   typescript: {
     tsconfigPath: './tsconfig.json',

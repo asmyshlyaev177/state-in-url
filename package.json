@@ -445,6 +445,7 @@
     "@vitest/coverage-istanbul": "^2.1.9",
     "auto-changelog": "^2.4.0",
     "babel-plugin-module-resolver": "^5.0.2",
+    "baseline-browser-mapping": "^2.8.32",
     "chokidar": "^4.0.3",
     "commitizen": "^4.3.0",
     "commitlint": "^19.8.1",
