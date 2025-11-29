@@ -169,8 +169,8 @@ jobs:
       - name: Run Playwright tests
         run: |
           npm run start:ci & \
-          npx wait-on -t 1m http://localhost:3000 && \
-          npx wait-on -t 1m http://localhost:3001 && \
+          npx wait-on -t 3m http://localhost:3000 && \
+          npx wait-on -t 3m http://localhost:3001 && \
           npm run test:int:ci -- --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }}
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.4.3
         if: always()
