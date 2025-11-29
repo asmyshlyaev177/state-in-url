@@ -1,3 +1,10 @@
+# [6.1.0](https://github.com/asmyshlyaev177/state-in-url/compare/v6.0.5...v6.1.0) (2025-11-29)
+
+
+### Features
+
+* nextjs v16 support and tests ([c840577](https://github.com/asmyshlyaev177/state-in-url/commit/c84057782d3d2bc65d7326decbf5d6e678b0038e))
+
 ## [6.0.5](https://github.com/asmyshlyaev177/state-in-url/compare/v6.0.4...v6.0.5) (2025-10-11)
 
 
