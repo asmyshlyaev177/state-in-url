@@ -59,6 +59,8 @@ export const Status = React.memo(({
   );
 })
 
+Status.displayName = 'Status';
+
 type SimpleVal = string | number | boolean | undefined | null | Date
 
 const primitives = ['string', 'number', 'boolean', 'null', 'undefined', 'date']
@@ -80,7 +82,7 @@ function renderObject(obj: object | Array<SimpleVal> | SimpleVal, level = 0, par
     return (
       <span className='relative' key={`${JSON.stringify(obj)}`}>
         <span>{'{'}</span>
-        {Object.entries(obj as Object).map(([key, val])=> (
+        {Object.entries(obj as object).map(([key, val])=> (
           <div style={{ marginLeft: (level + 2) * mult }} key={key} className=''>
             <span className='font-semibold'>{key}</span>: {renderObject(val, level + 1)}
 

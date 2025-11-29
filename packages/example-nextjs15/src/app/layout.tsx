@@ -1,15 +1,19 @@
-import type { Metadata } from 'next';
+// import { Analytics } from '@vercel/analytics/react';
 import { Roboto } from 'next/font/google';
+import { GoogleAnalytics } from '@next/third-parties/google'
+// import Script from 'next/script'
 
-import 'shared/styles.css';
-
-import { netifyUrl, vercelUrl } from './domain';
+import { metadata as _metadata, jsonLd } from './seoStuff';
+import { isVercel, vercelUrl, siteUrl } from './domain';
+import { isProd } from '../../../../consts'
 const roboto = Roboto({
   subsets: ['latin'],
   weight: '400',
   variable: '--font-roboto',
   display: 'swap',
 });
+
+export const revalidate = 172800; // 48 hours
 
 export default async function RootLayout({
   children,
@@ -20,36 +24,29 @@ export default async function RootLayout({
     <html lang="en">
       <link rel="preconnect" href="https://fonts.googleapis.com" />
       <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
-      <link rel="canonical" href={vercelUrl}></link>
-      <link rel="alternate" href={netifyUrl}></link>
-      <body className={`${roboto.className}`}>{children}</body>
+      {/* {!isProd && <script src="https://unpkg.com/react-scan/dist/auto.global.js" async /> } */}
+
+      {isVercel && <link rel="canonical" href={vercelUrl}></link>}
+      <meta name="google-site-verification" content="NKunqTB4Sd_Bp6zoIbzKvw_WoGB-v2-MXxC5mbKJKJw" />
+      {/* {isProd && isVercel && <Script src="/heatmap.js" strategy='afterInteractive'/>} */}
+      <meta name="title" content={_metadata.title as string}></meta>
+      <meta name="description" content={_metadata.description || ''}></meta>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+
+      <link rel="alternate" type="text/markdown" href={`${siteUrl}/llms.txt`} title="LLM-friendly version" />
+      <meta name="llms-txt" content={`${siteUrl}/llms.txt`} />
+
+      <body className={`${roboto.className}`}>
+        {children}
+      </body>
+
+      {isProd && isVercel ? <GoogleAnalytics gaId="G-5N8Y565DXK" /> : null }
+      {/* {isProd && isVercel ? <Analytics /> : null} */}
     </html>
   );
 }
 
-const meta = {
-  title: 'state-in-url State management and URL sync',
-  description:
-    'Easily share state between unrelated React components, with IDE autocomplete and TS validation. Without any hassle or boilerplate. For Next.js 14/15, React Router 6/7, and Remix 2',
-};
-
-export const metadata = {
-  title: meta.title,
-  description: meta.description,
-  openGraph: {
-    url: vercelUrl,
-    siteName: 'state-in-url.dev',
-    title: meta.title,
-    description: meta.description,
-    images: [
-      {
-        url: `${vercelUrl}/social_banner.png`,
-        width: 1280,
-        height: 640,
-        alt: 'state-in-url library image',
-      },
-    ],
-    locale: 'en_US',
-    type: 'website',
-  },
-} as Metadata;
+export const metadata = _metadata

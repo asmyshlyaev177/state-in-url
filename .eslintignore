@@ -11,3 +11,4 @@ testUtils.ts
 dist
 exportsTest.ts
 .next
+next-env.d.ts

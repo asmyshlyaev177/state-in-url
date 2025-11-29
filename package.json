@@ -179,14 +179,14 @@
         "dev:remix2",
         "dev:router6",
         "dev:router7",
-        "dev:nextjs15"
+        "start:demo14"
       ],
       "service": {
         "readyWhen": {
           "lineMatches": "http://localhost:3000"
         }
       },
-      "command": "npm run dev:nextjs14"
+      "command": "npm run dev:nextjs15"
     },
     "dev:lib": {
       "command": "cross-env IS_DEVELOPMENT=true rollup -c rollup.config.mjs -w",
@@ -219,6 +219,12 @@
       "command": "cd packages/example-nextjs15 && npm run dev --turbo",
       "service": true
     },
+    "build:next14": {
+      "command": "cd packages/example-nextjs14 && npm run build",
+      "dependencies": [
+        "build"
+      ]
+    },
     "build:next15": {
       "command": "cd packages/example-nextjs15 && npm run build",
       "dependencies": [
@@ -247,23 +253,23 @@
       "dependencies": [
         "build"
       ],
-      "command": "cd packages/example-nextjs14 && npm run build"
+      "command": "cd packages/example-nextjs15 && npm run build"
     },
     "build:demo:tests": {
       "dependencies": [
         "build"
       ],
-      "command": "cd packages/example-nextjs14 && npx cross-env TEST=true npm run build"
+      "command": "cd packages/example-nextjs15 && npx cross-env TEST=true npm run build"
     },
     "start:demo": {
       "dependencies": [
         "build:demo"
       ],
-      "command": "cd packages/example-nextjs14 && npm run start",
+      "command": "cd packages/example-nextjs15 && npm run start",
       "service": true
     },
     "start:demo:ci": {
-      "command": "cd packages/example-nextjs14 && npm run start",
+      "command": "cd packages/example-nextjs15 && npm run start",
       "service": true
     },
     "start:react": {
@@ -310,11 +316,22 @@
       "command": "cd packages/example-remix2 && npm run start",
       "service": true
     },
+    "start:demo14": {
+      "dependencies": [
+        "build:next14"
+      ],
+      "command": "cd packages/example-nextjs14 && npm run start",
+      "service": true
+    },
     "start:demo15": {
       "dependencies": [
         "build:next15"
       ],
       "command": "cd packages/example-nextjs15 && npm run start",
+      "service": true
+    },
+    "start:demo14:ci": {
+      "command": "cd packages/example-nextjs14 && npm run start",
       "service": true
     },
     "start:demo15:ci": {
@@ -324,7 +341,7 @@
     "start": {
       "command": "npm run start:demo15",
       "dependencies": [
-        "start:demo",
+        "start:demo14",
         "start:react",
         "start:router6",
         "start:router7",
@@ -335,7 +352,7 @@
     "start:ci": {
       "command": "npm run start:demo15:ci",
       "dependencies": [
-        "start:demo:ci",
+        "start:demo14:ci",
         "start:react:ci",
         "start:router6:ci",
         "start:router7:ci",
@@ -352,7 +369,7 @@
         "build",
         "build:react",
         "build:demo:tests",
-        "build:next15",
+        "build:next14",
         "build:router6",
         "build:router7",
         "build:remix2"
