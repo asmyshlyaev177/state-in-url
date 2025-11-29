@@ -1,16 +1,17 @@
 import { type NextConfig } from 'next'
 
-const nextConfig = {
-  webpack: (config: NextConfig) => {
+const nextConfig: NextConfig = {
+  webpack: (config: any) => {
     const newConfig = {
       ...config,
-    } as NextConfig;
-    newConfig.resolve.webpack5 = true;
-    newConfig.resolve.fallback = {
-      ...config.resolve.fallback,
-      fs: false,
-      net: false,
-      tls: false,
+    };
+    if (newConfig.resolve) {
+      newConfig.resolve.fallback = {
+        ...newConfig.resolve.fallback,
+        fs: false,
+        net: false,
+        tls: false,
+      }
     }
     return newConfig;
   },
@@ -19,11 +20,8 @@ const nextConfig = {
 
   basePath: '',
   experimental: {
-    browsersListForSwc: true,
-    legacyBrowsers: false,
-    polyfillsOptimization: true,
     externalDir: true,
-    ppr: true,
+    // ppr: 'incremental',
     // serverComponentsExternalPackages: ["state-in-url", "urlstate"],
     // optimizePackageImports: {
     //   'shiki'
@@ -33,12 +31,9 @@ const nextConfig = {
     tsconfigPath: './tsconfig.json',
     // ignoreBuildErrors: true,
   },
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
   images: {
     minimumCacheTTL: 60 * 60 * 24 * 15,
-    formats: ['image/webp', 'image/png']
+    formats: ['image/webp']
   },
   env: {
     VERCEL: process.env.VERCEL,
