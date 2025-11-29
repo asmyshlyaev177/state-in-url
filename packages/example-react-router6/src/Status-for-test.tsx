@@ -8,7 +8,7 @@ const Status = ({ className }: { className?: string }) => {
   return (
     <div className={className}>
       <div className="font-semibold mb-2">Other client component</div>
-      <h3>Types and structure of data are presered</h3>
+      <h3>Types and structure of data are preserved</h3>
 
       <div className="flex-none">
         <pre
