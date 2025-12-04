@@ -568,6 +568,8 @@
   "packageManager": "npm@10.8.2",
   "dependencies": {
     "next": "^15.5.7",
+    "react": "^19.2.1",
+    "react-dom": "^19.2.1",
     "react-router": "^7.7.1"
   }
 }

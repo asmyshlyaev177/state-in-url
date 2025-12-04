@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import { Form } from '../../Form-for-test';
 import { Status } from '../../Status-for-test';
 
@@ -11,15 +12,15 @@ export default async function Home() {
       </header>
 
       <div className="flex flex-col md:flex-row gap-8">
-        <Form className="flex max-h-[650px] flex-col md:flex-row gap-8 basis-1/2" />
-        <Status
-          className="flex-1 max-h-[650px] bg-gray-100
-             rounded-lg p-4 flex flex-col shadow-md border border-grey
-              basis-1/2 grow-0"
-        />
+        <Suspense fallback={<div>Loading...</div>}>
+          <Form className="flex max-h-[650px] flex-col md:flex-row gap-8 basis-1/2" />
+          <Status
+            className="flex-1 max-h-[650px] bg-gray-100
+               rounded-lg p-4 flex flex-col shadow-md border border-grey
+                basis-1/2 grow-0"
+          />
+        </Suspense>
       </div>
     </div>
   );
 }
-
-export const runtime = 'edge';

@@ -96,7 +96,9 @@ function renderObject(obj: object | Array<SimpleVal> | SimpleVal, level = 0, par
   if (type === 'array') {
     return (<span style={{ marginLeft: level * mult }} className='relative'>
       <span>{'['}</span>
-      {(obj as Array<SimpleVal | object | Array<SimpleVal>>).map(el => renderObject(el, level + 1))}
+      {(obj as Array<SimpleVal | object | Array<SimpleVal>>).map((el, index) =>
+        <span key={index}>{renderObject(el, level + 1)}</span>
+      )}
       <span style={{ marginLeft: level * mult }}>{']'}</span>
     </span>)
   }

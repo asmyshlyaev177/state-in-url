@@ -15,7 +15,7 @@ const roboto = Roboto({
 
 export const revalidate = 172800; // 48 hours
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;

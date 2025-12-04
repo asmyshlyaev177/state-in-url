@@ -56,7 +56,7 @@ function fallbackRender({ error, resetErrorBoundary }: FallbackProps) {
   return (
     <div role="alert" className='max-w-[30%] flex flex-col items-center gap-4'>
       <p>Something went wrong:</p>
-      <pre className='whitespace-break-spaces text-red-500 max-h-[350px]'>{String(error.message || error)}</pre>
+      <pre className='whitespace-break-spaces text-red-500 max-h-[350px]'>{error?.message || 'An error occurred'}</pre>
       <button onClick={resetErrorBoundary} className='p-4 bg-gray-300 rounded-md'>Try again</button>
     </div>
   );
