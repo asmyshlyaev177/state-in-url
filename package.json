@@ -567,6 +567,7 @@
   ],
   "packageManager": "npm@10.8.2",
   "dependencies": {
+    "next": "^15.5.7",
     "react-router": "^7.7.1"
   }
 }
