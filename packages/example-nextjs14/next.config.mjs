@@ -1,11 +1,11 @@
-import { type NextConfig } from 'next'
-
+/**
+ * @type {import('next').NextConfig}
+ */
 const nextConfig = {
-  webpack: (config: NextConfig) => {
+  webpack: (config) => {
     const newConfig = {
       ...config,
-    } as NextConfig;
-    newConfig.resolve.webpack5 = true;
+    };
     newConfig.resolve.fallback = {
       ...config.resolve.fallback,
       fs: false,
@@ -19,11 +19,7 @@ const nextConfig = {
 
   basePath: '',
   experimental: {
-    browsersListForSwc: true,
-    legacyBrowsers: false,
-    polyfillsOptimization: true,
     externalDir: true,
-    ppr: true,
   },
   typescript: {
     tsconfigPath: './tsconfig.json',
@@ -34,7 +30,6 @@ const nextConfig = {
   },
   images: {
     minimumCacheTTL: 60 * 60 * 24 * 15,
-    formats: ['image/webp', 'image/png']
   },
   env: {
     VERCEL: process.env.VERCEL,

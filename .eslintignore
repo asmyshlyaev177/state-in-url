@@ -12,3 +12,4 @@ dist
 exportsTest.ts
 .next
 next-env.d.ts
+prettier.config.js

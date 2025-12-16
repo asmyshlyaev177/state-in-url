@@ -1,0 +1,10 @@
+packages:
+  # Don't include urlstate as a workspace - it's the root package
+  # - 'packages/urlstate'
+  - 'packages/example-nextjs14'
+  - 'packages/example-nextjs15'
+  - 'packages/example-nextjs16'
+  - 'packages/example-react'
+  - 'packages/example-react-router6'
+  - 'packages/example-react-router7'
+  - 'packages/example-remix2'

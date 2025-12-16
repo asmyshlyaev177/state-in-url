@@ -5,14 +5,15 @@
   "type": "module",
   "main": "./src/main.tsx",
   "scripts": {
-    "dev": "vite --port 5180",
-    "build": "vite build",
-    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "start": "vite preview --port 5180"
+    "dev": "pnpm exec vite --port 5180",
+    "build": "pnpm exec vite build",
+    "lint": "pnpm exec eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "start": "pnpm exec vite preview --port 5180"
   },
   "dependencies": {
     "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react-dom": "^18.3.1",
+    "state-in-url": "workspace:*"
   },
   "devDependencies": {
     "@types/react": "^18.3.3",

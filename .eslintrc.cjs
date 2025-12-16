@@ -19,14 +19,7 @@ module.exports = {
   rules: {
     'max-len': 'off',
     complexity: ['error', 12],
-    'prettier/prettier': [
-      'warn',
-      {},
-      {
-        usePrettierrc: false,
-        plugins: ["eslint-plugin-prettier-plugin-tailwindcss"]
-      },
-    ],
+    'prettier/prettier': 'warn',
     'react/display-name': 'off',
     'simple-import-sort/imports': [
       'warn',

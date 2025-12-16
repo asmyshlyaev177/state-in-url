@@ -4,16 +4,17 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "next dev --port 3000",
-    "build": "next build",
-    "start": "next start --port 3000",
-    "lint": "next lint"
+    "dev": "pnpm exec next dev --port 3000",
+    "build": "pnpm exec next build",
+    "start": "pnpm exec next start --port 3000",
+    "lint": "pnpm exec next lint"
   },
   "dependencies": {
     "next": "^14.2.33",
     "react": "^18",
     "react-dom": "^18",
-    "react-error-boundary": "^4.1.2"
+    "react-error-boundary": "^4.1.2",
+    "state-in-url": "workspace:*"
   },
   "devDependencies": {
     "@tailwindcss/forms": "^0.5.9",
