@@ -25,16 +25,6 @@
   "bugs": {
     "url": "https://github.com/asmyshlyaev177/state-in-url/issues"
   },
-  "workspaces": [
-    "packages/urlstate",
-    "packages/example-nextjs14",
-    "packages/example-nextjs15",
-    "packages/example-nextjs16",
-    "packages/example-react",
-    "packages/example-react-router6",
-    "packages/example-react-router7",
-    "packages/example-remix2"
-  ],
   "files": [
     "dist"
   ],
@@ -102,9 +92,9 @@
     "test:unit": "wireit",
     "test:int": "wireit",
     "test:int:ci": "wireit",
-    "test:exports": "npm run build && npx babel-node --extensions .js,.mjs,.ts,.mts --config-file ./babel.config.json -- ./packages/urlstate/exportsTest.ts",
-    "install:all": "npm install",
-    "install:ci": "npm ci",
+    "test:exports": "pnpm run build && npx babel-node --extensions .js,.mjs,.ts,.mts --config-file ./babel.config.json -- ./packages/urlstate/exportsTest.ts",
+    "install:all": "pnpm install",
+    "install:ci": "pnpm install --frozen-lockfile",
     "test": "wireit",
     "tsc": "wireit",
     "dev": "wireit",
@@ -128,11 +118,11 @@
     "kill": "wireit",
     "rmdist": "rm -rf dist",
     "cleanup": "rm -rf dist .wireit node_modules test-results playwright-report coverage-reports nyc_coverage packages/example-nextjs14/node_modules packages/example-nextjs14/.next packages/example-nextjs15/node_modules packages/example-nextjs15/.next packages/example-nextjs16/node_modules packages/example-nextjs16/.next packages/example-react/node_modules packages/example-react-router6/node_modules packages/example-react-router7/node_modules packages/example-remix2/node_modules",
-    "reinstall": "npm run cleanup && npm install",
+    "reinstall": "pnpm run cleanup && pnpm install",
     "setup": "playwright install --with-deps",
-    "prepack": "npm run build && cp package.json dist/package.json && npm run build:demo",
+    "prepack": "pnpm run build && cp package.json dist/package.json && pnpm run build:demo",
     "pin-gh-deps": "pin-github-action -i .github/workflows/tests.yml",
-    "prepare": "npx husky"
+    "prepare": "pnpm exec husky"
   },
   "wireit": {
     "dev": {
@@ -150,7 +140,7 @@
           "lineMatches": "http://localhost:3000"
         }
       },
-      "command": "npm run dev:nextjs15"
+      "command": "pnpm run dev:nextjs15"
     },
     "test": {
       "dependencies": [
@@ -158,7 +148,7 @@
         "test:unit",
         "build:packages"
       ],
-      "command": "npm run test:exports && npm run test:int"
+      "command": "pnpm run test:exports && pnpm run test:int"
     },
     "kill-next": {
       "command": "ps aux | grep .next | grep -v grep | awk '{print $2}' | xargs kill -9 2>&1; exit 0"
@@ -204,61 +194,61 @@
       ]
     },
     "dev:router6": {
-      "command": "cd packages/example-react-router6 && npm run dev",
+      "command": "cd packages/example-react-router6 && pnpm run dev",
       "service": true
     },
     "dev:router7": {
-      "command": "cd packages/example-react-router7 && npm run dev",
+      "command": "cd packages/example-react-router7 && pnpm run dev",
       "service": true
     },
     "dev:remix2": {
-      "command": "cd packages/example-remix2 && PORT=3003 npm run dev",
+      "command": "cd packages/example-remix2 && PORT=3003 pnpm run dev",
       "service": true
     },
     "dev:nextjs14": {
-      "command": "cd packages/example-nextjs14 && npm run dev --turbo",
+      "command": "cd packages/example-nextjs14 && pnpm run dev --turbo",
       "service": true
     },
     "dev:nextjs15": {
-      "command": "cd packages/example-nextjs15 && npm run dev --turbo",
+      "command": "cd packages/example-nextjs15 && pnpm run dev --turbo",
       "service": true
     },
     "dev:nextjs16": {
-      "command": "cd packages/example-nextjs16 && npm run dev --turbo",
+      "command": "cd packages/example-nextjs16 && pnpm run dev --turbo",
       "service": true
     },
     "build:next14": {
-      "command": "cd packages/example-nextjs14 && npm run build",
+      "command": "cd packages/example-nextjs14 && pnpm run build",
       "dependencies": [
         "build"
       ]
     },
     "build:next15": {
-      "command": "cd packages/example-nextjs15 && npm run build",
+      "command": "cd packages/example-nextjs15 && pnpm run build",
       "dependencies": [
         "build"
       ]
     },
     "build:next16": {
-      "command": "cd packages/example-nextjs16 && npm run build",
+      "command": "cd packages/example-nextjs16 && pnpm run build",
       "dependencies": [
         "build"
       ]
     },
     "build:router6": {
-      "command": "cd packages/example-react-router6 && npm run build",
+      "command": "cd packages/example-react-router6 && pnpm run build",
       "dependencies": [
         "build"
       ]
     },
     "build:router7": {
-      "command": "cd packages/example-react-router7 && npm run build",
+      "command": "cd packages/example-react-router7 && pnpm run build",
       "dependencies": [
         "build"
       ]
     },
     "build:remix2": {
-      "command": "cd packages/example-remix2 && npm run build",
+      "command": "cd packages/example-remix2 && pnpm run build",
       "dependencies": [
         "build"
       ]
@@ -267,23 +257,23 @@
       "dependencies": [
         "build"
       ],
-      "command": "cd packages/example-nextjs15 && npm run build"
+      "command": "cd packages/example-nextjs15 && pnpm run build"
     },
     "build:demo:tests": {
       "dependencies": [
         "build"
       ],
-      "command": "cd packages/example-nextjs15 && npx cross-env TEST=true npm run build"
+      "command": "cd packages/example-nextjs15 && npx cross-env TEST=true pnpm run build"
     },
     "start:demo": {
       "dependencies": [
         "build:demo"
       ],
-      "command": "cd packages/example-nextjs15 && npm run start",
+      "command": "cd packages/example-nextjs15 && pnpm run start",
       "service": true
     },
     "start:demo:ci": {
-      "command": "cd packages/example-nextjs15 && npm run start",
+      "command": "cd packages/example-nextjs15 && pnpm run start",
       "service": true
     },
     "start:react": {
@@ -320,51 +310,51 @@
       "service": true
     },
     "start:remix2": {
-      "command": "cd packages/example-remix2 && npm run start",
+      "command": "cd packages/example-remix2 && pnpm run start",
       "dependencies": [
         "build:remix2"
       ],
       "service": true
     },
     "start:remix2:ci": {
-      "command": "cd packages/example-remix2 && npm run start",
+      "command": "cd packages/example-remix2 && pnpm run start",
       "service": true
     },
     "start:demo14": {
       "dependencies": [
         "build:next14"
       ],
-      "command": "cd packages/example-nextjs14 && npm run start",
+      "command": "cd packages/example-nextjs14 && pnpm run start",
       "service": true
     },
     "start:demo15": {
       "dependencies": [
         "build:next15"
       ],
-      "command": "cd packages/example-nextjs15 && npm run start",
+      "command": "cd packages/example-nextjs15 && pnpm run start",
       "service": true
     },
     "start:demo14:ci": {
-      "command": "cd packages/example-nextjs14 && npm run start",
+      "command": "cd packages/example-nextjs14 && pnpm run start",
       "service": true
     },
     "start:demo15:ci": {
-      "command": "cd packages/example-nextjs15 && npm run start",
+      "command": "cd packages/example-nextjs15 && pnpm run start",
       "service": true
     },
     "start:demo16": {
       "dependencies": [
         "build:next16"
       ],
-      "command": "cd packages/example-nextjs16 && npm run start",
+      "command": "cd packages/example-nextjs16 && pnpm run start",
       "service": true
     },
     "start:demo16:ci": {
-      "command": "cd packages/example-nextjs16 && npm run start",
+      "command": "cd packages/example-nextjs16 && pnpm run start",
       "service": true
     },
     "start": {
-      "command": "npm run start:demo15",
+      "command": "pnpm run start:demo15",
       "dependencies": [
         "start:demo14",
         "start:demo16",
@@ -376,7 +366,7 @@
       "service": true
     },
     "start:ci": {
-      "command": "npm run start:demo15:ci",
+      "command": "pnpm run start:demo15:ci",
       "dependencies": [
         "start:demo14:ci",
         "start:demo16:ci",
@@ -388,7 +378,7 @@
       "service": true
     },
     "dev:react": {
-      "command": "cd packages/example-react && npm run dev",
+      "command": "cd packages/example-react && pnpm run dev",
       "service": true
     },
     "build:packages": {
@@ -404,7 +394,7 @@
       ]
     },
     "build:react": {
-      "command": "cd packages/example-react && npm run build"
+      "command": "cd packages/example-react && pnpm run build"
     },
     "build": {
       "command": "rollup -c rollup.config.mjs",
@@ -466,7 +456,6 @@
     "@testing-library/jest-dom": "^6.9.0",
     "@testing-library/react": "^16.3.0",
     "@testing-library/react-hooks": "^8.0.1",
-    "@types/glob": "^8.1.0",
     "@types/node": "^20.19.18",
     "@types/react": "^18.3.25",
     "@types/react-dom": "^18.3.7",
@@ -487,6 +476,7 @@
     "eslint-plugin-prettier": "^5.2.1",
     "eslint-plugin-react-hooks": "^4.6.2",
     "eslint-plugin-simple-import-sort": "^12.1.1",
+    "glob": "^13.0.0",
     "happy-dom": "^15.11.7",
     "husky": "^9.1.7",
     "lint-staged": "^15.5.2",
@@ -496,6 +486,7 @@
     "playwright": "^1.55.1",
     "prettier": "^3.6.2",
     "prettier-plugin-tailwindcss": "^0.6.14",
+    "react-router": "^7.10.1",
     "release-it": "^17.11.0",
     "rollup": "^4.52.3",
     "rollup-plugin-esbuild": "^6.2.1",
@@ -565,11 +556,24 @@
     "decode url",
     "fast"
   ],
-  "packageManager": "npm@10.8.2",
+  "packageManager": "pnpm@10.26.0",
   "dependencies": {
     "next": "^15.5.7",
     "react": "^19.2.1",
-    "react-dom": "^19.2.1",
-    "react-router": "^7.7.1"
+    "react-dom": "^19.2.1"
+  },
+  "pnpm": {
+    "overrides": {
+      "@remix-run/react>react": "18.3.1",
+      "@remix-run/react>react-dom": "18.3.1"
+    },
+    "onlyBuiltDependencies": [
+      "@parcel/watcher",
+      "core-js",
+      "esbuild",
+      "less",
+      "sharp",
+      "unrs-resolver"
+    ]
   }
 }

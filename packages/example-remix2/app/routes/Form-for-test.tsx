@@ -1,5 +1,5 @@
 import React from "react";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams } from "@remix-run/react";
 import { Field, Input, RefreshButton, Tag } from "../../../shared/components";
 import { form } from "../../../shared/form";
 import { useUrlState } from "state-in-url/remix";
@@ -87,10 +87,10 @@ export const Form = ({ className }: { className?: string }) => {
   const setStateStable = React.useRef(setState);
 
   const [isError, setIsError] = React.useState(false);
-  const isInit = setUrlPrev
-  const isEqual = (setUrlStable.current !== setUrlPrev || setUrlPrev !== setUrl || setStateStable.current !== setState || setStatePrev !== setState)
+  const isInit = !!setUrlPrev;
+  const isEqual = (setUrlStable.current !== setUrlPrev || setUrlPrev !== setUrl || setStateStable.current !== setState || setStatePrev !== setState);
   if (isInit && isEqual && !isError) {
-    setIsError(true)
+    setIsError(true);
   }
   if (isError) return null;
 

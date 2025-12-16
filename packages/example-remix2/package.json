@@ -4,18 +4,19 @@
   "sideEffects": false,
   "type": "module",
   "scripts": {
-    "build": "remix vite:build",
-    "dev": "remix vite:dev --port 5182",
-    "lint": "eslint --ignore-path .gitignore --cache --cache-location ./node_modules/.cache/eslint .",
-    "start": "PORT=5182 npx remix-serve ./build/server/index.js",
-    "typecheck": "tsc"
+    "build": "pnpm exec remix vite:build",
+    "dev": "pnpm exec remix vite:dev --port 5182",
+    "lint": "pnpm exec eslint --ignore-path .gitignore --cache --cache-location ./node_modules/.cache/eslint .",
+    "start": "PORT=5182 pnpm exec remix-serve ./build/server/index.js",
+    "typecheck": "pnpm exectsc"
   },
   "dependencies": {
     "@remix-run/node": "^2.16.8",
     "@remix-run/react": "^2.16.8",
     "isbot": "^4.1.0",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "state-in-url": "workspace:*"
   },
   "devDependencies": {
     "@remix-run/dev": "^2.16.8",
@@ -39,5 +40,6 @@
   },
   "engines": {
     "node": ">=20.0.0"
-  }
+  },
+  "packageManager": "pnpm@9.15.4"
 }

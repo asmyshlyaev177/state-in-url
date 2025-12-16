@@ -4,15 +4,16 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite --port 5183",
-    "build": "vite build",
-    "lint": "eslint .",
-    "preview": "vite preview --port 5183"
+    "dev": "pnpm exec vite --port 5183",
+    "build": "pnpm exec vite build",
+    "lint": "pnpm exec eslint .",
+    "preview": "pnpm exec vite preview --port 5183"
   },
   "dependencies": {
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-router": "^7.7.1"
+    "react-router": "^7.7.1",
+    "state-in-url": "workspace:*"
   },
   "devDependencies": {
     "@eslint/js": "^9.11.0",
