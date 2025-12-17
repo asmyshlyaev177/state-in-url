@@ -558,7 +558,7 @@
   ],
   "packageManager": "pnpm@10.26.0",
   "dependencies": {
-    "next": "^15.5.7",
+    "next": "^15.5.9",
     "react": "^19.2.1",
     "react-dom": "^19.2.1"
   },
