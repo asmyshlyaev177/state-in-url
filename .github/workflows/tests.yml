@@ -174,7 +174,7 @@ jobs:
           retention-days: 5
 
   merge-reports:
-    # Merge reports after playwright-tests, even if some shards have failed
+    # Merge reports after playwright-tests
     if: ${{ always() && contains(needs.*.result, 'failure') }}
     needs: [ testint ]
 
