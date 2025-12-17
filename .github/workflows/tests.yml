@@ -260,8 +260,6 @@ jobs:
             **/.next
           key: modules-2-${{ github.sha }}-${{ github.run_id }}
 
-      - name: Verify the integrity of provenance attestations and registry signatures for installed dependencies
-        run: npm audit signatures
       # - name: Debug
       #   run: echo `pwd` && echo `ls -a`
 
@@ -271,10 +269,6 @@ jobs:
         run: |
           git config --global user.email "github-release-bot@example.com"
           git config --global user.name "Release Workflow"
-      - name: Initialise the NPM config
-        run: npm config set //registry.npmjs.org/:_authToken $NPM_TOKEN
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Release
         env:
