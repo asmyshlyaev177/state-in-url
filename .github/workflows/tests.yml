@@ -242,23 +242,13 @@ jobs:
       - uses: actions/setup-node@39370e3970a6d050c480ffad4ff0ed4d3fdee5af # v4.1.0
         with:
           node-version-file: '.nvmrc'
-          registry-url: 'https://registry.npmjs.org'
           cache: 'pnpm'
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - uses: actions/cache/restore@d4323d4df104b026a6aa633fdb11d772146be0bf # v4.1.2
-        id: cache
-        with:
-          path: |
-            ./dist
-            **/dist
-            **/package.json
-            ./package.json
-            **/build
-            **/.next
-          key: modules-2-${{ github.sha }}-${{ github.run_id }}
+      - name: build package
+        run: pnpm run build
 
       # - name: Debug
       #   run: echo `pwd` && echo `ls -a`
@@ -273,4 +263,5 @@ jobs:
       - name: Release
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          # NPM_TOKEN not needed when using OIDC Trusted Publishing
         run: pnpm exec semantic-release
