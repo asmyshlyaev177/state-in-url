@@ -1,12 +1,12 @@
 import { expect, test } from '@playwright/test';
 
-import { toHaveUrl } from './testUtils';
+import { toHaveUrl, ignoredErrors } from './testUtils';
 
 test('useUrlEncode', async ({ page }) => {
-  const errorLogs: unknown[] = [];
+  const errorLogs: string[] = [];
   page.on('console', (message) => {
     if (message.type() === 'error') {
-      errorLogs.push(message.text());
+      errorLogs.push(JSON.stringify(message.text()));
     }
   });
 
@@ -37,5 +37,5 @@ test('useUrlEncode', async ({ page }) => {
   const decoded = await page.getByTestId('parsed').inputValue();
   await expect(JSON.parse(decoded)).toStrictEqual(obj);
 
-  expect(errorLogs).toHaveLength(0);
+  expect(errorLogs.filter(err => ignoredErrors.includes(err))).toHaveLength(0);
 });

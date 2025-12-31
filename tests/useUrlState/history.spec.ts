@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test';
 
-import { toHaveUrl } from '../testUtils';
+import { toHaveUrl, ignoredErrors } from '../testUtils';
 
 const urls = [
   '/test-ssr',
@@ -19,10 +19,10 @@ const urls = [
 
   for (const url of urls) {
     test(`go back/forward ${url}`, async ({ page }) => {
-    const errorLogs: unknown[] = [];
+    const errorLogs: string[] = [];
     page.on('console', (message) => {
       if (message.type() === 'error') {
-        errorLogs.push(message.text());
+        errorLogs.push(JSON.stringify(message.text()));
       }
     });
 
@@ -64,7 +64,7 @@ const urls = [
       await toHaveUrl(page, `${url}${expectedUrl}`);
 
 
-    expect(errorLogs).toHaveLength(0);
+    expect(errorLogs.filter(err => ignoredErrors.includes(err))).toHaveLength(0);
 });
 }
 

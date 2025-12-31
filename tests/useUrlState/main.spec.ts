@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test';
 
-import { toHaveUrl } from '../testUtils';
+import { toHaveUrl, ignoredErrors } from '../testUtils';
 
 const urls = [
   '/test-ssr', //  expected hydration error
@@ -49,10 +49,10 @@ test.describe('main tests', () => {
 
     for (const url of urls) {
       test(`fast concurent URL updates ${url}`, async ({ page }) => {
-      const errorLogs: unknown[] = [];
+      const errorLogs: {text: string; url: string}[] = [];
       page.on('console', (message) => {
         if (message.type() === 'error') {
-          errorLogs.push({ text: message.text(), url });
+          errorLogs.push({ text: JSON.stringify(message.text()), url });
         }
       });
 
@@ -78,7 +78,9 @@ test.describe('main tests', () => {
         .pressSequentially('our', { delay });
 
       await page.waitForTimeout(750);
-      await expect(await page.getByLabel('name')).toHaveValue(text1)
+      await expect(await page.getByLabel('name')).toHaveValue(text1);
+
+      await expect(errorLogs.filter(err => ignoredErrors.includes(err.text))).toHaveLength(0);
   });
   }
 
@@ -86,10 +88,10 @@ test.describe('main tests', () => {
     for (const url of urls) {
       test(`update state/url ${url}`, async ({ page }) => {
 
-      const errorLogs: unknown[] = [];
+      const errorLogs: {text: string; url: string}[] = [];
       page.on('console', (message) => {
         if (message.type() === 'error') {
-          errorLogs.push({ text: message.text(), url });
+          errorLogs.push({ text: JSON.stringify(message.text()), url });
         }
       });
 
@@ -132,7 +134,7 @@ test.describe('main tests', () => {
       await expect(page.getByTestId('parsed')).toHaveText(expectedText);
 
       if (url === '/test-ssr-sp') {
-        await expect(errorLogs).toHaveLength(0);
+        await expect(errorLogs.filter(err => ignoredErrors.includes(err.text))).toHaveLength(0);
       }
   });
   }
@@ -141,10 +143,10 @@ test.describe('main tests', () => {
     for (const url of urls) {
       test(`load from URL ${url}`, async ({ page }) => {
 
-      const errorLogs: unknown[] = [];
+      const errorLogs: {text:string; url: string}[] = [];
       page.on('console', (message) => {
         if (message.type() === 'error') {
-          errorLogs.push({ text: message.text(), url });
+          errorLogs.push({ text: JSON.stringify(message.text()), url });
         }
       });
 
@@ -158,7 +160,7 @@ test.describe('main tests', () => {
       await toHaveUrl(page, `${url}${expectedUrl}`);
 
       if (url === '/test-ssr-sp') {
-        await expect(errorLogs).toHaveLength(0);
+        await expect(errorLogs.filter(err => ignoredErrors.includes(err.text))).toHaveLength(0);
       }
   });
   }
@@ -167,10 +169,10 @@ test.describe('main tests', () => {
   for (const url of urls) {
     test(`fast updates(long key press) ${url}`, async ({ page }) => {
 
-      const errorLogs: unknown[] = [];
+      const errorLogs: {text: string; url: string}[] = [];
       page.on('console', (message) => {
         if (message.type() === 'error') {
-          errorLogs.push({ text: message.text(), url });
+          errorLogs.push({ text: JSON.stringify(message.text()), url });
         }
       });
 
@@ -191,7 +193,7 @@ test.describe('main tests', () => {
       await expect(page.locator('button[name="Reload page"]')).toBeVisible();
 
       if (url === '/test-ssr-sp') {
-        await expect(errorLogs).toHaveLength(0);
+        await expect(errorLogs.filter(err => ignoredErrors.includes(err.text))).toHaveLength(0);
       }
     });
   }

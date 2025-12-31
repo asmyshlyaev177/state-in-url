@@ -32,10 +32,10 @@ export default function RootLayout({
         {/* {isProd && isVercel && <Script src="/heatmap.js" strategy='afterInteractive'/>} */}
         <meta name="title" content={_metadata.title as string}></meta>
         <meta name="description" content={_metadata.description || ''}></meta>
-        <script
+        {isProd && <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-        />
+        />}
 
         <link rel="alternate" type="text/markdown" href={`${siteUrl}/llms.txt`} title="LLM-friendly version" />
         <meta name="llms-txt" content={`${siteUrl}/llms.txt`} />

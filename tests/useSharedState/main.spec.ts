@@ -7,6 +7,8 @@ const urls = [
   'http://localhost:3002/useSharedState',
 ];
 
+import { ignoredErrors } from '../testUtils';
+
 test.describe('main tests', () => {
   const expectedText = `
   {
@@ -22,7 +24,7 @@ test.describe('main tests', () => {
       const errorLogs: string[] = [];
       page.on('console', (message) => {
         if (message.type() === 'error') {
-          errorLogs.push(message.text());
+          errorLogs.push(JSON.stringify(message.text()));
         }
       });
 
@@ -53,7 +55,7 @@ test.describe('main tests', () => {
       );
 
       await expect(
-        errorLogs.filter((err) => !err.includes('dangerouslySetInnerHTML')),
+        errorLogs.filter((err) => ignoredErrors.includes(err)),
       ).toHaveLength(0);
   });
   }

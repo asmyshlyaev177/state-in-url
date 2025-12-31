@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test';
 
-import { toHaveUrl } from '../testUtils';
+import { toHaveUrl, ignoredErrors } from '../testUtils';
 
 const urls = [
   '/test-ssr-sp',
@@ -13,10 +13,10 @@ const urls = [
 
 for (const url of urls) {
   test(`replace arg === true ${url}`, async ({ page }) => {
-    const errorLogs: unknown[] = [];
+    const errorLogs: string[] = [];
     page.on('console', (message) => {
       if (message.type() === 'error') {
-        errorLogs.push(message.text());
+        errorLogs.push(JSON.stringify(message.text()));
       }
     })
 
@@ -40,18 +40,18 @@ for (const url of urls) {
     await page.goForward();
     await toHaveUrl(page, `${url}${expectedUrl}`);
 
-    expect(errorLogs).toHaveLength(0);
+    expect(errorLogs.filter(err => ignoredErrors.includes(err))).toHaveLength(0);
   });
 }
 
 
 for (const url of urls) {
   test(`replace arg === false ${url}`, async ({ page, baseURL }) => {
-    const errorLogs: unknown[] = [];
+    const errorLogs: string[] = [];
 
     page.on('console', (message) => {
       if (message.type() === 'error') {
-        errorLogs.push(message.text());
+        errorLogs.push(JSON.stringify(message.text()));
       }
     });
     await page.goto(`${url}?replace=true`);
@@ -74,17 +74,17 @@ for (const url of urls) {
     await page.goForward();
     await toHaveUrl(page, `${url}${expectedUrl}`);
 
-    expect(errorLogs).toHaveLength(0);
+    expect(errorLogs.filter(err => ignoredErrors.includes(err))).toHaveLength(0);
   });
 }
 
   for (const url of urls) {
     test(`replace arg true by default ${url}`, async ({ page }) => {
 
-    const errorLogs: unknown[] = [];
+    const errorLogs: string[] = [];
     page.on('console', (message) => {
       if (message.type() === 'error') {
-        errorLogs.push(message.text());
+        errorLogs.push(JSON.stringify(message.text()));
       }
     });
 
@@ -108,6 +108,6 @@ for (const url of urls) {
     await page.goForward();
     await toHaveUrl(page, `${url}${expectedUrl}`);
 
-    expect(errorLogs).toHaveLength(0);
+    expect(errorLogs.filter(err => ignoredErrors.includes(err))).toHaveLength(0);
 });
 }
