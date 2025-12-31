@@ -1,3 +1,10 @@
+## [6.1.1](https://github.com/asmyshlyaev177/state-in-url/compare/v6.1.0...v6.1.1) (2025-12-31)
+
+
+### Bug Fixes
+
+* don't use dependencies to avoid downloading packages ([56e4fe2](https://github.com/asmyshlyaev177/state-in-url/commit/56e4fe2c4eb132591286ad33345a6bb8bd43652a))
+
 # [6.1.0](https://github.com/asmyshlyaev177/state-in-url/compare/v6.0.5...v6.1.0) (2025-11-29)
 
 
