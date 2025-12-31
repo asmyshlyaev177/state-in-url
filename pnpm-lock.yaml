@@ -11,16 +11,6 @@ overrides:
 importers:
 
   .:
-    dependencies:
-      next:
-        specifier: ^15.5.9
-        version: 15.5.9(@babel/core@7.28.5)(@playwright/test@1.57.0)(babel-plugin-react-compiler@19.0.0-beta-ebf51a3-20250411)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(sass@1.97.0)
-      react:
-        specifier: ^19.2.1
-        version: 19.2.3
-      react-dom:
-        specifier: ^19.2.1
-        version: 19.2.3(react@19.2.3)
     devDependencies:
       '@babel/core':
         specifier: ^7.28.4
@@ -148,6 +138,9 @@ importers:
       lint-staged:
         specifier: ^15.5.2
         version: 15.5.2
+      next:
+        specifier: ^15.5.9
+        version: 15.5.9(@babel/core@7.28.5)(@playwright/test@1.57.0)(babel-plugin-react-compiler@19.0.0-beta-ebf51a3-20250411)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(sass@1.97.0)
       nyc:
         specifier: ^17.1.0
         version: 17.1.0
@@ -166,6 +159,12 @@ importers:
       prettier-plugin-tailwindcss:
         specifier: ^0.6.14
         version: 0.6.14(prettier@3.7.4)
+      react:
+        specifier: ^19.2.1
+        version: 19.2.3
+      react-dom:
+        specifier: ^19.2.1
+        version: 19.2.3(react@19.2.3)
       react-router:
         specifier: ^7.10.1
         version: 7.10.1(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
