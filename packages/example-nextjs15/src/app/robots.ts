@@ -6,7 +6,7 @@ export default function robots(): MetadataRoute.Robots {
   return {
     rules: {
       userAgent: '*',
-      allow: '/',
+      allow: ['/', '/react-router', '/remix'],
       disallow: [
         '/useUrlEncode/',
         '/test-ssr/',
