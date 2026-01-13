@@ -621,7 +621,7 @@ const tags = [
 ];
 ```
 
-[Demo page example code](https://github.com/asmyshlyaev177/state-in-url/blob/master/packages/example-nextjs14/src/app/Form.tsx)
+[Demo page example code](https://github.com/asmyshlyaev177/state-in-url/blob/master/packages/example-nextjs15/src/app/Form.tsx)
 </details>
 
 ##### Update state only and sync to URL manually
