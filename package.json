@@ -477,7 +477,7 @@
     "eslint-plugin-react-hooks": "^4.6.2",
     "eslint-plugin-simple-import-sort": "^12.1.1",
     "glob": "^13.0.0",
-    "happy-dom": "^15.11.7",
+    "happy-dom": "^20.0.2",
     "husky": "^9.1.7",
     "lint-staged": "^15.5.2",
     "nyc": "^17.1.0",
