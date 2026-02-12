@@ -1,21 +1,22 @@
-import react from "@vitejs/plugin-react";
-import path from "path";
+import react from '@vitejs/plugin-react';
+import path from 'path';
+import type { UserConfig } from 'vite';
 
 // https://vitejs.dev/config/
-export const getConfig = () => ({
-  root: ".",
+export const getConfig = (): UserConfig => ({
+  root: '.',
   plugins: [react()],
   build: {
-    outDir: "./dist",
+    outDir: './dist',
     emptyOutDir: true,
     cssCodeSplit: false,
-    sourceMap: true,
+    sourcemap: true,
   },
   resolve: {
     preserveSymlinks: true,
     alias: {
-      shared: `${path.resolve(__dirname, "./")}`,
-      "state-in-url": `${path.resolve(__dirname, "../urlstate")}`,
+      shared: `${path.resolve(__dirname, './')}`,
+      'state-in-url': `${path.resolve(__dirname, '../urlstate')}`,
     },
   },
 });
