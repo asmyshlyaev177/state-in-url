@@ -1,11 +1,7 @@
-import { Suspense } from 'react';
-
 import { StatusUsp } from '../../Status-for-test-usp';
 
-export default async function Home() {
-  return (
-    <Suspense fallback={null}>
-      <StatusUsp />
-    </Suspense>
-  );
+export const dynamic = 'force-dynamic'
+
+export default function Home() {
+  return <StatusUsp />;
 }

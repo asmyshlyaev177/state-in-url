@@ -6,7 +6,7 @@ import { ignoredErrors } from '../testUtils';
 // received a URLSearchParams instance from useSearchParams() and returned {}
 // instead of the actual params (Object.entries doesn't work on URLSearchParams).
 const nextjsUrls = [
-  '/test-ssr-usp',                        // nextjs15 (baseURL)
+  'http://localhost:3000/test-ssr-usp',   // nextjs14
   'http://localhost:3001/test-ssr-usp',   // nextjs15
   'http://localhost:3002/test-ssr-usp',   // nextjs16
 ];
@@ -24,8 +24,8 @@ const encodedName = "%27Alice%27";
 const expectedName = 'Alice';
 
 test.describe('SSR with URLSearchParams from useSearchParams()', () => {
-  // This is the regression test for the filterUnknownParams bug. It disables JS
-  // so only the server-rendered HTML is checked — with the bug, the server always
+  // This is the regression test for the filterUnknownParams bug. JS is disabled so
+  // only the server-rendered HTML is checked — with the bug, the server always
   // returned the schema default ("") because Object.entries(URLSearchParams) === [].
   for (const url of nextjsUrls) {
     test(`server-renders correct URL params without JS: ${url}`, async ({ browser }) => {
