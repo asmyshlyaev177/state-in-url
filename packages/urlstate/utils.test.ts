@@ -258,6 +258,26 @@ describe('filterUnknownParams', () => {
     const result = filterUnknownParams(shape, searchParams);
     expect(result).toEqual({ str: 'text', num: '42', bool: 'true', date: '2023-01-01' });
   });
+
+  test('handles URLSearchParams instance (SSR searchParams from Next.js useSearchParams)', () => {
+    const shape = { status: '', tab: '' };
+    const searchParams = new URLSearchParams("status=%27archived%27&tab=%27details%27&unknown=foo");
+    const result = filterUnknownParams(shape, searchParams);
+    expect(result).toEqual({ status: "'archived'", tab: "'details'" });
+  });
+
+  test('handles URLSearchParams instance with no matching keys', () => {
+    const shape = { status: '' };
+    const searchParams = new URLSearchParams("unknown=foo&other=bar");
+    const result = filterUnknownParams(shape, searchParams);
+    expect(result).toEqual({});
+  });
+
+  test('handles empty URLSearchParams instance', () => {
+    const shape = { status: '', tab: '' };
+    const result = filterUnknownParams(shape, new URLSearchParams());
+    expect(result).toEqual({});
+  });
 });
 
 describe('isPrimitive', () => {

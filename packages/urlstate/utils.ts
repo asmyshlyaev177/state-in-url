@@ -1,15 +1,15 @@
 export type Type =
-  | "string"
-  | "date"
-  | "boolean"
-  | "number"
-  | "bigint"
-  | "undefined"
-  | "object"
-  | "null"
-  | "function"
-  | "symbol"
-  | "array";
+  | 'string'
+  | 'date'
+  | 'boolean'
+  | 'number'
+  | 'bigint'
+  | 'undefined'
+  | 'object'
+  | 'null'
+  | 'function'
+  | 'symbol'
+  | 'array';
 
 /**
  * A better replacement for `typeof`
@@ -20,21 +20,21 @@ export type Type =
  * `function`, `symbol`, `array`
  */
 export const typeOf = (val: unknown): Type => {
-  if (val === null) return "null";
+  if (val === null) return 'null';
 
   const nativeType = typeof val;
-  if (nativeType !== "object") return nativeType;
+  if (nativeType !== 'object') return nativeType;
 
-  if (Array.isArray(val)) return "array";
-  if (val instanceof Date) return "date";
+  if (Array.isArray(val)) return 'array';
+  if (val instanceof Date) return 'date';
 
-  return "object";
+  return 'object';
 };
 
 export const isPrimitive = (val: unknown): val is Simple => {
   const type = typeOf(val);
 
-  return type !== "object" && type !== "array";
+  return type !== 'object' && type !== 'array';
 };
 
 export type Simple =
@@ -48,7 +48,7 @@ export type Simple =
   | Function
   | symbol;
 
-export const isSSR = typeof window === "undefined";
+export const isSSR = typeof window === 'undefined';
 
 export type JSON =
   | null
@@ -67,8 +67,8 @@ export const getParams = (strOrSearchParams?: string | URLSearchParams) => {
   if (strOrSearchParams instanceof URLSearchParams) {
     return strOrSearchParams;
   }
-  if (typeof strOrSearchParams === "string") {
-    const idx = strOrSearchParams.indexOf("?");
+  if (typeof strOrSearchParams === 'string') {
+    const idx = strOrSearchParams.indexOf('?');
     return new URLSearchParams(
       idx === -1 ? strOrSearchParams : strOrSearchParams.slice(idx + 1),
     );
@@ -111,12 +111,12 @@ export const isEqual = (val1: unknown, val2: unknown): boolean => {
   if (isPrimitive(val1)) return false;
 
   // For arrays
-  if (type1 === "array") {
+  if (type1 === 'array') {
     return isEqualArray(val1 as unknown[], val2 as unknown[]);
   }
 
   // For objects
-  if (type1 === "object") {
+  if (type1 === 'object') {
     return isEqualObject(
       val1 as Record<string, unknown>,
       val2 as Record<string, unknown>,
@@ -135,7 +135,7 @@ export function filterUnknownParamsClient<T extends object>(
 
   const filtered = filterUnknown(shape, [
     ...new URLSearchParams(
-      (params as string | URLSearchParams | Record<string, string>) || "",
+      (params as string | URLSearchParams | Record<string, string>) || '',
     ).entries(),
   ]);
 
@@ -148,11 +148,13 @@ export function filterUnknownParamsClient<T extends object>(
 
 export function filterUnknownParams<T extends object>(
   shape: T,
-  searchParams?: object,
+  searchParams?: object | URLSearchParams,
 ) {
-  return Object.fromEntries(
-    filterUnknown(shape, Object.entries(searchParams || {})),
-  ) as T;
+  const entries =
+    searchParams instanceof URLSearchParams
+      ? [...searchParams.entries()]
+      : Object.entries(searchParams || {});
+  return Object.fromEntries(filterUnknown(shape, entries)) as T;
 }
 
 export function filterUnknown<T extends object>(
@@ -165,7 +167,7 @@ export function filterUnknown<T extends object>(
 
   for (let i = 0; i < entries.length; i++) {
     if (shapeKeys.includes(entries[i]?.[0])) {
-      result.push([entries[i][0].replace(/\+/g, " "), entries[i][1]]);
+      result.push([entries[i][0].replace(/\+/g, ' '), entries[i][1]]);
     }
   }
 
@@ -191,21 +193,21 @@ export interface Router {
 
 export const routerHistory: Router = {
   push: (str) => {
-    if (typeof window !== "undefined") {
-      window.history.pushState(null, "", str);
+    if (typeof window !== 'undefined') {
+      window.history.pushState(null, '', str);
     }
   },
   replace: (str) => {
-    if (typeof window !== "undefined") {
-      window.history.replaceState(null, "", str);
+    if (typeof window !== 'undefined') {
+      window.history.replaceState(null, '', str);
     }
   },
 };
 
-export const isSafari = /apple/i.test((!isSSR && navigator?.userAgent) || "");
+export const isSafari = /apple/i.test((!isSSR && navigator?.userAgent) || '');
 
-export const popstateEv = "popstate";
+export const popstateEv = 'popstate';
 
 export function getSearch() {
-  return isSSR ? "" : window.location.search;
+  return isSSR ? '' : window.location.search;
 }
