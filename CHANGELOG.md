@@ -1,3 +1,10 @@
+## [6.1.2](https://github.com/asmyshlyaev177/state-in-url/compare/v6.1.1...v6.1.2) (2026-03-26)
+
+
+### Bug Fixes
+
+* fix decoding SearchParams in SSR for NextJS ([8249a83](https://github.com/asmyshlyaev177/state-in-url/commit/8249a83f8fb907a14fc60c853d5eb7895accacd9))
+
 ## [6.1.1](https://github.com/asmyshlyaev177/state-in-url/compare/v6.1.0...v6.1.1) (2025-12-31)
 
 
