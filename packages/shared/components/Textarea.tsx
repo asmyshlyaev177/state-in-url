@@ -1,9 +1,10 @@
-import { clsx } from "clsx";
+import { clsx } from 'clsx';
 
 export const Textarea = ({ className, value, onChange, ...rest }: Props) => {
   return (
     <textarea
-      className={clsx(`text-black`, className)}
+      className={clsx(className)}
+      style={{ color: 'var(--ink, #1c1917)' }}
       value={value}
       onChange={onChange}
       rows={30}
@@ -15,5 +16,5 @@ export const Textarea = ({ className, value, onChange, ...rest }: Props) => {
 interface Props extends React.HTMLAttributes<HTMLTextAreaElement> {
   className: string;
   value: string;
-  onChange?: React.TextareaHTMLAttributes<HTMLTextAreaElement>["onChange"];
+  onChange?: React.TextareaHTMLAttributes<HTMLTextAreaElement>['onChange'];
 }

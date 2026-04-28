@@ -22,15 +22,12 @@ export default async function Template({
           <div className="wrapper">
             <div className="branding">
               <Logo className="logo" />
-
-              <div className="text">
-                <h1 className="title">State in url</h1>
-                <p className="subtitle">State management and URL sync</p>
-              </div>
+              <h1 className="title">State in url</h1>
             </div>
-
+            <div className="brand-rule" role="presentation" />
+            <p className="subtitle">State management and URL sync</p>
             <p className="desc">
-              Store complex state in query parameters; imagine JSON in a browser URL, while keeping types and structure of data.
+              Sync any JavaScript state to URL query parameters — objects, arrays, and dates. Fully typed, shareable, and persistent across reloads.
             </p>
           </div>
         </header>

@@ -1,10 +1,28 @@
 .tag {
-  @apply px-3 py-1 text-gray-600 rounded-full
-        text-sm font-medium
-        focus:outline-none focus:ring-2 focus:ring-offset-2
-        focus:ring-orange-500 bg-gray-300 hover:bg-orange-200 transition-colors;
+  @apply rounded-full px-3 py-1 text-sm font-medium transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-offset-2;
+  color: var(--ink-2, #6b7280);
+  background-color: var(--brand-dim, #fed7aa);
+  --tw-ring-color: var(--brand, #ea580c);
+
+  &:hover {
+    filter: brightness(0.92);
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
 
   &.active {
-    @apply bg-orange-100 text-orange-800 hover:text-white hover:bg-[#ad6400];
+    background-color: var(--brand, #ea580c);
+    color: #fff;
+    transform: scale(1);
+  }
+
+  &.active:hover {
+    filter: brightness(0.88);
+  }
+
+  &.active:active {
+    transform: scale(0.95);
   }
 }

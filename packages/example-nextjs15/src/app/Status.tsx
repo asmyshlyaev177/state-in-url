@@ -23,33 +23,61 @@ export const Status = React.memo(({
     replace: false,
   });
 
+  const prevStateRef = React.useRef<typeof urlState>(urlState);
+  const [highlightCounters, setHighlightCounters] = React.useState<Record<string, number>>({});
+
+  React.useEffect(() => {
+    const changed: string[] = [];
+    const prev = prevStateRef.current as Record<string, unknown>;
+    const curr = urlState as Record<string, unknown>;
+
+    for (const key of Object.keys(curr)) {
+      if (JSON.stringify(curr[key]) !== JSON.stringify(prev[key])) {
+        changed.push(key);
+      }
+    }
+    prevStateRef.current = urlState;
+
+    if (changed.length > 0) {
+      setHighlightCounters((counters) => {
+        const next = { ...counters };
+        for (const key of changed) {
+          next[key] = (counters[key] || 0) + 1;
+        }
+        return next;
+      });
+    }
+  }, [urlState]);
+
+  const mult = 6;
+
   return (
     <div className={clsx("flex relative shadow-md hover:shadow-lg", className)}>
       <div className="font-semibold mb-2 ">
         Other client component
       </div>
-      <h3>Types and structure of data are preserved</h3>
+      <h3>Reads from URL — no props, no context, types and structure are preserved</h3>
 
       <div className="flex-none">
-         <pre
-          className="h-[330px] overflow-y-scroll text-gray-600 bg-white p-4 rounded-md shadow-inner break-all whitespace-pre-wrap leading-6"
+        <pre
+          className="h-[330px] overflow-y-scroll text-ink2 bg-surface p-4 rounded-md shadow-inner break-all whitespace-pre-wrap leading-6"
           data-testid="parsed"
         >
-          {/* <div>{'{'}</div>
-          <div className="ml-4">
-            <div><b>name:</b> {urlState.name}</div>
-            <div><b>age:</b> {urlState.age}</div>
-            <div><b>agree:</b> {JSON.stringify(urlState.agree_to_terms)}</div>
-            <div><b>tags:</b> {JSON.stringify(urlState.tags, null, 2)}</div>
-          </div>
-          <div>{'}'}</div> */}
-
-          {renderObject(urlState)}
-
-
+          <span>{'{'}</span>
+          {Object.entries(urlState as object).map(([key, val]) => (
+            <div key={key} className="relative" style={{ marginLeft: 2 * mult }}>
+              {highlightCounters[key] ? (
+                <span
+                  key={highlightCounters[key]}
+                  className="sync-flash-overlay"
+                  aria-hidden="true"
+                />
+              ) : null}
+              <span className="font-semibold">{key}</span>: {renderObject(val, 1)}
+            </div>
+          ))}
+          <span style={{ marginLeft: mult }}>{'}'}</span>
         </pre>
-
-
       </div>
       <SourceCodeBtn
         href={ghLink}

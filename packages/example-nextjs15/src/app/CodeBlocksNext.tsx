@@ -5,7 +5,7 @@ import { tooltips } from './tooltips';
 export const CodeBlocks = () => {
   return (
     <div className="flex flex-col gap-4">
-      <h3 className='text-3xl text-center' >Quick start</h3>
+      <h3 className='text-3xl font-bold font-display text-ink'>Quick start</h3>
       <div className="codeTitle">
         1. Define the state
       </div>
@@ -62,7 +62,7 @@ export const ComponentB = ({ searchParams }: { searchParams?: object }) => {
         matchers={tooltips}
       />
       <div className="codeTitle">
-        3. Can create self-sufficient hook to manage slice of some state.
+        3. Create a reusable hook for a slice of state
       </div>
       <File
         name="useFormState - custom hook"

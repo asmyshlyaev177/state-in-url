@@ -3,28 +3,17 @@
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
+  --surface: oklch(98.5% 0.006 75);
+  --ink: oklch(12% 0.012 260);
+  --ink-2: oklch(45% 0.012 260);
+  --brand: oklch(55% 0.21 48);
+  --brand-dim: oklch(92% 0.06 60);
 }
 
 @layer base {
   body {
-    color: rgb(var(--foreground-rgb));
-    background: linear-gradient(
-        to bottom,
-        transparent,
-        rgb(var(--background-end-rgb))
-      )
-      rgb(var(--background-start-rgb));
+    color: var(--ink);
+    background: var(--surface);
   }
 }
 
@@ -36,59 +25,97 @@
 
 @layer components {
   .page-main {
-    @apply text-black;
-    @apply bg-gradient-to-b from-orange-200 to-orange-400 p-4;
+    color: var(--ink);
+    background: var(--surface);
 
     & > .wrapper {
-      @apply flex flex-col items-center container ml-auto mr-auto bg-gradient-to-t from-stone-50 to-white w-full p-2 py-8  xl:max-w-[1100px] lg:px-[4em] rounded-lg lg:pt-6;
+      @apply ml-auto mr-auto flex w-full flex-col items-center p-6 py-10 lg:px-[4em] xl:max-w-[1100px];
 
       & > .header {
-        @apply min-h-[35vh] md:min-h-[25vh] flex flex-col items-center mb-8;
+        @apply w-full pb-5;
 
         .wrapper {
-          @apply text-center min-[452px]:px-8 flex flex-col items-center lg:w-[784px] gap-6 rounded-lg;
+          @apply flex w-full flex-col items-start;
 
           .branding {
-            @apply flex flex-col items-center mx-auto min-[800px]:flex-row min-[800px]:gap-4;
+            @apply mb-5 flex items-center gap-4;
 
             .logo {
-              @apply relative p-0 block min-w-[150px] min-h-[150px] max-w-[150px] drop-shadow-xl hover:drop-shadow-2xl transition ease-in duration-150;
+              width: 100px;
+              height: 100px;
+              object-fit: contain;
+              flex-shrink: 0;
+              filter: drop-shadow(0 2px 8px oklch(62% 0.21 48 / 0.3));
+              transition: filter 0.2s ease;
+
+              &:hover {
+                filter: drop-shadow(0 4px 14px oklch(62% 0.21 48 / 0.5));
+              }
             }
 
-            .text {
-              @apply flex flex-col h-full min-h-[150px] justify-evenly;
-
-              .title {
-                @apply text-6xl font-semibold tracking-wide text-neutral-700 mb-2 drop-shadow-sm max-[384px]:text-5xl;
-              }
-
-              .subtitle {
-                @apply text-2xl max-w-[700px] font-light text-neutral-700 mb-2 drop-shadow-sm;
-              }
+            .title {
+              font-family: var(--font-syne), system-ui, sans-serif;
+              font-size: clamp(2.2rem, 7vw, 5.2rem);
+              font-weight: 900;
+              letter-spacing: -0.03em;
+              line-height: 0.92;
+              color: var(--ink);
             }
           }
 
+          .brand-rule {
+            @apply mb-5 w-full;
+            height: 3px;
+            background: var(--brand);
+          }
+
+          .subtitle {
+            font-size: clamp(0.65rem, 1.2vw, 0.78rem);
+            font-weight: 700;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--brand);
+            margin-bottom: 0.875rem;
+          }
+
           .desc {
-            @apply text-3xl tracking-wide text-neutral-800 max-w-[700px] mt-2  drop-shadow-sm;
+            font-size: clamp(1rem, 1.8vw, 1.2rem);
+            font-weight: 500;
+            color: var(--ink);
+            max-width: 540px;
+            line-height: 1.45;
           }
         }
       }
 
       .demo {
-        @apply bg-white rounded-lg shadow-xl p-2 sm:p-8 max-w-4xl w-full;
+        @apply w-full rounded-xl;
+        max-width: 56rem;
+        background: white;
+        box-shadow:
+          0 4px 32px oklch(0% 0 0 / 0.07),
+          0 1px 3px oklch(0% 0 0 / 0.05);
+        padding: 1.25rem;
+
+        @screen sm {
+          padding: 2rem;
+        }
 
         & .header {
           @apply mb-2;
 
           & .wrapper {
-            @apply flex justify-between items-center max-[450px]:flex-wrap gap-2;
+            @apply flex items-center justify-between gap-2;
+            flex-wrap: wrap;
 
             .title {
-              @apply text-3xl font-bold text-gray-800;
+              font-family: var(--font-syne), system-ui, sans-serif;
+              @apply text-2xl font-bold;
+              color: var(--ink);
             }
 
             .github-link {
-              @apply order-first min-[450px]:order-last max-[450px]:basis-full flex justify-end gap-1;
+              @apply order-first flex justify-end gap-1 max-[450px]:basis-full min-[450px]:order-last;
             }
           }
 
@@ -96,45 +123,81 @@
             @apply my-3;
 
             & input {
-              border: 1px solid gray;
+              border: 1px solid oklch(87% 0.015 60);
               box-shadow: none;
               outline: none;
               cursor: default;
+              background: oklch(97.5% 0.01 75);
             }
           }
         }
 
         .form-components {
-          @apply flex flex-col md:flex-row gap-8 relative;
+          @apply relative flex flex-col gap-8 md:flex-row;
 
           & > .form {
-            @apply flex max-h-[550px] flex-col md:flex-row gap-8 basis-[40%];
+            @apply flex max-h-[550px] basis-[40%] flex-col gap-8 md:flex-row;
           }
 
           & > .status {
-            @apply flex-1 w-full max-h-[550px] bg-gray-100 rounded-lg p-4 flex flex-col shadow-md border basis-1/2;
+            @apply flex max-h-[550px] w-full flex-1 basis-1/2 flex-col rounded-lg p-4;
+            background: var(--surface);
+            border: 1px solid oklch(91% 0.01 250);
+            box-shadow: inset 0 1px 3px oklch(0% 0 0 / 0.05);
           }
         }
       }
 
       .codeBlock-wrapper {
-        @apply mt-8;
+        @apply mt-8 w-full;
       }
 
       .codeBlock-loader {
-        @apply bg-white min-h-[1466px] min-[384px]:min-h-[1366px] sm:min-h-[1186px] md:min-h-[1126px];
+        @apply min-h-[1466px] bg-white min-[384px]:min-h-[1366px] sm:min-h-[1186px] md:min-h-[1126px];
       }
     }
 
     .share-block {
       .share-icon {
         transition: all 0.2s ease-in-out;
+
         &:hover {
           transform: scale(1.2);
         }
 
-        @apply w-[48px] h-[48px];
+        @apply h-[48px] w-[48px];
       }
+    }
+  }
+
+  .demo-hint {
+    @apply mt-1 flex items-center gap-2;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    user-select: none;
+    background: linear-gradient(
+      90deg,
+      oklch(55% 0.21 48),
+      oklch(60% 0.22 20),
+      oklch(58% 0.2 140),
+      oklch(55% 0.22 250),
+      oklch(58% 0.21 310),
+      oklch(55% 0.21 48)
+    );
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: rainbowShift 4s linear infinite;
+
+    .demo-hint-arrow {
+      display: inline-block;
+      font-size: 1rem;
+      -webkit-text-fill-color: initial;
+      color: var(--brand);
+      animation: arrowPulse 2.2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
     }
   }
 
@@ -169,6 +232,72 @@
   }
 
   .codeTitle {
-    @apply text-center text-2xl mt-2;
+    font-family: var(--font-syne), system-ui, sans-serif;
+    @apply mt-2 text-2xl font-bold;
+    color: var(--ink);
+  }
+}
+
+/* ── Delight animations ─────────────────────────────────────── */
+
+@keyframes rainbowShift {
+  0% {
+    background-position: 0% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
+}
+
+@keyframes urlFlash {
+  0% {
+    background-color: oklch(75% 0.14 60 / 0.55);
+  }
+  100% {
+    background-color: oklch(75% 0.14 60 / 0);
+  }
+}
+
+.url-flash-overlay {
+  position: absolute;
+  inset: 0;
+  border-radius: 2px;
+  pointer-events: none;
+  animation: urlFlash 0.65s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes syncFlash {
+  0% {
+    background-color: oklch(80% 0.12 145 / 0.45);
+  }
+  100% {
+    background-color: oklch(80% 0.12 145 / 0);
+  }
+}
+
+.sync-flash-overlay {
+  position: absolute;
+  inset: -1px -6px;
+  border-radius: 3px;
+  pointer-events: none;
+  animation: syncFlash 0.85s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes arrowPulse {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(4px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .url-flash-overlay,
+  .sync-flash-overlay,
+  .demo-hint-arrow,
+  .demo-hint {
+    animation: none;
   }
 }

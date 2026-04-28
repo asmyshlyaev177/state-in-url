@@ -62,7 +62,7 @@ export const Form = ({
 
   return (
     <div className={className}>
-      <div className="flex flex-1 flex-col border border-grey rounded-md p-4 shadow-md hover:shadow-lg">
+      <div className="flex flex-1 flex-col border border-brand-dim rounded-md p-4 shadow-md hover:shadow-lg">
         <div className="font-semibold  mb-4">
           First client component
         </div>

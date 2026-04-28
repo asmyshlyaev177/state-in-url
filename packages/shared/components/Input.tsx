@@ -1,15 +1,20 @@
-import React from "react";
-import clsx from "clsx";
+import React from 'react';
+import clsx from 'clsx';
 
 export const Input = ({ value, className, ...props }: InputProps) => {
   return (
     <input
       className={clsx(
-        "px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-orange-500 focus:border-orange-500 bg-white",
+        'rounded-md border px-3 py-2 shadow-sm transition-all duration-150 focus:outline-none focus:ring-2',
         className,
-        props.type === "checkbox" ? "w-6 h-6 cursor-pointer" : "w-full",
+        props.type === 'checkbox' ? 'h-6 w-6 cursor-pointer' : 'w-full',
       )}
-      value={value ?? ""}
+      style={{
+        borderColor: 'var(--brand-dim, #fed7aa)',
+        // @ts-expect-error fots
+        '--tw-ring-color': 'var(--brand, #ea580c)',
+      }}
+      value={value ?? ''}
       {...props}
     />
   );
