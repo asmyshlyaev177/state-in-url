@@ -1,7 +1,7 @@
-import { clsx } from "clsx";
-import React from "react";
+import React from 'react';
+import { clsx } from 'clsx';
 
-import { Button } from "./Button";
+import { Button } from './Button';
 export const RefreshButton = React.memo(
   ({ className }: { className?: string }) => {
     return (
@@ -9,10 +9,7 @@ export const RefreshButton = React.memo(
         onClick={() => {
           window.location.reload();
         }}
-        className={clsx(
-          "transition font-extrabold bg-orange-700 text-lg text-white",
-          className,
-        )}
+        className={clsx('text-lg font-extrabold transition', className)}
         name="Reload page"
       >
         Reload page

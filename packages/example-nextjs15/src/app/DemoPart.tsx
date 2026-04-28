@@ -22,7 +22,7 @@ export function DemoPart({ searchParams }: { searchParams: object }) {
       <section className="demo">
         <header className="header">
           <div className="wrapper">
-            <h2 className="title">useUrlState - demo with <Word>{routerKind}</Word></h2>
+            <h2 className="title">useUrlState — demo with <Word>{routerKind}</Word></h2>
             <div className="github-link">
               <NpmLink />
               <GithubLink />
@@ -30,10 +30,10 @@ export function DemoPart({ searchParams }: { searchParams: object }) {
           </div>
 
           <div className="urlBox">
-            <UrlBox />
+            <UrlBox initialUrl={spToUrl(searchParams)} />
           </div>
 
-          <div className="relative ml-12 place-content-center flex animate-text bg-gradient-to-r from-purple-600 via-yellow-600 to-orange-600 bg-clip-text text-transparent w-full max-w-[15rem] font-bold select-none">Try to type something <span className='block text-[30px] leading-7 font-bold text-black animate-bounce -mb-2'>↓</span></div>
+          <p className="demo-hint">Try to type something <span className="demo-hint-arrow" aria-hidden="true">↓</span></p>
 
         </header>
 
@@ -57,9 +57,14 @@ function fallbackRender({ error, resetErrorBoundary }: FallbackProps) {
     <div role="alert" className='max-w-[30%] flex flex-col items-center gap-4'>
       <p>Something went wrong:</p>
       <pre className='whitespace-break-spaces text-red-500 max-h-[350px]'>{error?.message || 'An error occurred'}</pre>
-      <button onClick={resetErrorBoundary} className='p-4 bg-gray-300 rounded-md'>Try again</button>
+      <button onClick={resetErrorBoundary} className='p-4 bg-brand-dim rounded-md text-ink'>Try again</button>
     </div>
   );
+}
+
+function spToUrl(sp: object): string {
+  const qs = new URLSearchParams(sp as Record<string, string>).toString();
+  return qs ? '/?' + qs : '/';
 }
 
 function getUrls(pathname: string) {
