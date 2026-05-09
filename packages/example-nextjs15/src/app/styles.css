@@ -301,3 +301,146 @@
     animation: none;
   }
 }
+
+/* ── For Hire Badge ─────────────────────────────────────────── */
+
+.for-hire-badge {
+  position: fixed;
+  bottom: 1.75rem;
+  right: 1.75rem;
+  z-index: 50;
+
+  background: white;
+  border-radius: 1rem;
+  padding: 0.875rem 1.125rem;
+  min-width: 172px;
+
+  box-shadow:
+    0 4px 24px oklch(0% 0 0 / 0.1),
+    0 1px 4px oklch(0% 0 0 / 0.06),
+    inset 0 0 0 1.5px oklch(87% 0.06 60 / 0.8);
+
+  border-top: 3px solid var(--brand);
+
+  animation: forHireSlideIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: 0.3s;
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
+}
+
+.for-hire-close {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: none;
+  background: transparent;
+  color: var(--ink-2);
+  cursor: pointer;
+  padding: 0;
+  transition:
+    color 0.15s ease,
+    background-color 0.15s ease;
+
+  &:hover {
+    color: var(--ink);
+    background-color: oklch(92% 0.01 260 / 0.6);
+  }
+}
+
+.for-hire-status {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+  padding-right: 1.25rem;
+}
+
+.for-hire-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: oklch(65% 0.2 145);
+  box-shadow: 0 0 0 0 oklch(65% 0.2 145 / 0.6);
+  flex-shrink: 0;
+  animation: forHirePulse 2.4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
+}
+
+.for-hire-available {
+  font-family: var(--font-syne), system-ui, sans-serif;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--brand);
+}
+
+.for-hire-links {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.for-hire-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.825rem;
+  font-weight: 500;
+  color: var(--ink-2);
+  text-decoration: none;
+  border-radius: 0.35rem;
+  padding: 0.2rem 0.3rem;
+  margin: -0.2rem -0.3rem;
+  transition:
+    color 0.18s ease,
+    background-color 0.18s ease;
+
+  &:hover {
+    color: var(--brand);
+    background-color: oklch(92% 0.06 60 / 0.5);
+  }
+
+  & svg {
+    flex-shrink: 0;
+    opacity: 0.75;
+    transition: opacity 0.18s ease;
+  }
+
+  &:hover svg {
+    opacity: 1;
+  }
+}
+
+@keyframes forHirePulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 oklch(65% 0.2 145 / 0.6);
+  }
+  50% {
+    box-shadow: 0 0 0 6px oklch(65% 0.2 145 / 0);
+  }
+}
+
+@keyframes forHireSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(16px) translateX(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) translateX(0);
+  }
+}
