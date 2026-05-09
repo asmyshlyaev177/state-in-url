@@ -4,6 +4,8 @@ import React from 'react';
 import './styles.css';
 
 import { Logo } from './components/Logo';
+import { FOR_HIRE } from '../../../../consts';
+import { ForHireBadge } from './components/ForHireBadge';
 
 const Footer = dynamic(
   () => import('./components/Footer').then((mod) => mod.Footer),
@@ -36,6 +38,7 @@ export default async function Template({
       </div>
 
       <Footer />
+      {FOR_HIRE && <ForHireBadge />}
     </main>
   );
 }
