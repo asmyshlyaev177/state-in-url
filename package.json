@@ -120,7 +120,7 @@
     "cleanup": "rm -rf dist .wireit node_modules test-results playwright-report coverage-reports nyc_coverage packages/example-nextjs14/node_modules packages/example-nextjs14/.next packages/example-nextjs15/node_modules packages/example-nextjs15/.next packages/example-nextjs16/node_modules packages/example-nextjs16/.next packages/example-react/node_modules packages/example-react-router6/node_modules packages/example-react-router7/node_modules packages/example-remix2/node_modules",
     "reinstall": "pnpm run cleanup && pnpm install",
     "setup": "playwright install --with-deps",
-    "prepack": "pnpm run build && cp package.json dist/package.json && pnpm run build:demo",
+    "prepack": "pnpm run build && cp package.json dist/package.json",
     "pin-gh-deps": "pin-github-action -i .github/workflows/tests.yml",
     "prepare": "pnpm exec husky"
   },
