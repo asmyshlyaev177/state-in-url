@@ -16,5 +16,6 @@ coverage-reports
 .nyc_output
 nyc_coverage
 results
+.pnpm-store
 
 .env
