@@ -1,3 +1,10 @@
+## [6.1.3](https://github.com/asmyshlyaev177/state-in-url/compare/v6.1.2...v6.1.3) (2026-05-13)
+
+
+### Bug Fixes
+
+* security for release action ([f9fde0f](https://github.com/asmyshlyaev177/state-in-url/commit/f9fde0f147b969be70190d7f1393d7d52c3fcf0d))
+
 ## [6.1.2](https://github.com/asmyshlyaev177/state-in-url/compare/v6.1.1...v6.1.2) (2026-03-26)
 
 
