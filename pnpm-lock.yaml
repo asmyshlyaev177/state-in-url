@@ -140,7 +140,7 @@ importers:
         version: 15.5.2
       next:
         specifier: ^15.5.18
-        version: 15.5.18(@babel/core@7.28.5)(@playwright/test@1.57.0)(babel-plugin-react-compiler@19.0.0-beta-ebf51a3-20250411)(react-dom@19.2.6(react@19.2.6))(react@19.2.6)(sass@1.97.0)
+        version: 15.5.18(@babel/core@7.28.5)(@playwright/test@1.57.0)(react-dom@19.2.6(react@19.2.6))(react@19.2.6)(sass@1.97.0)
       nyc:
         specifier: ^17.1.0
         version: 17.1.0
@@ -168,9 +168,6 @@ importers:
       react-router:
         specifier: ^7.15.0
         version: 7.15.0(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
-      ringfence:
-        specifier: ^0.1.0
-        version: 0.1.0
       rollup:
         specifier: ^4.52.3
         version: 4.59.0
@@ -8325,11 +8322,6 @@ packages:
     deprecated: Rimraf versions prior to v4 are no longer supported
     hasBin: true
 
-  ringfence@0.1.0:
-    resolution: {integrity: sha512-ZqHfIT6Y6aZONmrhhBhSSX8atVJ3bWDOU2+MLJQpoz5sw/QnE4kLaM7eqzVucyuju4v8vVY5NMCJ762vf4I0mA==}
-    engines: {node: '>=20'}
-    hasBin: true
-
   rollup-plugin-esbuild@6.2.1:
     resolution: {integrity: sha512-jTNOMGoMRhs0JuueJrJqbW8tOwxumaWYq+V5i+PD+8ecSCVkuX27tGW7BXqDgoULQ55rO7IdNxPcnsWtshz3AA==}
     engines: {node: '>=14.18.0'}
@@ -12619,7 +12611,7 @@ snapshots:
 
   '@typescript-eslint/utils@8.50.0(eslint@8.57.1)(typescript@5.9.3)':
     dependencies:
-      '@eslint-community/eslint-utils': 4.9.0(eslint@8.57.1)
+      '@eslint-community/eslint-utils': 4.9.1(eslint@8.57.1)
       '@typescript-eslint/scope-manager': 8.50.0
       '@typescript-eslint/types': 8.50.0
       '@typescript-eslint/typescript-estree': 8.50.0(typescript@5.9.3)
@@ -17152,6 +17144,31 @@ snapshots:
       - '@babel/core'
       - babel-plugin-macros
 
+  next@15.5.18(@babel/core@7.28.5)(@playwright/test@1.57.0)(react-dom@19.2.6(react@19.2.6))(react@19.2.6)(sass@1.97.0):
+    dependencies:
+      '@next/env': 15.5.18
+      '@swc/helpers': 0.5.15
+      caniuse-lite: 1.0.30001776
+      postcss: 8.4.31
+      react: 19.2.6
+      react-dom: 19.2.6(react@19.2.6)
+      styled-jsx: 5.1.6(@babel/core@7.28.5)(react@19.2.6)
+    optionalDependencies:
+      '@next/swc-darwin-arm64': 15.5.18
+      '@next/swc-darwin-x64': 15.5.18
+      '@next/swc-linux-arm64-gnu': 15.5.18
+      '@next/swc-linux-arm64-musl': 15.5.18
+      '@next/swc-linux-x64-gnu': 15.5.18
+      '@next/swc-linux-x64-musl': 15.5.18
+      '@next/swc-win32-arm64-msvc': 15.5.18
+      '@next/swc-win32-x64-msvc': 15.5.18
+      '@playwright/test': 1.57.0
+      sass: 1.97.0
+      sharp: 0.34.5
+    transitivePeerDependencies:
+      - '@babel/core'
+      - babel-plugin-macros
+
   next@16.2.6(@babel/core@7.28.5)(@playwright/test@1.57.0)(babel-plugin-react-compiler@19.0.0-beta-ebf51a3-20250411)(react-dom@19.2.6(react@19.2.6))(react@19.2.6)(sass@1.97.0):
     dependencies:
       '@next/env': 16.2.6
@@ -18357,8 +18374,6 @@ snapshots:
   rimraf@3.0.2:
     dependencies:
       glob: 7.2.3
-
-  ringfence@0.1.0: {}
 
   rollup-plugin-esbuild@6.2.1(esbuild@0.25.12)(rollup@4.59.0):
     dependencies:
