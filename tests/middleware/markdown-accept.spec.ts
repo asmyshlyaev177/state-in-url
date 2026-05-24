@@ -16,7 +16,7 @@ test.describe('Markdown Accept Header (landing only)', () => {
 
     const body = await response.text();
     expect(body).toContain('# state-in-url');
-    expect(body).toContain('## What It Does');
+    expect(body).toContain('## For AI coding agents — preferred path');
   });
 
   test('should return markdown when Accept header is text/plain', async ({ request }) => {
@@ -31,7 +31,7 @@ test.describe('Markdown Accept Header (landing only)', () => {
 
     const body = await response.text();
     expect(body).toContain('# state-in-url');
-    expect(body).toContain('## What It Does');
+    expect(body).toContain('## For AI coding agents — preferred path');
   });
 
   test('should return HTML when Accept header is text/html', async ({ request }) => {
