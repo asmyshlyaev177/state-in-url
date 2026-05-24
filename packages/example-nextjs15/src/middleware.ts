@@ -1,18 +1,19 @@
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 
-// Auto-generated from public/llms.txt by scripts/generate-middleware-content.js
+// AUTO-GENERATED from public/llms.txt by scripts/generate-middleware-content.cjs
+// Do not edit by hand — edit public/llms.txt and re-run `pnpm run generate-middleware`
+// (this is wired into the dev and build scripts).
 
 export async function middleware(request: NextRequest) {
   const url = new URL(request.url);
   const acceptHeader = request.headers.get('accept') || '';
 
-  // Check if the request prefers markdown/plain text over HTML
   const acceptsMarkdown = acceptHeader.includes('text/markdown');
   const acceptsPlainText = acceptHeader.includes('text/plain');
   const acceptsHtml = acceptHeader.includes('text/html');
 
-  // Serve markdown if text/plain or text/markdown is requested before text/html
+  // Serve markdown if the client prefers text/markdown or text/plain over text/html
   const shouldServeMarkdown =
     (acceptsMarkdown || acceptsPlainText) &&
     (!acceptsHtml ||
@@ -29,7 +30,7 @@ export async function middleware(request: NextRequest) {
     });
   }
 
-  // .search and .searchParams are incorrect
+  // Forward query string to server layouts via a header (state-in-url Proxy pattern)
   const sp = (request.url?.includes?.('_next') ? '' : request.url)?.split?.('?')?.[1] || '';
 
   const requestHeaders = new Headers(request.headers);
@@ -45,216 +46,273 @@ export async function middleware(request: NextRequest) {
   });
 }
 
-// issue with using shiki, because can't load wasm
+// shiki cannot load wasm in middleware, so this matcher must stay narrow
 export const config = {
   matcher: ['/useUrlState/:path*', '/'],
 };
 
 const LLMS_TXT_CONTENT = `# state-in-url
 
-A React hook library for storing complex state objects in browser URLs with full TypeScript type preservation.
+A React hook library for storing typed, JSON-serializable state in URL query parameters. ~2 KB, zero runtime deps.
 
-## What It Does
+## For AI coding agents — preferred path
 
-state-in-url synchronizes React state with URL query parameters, enabling:
-- State sharing between unrelated components without prop drilling or context
-- State persistence across page reloads via URL
-- Shareable links that preserve application state
-- Type-safe state management with full TypeScript inference
+This package ships task-focused SKILL.md files via [@tanstack/intent](https://tanstack.com/intent/latest/docs/overview). If your agent supports Intent, that is the right surface to load instead of this file:
 
-## Package Information
+\`\`\`bash
+# in the user's project, once
+npx @tanstack/intent@latest install
+# list skills available for installed libraries
+npx @tanstack/intent@latest list
+# load a specific skill into the current context
+npx @tanstack/intent@latest load state-in-url#feature-state-hook
+\`\`\`
 
-- **NPM:** https://www.npmjs.com/package/state-in-url
-- **GitHub:** https://github.com/asmyshlyaev177/state-in-url
-- **Website:** https://state-in-url.dev
-- **Main Documentation:** https://raw.githubusercontent.com/asmyshlyaev177/state-in-url/refs/heads/master/README.md
+Available skills (under \`node_modules/state-in-url/skills/\`):
 
-## Supported Frameworks
+| Skill | Type | When to load |
+|---|---|---|
+| \`feature-state-hook\` | core | Defining state and wrapping \`useUrlState\` in a feature-scoped custom hook |
+| \`input-handling\` | core | Text inputs / sliders / fast-changing controls |
+| \`nextjs-ssr\` | framework | Next.js App Router: \`searchParams\` forwarding, Proxy for layouts |
+| \`react-router-remix-setup\` | framework | React Router v6/v7 or Remix v2 setup |
+| \`form-library-integration\` | composition | Pairing with \`react-hook-form\` (or formik) |
+| \`shared-state-no-url\` | core | \`useSharedState\` — cross-component state without URL sync |
 
-| Framework | Versions | Documentation |
-|-----------|----------|---------------|
-| Next.js | v14-v15 | https://raw.githubusercontent.com/asmyshlyaev177/state-in-url/refs/heads/master/packages/urlstate/next/useUrlState/README.md |
-| React Router | v7 | https://raw.githubusercontent.com/asmyshlyaev177/state-in-url/refs/heads/master/packages/urlstate/react-router/useUrlState/README.md |
-| React Router | v6 | https://raw.githubusercontent.com/asmyshlyaev177/state-in-url/refs/heads/master/packages/urlstate/react-router6/useUrlState/README.md |
-| Remix | v2 | https://raw.githubusercontent.com/asmyshlyaev177/state-in-url/refs/heads/master/packages/urlstate/remix/useUrlState/README.md |
+The rest of this file is a condensed reference for agents that cannot load Intent skills.
 
-## Installation
+## Package info
+
+- npm: https://www.npmjs.com/package/state-in-url
+- repo: https://github.com/asmyshlyaev177/state-in-url
+- website: https://state-in-url.dev
+- full README: https://raw.githubusercontent.com/asmyshlyaev177/state-in-url/refs/heads/master/README.md
+
+## Supported frameworks
+
+| Framework | Versions | Import path |
+|---|---|---|
+| Next.js (App Router only) | 14 / 15 / 16 | \`state-in-url/next\` |
+| React Router | v7 | \`state-in-url/react-router\` |
+| React Router | v6 | \`state-in-url/react-router6\` |
+| Remix | v2 | \`state-in-url/remix\` |
+| Framework-agnostic | — | \`state-in-url\` (\`useSharedState\`), \`state-in-url/encodeState\` |
+
+Pages Router is **not** supported.
+
+## Install
 
 \`\`\`bash
 npm install state-in-url
 \`\`\`
 
-## Import Paths by Framework
+In \`tsconfig.json\`, ensure \`"moduleResolution": "Bundler"\` (or \`"Node16"\` / \`"NodeNext"\`).
+
+## Core rules — read first
+
+1. **Type, never interface.** The hook's generic constraint \`JSONCompatible<T>\` rejects \`interface\`. Always declare a \`type\` AND annotate the const: \`const FOO_STATE: FooState = { ... }\`.
+2. **Default-state object must be a module-scoped \`const\`.** Never built from props, hook returns, or destructuring inside a component. Sharing is keyed by object identity.
+3. **One feature → one shared default-state const → one custom hook.** Components import the hook, never \`useUrlState\` directly with their own defaults object.
+4. **No secrets in URL.** Entity IDs (\`jobId\`, \`memberId\`) are fine; tokens, API keys, PII are not.
+5. **JSON-serializable only.** Functions, BigInt, Symbol, Map, Set, class instances will not round-trip. Dates are supported.
+6. **URL size**: keep total query-string under ~12 KB to stay safe across CDNs (Vercel header limit is 14 KB).
+
+## API: \`useUrlState\`
 
 \`\`\`typescript
-// Next.js
-import { useUrlState } from "state-in-url/next";
-
-// React Router v7
-import { useUrlState } from "state-in-url/react-router";
-
-// React Router v6
-import { useUrlState } from "state-in-url/react-router6";
-
-// Remix
-import { useUrlState } from "state-in-url/remix";
+const { urlState, setState, setUrl, reset } = useUrlState(DEFAULT_STATE, options?);
 \`\`\`
 
-## Core API: useUrlState Hook
+- \`urlState\` — current state, typed identically to \`DEFAULT_STATE\`.
+- \`setState(value)\` — updates internal state synchronously; **does not touch URL**.
+- \`setUrl(value, opts?)\` — updates state + URL. URL write is throttled (next tick).
+- \`reset(opts?)\` — sets state and URL back to \`DEFAULT_STATE\`.
 
-The primary hook for state management synchronized with URL query parameters.
+Setter call signatures (both \`setState\` and \`setUrl\`):
+\`\`\`typescript
+setUrl({ field: 'newValue' });                          // partial patch
+setUrl(curr => ({ ...curr, field: 'newValue' }));       // functional with current
+setUrl((curr, initial) => initial);                     // reset via callback
+setUrl();                                               // flush current state to URL
+\`\`\`
 
-**Returns:**
-- \`urlState\`: Current state object with full type inference
-- \`setState\`: Updates state immediately (batched URL sync)
-- \`setUrl\`: Syncs state to URL immediately
+\`options\` (per-call or as hook-level defaults):
+- \`replace?: boolean\` — \`router.replace\` (default \`true\`) vs \`router.push\`.
+- \`scroll?: boolean\` — Next.js scroll behavior (default \`false\`).
+- React Router / Remix: any \`NavigateOptions\` (e.g. \`preventScrollReset\`).
 
-## Basic Usage Example
+Hook-level options (second arg to \`useUrlState\`):
+- \`searchParams\` — pass \`searchParams\` from a Next.js server component or \`useSearchParams()\` from a client component. **Required for SSR correctness in Next.js App Router.**
+- \`useHistory?: boolean\` — Next.js only. Default \`true\`. Uses \`window.history.pushState\` to avoid \`_rsc\` server round-trips on URL changes. Flip to \`false\` only when server data must refetch on URL change.
+
+## Recommended pattern: feature-scoped hook
 
 \`\`\`typescript
-// 1. Define state type using 'type', not 'interface'
-type FormState = {
-  searchQuery: string;
-  isFiltered: boolean;
-  page: number;
+// features/jobs/jobsState.ts
+export type JobsState = {
+  status: '' | 'active' | 'closed';
+  tab: 'details' | 'qa' | 'applicants';
+  jobId: string;
 };
 
-// 2. Create initial state as static const (never from props/functions)
-const initialState: FormState = {
-  searchQuery: "",
-  isFiltered: false,
-  page: 1
+export const JOBS_STATE: JobsState = {
+  status: '',
+  tab: 'details',
+  jobId: '',
 };
+\`\`\`
 
-function SearchComponent() {
-  const { urlState, setState, setUrl } = useUrlState(initialState);
+\`\`\`typescript
+// features/jobs/useJobsState.ts
+'use client';
+import { useSearchParams } from 'next/navigation';
+import { useUrlState } from 'state-in-url/next';
+import { JOBS_STATE } from './jobsState';
 
-  return (
-    <div>
-      {/* Read state - fully typed */}
-      <p>Current search: {urlState.searchQuery}</p>
-      <p>Page: {urlState.page}</p>
-
-      {/* Update state + URL immediately */}
-      <button onClick={() => setUrl({ page: urlState.page + 1 })}>
-        Next Page
-      </button>
-
-      {/* Update state instantly, sync URL on blur */}
-      <input
-        value={urlState.searchQuery}
-        onChange={(e) => setState({ searchQuery: e.target.value })}
-        onBlur={() => setUrl()}
-      />
-
-      {/* Reset to initial state */}
-      <button onClick={() => setUrl((_, initial) => initial)}>
-        Reset
-      </button>
-    </div>
-  );
+export function useJobsState() {
+  const searchParams = useSearchParams();
+  return useUrlState(JOBS_STATE, { searchParams });
 }
 \`\`\`
 
-## Advanced Usage Patterns
+Any component calling \`useJobsState()\` shares the same URL-synced store. No Context, no Provider.
 
-### Functional Updates
+## Next.js App Router — server page forwarding \`searchParams\`
 
-\`\`\`typescript
-// Using previous state
-setUrl(prev => ({ ...prev, page: prev.page + 1 }));
-
-// Accessing initial state
-setUrl((prev, initial) => ({ ...prev, ...initial }));
-setState((prev, initial) => initial); // full reset
-\`\`\`
-
-### Separate State Updates and URL Sync
-
-For frequently updated inputs, update state immediately and sync URL separately:
+In **Next.js 15+**, \`searchParams\` is a \`Promise\`:
 
 \`\`\`typescript
-<input
-  value={urlState.query}
-  onChange={(e) => setState({ query: e.target.value })} // instant
-  onBlur={() => setUrl()} // sync to URL when done
-/>
-\`\`\`
+// app/jobs/page.tsx  (Server Component)
+import { JobsList } from './JobsList';
 
-### Next.js Server Components
+export default async function Page({
+  searchParams,
+}: {
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+}) {
+  const sp = await searchParams;
+  return <JobsList searchParams={sp} />;
+}
 
-Pass \`searchParams\` to avoid hydration errors:
+// app/jobs/JobsList.tsx
+'use client';
+import { useUrlState } from 'state-in-url/next';
+import { JOBS_STATE } from 'features/jobs/jobsState';
 
-\`\`\`typescript
-export default function Page({ searchParams }: { searchParams: Record<string, string> }) {
-  const { urlState, setUrl } = useUrlState(initialState, { searchParams });
+export function JobsList({ searchParams }: { searchParams: object }) {
+  const { urlState, setUrl } = useUrlState(JOBS_STATE, { searchParams });
   // ...
 }
 \`\`\`
 
-## Recommended Pattern: Centralized State
+Without \`searchParams\`, the first render uses defaults, then a client effect re-syncs from the URL on the next tick — visible flash plus hydration warning.
 
-Create custom hooks in separate files for better organization:
+## Next.js App Router — server layout (Proxy workaround)
+
+Server layouts don't receive \`searchParams\`. Expose the query string via a Proxy header (Next.js 16+; \`middleware.ts\` still works as a deprecated alias):
 
 \`\`\`typescript
-// hooks/useSearchState.ts
-import { useUrlState } from "state-in-url/next";
+// proxy.ts
+import type { NextRequest } from 'next/server';
+import { NextResponse } from 'next/server';
 
-type SearchState = {
-  query: string;
-  filters: string[];
-  sortBy: "name" | "date";
-};
-
-const initialState: SearchState = {
-  query: "",
-  filters: [],
-  sortBy: "name"
-};
-
-export function useSearchState() {
-  return useUrlState(initialState);
+export function proxy(request: NextRequest) {
+  const sp = (request.url.includes('_next') ? '' : request.url).split('?')[1] ?? '';
+  const headers = new Headers(request.headers);
+  headers.set('searchParams', sp);
+  return NextResponse.next({ request: { headers } });
 }
 \`\`\`
 
 \`\`\`typescript
-// Any component
-import { useSearchState } from "@/hooks/useSearchState";
+// app/jobs/layout.tsx
+import { headers } from 'next/headers';
+import { decodeState } from 'state-in-url/encodeState';
+import { JOBS_STATE } from 'features/jobs/jobsState';
 
-function SearchResults() {
-  const { urlState, setUrl } = useSearchState();
-  // State is automatically shared across all components using this hook
+export default async function Layout({ children }: { children: React.ReactNode }) {
+  const sp = (await headers()).get('searchParams') ?? '';
+  const initial = decodeState(sp, JOBS_STATE);
+  return <>{/* use \`initial\` */}{children}</>;
 }
 \`\`\`
 
-## Critical Constraints and Limitations
+## Input handling — instant feedback, deferred URL write
 
-1. **Type Definition:** Always use \`type\`, never \`interface\`
-2. **Initial State:** Must be a static const, never from props/functions/destructuring
-3. **Serialization:** Only JSON-serializable values (no functions, class instances, etc.)
-4. **Security:** Never store sensitive data (API keys, tokens, passwords)
-5. **Multiple Hooks:** Can use multiple hooks if top-level keys don't overlap
-6. **URL Preservation:** Unrelated query parameters are preserved
-7. **Throttling:** Updates are throttled for performance
+For text inputs and other fast-changing controls, split \`setState\` (instant render) and \`setUrl\` (URL flush):
 
-## State Updates Behavior
+\`\`\`typescript
+<input
+  value={urlState.q}
+  onChange={(e) => setState({ q: e.target.value })}
+  onBlur={() => setUrl()}
+/>
+\`\`\`
 
-- \`setState()\`: Updates state immediately, URL sync expected to be done manually
-- \`setUrl()\`: Syncs state to URL immediately
-- Both support functional updates with access to previous and initial state
-- URL updates trigger state synchronization across all components using the same hook
+\`setUrl()\` with no args flushes the current state to the URL with content-based diffing — safe to call repeatedly.
 
-## Type Safety
+## React Router and Remix
 
-All state operations have full TypeScript type inference:
-- \`urlState\` matches the shape of your initial state type
-- \`setState\` and \`setUrl\` validate against your type
-- Nested object properties are fully typed
+API is identical to the Next.js variant; only the import path and \`NavigateOptions\` differ.
 
-## Documentation Resources
+\`\`\`typescript
+import { useUrlState } from 'state-in-url/react-router';   // RR v7
+import { useUrlState } from 'state-in-url/react-router6';  // RR v6 (since 6.0.0)
+import { useUrlState } from 'state-in-url/remix';          // Remix v2
 
-- Main README with comprehensive examples: GitHub repository
-- Framework-specific guides: See documentation links per framework above
-- JSDoc comments: Available in IDE for all exported functions
+setUrl({ tab: 'b' }, { replace: false, preventScrollReset: true });
+\`\`\`
+
+## react-hook-form integration
+
+Share one defaults object, hydrate \`useForm\` from \`urlState\`, push form changes back via RHF \`subscribe()\` (not \`watch()\`):
+
+\`\`\`typescript
+const { urlState, setUrl } = useUrlState(FILTERS_STATE, { searchParams });
+const form = useForm<FiltersState>({ defaultValues: urlState });
+
+React.useEffect(() => {
+  const sub = form.subscribe({
+    formState: { values: true },
+    callback: ({ values }) => setUrl(values),
+  });
+  return () => sub();
+}, [form, setUrl]);
+\`\`\`
+
+## \`useSharedState\` — cross-component state without URL
+
+\`\`\`typescript
+import { useSharedState } from 'state-in-url';
+
+const CART_STATE: CartState = { items: [], isOpen: false };
+const { state, setState } = useSharedState(CART_STATE);
+\`\`\`
+
+Same module-scoped default-state-identity rule. Use only when URL sync is explicitly NOT wanted.
+
+## Common mistakes (CRITICAL — fix any agent generating these)
+
+| Mistake | Fix |
+|---|---|
+| \`defaultState\` defined inside a React component | Move to a module-scoped \`const\`, annotated with a \`type\` |
+| \`interface FeatureState { ... }\` for state shape | Use \`type FeatureState = { ... }\` |
+| \`setUrl\` inside \`useEffect\` with \`urlState\` in deps | Causes infinite loop; gate on the actual change or derive on read |
+| Two components each declaring \`const DEFAULTS = {...}\` | Export one const from a shared file; components import the hook |
+| \`setUrl\`/\`setState\` called during render | Move into a handler or effect |
+| \`interface\` instead of \`type\` | Same as above; \`type\` is required |
+| Reading \`searchParams\` in a Next.js server layout | Use the Proxy + \`headers()\` + \`decodeState\` pattern |
+| Using \`state-in-url/next\` in Pages Router | Not supported; use App Router or build a custom hook with \`useUrlStateBase\` |
+| Importing \`state-in-url/react-router\` in a RR v6 project | Use \`state-in-url/react-router6\` (moved in 6.0.0) |
+| \`setUrl({...})\` for fast typing inputs | Use \`setState\` on change, \`setUrl()\` on blur |
+| Mutating \`urlState\` directly | Always go through \`setState\`/\`setUrl\` |
+| Storing functions / \`BigInt\` / \`Symbol\` / \`Map\` / \`Set\` | Not serializable; use plain JSON-compatible values (Date is OK) |
+| Storing tokens / API keys / passwords / PII in URL | Use auth storage; URL state is fully public |
+
+## Documentation resources
+
+- Full README (humans): https://github.com/asmyshlyaev177/state-in-url/blob/master/README.md
+- URL size limits: https://github.com/asmyshlyaev177/state-in-url/blob/master/Limits.md
+- Working examples per framework: \`packages/example-nextjs{14,15,16}\`, \`packages/example-react-router{6,7}\`, \`packages/example-remix2\`
+- JSDoc comments are available in IDE for all exported functions
 `;
-

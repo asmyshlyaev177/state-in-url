@@ -108,6 +108,7 @@ This library is a good alternative for NUQS.
   - [installation](#installation)
     - [1. Install package](#1-install-package)
     - [2. Edit tsconfig.json](#2-edit-tsconfigjson)
+  - [Using with AI coding agents](#using-with-ai-coding-agents)
   - [useUrlState](#useurlstate)
     - [useUrlState hook for Next.js](#useurlstate-hook-for-nextjs)
       - [Usage examples](#usage-examples)
@@ -158,6 +159,16 @@ pnpm add state-in-url
 
 In `tsconfig.json` in `compilerOptions` set `"moduleResolution": "Bundler"`, or`"moduleResolution": "Node16"`, or `"moduleResolution": "NodeNext"`.
 Possibly need to set `"module": "ES2022"`, or `"module": "ESNext"`
+
+## Using with AI coding agents
+
+`state-in-url` ships skill files for [@tanstack/intent](https://tanstack.com/intent/latest/docs/overview), so AI agents (Claude Code, Cursor, Copilot, Codex, etc.) load the right patterns and avoid common mistakes when using the library. After installing `state-in-url`, run once in your project:
+
+```sh
+npx @tanstack/intent@latest install
+```
+
+This wires your installed agent to discover the skills from `node_modules/state-in-url/skills/`. List available skills with `npx @tanstack/intent@latest list`.
 
 ## useUrlState
 

@@ -26,7 +26,9 @@
     "url": "https://github.com/asmyshlyaev177/state-in-url/issues"
   },
   "files": [
-    "dist"
+    "dist",
+    "skills",
+    "!skills/_artifacts"
   ],
   "main": "./dist/index.js",
   "module": "dist/index.mjs",
@@ -439,6 +441,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.28.4",
+    "@tanstack/intent": "latest",
     "@babel/node": "^7.28.0",
     "@babel/preset-env": "^7.28.3",
     "@babel/preset-typescript": "^7.27.1",
