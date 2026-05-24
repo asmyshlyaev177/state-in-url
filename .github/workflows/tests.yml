@@ -95,7 +95,7 @@ jobs:
 
       - name: Cache dependencies
         id: cache
-        uses: actions/cache/save@d4323d4df104b026a6aa633fdb11d772146be0bf # v4.1.2
+        uses: actions/cache/save@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
         if: always()
         with:
           path: |
@@ -139,7 +139,7 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile && pnpm exec playwright install --with-deps
 
-      - uses: actions/cache/restore@d4323d4df104b026a6aa633fdb11d772146be0bf # v4.1.2
+      - uses: actions/cache/restore@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
         id: cache
         with:
           path: |
