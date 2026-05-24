@@ -1,3 +1,10 @@
+# [6.2.0](https://github.com/asmyshlyaev177/state-in-url/compare/v6.1.3...v6.2.0) (2026-05-24)
+
+
+### Features
+
+* aI SKILL file for agents ([fbf151a](https://github.com/asmyshlyaev177/state-in-url/commit/fbf151a359a6185c029a896e036cb40481fda833))
+
 ## [6.1.3](https://github.com/asmyshlyaev177/state-in-url/compare/v6.1.2...v6.1.3) (2026-05-13)
 
 
