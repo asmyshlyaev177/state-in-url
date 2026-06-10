@@ -3,5 +3,6 @@
   "css.customData": [".vscode/tailwind.json"],
   "files.associations": {
     "*.css": "tailwindcss"
-  }
+  },
+  "postman.settings.dotenv-detection-notification-visibility": false
 }

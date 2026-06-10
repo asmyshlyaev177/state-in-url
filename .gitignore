@@ -19,3 +19,5 @@ results
 .pnpm-store
 
 .env
+
+.claude/settings.json
