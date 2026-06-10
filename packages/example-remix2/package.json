@@ -11,16 +11,16 @@
     "typecheck": "pnpm exectsc"
   },
   "dependencies": {
-    "@remix-run/node": "^2.17.4",
-    "@remix-run/react": "^2.17.4",
+    "@remix-run/node": "^2.17.5",
+    "@remix-run/react": "^2.17.5",
     "isbot": "^4.1.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "state-in-url": "workspace:*"
   },
   "devDependencies": {
-    "@remix-run/dev": "^2.17.4",
-    "@remix-run/serve": "^2.17.4",
+    "@remix-run/dev": "^2.17.5",
+    "@remix-run/serve": "^2.17.5",
     "@types/react": "^18.2.25",
     "@types/react-dom": "^18.2.7",
     "@typescript-eslint/eslint-plugin": "^6.7.4",
