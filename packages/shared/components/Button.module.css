@@ -1,7 +1,9 @@
 .button {
-  @apply flex w-full justify-center rounded-md border border-transparent px-4 py-2 text-sm font-medium text-white shadow-sm transition-all focus:outline-none focus:ring-2 focus:ring-offset-2;
+  @apply flex w-full justify-center rounded-md border border-transparent px-4 py-2 text-sm font-medium shadow-sm transition-all focus:outline-none focus:ring-2 focus:ring-offset-2;
   background-color: var(--brand, #ea580c);
+  color: var(--button-fg, #fff);
   --tw-ring-color: var(--brand, #ea580c);
+  --tw-ring-offset-color: var(--surface, #fff);
 }
 
 .button:hover {

@@ -15,7 +15,7 @@ export const NpmLink = (
       target="_blank"
       rel="noopener noreferrer"
       aria-label='NPM link'
-      className={clsx("inline-flex items-center px-2 py-[2px] border border-transparent text-sm font-medium rounded-md text-white bg-ink hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-ink", className)}
+      className={clsx("inline-flex items-center px-2 py-[2px] border border-line text-sm font-medium rounded-md text-ink bg-surface-2 hover:bg-surface-1 transition-colors focus:outline-none focus:ring-2 focus:ring-brand", className)}
       {...rest}
     >
       <svg

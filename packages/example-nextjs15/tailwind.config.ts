@@ -16,13 +16,21 @@ const config: Config = {
       fontFamily: {
         sans: ['var(--font-dm-sans)', 'system-ui', 'sans-serif'],
         display: ['var(--font-syne)', 'system-ui', 'sans-serif'],
+        mono: ['var(--font-geist-mono)', 'ui-monospace', 'monospace'],
       },
       colors: {
         ink: 'var(--ink)',
         ink2: 'var(--ink-2)',
         brand: 'var(--brand)',
+        'brand-strong': 'var(--brand-strong)',
         'brand-dim': 'var(--brand-dim)',
-        surface: 'var(--surface)',
+        surface: {
+          DEFAULT: 'var(--surface)',
+          0: 'var(--surface-0)',
+          1: 'var(--surface-1)',
+          2: 'var(--surface-2)',
+        },
+        line: 'var(--line)',
       },
     },
   },

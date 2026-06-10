@@ -1,28 +1,48 @@
 import { siteUrl } from "../domain";
 
 export const Footer = () => (
-  <footer className="text-ink2 mt-6 w-full border-t border-brand-dim">
-    <div className="flex flex-wrap items-center justify-between gap-x-8 gap-y-1 px-6 py-4 text-sm">
+  <footer className="site-footer">
+    <div className="footer-inner">
+      <div className="footer-id">
+        <span className="footer-mark">state-in-url</span>
+        <span className="footer-tag">typed state, living in the URL</span>
+      </div>
+
+      <nav className="footer-links" aria-label="Footer">
+        <a
+          href="https://www.npmjs.com/package/state-in-url"
+          target="_blank"
+          rel="noopener"
+        >
+          npm
+        </a>
+        <a
+          href="https://github.com/asmyshlyaev177/state-in-url"
+          target="_blank"
+          rel="noopener"
+        >
+          GitHub
+        </a>
+        <a href={`${siteUrl}/llms.txt`} target="_blank" rel="noopener">
+          llms.txt
+        </a>
+        <a
+          href="https://github.com/asmyshlyaev177/state-in-url/blob/master/LICENSE"
+          target="_blank"
+          rel="noopener"
+        >
+          MIT
+        </a>
+      </nav>
+
       <a
-        href="https://www.npmjs.com/package/state-in-url"
+        href="https://asmyshlyaev177.dev"
         target="_blank"
         rel="noopener"
-        className="hover:text-brand transition-colors"
+        className="footer-author"
       >
-        state-in-url on npm
-      </a>
-      <a
-        href={`${siteUrl}/llms.txt`}
-        target="_blank"
-        rel="noopener"
-        className="hover:text-brand transition-colors"
-      >
-        llms.txt
-      </a>
-      <a href="https://asmyshlyaev177.dev" target="_blank" rel="noopener" className="hover:text-brand transition-colors">
         © asmyshlyaev177 {new Date().getFullYear()}
       </a>
-      <span>MIT</span>
     </div>
   </footer>
 );

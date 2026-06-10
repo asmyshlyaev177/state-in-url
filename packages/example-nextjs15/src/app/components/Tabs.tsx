@@ -1,7 +1,6 @@
 'use client'
 
 import Link from 'next/link'
-import clsx from 'clsx';
 import { usePathname, useRouter } from 'next/navigation'
 
 
@@ -17,20 +16,24 @@ export const Tabs = ({ className = '' }: { className: string }) => {
         <label htmlFor="tabs" className="sr-only">Select framework</label>
         <select id="tabs" value={TABS.find(en => en.url === pathname)!.url} onChange={(ev) => {
           router.push(ev.target.value, { scroll })
-        }} className="px-4 pr-8 border text-sm rounded-lg text-white block w-full bg-gray-700 border-gray-600 placeholder-gray-400 focus:ring-blue-500 focus:border-blue-500">
+        }} className="px-4 pr-8 py-3 border text-sm rounded-lg text-ink block w-full bg-surface-2 border-line focus:ring-brand focus:border-brand">
           {TABS.map((en) => (
             <option value={en.url} key={en.text} className='w-full p-4'>{en.text}</option>
           ))}
         </select>
       </div>
-      <ul className="text-sm font-medium text-center rounded-lg shadow flex flex-nowrap divide-gray-700 text-gray-400">
-        {TABS.map((en, ind, arr) => (
-          <li key={en.text}>
-            <Link href={en.url} scroll={scroll} className="max-sm:hidden w-full self-stretch focus-within:z-10">
-              <span className={clsx("transition", pathname === en.url && "bg-orange-700 font-bold hover:bg-orange-600" || "bg-gray-700 hover:bg-gray-800", "h-full justify-stretch inline-flex items-center w-full transition sm:text-nowrap p-4", ind === 0 && 'rounded-s-lg' || '', ind !== 0 && ind !== arr.length - 1 && 'border-r' || '', ind === arr.length - 1 && 'border-s-0 rounded-e-lg' || '', "border-gray-700 focus:ring-4 focus:ring-blue-300 active focus:outline-none  text-white")} aria-current="page">{en.text}</span>
+      <ul className="fw-tabs max-sm:hidden">
+        {TABS.map((en) => (
+          <li key={en.text} className="flex">
+            <Link
+              href={en.url}
+              scroll={scroll}
+              className="fw-tab"
+              aria-current={pathname === en.url ? 'page' : undefined}
+            >
+              {en.text}
             </Link>
           </li>
-
         ))}
       </ul>
     </nav>

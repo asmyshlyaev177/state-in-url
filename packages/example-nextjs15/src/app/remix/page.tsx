@@ -10,11 +10,13 @@ export default async function Home({ searchParams }: { searchParams: Promise<obj
     <>
       <DemoPart searchParams={resolvedSearchParams}/>
 
-      <TabsBlock />
+      <div className="instructions">
+        <TabsBlock />
 
-      <section className="codeBlock-wrapper">
-        <CodeBlocksRR />
-      </section>
+        <section className="codeBlock-wrapper">
+          <CodeBlocksRR />
+        </section>
+      </div>
 
       <Description/ >
     </>

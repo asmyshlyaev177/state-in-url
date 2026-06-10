@@ -52,15 +52,15 @@ export const Status = React.memo(({
   const mult = 6;
 
   return (
-    <div className={clsx("flex relative shadow-md hover:shadow-lg", className)}>
+    <div className={clsx("flex relative", className)}>
       <div className="font-semibold mb-2 ">
         Other client component
       </div>
-      <h3>Reads from URL — no props, no context, types and structure are preserved</h3>
+      <h3 className="text-ink2 text-sm">Reads from URL — no props, no context, types and structure are preserved</h3>
 
       <div className="flex-none">
         <pre
-          className="h-[330px] overflow-y-scroll text-ink2 bg-surface p-4 rounded-md shadow-inner break-all whitespace-pre-wrap leading-6"
+          className="h-[330px] overflow-y-scroll text-ink2 py-3 pr-2 mt-1 break-all whitespace-pre-wrap leading-6 text-sm"
           data-testid="parsed"
         >
           <span>{'{'}</span>
@@ -101,7 +101,7 @@ function renderObject(obj: object | Array<SimpleVal> | SimpleVal, level = 0, par
     return (
       <span className={`group ml-2 inline-flex flex-nowrap gap-2`}>
         <span className='whitespace-break-spaces break-all'>{type === 'date' ? (obj as Date).toISOString() : String(obj)}</span>
-        <span className={`transition-all text-xs opacity-0 group-hover:opacity-100 text-orange-600 group-hover:font-semibold group-hover:block whitespace-nowrap -mt-[0.3rem] -ml-[1ch]`}>{type}</span>
+        <span className={`transition-all text-xs opacity-0 group-hover:opacity-100 text-brand group-hover:font-semibold group-hover:block whitespace-nowrap -mt-[0.3rem] -ml-[1ch]`}>{type}</span>
       </span>
     )
   }

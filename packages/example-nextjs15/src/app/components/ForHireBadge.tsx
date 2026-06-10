@@ -20,16 +20,40 @@ const LinkedInIcon = () => (
   </svg>
 );
 
-export const ForHireBadge = () => {
-  const [dismissed, setDismissed] = useState(false);
+const DISMISS_KEY = 'for-hire-dismissed';
+const ENTERED_KEY = 'for-hire-entered';
 
-  if (dismissed) return null;
+export const ForHireBadge = () => {
+  // 'hidden' until mounted, then 'enter' (animated) once per session, 'shown' after
+  const [mode, setMode] = useState<'hidden' | 'enter' | 'shown'>('hidden');
+
+  React.useEffect(() => {
+    try {
+      if (sessionStorage.getItem(DISMISS_KEY) === '1') return;
+      const entered = sessionStorage.getItem(ENTERED_KEY) === '1';
+      sessionStorage.setItem(ENTERED_KEY, '1');
+      setMode(entered ? 'shown' : 'enter');
+    } catch {
+      setMode('enter');
+    }
+  }, []);
+
+  const onDismiss = () => {
+    setMode('hidden');
+    try {
+      sessionStorage.setItem(DISMISS_KEY, '1');
+    } catch {
+      /* private mode — dismiss for this render only */
+    }
+  };
+
+  if (mode === 'hidden') return null;
 
   return (
-    <aside className="for-hire-badge" aria-label="Available for hire">
+    <aside className={mode === 'shown' ? 'for-hire-badge no-anim' : 'for-hire-badge'} aria-label="Available for hire">
       <button
         className="for-hire-close"
-        onClick={() => setDismissed(true)}
+        onClick={onDismiss}
         aria-label="Close"
       >
         <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">

@@ -26,25 +26,25 @@ export const File = ({
 
   return (
     <div
-      className="text-white codeblock shadow-md hover:shadow-2xl bg-white border border-gray-200 rounded-lg dark:border-gray-700 h-full transition-none"
+      className="codeblock h-full transition-none"
       data-nosnippet="true"
     >
-      <div className="flex h-12 justify-between bg-gray-900 font-mono border-b border-zinc-700 text-sm select-none">
-        <div className="flex items-center border-zinc-700 border-l-2 h-full relative px-4 ">
+      <div className="codeblock-chrome">
+        <div className="flex items-center h-full relative">
           {name}
         </div>
 
-        <div className="flex border-zinc-800 gap-2 items-center p-2 pl-4 h-auto">
-          <div className="h-4 w-4 rounded-full bg-zinc-700"></div>
-          <div className="h-4 w-4 rounded-full bg-zinc-700"></div>
-          <div className="h-4 w-4 rounded-full bg-zinc-700"></div>
+        <div className="codeblock-dots" aria-hidden="true">
+          <span></span>
+          <span></span>
+          <span></span>
         </div>
 
       </div>
 
         <FakeTypes matchers={matchers} id={id}/>
 
-        <Code content={content} id={id} className="bg-gray-800 max-sm:text-[0.7rem] max-sm:p-2 font-mono p-5 text-current" />
+        <Code content={content} id={id} className="max-sm:text-[0.7rem] max-sm:p-2 font-mono p-5 text-current" />
 
     </div>
   );

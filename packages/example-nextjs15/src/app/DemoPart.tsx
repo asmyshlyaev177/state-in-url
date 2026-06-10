@@ -3,8 +3,6 @@ import React from 'react';
 import { usePathname } from 'next/navigation';
 import { ErrorBoundary, type FallbackProps } from "react-error-boundary";
 
-import { GithubLink } from './components/GithubLink';
-import { NpmLink } from './components/NpmLink';
 import { UrlBox } from './components/UrlBox';
 import { Form } from './Form';
 import { Status } from './Status';
@@ -22,18 +20,14 @@ export function DemoPart({ searchParams }: { searchParams: object }) {
       <section className="demo">
         <header className="header">
           <div className="wrapper">
-            <h2 className="title">useUrlState — demo with <Word>{routerKind}</Word></h2>
-            <div className="github-link">
-              <NpmLink />
-              <GithubLink />
-            </div>
+            <h2 className="title">useUrlState — live with <Word>{routerKind}</Word></h2>
           </div>
 
           <div className="urlBox">
             <UrlBox initialUrl={spToUrl(searchParams)} />
           </div>
 
-          <p className="demo-hint">Try to type something <span className="demo-hint-arrow" aria-hidden="true">↓</span></p>
+          <p className="demo-hint">Type below — watch the URL light up <span className="demo-hint-arrow" aria-hidden="true">↓</span></p>
 
         </header>
 

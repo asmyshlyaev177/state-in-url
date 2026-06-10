@@ -1,5 +1,6 @@
 // import { Analytics } from '@vercel/analytics/react';
 import { Archivo, DM_Sans } from 'next/font/google';
+import localFont from 'next/font/local';
 import { GoogleAnalytics } from '@next/third-parties/google'
 // import Script from 'next/script'
 
@@ -20,6 +21,16 @@ const dmSans = DM_Sans({
   variable: '--font-dm-sans',
   display: 'swap',
 });
+
+const geistMono = localFont({
+  src: './fonts/GeistMonoVF.woff',
+  variable: '--font-geist-mono',
+  display: 'swap',
+});
+
+export const viewport = {
+  themeColor: '#211c17',
+};
 
 export const revalidate = 172800; // 48 hours
 
@@ -46,7 +57,7 @@ export default function RootLayout({
         <link rel="alternate" type="text/markdown" href={`${siteUrl}/llms.txt`} title="LLM-friendly version" />
         <meta name="llms-txt" content={`${siteUrl}/llms.txt`} />
       </head>
-      <body className={`${archivo.variable} ${dmSans.variable} font-sans`}>
+      <body className={`${archivo.variable} ${dmSans.variable} ${geistMono.variable} font-sans`}>
         {children}
         {isProd && isVercel ? <GoogleAnalytics gaId="G-5N8Y565DXK" /> : null }
       </body>

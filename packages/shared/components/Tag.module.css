@@ -1,8 +1,9 @@
 .tag {
   @apply rounded-full px-3 py-1 text-sm font-medium transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-offset-2;
-  color: var(--ink-2, #6b7280);
+  color: var(--tag-fg, var(--ink-2, #6b7280));
   background-color: var(--brand-dim, #fed7aa);
   --tw-ring-color: var(--brand, #ea580c);
+  --tw-ring-offset-color: var(--surface, #fff);
 
   &:hover {
     filter: brightness(0.92);
@@ -14,7 +15,7 @@
 
   &.active {
     background-color: var(--brand, #ea580c);
-    color: #fff;
+    color: var(--tag-active-fg, #fff);
     transform: scale(1);
   }
 
