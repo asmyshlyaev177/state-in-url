@@ -1,3 +1,10 @@
+## [6.2.1](https://github.com/asmyshlyaev177/state-in-url/compare/v6.2.0...v6.2.1) (2026-06-15)
+
+
+### Bug Fixes
+
+* fix skill discovery ([1e47260](https://github.com/asmyshlyaev177/state-in-url/commit/1e47260e70f802abacab5993b60b41a25767d426))
+
 # [6.2.0](https://github.com/asmyshlyaev177/state-in-url/compare/v6.1.3...v6.2.0) (2026-05-24)
 
 
