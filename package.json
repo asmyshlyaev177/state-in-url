@@ -559,7 +559,8 @@
     "search",
     "encode url",
     "decode url",
-    "fast"
+    "fast",
+    "tanstack-intent"
   ],
   "packageManager": "pnpm@10.26.0",
   "pnpm": {
