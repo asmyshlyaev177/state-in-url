@@ -4,7 +4,6 @@ import React from 'react';
 import './styles.css';
 
 import { Logo } from './components/Logo';
-import { FOR_HIRE } from '../../../../consts';
 import { ForHireBadge } from './components/ForHireBadge';
 import { GithubLink } from './components/GithubLink';
 import { InstallCmd } from './components/InstallCmd';
@@ -67,7 +66,8 @@ export default async function Template({
       </div>
 
       <Footer />
-      {FOR_HIRE && <ForHireBadge />}
+      {/* Self-gates on the live GitHub "Available for hire" status via /api/hireable. */}
+      <ForHireBadge />
     </main>
   );
 }
