@@ -3,7 +3,7 @@ import localFont from 'next/font/local';
 import { GoogleAnalytics } from '@next/third-parties/google'
 
 import { metadata as _metadata, jsonLd } from './seoStuff';
-import { isVercel, vercelUrl, siteUrl } from './domain';
+import { isVercel, siteUrl } from './domain';
 import { isProd } from '../../../../consts'
 
 const archivo = Archivo({
@@ -30,7 +30,7 @@ export const viewport = {
   themeColor: '#211c17',
 };
 
-export const revalidate = 172800;
+export const revalidate = 604800; // 7 days
 
 export default function RootLayout({
   children,
@@ -43,10 +43,8 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
 
-        {isVercel && <link rel="canonical" href={vercelUrl}></link>}
         <meta name="google-site-verification" content="NKunqTB4Sd_Bp6zoIbzKvw_WoGB-v2-MXxC5mbKJKJw" />
         <meta name="title" content={_metadata.title as string}></meta>
-        <meta name="description" content={_metadata.description || ''}></meta>
         {isProd && <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

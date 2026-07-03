@@ -36,6 +36,7 @@ export async function proxy(request: NextRequest) {
       headers: {
         'Content-Type': acceptsMarkdown ? 'text/markdown; charset=utf-8' : 'text/plain; charset=utf-8',
         'Cache-Control': 'public, max-age=3600',
+        'Vary': 'Accept',
       },
     });
   }

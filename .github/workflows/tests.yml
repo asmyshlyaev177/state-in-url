@@ -154,7 +154,7 @@ jobs:
       - name: Run Playwright tests
         run: |
           pnpm run start:ci & \
-          pnpm wait-on -t 3m http://localhost:3001 && \
+          pnpm wait-on -t 3m http://localhost:3002 tcp:localhost:3001 && \
           HOME=/root pnpm exec playwright test --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }}
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.4.3
         if: always()
