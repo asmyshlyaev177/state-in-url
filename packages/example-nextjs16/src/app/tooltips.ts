@@ -138,7 +138,7 @@ export const tooltips: Matcher[] = [
     `setUrl({ name:`, setUrlTooltip
   ],
   ['curr=>', formParamTooltip],
-    ['curr, name:', formParamTooltip],
+  ['curr, name:', formParamTooltip],
   [
     'setUrlBase,', setUrlTooltip
   ],

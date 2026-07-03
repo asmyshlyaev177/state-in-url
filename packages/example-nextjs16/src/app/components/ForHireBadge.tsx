@@ -24,15 +24,11 @@ const DISMISS_KEY = 'for-hire-dismissed';
 const ENTERED_KEY = 'for-hire-entered';
 
 export const ForHireBadge = () => {
-  // 'hidden' until mounted, then 'enter' (animated) once per session, 'shown' after
   const [mode, setMode] = useState<'hidden' | 'enter' | 'shown'>('hidden');
 
   React.useEffect(() => {
     let cancelled = false;
 
-    // Show the badge only when GitHub's "Available for hire" status is on,
-    // fetched at request time (3h-cached) so it tracks the profile toggle
-    // without a rebuild.
     fetch('/api/hireable')
       .then((r) => (r.ok ? r.json() : null))
       .then((data) => {
@@ -47,7 +43,6 @@ export const ForHireBadge = () => {
         }
       })
       .catch(() => {
-        /* network error — leave badge hidden */
       });
 
     return () => {
@@ -60,7 +55,6 @@ export const ForHireBadge = () => {
     try {
       sessionStorage.setItem(DISMISS_KEY, '1');
     } catch {
-      /* private mode — dismiss for this render only */
     }
   };
 

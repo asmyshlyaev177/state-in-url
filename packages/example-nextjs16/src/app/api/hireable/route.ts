@@ -1,8 +1,4 @@
-// Live "Available for hire" status for the ForHireBadge, fetched at request
-// time so it tracks the GitHub profile toggle without a rebuild. Cached for 3
-// hours (10800s) to keep GitHub API calls rare. Fails closed (hireable: false)
-// on error.
-export const revalidate = 10800; // 3 hours (60*60*3)
+export const revalidate = 10800;
 
 export async function GET() {
   let hireable = false;

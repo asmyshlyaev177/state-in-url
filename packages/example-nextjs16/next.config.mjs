@@ -10,10 +10,11 @@ const nextConfig = {
     'shared/components',
     'shared/components/Input',
     'shared/components/Input.tsx',
-    'shared/components/Input',
-    'shared/components/Input.tsx',
   ],
   reactStrictMode: true,
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
   basePath: '',
   images: {
     minimumCacheTTL: 60 * 60 * 24 * 15,

@@ -1,6 +1,5 @@
 'use client';
 
-
 import {
   FacebookIcon,
   FacebookShareButton,
@@ -22,7 +21,7 @@ const size = 48
 
 export const Share = () => {
   return (
-    <div className="share-block flex items-center max-sm:justify-evenly  sm:justify-center sm:gap-4 w-full">
+    <div className="share-block flex items-center max-sm:justify-evenly sm:justify-center sm:gap-4 w-full">
 
       <TwitterShareButton
         url={shareUrl}

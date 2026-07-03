@@ -25,15 +25,11 @@ export const FakeTypes = ({ matchers, id }: { matchers?: Matcher[], id: string }
     const codeBlock = document.querySelector(`[id="${id}"]`)
 
     if (codeBlock && !(codeBlock as HTMLDivElement).onmousemove) {
-      const matchTooltips = (ev: MouseEvent) => {
-        // @ts-expect-error fots
-        const text = (ev?.target?.textContent || '').trim();
-        // @ts-expect-error fots
-        const next = (ev?.target?.nextSibling?.textContent || '').trim()
-
-        // if (text?.length < 12) {
-          // console.log({ ev, context, text, next })
-        // }
+    const matchTooltips = (ev: MouseEvent) => {
+      // @ts-expect-error fots
+      const text = (ev?.target?.textContent || '').trim();
+      // @ts-expect-error fots
+      const next = (ev?.target?.nextSibling?.textContent || '').trim()
 
         const match = matchers?.find(el => el[0] === `${text}${next}`)
 
@@ -48,7 +44,6 @@ export const FakeTypes = ({ matchers, id }: { matchers?: Matcher[], id: string }
 
       (codeBlock as HTMLDivElement).onmousemove = matchTooltips;
       (codeBlock as HTMLDivElement).onmouseleave = () => setTooltip(curr => ({...curr, nodes: []}));
-
     }
 
     return () => {

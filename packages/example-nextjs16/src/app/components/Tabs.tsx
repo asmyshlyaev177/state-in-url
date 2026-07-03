@@ -3,7 +3,6 @@
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 
-
 const scroll = false;
 
 export const Tabs = ({ className = '' }: { className: string }) => {

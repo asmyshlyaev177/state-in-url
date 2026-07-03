@@ -8,8 +8,6 @@ import { Form } from './Form';
 import { Status } from './Status';
 import { Word } from './components/Word';
 
-
-
 export function DemoPart({ searchParams }: { searchParams: object }) {
   const pathname = usePathname()
 
@@ -72,8 +70,8 @@ function getUrls(pathname: string) {
 
 const sourceUrls = {
   'next.js': {
-    form: 'https://github.com/asmyshlyaev177/state-in-url/blob/master/packages/example-nextjs15/src/app/Form.tsx',
-    status: 'https://github.com/asmyshlyaev177/state-in-url/blob/master/packages/example-nextjs15/src/app/Status.tsx'
+    form: 'https://github.com/asmyshlyaev177/state-in-url/blob/master/packages/example-nextjs16/src/app/Form.tsx',
+    status: 'https://github.com/asmyshlyaev177/state-in-url/blob/master/packages/example-nextjs16/src/app/Status.tsx'
   },
   'react-router': {
     form: 'https://github.com/asmyshlyaev177/state-in-url/blob/master/packages/example-react-router6/src/Form-for-test.tsx',

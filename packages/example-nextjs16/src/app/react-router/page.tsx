@@ -1,4 +1,3 @@
-
 import { DemoPart } from '../DemoPart';
 import { Description } from '../components/Description';
 import { TabsBlock } from '../TabsBlock';

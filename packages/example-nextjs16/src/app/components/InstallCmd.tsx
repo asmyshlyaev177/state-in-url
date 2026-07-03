@@ -27,7 +27,6 @@ export const InstallCmd = () => {
       clearTimeout(timer.current);
       timer.current = setTimeout(() => setCopied(false), 2000);
     } catch {
-      /* clipboard unavailable (http, permissions) — selection still works */
     }
   }, []);
 
