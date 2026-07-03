@@ -262,23 +262,23 @@
       "dependencies": [
         "build"
       ],
-      "command": "cd packages/example-nextjs15 && pnpm run build"
+      "command": "cd packages/example-nextjs16 && pnpm run build"
     },
     "build:demo:tests": {
       "dependencies": [
         "build"
       ],
-      "command": "cd packages/example-nextjs15 && npx cross-env TEST=true pnpm run build"
+      "command": "cd packages/example-nextjs16 && npx cross-env TEST=true pnpm run build"
     },
     "start:demo": {
       "dependencies": [
         "build:demo"
       ],
-      "command": "cd packages/example-nextjs15 && pnpm run start",
+      "command": "cd packages/example-nextjs16 && pnpm run start",
       "service": true
     },
     "start:demo:ci": {
-      "command": "cd packages/example-nextjs15 && pnpm run start",
+      "command": "cd packages/example-nextjs16 && pnpm run start",
       "service": true
     },
     "start:react": {
