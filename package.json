@@ -410,7 +410,7 @@
         "build:react",
         "build:demo:tests",
         "build:next14",
-        "build:next16",
+        "build:next15",
         "build:router6",
         "build:router7",
         "build:remix2"

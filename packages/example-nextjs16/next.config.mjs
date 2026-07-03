@@ -1,7 +1,15 @@
+import path from 'path';
+
 /**
  * @type {import('next').NextConfig}
  */
+const ROOT = path.resolve(import.meta.dirname, '../..');
 const nextConfig = {
+  // Own tracing root so parallel Next builds don't share a build lock
+  outputFileTracingRoot: ROOT,
+  turbopack: {
+    root: ROOT,
+  },
   experimental: {
     externalDir: true,
   },
@@ -12,9 +20,6 @@ const nextConfig = {
     'shared/components/Input.tsx',
   ],
   reactStrictMode: true,
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
   basePath: '',
   images: {
     minimumCacheTTL: 60 * 60 * 24 * 15,
