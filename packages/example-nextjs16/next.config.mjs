@@ -1,9 +1,10 @@
 import path from 'path';
 
+const ROOT = path.resolve(import.meta.dirname, '../..');
+
 /**
  * @type {import('next').NextConfig}
  */
-const ROOT = path.resolve(import.meta.dirname, '../..');
 const nextConfig = {
   // Own tracing root so parallel Next builds don't share a build lock
   outputFileTracingRoot: ROOT,
