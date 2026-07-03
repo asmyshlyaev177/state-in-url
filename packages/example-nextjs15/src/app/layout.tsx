@@ -23,8 +23,3 @@ export default async function RootLayout({
     </html>
   );
 }
-
-export const metadata = {
-  title: 'Next.js 15 Tests',
-  description: 'Test pages for Next.js 15',
-};
