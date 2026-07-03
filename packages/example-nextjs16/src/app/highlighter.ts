@@ -25,13 +25,10 @@ export const createHighlighter = () =>
               'string.comment',
             ],
             settings: {
-              // use `rgb`, `hsl`, `hsla`,
-              // or any anything supported by your renderer
               foreground: 'white',
             },
           },
         ],
-        // Background and foreground colors
         bg: 'var(--code-bg)',
         fg: 'var(--code-fg)',
       },
@@ -41,7 +38,6 @@ export const createHighlighter = () =>
   });
 
 export let highlighter: HighlighterCore;
-
 
 export const highlight = (content: string, opts?: { lang?: Langs}) => {
   return getHighlighter().then(hi => hi.codeToHtml?.(content, {

@@ -50,7 +50,6 @@ export const jsonLd: WithContext<SoftwareApplication> = {
   ],
 };
 
-
 const meta = {
   title: 'state-in-url - store state in URL like in JSON, type-safe',
   description:
