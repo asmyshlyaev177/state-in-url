@@ -2,6 +2,8 @@
  * @type {import('next').NextConfig}
  */
 const nextConfig = {
+  // Own tracing root so parallel Next builds don't share a build lock
+  outputFileTracingRoot: import.meta.dirname,
   webpack: (config) => {
     const newConfig = {
       ...config,
