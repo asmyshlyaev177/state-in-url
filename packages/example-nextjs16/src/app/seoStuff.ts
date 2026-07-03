@@ -106,8 +106,4 @@ export const metadata = {
   alternates: {
     canonical: vercelUrl,
   },
-
-  other: {
-    'script:ld+json': JSON.stringify(jsonLd),
-  },
 } as Metadata;
