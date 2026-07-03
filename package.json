@@ -96,14 +96,13 @@
     "test:int:ci": "wireit",
     "test:exports": "pnpm run build && npx babel-node --extensions .js,.mjs,.ts,.mts --config-file ./babel.config.json -- ./packages/urlstate/exportsTest.ts",
     "test": "wireit",
-    "tsc": "wireit",
     "dev": "wireit",
     "dev:lib": "wireit",
     "dev:nextjs14": "wireit",
     "dev:nextjs15": "wireit",
     "dev:nextjs16": "wireit",
     "dev:remix2": "wireit",
-    "bump": "npx standard-version --no-verify",
+    "tsc": "wireit",
     "build": "wireit",
     "build:demo": "wireit",
     "start:demo": "wireit",
@@ -115,7 +114,10 @@
     "start:ci": "wireit",
     "kill-next": "wireit",
     "kill-vite": "wireit",
+    "kill-remix": "wireit",
+    "kill-services": "wireit",
     "kill": "wireit",
+    "bump": "npx standard-version --no-verify",
     "install:all": "pnpm install",
     "install:ci": "pnpm install --frozen-lockfile",
     "rmdist": "rm -rf dist",
@@ -158,16 +160,17 @@
     "kill-vite": {
       "command": "ps aux | grep '.bin/vite' | grep -v grep | awk '{print $2}' | xargs kill -9 2>&1; exit 0"
     },
+    "kill-remix": {
+      "command": "ps aux | grep -E 'remix-serve|@remix-run/serve' | grep -v grep | awk '{print $2}' | xargs kill -9 2>&1; exit 0"
+    },
+    "kill-services": {
+      "command": "ps aux | grep -E '.next|.bin/vite|remix-serve|@remix-run/serve' | grep -v grep | awk '{print $2}' | xargs -r kill -9 2>&1; exit 0"
+    },
     "kill-wireit": {
-      "command": "ps axu | grep wireit | awk '{print $2}' | xargs kill -9"
+      "command": "ps axu | grep '[w]ireit' | grep -v grep | awk -v me=$PPID '$2 != me {print $2}' | xargs -r kill -9 2>&1; exit 0"
     },
     "kill": {
-      "command": "killed",
-      "dependencies": [
-        "kill-next",
-        "kill-vite",
-        "kill-wireit"
-      ]
+      "command": "ps aux | grep -E '.next|.bin/vite|remix-serve|@remix-run/serve' | grep -v grep | awk '{print $2}' | xargs -r kill -9 2>&1; ps axu | grep '[w]ireit' | grep -v grep | awk -v me=$PPID '$2 != me {print $2}' | xargs -r kill -9 2>&1; exit 0"
     },
     "test:int:ci": {
       "command": "npx cross-env HOME=/root PLAYWRIGHT_BROWSERS_PATH=0 playwright test"
@@ -287,6 +290,9 @@
     },
     "start:react:ci": {
       "command": "npx vite preview --port 5180 packages/example-react",
+      "dependencies": [
+        "kill-services"
+      ],
       "service": true
     },
     "start:router6": {
@@ -298,6 +304,9 @@
     },
     "start:router6:ci": {
       "command": "npx vite preview --port 5181 packages/example-react-router6",
+      "dependencies": [
+        "kill-services"
+      ],
       "service": true
     },
     "start:router7": {
@@ -309,6 +318,9 @@
     },
     "start:router7:ci": {
       "command": "npx vite preview --port 5183 packages/example-react-router7",
+      "dependencies": [
+        "kill-services"
+      ],
       "service": true
     },
     "start:remix2": {
@@ -320,6 +332,9 @@
     },
     "start:remix2:ci": {
       "command": "cd packages/example-remix2 && pnpm run start",
+      "dependencies": [
+        "kill-services"
+      ],
       "service": true
     },
     "start:demo14": {
@@ -338,6 +353,9 @@
     },
     "start:demo14:ci": {
       "command": "cd packages/example-nextjs14 && pnpm run start",
+      "dependencies": [
+        "kill-services"
+      ],
       "service": true
     },
     "start:demo15:ci": {
@@ -353,6 +371,9 @@
     },
     "start:demo16:ci": {
       "command": "cd packages/example-nextjs16 && pnpm run start",
+      "dependencies": [
+        "kill-services"
+      ],
       "service": true
     },
     "start": {
@@ -441,7 +462,6 @@
   },
   "devDependencies": {
     "@babel/core": "^7.28.4",
-    "@tanstack/intent": "latest",
     "@babel/node": "^7.28.0",
     "@babel/preset-env": "^7.28.3",
     "@babel/preset-typescript": "^7.27.1",
@@ -455,6 +475,7 @@
     "@semantic-release/git": "^10.0.1",
     "@semantic-release/npm": "^13.1.3",
     "@semantic-release/release-notes-generator": "^14.1.0",
+    "@tanstack/intent": "latest",
     "@testing-library/dom": "^10.4.1",
     "@testing-library/jest-dom": "^6.9.0",
     "@testing-library/react": "^16.3.0",
@@ -504,7 +525,7 @@
     "unplugin-auto-import": "^0.18.6",
     "vitest": "^2.1.9",
     "wait-on": "^8.0.5",
-    "wireit": "^0.14.12"
+    "wireit": "^0.14.13"
   },
   "keywords": [
     "state in url",
