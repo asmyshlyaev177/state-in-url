@@ -1,3 +1,10 @@
+## [6.2.2](https://github.com/asmyshlyaev177/state-in-url/compare/v6.2.1...v6.2.2) (2026-07-04)
+
+
+### Bug Fixes
+
+* direct to github issues in case of troubles ([bd0a972](https://github.com/asmyshlyaev177/state-in-url/commit/bd0a9721c0928576ce1ff73b5407f9319c4601a1))
+
 ## [6.2.1](https://github.com/asmyshlyaev177/state-in-url/compare/v6.2.0...v6.2.1) (2026-06-15)
 
 
