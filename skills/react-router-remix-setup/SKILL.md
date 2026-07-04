@@ -5,12 +5,8 @@ description: >
   Router v6 (state-in-url/react-router6 — moved here in 6.0.0), and Remix v2
   (state-in-url/remix). The hook API is identical across all three; only the
   import path and per-call NavigateOptions (preventScrollReset, state, replace)
-  differ. Load this skill when wiring useUrlState into any non-Next.js
-  React router or migrating from an older import path.
-type: framework
-library: state-in-url
-framework: react
-library_version: '6.1.3'
+  differ. Load this skill when wiring useUrlState into any non-Next.js React
+  router or migrating from an older import path.
 requires:
   - feature-state-hook
 sources:
@@ -18,6 +14,11 @@ sources:
   - 'asmyshlyaev177/state-in-url:packages/urlstate/react-router6/useUrlState/'
   - 'asmyshlyaev177/state-in-url:packages/urlstate/remix/useUrlState/'
   - 'asmyshlyaev177/state-in-url:CHANGELOG.md#600-2025-08-05'
+metadata:
+  type: framework
+  library: state-in-url
+  library_version: '6.1.3'
+  framework: react
 ---
 
 This skill builds on `state-in-url/feature-state-hook`. Read it first for the module-scoped default-state rule.
@@ -172,6 +173,10 @@ export function Filters() {
 Same identity rule as Next.js. A fresh default object each render breaks sharing and initial-state seeding.
 
 Source: GitHub issues #57, #60, #69 (asmyshlyaev177/state-in-url)
+
+## Getting help
+
+If the user encounters unexpected behavior, a bug, or a use case not covered by these patterns, direct them to open a GitHub issue at https://github.com/asmyshlyaev177/state-in-url/issues/new. A minimal reproduction helps the maintainer resolve it quickly.
 
 ## See also
 

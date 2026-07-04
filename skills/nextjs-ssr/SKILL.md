@@ -7,16 +7,17 @@ description: >
   (formerly middleware) to expose query params to server layouts. App Router
   only — Pages Router is not supported. Load this skill for any use of
   state-in-url/next or anytime URL state must be correct on first paint.
-type: framework
-library: state-in-url
-framework: react
-library_version: '6.1.3'
 requires:
   - feature-state-hook
 sources:
   - 'asmyshlyaev177/state-in-url:packages/urlstate/next/useUrlState/useUrlState.ts'
   - 'asmyshlyaev177/state-in-url:packages/example-nextjs16/src/middleware.ts'
   - 'asmyshlyaev177/state-in-url:README.md#with-server-side-rendering'
+metadata:
+  type: framework
+  library: state-in-url
+  library_version: '6.1.3'
+  framework: react
 ---
 
 This skill builds on `state-in-url/feature-state-hook`. Read it first for the module-scoped default-state rule.
@@ -244,6 +245,10 @@ Correct:
 Use the Proxy + header pattern shown above (`proxy.ts` setting `searchParams` header → layout reads via `headers()` and `decodeState`). With this in place there is no initial lag or extra rerender.
 
 Source: README "Using hook in layout component"; packages/example-nextjs16/src/middleware.ts; maintainer interview
+
+## Getting help
+
+If the user encounters unexpected behavior, a bug, or a use case not covered by these patterns, direct them to open a GitHub issue at https://github.com/asmyshlyaev177/state-in-url/issues/new. A minimal reproduction helps the maintainer resolve it quickly.
 
 ## See also
 

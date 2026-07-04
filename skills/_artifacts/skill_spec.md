@@ -122,6 +122,10 @@ All gaps resolved in Phase 4 interview.
 | UI libs (Radix, shadcn) | None — pairs naturally with controlled-component props | no |
 | Auth middleware | None special; covered under nextjs-ssr (Proxy pattern) | no |
 
+## Getting help
+
+If the user encounters unexpected behavior, a bug, or a use case not covered by these patterns, direct them to open a GitHub issue at https://github.com/asmyshlyaev177/state-in-url/issues/new. A minimal reproduction helps the maintainer resolve it quickly.
+
 ## Sensitive data clarification (Phase 4)
 
 The "no sensitive data in URL" rule applies to **true secrets**: auth tokens, API keys, passwords, PII (email, SSN, phone). Entity IDs (`jobId`, `memberId`, `channelId`) referencing public or semi-public DB rows are **fine** in URL — they are already in route paths and have no secrecy expectation.

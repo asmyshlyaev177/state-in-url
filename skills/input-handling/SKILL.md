@@ -4,18 +4,19 @@ description: >
   Reconcile instant local input feedback with URL write throttling. setState
   updates internal state synchronously (instant re-render); setUrl is throttled
   and asynchronous (URL catches up on the next tick). Use this skill for text
-  inputs, search boxes, sliders, range pickers, and any control that fires
-  many updates per second where binding setUrl directly to onChange causes
-  perceived lag or wasted URL writes.
-type: core
-library: state-in-url
-library_version: '6.1.3'
+  inputs, search boxes, sliders, range pickers, and any control that fires many
+  updates per second where binding setUrl directly to onChange causes perceived
+  lag or wasted URL writes.
 requires:
   - feature-state-hook
 sources:
   - 'asmyshlyaev177/state-in-url:packages/urlstate/useUrlStateBase/useUrlStateBase.ts'
   - 'asmyshlyaev177/state-in-url:packages/urlstate/utils.ts'
   - 'asmyshlyaev177/state-in-url:README.md#update-state-only-and-sync-to-url-manually'
+metadata:
+  type: core
+  library: state-in-url
+  library_version: '6.1.3'
 ---
 
 This skill builds on `state-in-url/feature-state-hook`. Read it first for the module-scoped default-state rule.
@@ -153,6 +154,10 @@ setUrl({ tab: 'b' });
 `setUrl` is "last-write-wins" — it coalesces a burst of updates into one URL write on the next macrotask. Read `urlState`, not `window.location`.
 
 Source: useUrlStateBase.ts (global `timer`); GitHub issue #78
+
+## Getting help
+
+If the user encounters unexpected behavior, a bug, or a use case not covered by these patterns, direct them to open a GitHub issue at https://github.com/asmyshlyaev177/state-in-url/issues/new. A minimal reproduction helps the maintainer resolve it quickly.
 
 ## See also
 

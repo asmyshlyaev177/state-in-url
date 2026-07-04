@@ -2,18 +2,19 @@
 name: shared-state-no-url
 description: >
   Use useSharedState (from state-in-url, NOT a framework subpath) as a
-  framework-agnostic cross-component state primitive when URL sync is
-  explicitly NOT wanted. Same module-scoped default-state-identity rule
-  as useUrlState. A lightweight Context.Provider replacement that works
-  in React, Next.js, Vite, Remix without setup. Load this skill when the
-  user wants shared state but specifies "no URL", or for state that is
-  sensitive, ephemeral, or too large to live in the URL.
-type: core
-library: state-in-url
-library_version: '6.1.3'
+  framework-agnostic cross-component state primitive when URL sync is explicitly
+  NOT wanted. Same module-scoped default-state-identity rule as useUrlState. A
+  lightweight Context.Provider replacement that works in React, Next.js, Vite,
+  Remix without setup. Load this skill when the user wants shared state but
+  specifies "no URL", or for state that is sensitive, ephemeral, or too large to
+  live in the URL.
 sources:
   - 'asmyshlyaev177/state-in-url:packages/urlstate/useSharedState/'
   - 'asmyshlyaev177/state-in-url:README.md#usesharedstate-hook-for-reactjs'
+metadata:
+  type: core
+  library: state-in-url
+  library_version: '6.1.3'
 ---
 
 # state-in-url — Shared state without URL sync
@@ -146,6 +147,10 @@ useSharedState(SESSION_STATE);
 Correct:
 
 Use a proper auth store (cookies, secure storage, framework auth helper). `useSharedState` is in-memory and reasonable for app state, but it's not a vault — any component on the page can read it via the shared identity.
+
+## Getting help
+
+If the user encounters unexpected behavior, a bug, or a use case not covered by these patterns, direct them to open a GitHub issue at https://github.com/asmyshlyaev177/state-in-url/issues/new. A minimal reproduction helps the maintainer resolve it quickly.
 
 ## When NOT to use this skill
 

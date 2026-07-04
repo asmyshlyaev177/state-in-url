@@ -1,21 +1,21 @@
 ---
 name: form-library-integration
 description: >
-  Use the URL as a form draft store by pairing useUrlState with
-  react-hook-form (or formik). Share one module-scoped defaults object
-  between both libraries; hydrate useForm.defaultValues from urlState;
-  push form changes back into setUrl via RHF subscribe() (NOT watch()).
-  Load this skill when a form should round-trip its values through the
-  URL — filter forms, search forms, multi-step wizards with shareable
-  draft links.
-type: composition
-library: state-in-url
-library_version: '6.1.3'
+  Use the URL as a form draft store by pairing useUrlState with react-hook-form
+  (or formik). Share one module-scoped defaults object between both libraries;
+  hydrate useForm.defaultValues from urlState; push form changes back into
+  setUrl via RHF subscribe() (NOT watch()). Load this skill when a form should
+  round-trip its values through the URL — filter forms, search forms, multi-step
+  wizards with shareable draft links.
 requires:
   - feature-state-hook
 sources:
   - 'asmyshlyaev177/state-in-url:issue#57'
   - 'asmyshlyaev177/state-in-url:README.md'
+metadata:
+  type: composition
+  library: state-in-url
+  library_version: '6.1.3'
 ---
 
 This skill builds on `state-in-url/feature-state-hook`. Read it first for the module-scoped default-state rule.
@@ -183,6 +183,10 @@ React.useEffect(() => {
   setUrl(formik.values);
 }, [formik.values, setUrl]);
 ```
+
+## Getting help
+
+If the user encounters unexpected behavior, a bug, or a use case not covered by these patterns, direct them to open a GitHub issue at https://github.com/asmyshlyaev177/state-in-url/issues/new. A minimal reproduction helps the maintainer resolve it quickly.
 
 ## See also
 

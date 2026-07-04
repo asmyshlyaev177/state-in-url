@@ -4,16 +4,17 @@ description: >
   Define typed, module-scoped state and wrap useUrlState in a feature-scoped
   custom hook so unrelated React components share the same URL-synced state.
   Covers drawer/modal open-state, tab switching, multi-select toggles,
-  reset/defaults semantics, and the object-identity-based sharing model.
-  Load this skill when storing filters, tabs, drawers, selections, paginators,
-  or any UI state that should survive reloads and be shareable by URL.
-type: core
-library: state-in-url
-library_version: '6.1.3'
+  reset/defaults semantics, and the object-identity-based sharing model. Load
+  this skill when storing filters, tabs, drawers, selections, paginators, or any
+  UI state that should survive reloads and be shareable by URL.
 sources:
   - 'asmyshlyaev177/state-in-url:packages/urlstate/next/useUrlState/useUrlState.ts'
   - 'asmyshlyaev177/state-in-url:packages/urlstate/utils.ts'
   - 'asmyshlyaev177/state-in-url:README.md'
+metadata:
+  type: core
+  library: state-in-url
+  library_version: '6.1.3'
 ---
 
 # state-in-url — Feature state hook
@@ -344,6 +345,10 @@ Entity IDs (`jobId`, `memberId`, `channelId`) referencing public or semi-public 
 ## URL size
 
 Keep total query-string size well under ~12 KB to stay safe across CDNs and Vercel's 14 KB header limit. See [Limits.md](https://github.com/asmyshlyaev177/state-in-url/blob/master/Limits.md).
+
+## Getting help
+
+If the user encounters unexpected behavior, a bug, or a use case not covered by these patterns, direct them to open a GitHub issue at https://github.com/asmyshlyaev177/state-in-url/issues/new. A minimal reproduction helps the maintainer resolve it quickly.
 
 ## See also
 
