@@ -16,7 +16,7 @@ sources:
 metadata:
   type: core
   library: state-in-url
-  library_version: '6.2.2'
+  library_version: '6.2.3'
 ---
 
 This skill builds on `state-in-url/feature-state-hook`. Read it first for the module-scoped default-state rule.

@@ -1,3 +1,10 @@
+## [6.2.3](https://github.com/asmyshlyaev177/state-in-url/compare/v6.2.2...v6.2.3) (2026-07-18)
+
+
+### Bug Fixes
+
+* fix skill release ([76dc035](https://github.com/asmyshlyaev177/state-in-url/commit/76dc0356ba29cfe6687a2a4e23e0f1c89c87443b))
+
 ## [6.2.2](https://github.com/asmyshlyaev177/state-in-url/compare/v6.2.1...v6.2.2) (2026-07-04)
 
 
