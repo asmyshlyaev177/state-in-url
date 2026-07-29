@@ -4,5 +4,6 @@
   "files.associations": {
     "*.css": "tailwindcss"
   },
-  "postman.settings.dotenv-detection-notification-visibility": false
+  "postman.settings.dotenv-detection-notification-visibility": false,
+  "js/ts.tsdk.path": "node_modules/typescript/lib"
 }
