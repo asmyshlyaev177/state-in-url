@@ -1,6 +1,7 @@
 import { type SoftwareApplication, type WithContext } from 'schema-dts';
 
 import packageJson from '../../../../package.json';
+import { CONTENT_LAST_MODIFIED } from './contentDate';
 import { vercelUrl } from './domain';
 import { type Metadata } from 'next';
 import { isProd } from 'consts';
@@ -8,37 +9,59 @@ import { isProd } from 'consts';
 export const jsonLd: WithContext<SoftwareApplication> = {
   '@context': 'https://schema.org',
   '@type': 'SoftwareApplication',
+  '@id': 'https://state-in-url.dev/#software',
   name: 'state-in-url',
   description:
     'NPM Library to store complex state objects in browser URL, while preserving types and structure, solution for deep links and URL state synchronization, for Next.JS 14-16 and React-router, hooks for pure React.',
-  accessibilityControl: 'textual',
-  accessMode: 'textual',
+  // `accessibilityControl` takes values from the "control" vocabulary
+  // (fullKeyboardControl / fullMouseControl / fullTouchControl); "textual" is
+  // an accessMode value and was rejected as an enum violation there.
+  accessibilityControl: ['fullKeyboardControl', 'fullMouseControl', 'fullTouchControl'],
+  accessMode: ['textual', 'visual'],
   author: {
     '@type': 'Person',
-    name: 'asmyshlyaev177',
+    '@id': 'https://asmyshlyaev177.dev/#person',
+    name: 'Aleksandr Smyshliaev',
+    alternateName: 'asmyshlyaev177',
     identifier: 'https://github.com/asmyshlyaev177',
     url: 'https://asmyshlyaev177.dev/',
   },
+  maintainer: { '@id': 'https://asmyshlyaev177.dev/#person' },
+  // `thumbnailUrl` has to resolve to an image. The old value pointed at
+  // GitHub's HTML *page* for the GIF (/blob/), which serves text/html.
   thumbnailUrl:
-    'https://github.com/asmyshlyaev177/state-in-url/blob/master/assets/Demo-gif.gif',
+    'https://raw.githubusercontent.com/asmyshlyaev177/state-in-url/master/assets/Demo-gif.gif',
   applicationCategory: 'DeveloperApplication',
-  downloadUrl: 'https://github.com/asmyshlyaev177/state-in-url',
+  applicationSubCategory: 'React state management library',
+  downloadUrl: 'https://www.npmjs.com/package/state-in-url',
   installUrl: 'https://www.npmjs.com/package/state-in-url',
+  codeRepository: 'https://github.com/asmyshlyaev177/state-in-url',
+  programmingLanguage: 'TypeScript',
   url: 'https://state-in-url.dev',
-  sameAs: 'https://state-in-url.netlify.app',
-  softwareRequirements: ['JavaScript', 'Web Browser', 'npm'],
-  license:
-    'https://raw.githubusercontent.com/asmyshlyaev177/state-in-url/master/LICENSE',
+  sameAs: [
+    'https://github.com/asmyshlyaev177/state-in-url',
+    'https://www.npmjs.com/package/state-in-url',
+    'https://state-in-url.netlify.app',
+  ],
+  softwareRequirements: ['React 18 or later', 'TypeScript moduleResolution: Bundler'],
+  license: 'https://opensource.org/licenses/MIT',
   softwareVersion: packageJson.version,
+  dateModified: CONTENT_LAST_MODIFIED.slice(0, 10),
   releaseNotes:
-    'https://raw.githubusercontent.com/asmyshlyaev177/state-in-url/master/CHANGELOG.md',
+    'https://github.com/asmyshlyaev177/state-in-url/blob/master/CHANGELOG.md',
+  softwareHelp: 'https://state-in-url.dev/llms.txt',
   discussionUrl: 'https://github.com/asmyshlyaev177/state-in-url/discussions',
   isAccessibleForFree: true,
-  accessibilityFeature: ['fullMouseControl', 'readingOrder', 'ARIA'],
+  accessibilityFeature: ['readingOrder', 'ARIA', 'structuralNavigation'],
   accessibilityHazard: 'none',
+  // Google's SoftwareApplication rules require `priceCurrency` alongside
+  // `price`, and `price` as a string. `{ price: 0 }` alone failed validation,
+  // which drops the whole node from rich-result eligibility.
   offers: {
     '@type': 'Offer',
-    'price': 0
+    price: '0',
+    priceCurrency: 'USD',
+    availability: 'https://schema.org/InStock',
   },
   operatingSystem: 'Web Browser',
   featureList: [
@@ -104,6 +127,38 @@ export const metadata = {
   },
 
   alternates: {
+    // Homepage only. /react-router and /remix set their own — see
+    // `pageMetadata` below. Inheriting this one made both of them declare the
+    // homepage as canonical, which asks Google to drop them from the index
+    // while the sitemap still lists them.
     canonical: vercelUrl,
   },
 } as Metadata;
+
+/**
+ * Per-page title, description, and canonical URL for the router-variant demos.
+ *
+ * Without this they inherit the root layout's metadata verbatim: the same
+ * title, the same description, and a canonical pointing at the homepage. Three
+ * URLs claiming to be one page is a duplicate-content signal, and the canonical
+ * actively asks search engines to index only `/`.
+ */
+export function pageMetadata({
+  path,
+  title,
+  description,
+}: {
+  path: string;
+  title: string;
+  description: string;
+}): Metadata {
+  const url = `${vercelUrl}${path}`;
+
+  return {
+    title,
+    description,
+    alternates: { canonical: url },
+    openGraph: { ...metadata.openGraph, url, title, description },
+    twitter: { ...metadata.twitter, title, description },
+  };
+}

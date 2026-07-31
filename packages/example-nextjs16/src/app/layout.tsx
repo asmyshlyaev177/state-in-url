@@ -3,6 +3,7 @@ import localFont from 'next/font/local';
 import { GoogleAnalytics } from '@next/third-parties/google'
 
 import { metadata as _metadata, jsonLd } from './seoStuff';
+import { CONTENT_LAST_MODIFIED } from './contentDate';
 import { isVercel, siteUrl } from './domain';
 import { isProd } from '../../../../consts'
 
@@ -52,6 +53,8 @@ export default function RootLayout({
 
         <link rel="alternate" type="text/markdown" href={`${siteUrl}/llms.txt`} title="LLM-friendly version" />
         <meta name="llms-txt" content={`${siteUrl}/llms.txt`} />
+        <meta name="last-modified" content={CONTENT_LAST_MODIFIED} />
+        <link rel="sitemap" type="application/xml" href={`${siteUrl}/sitemap.xml`} />
       </head>
       <body className={`${archivo.variable} ${dmSans.variable} ${geistMono.variable} font-sans`}>
         {children}

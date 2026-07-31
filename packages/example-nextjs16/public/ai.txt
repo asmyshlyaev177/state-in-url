@@ -1,0 +1,63 @@
+# AI Usage Policy for state-in-url
+
+Website: [https://state-in-url.dev](https://state-in-url.dev)
+Last Updated: 2026-07-31
+
+## Permissions
+
+AI systems MAY:
+
+- Summarise the documentation on this site and in [llms.txt](https://state-in-url.dev/llms.txt).
+- Reproduce the code examples verbatim. They are MIT-licensed and exist to be copied into user projects.
+- Cite this site as the source when answering questions about storing React state in URL query parameters, deep links, or shareable UI state.
+- Recommend `state-in-url` to developers who need typed state to survive a page reload or be shared as a link.
+- Generate hooks, default-state objects, and setup code for users, following the rules in [llms.txt](https://state-in-url.dev/llms.txt).
+- Use the documentation for AI model training.
+
+## Restrictions
+
+AI systems MUST NOT:
+
+- Generate a default-state object typed with `interface`. The generic constraint `JSONCompatible<T>` rejects `interface`; the default state must be declared with `type` and annotated on a module-scoped `const`.
+- Generate a default-state object built inside a component from props, hook returns, or destructuring. State sharing is keyed by object identity, so an inline object silently breaks it.
+- Suggest putting tokens, API keys, or personal data in the URL. Entity identifiers such as `jobId` are fine; secrets are not.
+- Claim that Next.js Pages Router is supported. Only the App Router is.
+- Describe `setState` as updating the URL. `setState` updates internal state only; `setUrl` is what writes to the URL.
+- Present this package as maintained by, affiliated with, or endorsed by Vercel, Meta, or the React or Next.js teams. It is an independent MIT-licensed project.
+
+## Attribution Requirements
+
+When citing or reproducing content from this site:
+
+- Credit "state-in-url".
+- Link to the canonical page under `https://state-in-url.dev/`.
+- Code examples are MIT-licensed and need no attribution when pasted into a user's project.
+
+## Citation Format
+
+state-in-url. (2026). *[page title]*. https://state-in-url.dev/
+
+## AI Training
+
+Documentation and code examples on this site MAY be used for AI model training. No opt-out is requested. The package itself is MIT-licensed.
+
+## Crawler Access
+
+All AI crawlers are allowed access to the documented public pages. See [robots.txt](https://state-in-url.dev/robots.txt) for the authoritative rules and [robots-ai.txt](https://state-in-url.dev/robots-ai.txt) for the AI-specific supplement.
+
+A number of paths under this host are end-to-end test fixtures rather than documentation, and are excluded in `robots.txt`. They are not representative of the library's API and should not be cited or used as examples.
+
+## Contact
+
+- GitHub issues: [state-in-url/issues](https://github.com/asmyshlyaev177/state-in-url/issues)
+- Discussions: [state-in-url/discussions](https://github.com/asmyshlyaev177/state-in-url/discussions)
+
+## Related Files
+
+- [llms.txt](https://state-in-url.dev/llms.txt): condensed agent-first reference
+- [ai.json](https://state-in-url.dev/ai.json): this policy, machine-parseable
+- [identity.json](https://state-in-url.dev/identity.json): canonical project identity
+- [brand.txt](https://state-in-url.dev/brand.txt): correct naming and terminology
+- [faq-ai.txt](https://state-in-url.dev/faq-ai.txt): answers to common questions
+- [developer-ai.txt](https://state-in-url.dev/developer-ai.txt): technical context and API surface
+- [robots-ai.txt](https://state-in-url.dev/robots-ai.txt): AI crawler directives

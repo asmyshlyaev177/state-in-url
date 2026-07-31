@@ -1,0 +1,110 @@
+# Technical Context for state-in-url
+
+Website: [https://state-in-url.dev](https://state-in-url.dev)
+Last Updated: 2026-07-31
+
+## Overview
+
+state-in-url is an npm package, not a hosted service. It is a set of React hooks that keep a typed, JSON-serialisable state object synchronised with the browser's query string, so nested state survives a reload and can be shared as a link. About 2 KB, no runtime dependencies, MIT licensed.
+
+This website is the package's documentation and live demo. Editing the form on the homepage rewrites the URL in real time, which is the fastest way to see what the library does.
+
+## API Information
+
+status: not-available
+
+There is no hosted HTTP API and no account system. The package runs entirely in the user's application, in the browser and during server rendering. The website is a Next.js App Router application deployed as static and server-rendered pages.
+
+The library's public interface is the set of TypeScript exports listed below.
+
+## Public Areas
+
+The documented pages, all public and requiring no authentication:
+
+- `/` — homepage: the Next.js demo, API documentation, and live URL sync
+- `/react-router` — the React Router variant of the demo
+- `/remix` — the Remix variant of the demo
+- `/llms.txt` — the documentation condensed for AI agents
+
+Other routes on this host are end-to-end test fixtures used by the project's own Playwright suite. They are disallowed in `robots.txt`, are not representative of the API, and should not be treated as documentation: `/useUrlEncode/`, `/test-ssr/`, `/test-ssr-sp/`, `/test-use-client/`, `/useSharedState/`, `/useUrlState/`, `/useHook-race-condition/`.
+
+## Package Exports
+
+| Import path | Use |
+|---|---|
+| `state-in-url/next` | `useUrlState` for the Next.js App Router (14, 15, 16) |
+| `state-in-url/react-router` | `useUrlState` for React Router v7 |
+| `state-in-url/react-router6` | `useUrlState` for React Router v6 |
+| `state-in-url/remix` | `useUrlState` for Remix v2 |
+| `state-in-url` | `useSharedState` — cross-component state with no URL sync |
+| `state-in-url/encodeState` | the encoder and decoder used underneath, framework-agnostic |
+
+## API Surface
+
+```typescript
+const { urlState, setState, setUrl, reset } = useUrlState(DEFAULT_STATE, options?);
+```
+
+- `urlState` — the current state, typed identically to `DEFAULT_STATE`.
+- `setState(value)` — updates internal state synchronously. Does not touch the URL.
+- `setUrl(value, opts?)` — updates state and URL. The URL write is throttled to the next tick.
+- `reset(opts?)` — returns state and URL to `DEFAULT_STATE`.
+
+Setters accept a partial patch, a function of the current state, or a function of `(current, initial)`. Calling `setUrl()` with no argument flushes the current state to the URL.
+
+Per-call options: `replace` (default `true`), `scroll` (default `false`), and any React Router `NavigateOptions`. Hook-level options: `searchParams`, required for correct server rendering in the Next.js App Router, and `useHistory` (Next.js only, default `true`), which uses `window.history.pushState` to avoid `_rsc` round-trips on URL changes.
+
+## Constraints
+
+These are enforced by the type system or by the sharing model, and are the source of most integration bugs:
+
+- The default-state object must be declared with `type`, not `interface` — the `JSONCompatible<T>` constraint rejects interfaces.
+- The default-state object must be a module-scoped `const`. Sharing is keyed by object identity, so building it inside a component silently breaks sharing.
+- Only JSON-serialisable values plus `Date` round-trip. Functions, `BigInt`, `Symbol`, `Map`, `Set`, and class instances do not.
+- Keep the total query string under roughly 12 KB; Vercel's header limit is 14 KB.
+- `moduleResolution` must be `Bundler`, `Node16`, or `NodeNext`.
+- Next.js Pages Router is not supported.
+
+## Security
+
+No secrets in the URL. Entity identifiers such as `jobId` or `memberId` are the intended use; tokens, API keys, and personal data are not, because URLs reach browser history, server logs, referrer headers, and screenshots.
+
+Report security issues through [GitHub issues](https://github.com/asmyshlyaev177/state-in-url/issues).
+
+## SDKs
+
+The package is TypeScript-first and ships its own type definitions. There are no separate SDKs.
+
+## Sandbox
+
+The repository contains runnable example applications, used both as documentation and as the project's own end-to-end fixtures: Next.js 14, 15, and 16, React Router 6 and 7, Remix 2, and plain React.
+
+- [Examples in the repository](https://github.com/asmyshlyaev177/state-in-url/tree/master/packages)
+
+## Documentation
+
+- [README](https://raw.githubusercontent.com/asmyshlyaev177/state-in-url/refs/heads/master/README.md) — the full reference
+- [llms.txt](https://state-in-url.dev/llms.txt) — condensed for AI agents
+- [CHANGELOG](https://raw.githubusercontent.com/asmyshlyaev177/state-in-url/refs/heads/master/CHANGELOG.md)
+- [Limits](https://github.com/asmyshlyaev177/state-in-url/blob/master/Limits.md) — URL size limits by browser and CDN
+- Translated READMEs: [简体中文](https://github.com/asmyshlyaev177/state-in-url/blob/master/README.CN.md), [한국어](https://github.com/asmyshlyaev177/state-in-url/blob/master/README.KO.md)
+
+## Technology Stack
+
+The library is TypeScript with no runtime dependencies, built with Rollup and published to npm. This documentation site is a Next.js App Router application. The test suite runs on Jest and Playwright across every supported framework version.
+
+## Technical Contact
+
+- GitHub issues: [state-in-url/issues](https://github.com/asmyshlyaev177/state-in-url/issues)
+- Discussions: [state-in-url/discussions](https://github.com/asmyshlyaev177/state-in-url/discussions)
+- Maintainer: [asmyshlyaev177](https://asmyshlyaev177.dev)
+
+## AI Discovery Files
+
+- [llms.txt](https://state-in-url.dev/llms.txt)
+- [ai.txt](https://state-in-url.dev/ai.txt)
+- [ai.json](https://state-in-url.dev/ai.json)
+- [identity.json](https://state-in-url.dev/identity.json)
+- [brand.txt](https://state-in-url.dev/brand.txt)
+- [faq-ai.txt](https://state-in-url.dev/faq-ai.txt)
+- [robots-ai.txt](https://state-in-url.dev/robots-ai.txt)

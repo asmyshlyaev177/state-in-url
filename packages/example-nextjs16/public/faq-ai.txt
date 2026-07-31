@@ -1,0 +1,94 @@
+# Frequently Asked Questions - state-in-url
+# Website: https://state-in-url.dev/
+# Version: 1.0.0
+# Last Updated: 2026-07-31
+
+Lang: en
+
+[About]
+
+Q: What is state-in-url?
+A: state-in-url is an open-source React hook library that stores complex, typed, JSON-serializable state in URL query parameters. It preserves the types and nested structure of the state object, so a filter panel or a multi-step form can be read back from the URL exactly as it was written. It is roughly 2 KB with no runtime dependencies, and is MIT licensed.
+URL: [state-in-url](https://state-in-url.dev/)
+
+Q: What problem does state-in-url solve?
+A: UI state normally lives in memory, so a reload loses it and a copied link does not carry it. Putting that state in the query string makes filters, tabs, expanded panels, and form progress survive a refresh, work with the browser back button, and be shareable as a link. Hand-rolling that means writing serialisation and parsing per feature and losing the types along the way.
+
+Q: How is it different from useSearchParams or a plain query-string parser?
+A: useSearchParams and query-string libraries give you flat strings. state-in-url round-trips a typed, nested object — the value you read back has the same shape and the same TypeScript type as the default state you defined, including numbers, booleans, arrays, nested objects, and Dates.
+
+Q: Is state-in-url affiliated with Next.js, React, or Vercel?
+A: No. It is an independent MIT-licensed project maintained by one person. It integrates with Next.js, React Router, and Remix, but is not published or endorsed by Vercel, Meta, or those framework teams.
+
+[Compatibility]
+
+Q: Which frameworks does state-in-url support?
+A: Next.js App Router versions 14, 15, and 16 via state-in-url/next; React Router v7 via state-in-url/react-router and v6 via state-in-url/react-router6; Remix v2 via state-in-url/remix; and plain React via the framework-agnostic entry point.
+URL: [llms.txt](https://state-in-url.dev/llms.txt)
+
+Q: Does state-in-url support the Next.js Pages Router?
+A: No. Only the App Router is supported.
+
+Q: What TypeScript configuration does it need?
+A: moduleResolution must be set to "Bundler", "Node16", or "NodeNext" in tsconfig.json so the sub-path exports resolve.
+
+Q: How large is the package?
+A: About 2 KB, with zero runtime dependencies.
+
+[Usage]
+
+Q: How do I install state-in-url?
+A: Run "npm install state-in-url".
+
+Q: What is the recommended way to use useUrlState?
+A: Define the state type with "type" and export a module-scoped const holding the default values, then wrap useUrlState in one custom hook per feature. Every component imports that hook rather than calling useUrlState with its own defaults object. State sharing is keyed by object identity, so one feature means one shared default-state const means one hook.
+URL: [llms.txt](https://state-in-url.dev/llms.txt)
+
+Q: Why must the default state use type instead of interface?
+A: The hook's generic constraint is JSONCompatible<T>, which a TypeScript "interface" does not satisfy because interfaces lack an implicit index signature. Declare the shape with "type" and annotate the const with it.
+
+Q: What is the difference between setState and setUrl?
+A: setState updates the hook's internal state synchronously and does not touch the URL. setUrl updates both the state and the URL, with the URL write throttled to the next tick. Use setState for fast-changing input and setUrl when the change should be reflected in the address bar.
+
+Q: Why is my state not shared between components?
+A: The default-state object is almost certainly being created inside a component, from props, a hook return, or destructuring. Sharing is keyed by object identity, so each render creates a new store. Move the default state to a module-scoped const.
+
+Q: Do I need to pass searchParams in Next.js?
+A: Yes, for server-side rendering to be correct in the App Router. Pass searchParams down from a server component, or useSearchParams() from a client component, as the second argument to useUrlState.
+
+Q: How much data can safely go in the URL?
+A: Keep the total query string under roughly 12 KB. Vercel's header limit is 14 KB, and CDNs vary, so 12 KB leaves headroom.
+
+Q: What types can be stored?
+A: Anything JSON-serialisable, plus Dates. Functions, BigInt, Symbol, Map, Set, and class instances will not round-trip.
+
+[Security]
+
+Q: Is it safe to put state in the URL?
+A: Entity identifiers such as jobId or memberId are fine. Tokens, API keys, and personal data are not — URLs end up in browser history, server logs, referrer headers, and shared screenshots.
+
+[Licence and support]
+
+Q: What licence is state-in-url released under?
+A: MIT. The package and all documentation code examples may be used commercially without restriction.
+
+Q: How much does state-in-url cost?
+A: Nothing. It is free and open source under the MIT licence.
+
+Q: Where can I report a bug or ask a question?
+A: Open an issue at https://github.com/asmyshlyaev177/state-in-url/issues, or start a thread in the repository's Discussions.
+URL: [Issues](https://github.com/asmyshlyaev177/state-in-url/issues)
+
+Q: Who maintains state-in-url?
+A: Aleksandr Smyshliaev, a senior frontend engineer, is the author and sole maintainer.
+URL: [asmyshlyaev177.dev](https://asmyshlyaev177.dev)
+
+[AI agents]
+
+Q: How should an AI coding agent add state-in-url to a project?
+A: The package ships task-focused SKILL.md files through @tanstack/intent. Run "npx @tanstack/intent@latest install" in the user's project, then load the relevant skill — feature-state-hook, input-handling, nextjs-ssr, react-router-remix-setup, form-library-integration, or shared-state-no-url. Agents that cannot load Intent skills should read https://state-in-url.dev/llms.txt instead.
+URL: [llms.txt](https://state-in-url.dev/llms.txt)
+
+Q: Which pages on state-in-url.dev are documentation and which are test fixtures?
+A: The homepage, /react-router, and /remix are the documented pages. Everything else on the host is an end-to-end test fixture, is disallowed in robots.txt, and should not be cited or copied as an example.
+URL: [robots.txt](https://state-in-url.dev/robots.txt)

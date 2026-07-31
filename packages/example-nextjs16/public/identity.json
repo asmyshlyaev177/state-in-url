@@ -1,0 +1,40 @@
+{
+  "$schema": "https://www.ai-visibility.org.uk/specifications/identity-json/v1/identity-json.schema.json",
+  "language": "en",
+  "name": "state-in-url",
+  "type": "Organization",
+  "url": "https://state-in-url.dev",
+  "description": "state-in-url is an open-source React hook library that stores complex, typed, JSON-serializable state in URL query parameters, so filters, multi-step forms, and expanded panels survive a page reload and can be shared as a link. It is roughly 2 KB with no runtime dependencies, preserves the types and nested structure of the state object, and supports the Next.js App Router (14, 15, 16), React Router 6 and 7, Remix 2, and plain React. MIT licensed, maintained by Aleksandr Smyshliaev.",
+  "alternateName": ["useUrlState"],
+  "areaServed": [
+    {
+      "type": "Global",
+      "name": "Worldwide",
+      "code": "001"
+    }
+  ],
+  "contactPoints": [
+    {
+      "type": "support",
+      "url": "https://github.com/asmyshlyaev177/state-in-url/issues"
+    },
+    {
+      "type": "community",
+      "url": "https://github.com/asmyshlyaev177/state-in-url/discussions"
+    }
+  ],
+  "sameAs": [
+    "https://github.com/asmyshlyaev177/state-in-url",
+    "https://www.npmjs.com/package/state-in-url",
+    "https://state-in-url.netlify.app"
+  ],
+  "founder": {
+    "name": "Aleksandr Smyshliaev",
+    "jobTitle": "Author and maintainer",
+    "url": "https://asmyshlyaev177.dev"
+  },
+  "metadata": {
+    "version": "1.0.0",
+    "lastUpdated": "2026-07-31"
+  }
+}

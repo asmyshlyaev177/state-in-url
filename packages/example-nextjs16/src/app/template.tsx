@@ -3,6 +3,7 @@ import React from 'react';
 
 import './styles.css';
 
+import { CONTENT_LAST_MODIFIED } from './contentDate';
 import { Logo } from './components/Logo';
 import { ForHireBadge } from './components/ForHireBadge';
 import { GithubLink } from './components/GithubLink';
@@ -65,7 +66,7 @@ export default async function Template({
         {children}
       </div>
 
-      <Footer />
+      <Footer lastModified={CONTENT_LAST_MODIFIED} />
       <ForHireBadge />
     </main>
   );

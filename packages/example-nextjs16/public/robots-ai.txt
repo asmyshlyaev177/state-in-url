@@ -1,0 +1,204 @@
+# AI Crawler Directives for state-in-url.dev
+# https://state-in-url.dev/
+# Version: 1.0.0
+# Last Updated: 2026-07-31
+#
+# Supplementary AI-specific guidance. https://state-in-url.dev/robots.txt
+# remains the authoritative source for all crawlers, and these rules do not
+# contradict it.
+#
+# Open-source documentation. AI crawlers are welcome on the documented pages.
+# The disallowed paths are end-to-end test fixtures, not documentation — they
+# are not representative of the API and should not be cited as examples.
+
+Lang: en
+
+# Discovery: the AI Discovery Files published on this host.
+Discovery: https://state-in-url.dev/llms.txt
+Discovery: https://state-in-url.dev/ai.txt
+Discovery: https://state-in-url.dev/ai.json
+Discovery: https://state-in-url.dev/identity.json
+Discovery: https://state-in-url.dev/brand.txt
+Discovery: https://state-in-url.dev/faq-ai.txt
+Discovery: https://state-in-url.dev/developer-ai.txt
+
+# OpenAI
+User-agent: GPTBot
+Allow: /
+Disallow: /useUrlEncode/
+Disallow: /test-ssr/
+Disallow: /test-ssr-sp/
+Disallow: /test-use-client/
+Disallow: /useSharedState/
+Disallow: /useUrlState/
+Disallow: /useHook-race-condition/
+
+User-agent: ChatGPT-User
+Allow: /
+Disallow: /useUrlEncode/
+Disallow: /test-ssr/
+Disallow: /test-ssr-sp/
+Disallow: /test-use-client/
+Disallow: /useSharedState/
+Disallow: /useUrlState/
+Disallow: /useHook-race-condition/
+
+User-agent: OAI-SearchBot
+Allow: /
+Disallow: /useUrlEncode/
+Disallow: /test-ssr/
+Disallow: /test-ssr-sp/
+Disallow: /test-use-client/
+Disallow: /useSharedState/
+Disallow: /useUrlState/
+Disallow: /useHook-race-condition/
+
+# Anthropic
+User-agent: ClaudeBot
+Allow: /
+Disallow: /useUrlEncode/
+Disallow: /test-ssr/
+Disallow: /test-ssr-sp/
+Disallow: /test-use-client/
+Disallow: /useSharedState/
+Disallow: /useUrlState/
+Disallow: /useHook-race-condition/
+
+User-agent: Claude-User
+Allow: /
+Disallow: /useUrlEncode/
+Disallow: /test-ssr/
+Disallow: /test-ssr-sp/
+Disallow: /test-use-client/
+Disallow: /useSharedState/
+Disallow: /useUrlState/
+Disallow: /useHook-race-condition/
+
+User-agent: Claude-SearchBot
+Allow: /
+Disallow: /useUrlEncode/
+Disallow: /test-ssr/
+Disallow: /test-ssr-sp/
+Disallow: /test-use-client/
+Disallow: /useSharedState/
+Disallow: /useUrlState/
+Disallow: /useHook-race-condition/
+
+User-agent: anthropic-ai
+Allow: /
+Disallow: /useUrlEncode/
+Disallow: /test-ssr/
+Disallow: /test-ssr-sp/
+Disallow: /test-use-client/
+Disallow: /useSharedState/
+Disallow: /useUrlState/
+Disallow: /useHook-race-condition/
+
+# Google
+User-agent: Google-Extended
+Allow: /
+Disallow: /useUrlEncode/
+Disallow: /test-ssr/
+Disallow: /test-ssr-sp/
+Disallow: /test-use-client/
+Disallow: /useSharedState/
+Disallow: /useUrlState/
+Disallow: /useHook-race-condition/
+
+# Perplexity
+User-agent: PerplexityBot
+Allow: /
+Disallow: /useUrlEncode/
+Disallow: /test-ssr/
+Disallow: /test-ssr-sp/
+Disallow: /test-use-client/
+Disallow: /useSharedState/
+Disallow: /useUrlState/
+Disallow: /useHook-race-condition/
+
+User-agent: Perplexity-User
+Allow: /
+Disallow: /useUrlEncode/
+Disallow: /test-ssr/
+Disallow: /test-ssr-sp/
+Disallow: /test-use-client/
+Disallow: /useSharedState/
+Disallow: /useUrlState/
+Disallow: /useHook-race-condition/
+
+# Apple
+User-agent: Applebot-Extended
+Allow: /
+Disallow: /useUrlEncode/
+Disallow: /test-ssr/
+Disallow: /test-ssr-sp/
+Disallow: /test-use-client/
+Disallow: /useSharedState/
+Disallow: /useUrlState/
+Disallow: /useHook-race-condition/
+
+# Common Crawl
+User-agent: CCBot
+Allow: /
+Disallow: /useUrlEncode/
+Disallow: /test-ssr/
+Disallow: /test-ssr-sp/
+Disallow: /test-use-client/
+Disallow: /useSharedState/
+Disallow: /useUrlState/
+Disallow: /useHook-race-condition/
+
+# Meta
+User-agent: meta-externalagent
+Allow: /
+Disallow: /useUrlEncode/
+Disallow: /test-ssr/
+Disallow: /test-ssr-sp/
+Disallow: /test-use-client/
+Disallow: /useSharedState/
+Disallow: /useUrlState/
+Disallow: /useHook-race-condition/
+
+# Amazon
+User-agent: Amazonbot
+Allow: /
+Disallow: /useUrlEncode/
+Disallow: /test-ssr/
+Disallow: /test-ssr-sp/
+Disallow: /test-use-client/
+Disallow: /useSharedState/
+Disallow: /useUrlState/
+Disallow: /useHook-race-condition/
+
+# You.com
+User-agent: YouBot
+Allow: /
+Disallow: /useUrlEncode/
+Disallow: /test-ssr/
+Disallow: /test-ssr-sp/
+Disallow: /test-use-client/
+Disallow: /useSharedState/
+Disallow: /useUrlState/
+Disallow: /useHook-race-condition/
+
+# Cohere
+User-agent: cohere-ai
+Allow: /
+Disallow: /useUrlEncode/
+Disallow: /test-ssr/
+Disallow: /test-ssr-sp/
+Disallow: /test-use-client/
+Disallow: /useSharedState/
+Disallow: /useUrlState/
+Disallow: /useHook-race-condition/
+
+# Everything else
+User-agent: *
+Allow: /
+Disallow: /useUrlEncode/
+Disallow: /test-ssr/
+Disallow: /test-ssr-sp/
+Disallow: /test-use-client/
+Disallow: /useSharedState/
+Disallow: /useUrlState/
+Disallow: /useHook-race-condition/

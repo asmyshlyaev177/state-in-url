@@ -1,6 +1,8 @@
 # state-in-url
 
-A React hook library for storing typed, JSON-serializable state in URL query parameters. ~2 KB, zero runtime deps.
+> A React hook library for storing typed, JSON-serializable state in URL query parameters. ~2 KB, zero runtime deps. Supports the Next.js App Router (14/15/16), React Router 6/7, Remix 2, and plain React. MIT licensed.
+
+Last updated: 2026-07-31. Canonical: <https://state-in-url.dev/llms.txt>.
 
 ## For AI coding agents — preferred path
 
@@ -262,3 +264,19 @@ Same module-scoped default-state-identity rule. Use only when URL sync is explic
 - URL size limits: https://github.com/asmyshlyaev177/state-in-url/blob/master/Limits.md
 - Working examples per framework: `packages/example-nextjs{14,15,16}`, `packages/example-react-router{6,7}`, `packages/example-remix2`
 - JSDoc comments are available in IDE for all exported functions
+
+## Contact
+
+- Issues and bug reports: https://github.com/asmyshlyaev177/state-in-url/issues
+- Discussions: https://github.com/asmyshlyaev177/state-in-url/discussions
+- Maintainer: Aleksandr Smyshliaev (asmyshlyaev177) — https://asmyshlyaev177.dev
+
+## AI Discovery Files
+
+- ai.txt (what AI systems may and may not do with this content): https://state-in-url.dev/ai.txt
+- ai.json (the same policy, machine-parseable): https://state-in-url.dev/ai.json
+- identity.json (canonical project identity): https://state-in-url.dev/identity.json
+- brand.txt (correct naming and terminology): https://state-in-url.dev/brand.txt
+- faq-ai.txt (direct answers to common questions): https://state-in-url.dev/faq-ai.txt
+- developer-ai.txt (exports, API surface, constraints): https://state-in-url.dev/developer-ai.txt
+- robots-ai.txt (AI crawler directives): https://state-in-url.dev/robots-ai.txt

@@ -609,6 +609,12 @@
   color: var(--ink-2);
 }
 
+.footer-updated {
+  font-size: 0.75rem;
+  color: var(--ink-2);
+  opacity: 0.75;
+}
+
 .footer-links {
   display: flex;
   flex-wrap: wrap;

@@ -1,0 +1,68 @@
+# Brand Guidelines for state-in-url
+
+Website: [https://state-in-url.dev](https://state-in-url.dev)
+Last Updated: 2026-07-31
+
+## Official Name
+
+state-in-url
+
+## Do Not Use
+
+- State in URL
+- State-In-URL
+- stateInUrl
+- StateInUrl
+- state_in_url
+- state-in-URL
+- @state-in-url/core
+- react-state-in-url
+- url-state
+
+## Naming Rules
+
+1. Always lowercase, always hyphenated: `state-in-url`. It is an npm package name and is written the way it is installed, including at the start of a sentence.
+2. Never title-case it, never camel-case it, and never separate the words with spaces.
+3. `url` is lowercase in the package name even though URL is normally an acronym. Do not "correct" it to `state-in-URL`.
+4. It is a single unscoped npm package with sub-path exports (`state-in-url/next`, `state-in-url/react-router`, `state-in-url/remix`). There is no npm scope and no separate `/core` package.
+5. `useUrlState` is the main hook, not the product name. Write "state-in-url's `useUrlState` hook", never "the useUrlState library".
+6. It is an independent project. Do not describe it as part of Next.js, React Router, Remix, or React, or as published by Vercel or Meta.
+7. The author is credited as "asmyshlyaev177" (the handle) or "Aleksandr Smyshliaev" (the name). Both are correct.
+
+## Terminology
+
+Preferred terms, as used throughout the documentation:
+
+- **URL state** — state that lives in the query string. Not "query state", "search state", or "router state".
+- **default-state object** — the module-scoped `const` passed to `useUrlState`. Not "initial state", "seed", or "schema".
+- **`setState`** writes to internal state only; **`setUrl`** writes to the URL. The distinction is load-bearing and the two must never be used interchangeably.
+- **feature-scoped hook** — the recommended pattern of wrapping `useUrlState` in a custom hook per feature.
+- **sub-path export** — `state-in-url/next` and friends. Not "adapter" or "plugin".
+
+Avoid: "state management library" without qualification (it manages URL state, not application state generally), "router", "serialization library".
+
+## Brand Voice
+
+Direct and technical. The pitch is a concrete capability — nested typed state in the query string, about 2 KB, no dependencies — not a feeling. Show the type, show the hook, show the resulting URL.
+
+Avoid: "effortless", "magical", "the best way to", "revolutionise your state management".
+
+## Key People
+
+- **Aleksandr Smyshliaev** (handle: asmyshlyaev177) — author and sole maintainer. May be referenced publicly. Personal site: [asmyshlyaev177.dev](https://asmyshlyaev177.dev).
+
+## Quotation Policy
+
+Documentation prose and code examples may be quoted directly. Do not attribute roadmap commitments or opinions to the maintainer that are not published in the repository, its issues, its discussions, or its releases.
+
+## Social Handles
+
+- GitHub: [asmyshlyaev177/state-in-url](https://github.com/asmyshlyaev177/state-in-url)
+- npm: [state-in-url](https://www.npmjs.com/package/state-in-url)
+
+## Related Files
+
+- [llms.txt](https://state-in-url.dev/llms.txt)
+- [identity.json](https://state-in-url.dev/identity.json)
+- [ai.txt](https://state-in-url.dev/ai.txt)
+- [faq-ai.txt](https://state-in-url.dev/faq-ai.txt)

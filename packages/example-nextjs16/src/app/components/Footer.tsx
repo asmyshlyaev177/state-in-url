@@ -1,11 +1,23 @@
 import { siteUrl } from "../domain";
 
-export const Footer = () => (
+export const Footer = ({ lastModified }: { lastModified: string }) => (
   <footer className="site-footer">
     <div className="footer-inner">
       <div className="footer-id">
         <span className="footer-mark">state-in-url</span>
         <span className="footer-tag">typed state, living in the URL</span>
+        <span className="footer-updated">
+          {/* One interpolated string, not text + {expression}: React SSR splits
+              adjacent text nodes with an HTML comment, which left the year in a
+              separate node from the label and made the date unreadable to
+              anything parsing the markup rather than the DOM. */}
+          {`Updated ${new Date(lastModified).toLocaleDateString("en-GB", {
+            day: "numeric",
+            month: "long",
+            year: "numeric",
+            timeZone: "UTC",
+          })}`}
+        </span>
       </div>
 
       <nav className="footer-links" aria-label="Footer">
@@ -41,7 +53,7 @@ export const Footer = () => (
         rel="noopener"
         className="footer-author"
       >
-        © asmyshlyaev177 {new Date().getFullYear()}
+        {`© ${new Date(lastModified).getUTCFullYear()} asmyshlyaev177`}
       </a>
     </div>
   </footer>
