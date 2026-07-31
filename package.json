@@ -8,9 +8,9 @@
     "url": "git+https://github.com/asmyshlyaev177/state-in-url.git"
   },
   "author": {
-    "name": "asmyshlyaev177",
+    "name": "Aleksandr Smyshliaev",
     "email": "asmyshlyaev177@gmail.com",
-    "url": "https://www.linkedin.com/in/asmyshlyaev177/"
+    "url": "https://asmyshlyaev177.dev"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org/",
