@@ -1,3 +1,10 @@
+## [6.2.4](https://github.com/asmyshlyaev177/state-in-url/compare/v6.2.3...v6.2.4) (2026-07-31)
+
+
+### Bug Fixes
+
+* hire badge ([a8048c4](https://github.com/asmyshlyaev177/state-in-url/commit/a8048c45ce5c09fe89ca458633418083e4a65cb6))
+
 ## [6.2.3](https://github.com/asmyshlyaev177/state-in-url/compare/v6.2.2...v6.2.3) (2026-07-18)
 
 
