@@ -35,8 +35,17 @@ export const jsonLd: WithContext<SoftwareApplication> = {
   applicationSubCategory: 'React state management library',
   downloadUrl: 'https://www.npmjs.com/package/state-in-url',
   installUrl: 'https://www.npmjs.com/package/state-in-url',
-  codeRepository: 'https://github.com/asmyshlyaev177/state-in-url',
-  programmingLanguage: 'TypeScript',
+  // `codeRepository` and `programmingLanguage` are SoftwareSourceCode
+  // properties, not SoftwareApplication ones, and sat here invalid until the
+  // `softwareHelp` fix below stopped masking them. The source is a work in its
+  // own right, so it becomes a node the application is based on — which keeps
+  // both facts instead of dropping them to satisfy the type.
+  isBasedOn: {
+    '@type': 'SoftwareSourceCode',
+    name: 'state-in-url source',
+    codeRepository: 'https://github.com/asmyshlyaev177/state-in-url',
+    programmingLanguage: 'TypeScript',
+  },
   url: 'https://state-in-url.dev',
   sameAs: [
     'https://github.com/asmyshlyaev177/state-in-url',
@@ -49,7 +58,14 @@ export const jsonLd: WithContext<SoftwareApplication> = {
   dateModified: CONTENT_LAST_MODIFIED.slice(0, 10),
   releaseNotes:
     'https://github.com/asmyshlyaev177/state-in-url/blob/master/CHANGELOG.md',
-  softwareHelp: 'https://state-in-url.dev/llms.txt',
+  // `softwareHelp` expects a CreativeWork, not a URL — a bare string is
+  // rejected by schema.org and by schema-dts. The documentation is a work in
+  // its own right, so it gets a node rather than being flattened to a link.
+  softwareHelp: {
+    '@type': 'CreativeWork',
+    name: 'state-in-url documentation',
+    url: 'https://state-in-url.dev/llms.txt',
+  },
   discussionUrl: 'https://github.com/asmyshlyaev177/state-in-url/discussions',
   isAccessibleForFree: true,
   accessibilityFeature: ['readingOrder', 'ARIA', 'structuralNavigation'],
