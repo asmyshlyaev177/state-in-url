@@ -19,6 +19,7 @@ This is a **pnpm** monorepo. `pnpm` is enforced (`only-allow`). Most scripts run
 - `pnpm run kill` — kill hung Next/Vite/wireit processes (use this if dev/test servers hang).
 - `pnpm run cleanup` / `pnpm run reinstall` — nuke build artifacts and node_modules.
 - `pnpm run setup` — `playwright install --with-deps` (needed before e2e on a fresh machine).
+- `pnpm run test:lighthouse` — Lighthouse audits of the demo site (see below). Builds and serves it itself; nothing needs to be running first.
 
 Run a single unit test: `npx vitest run packages/urlstate/encoder/encoder.test.ts` (or pass a `-t "name"` filter).
 Run a single e2e spec: `npx playwright test tests/useUrlState/main.spec.ts --project=chromium`.
@@ -29,6 +30,7 @@ Run a single e2e spec: `npx playwright test tests/useUrlState/main.spec.ts --pro
 - `packages/example-*` — the workspace members: demo apps for nextjs14/15/16, react (Vite), react-router6, react-router7, remix2. These exist to be driven by the Playwright e2e tests and to host the live demo.
 - `packages/shared/` — shared Tailwind config, styles, and components used by the example apps (aliased as `shared/*` in `tsconfig.base.json`).
 - `tests/` — Playwright e2e specs (separate from the colocated `*.test.ts` unit tests).
+- `lighthouse/` — the Lighthouse suite, its own directory so the e2e config's `testDir: './tests'` cannot pick it up. Driven by `playwright.lighthouse.config.ts`.
 - `skills/` — agent skill files (`SKILL.md` per topic) that are **published as part of the npm package** (see `files` in `package.json`). `skills/_artifacts/` is dev-only and excluded from publish; `skill_spec.md` there is a useful map of the library's domains and known user failure modes.
 
 ## Architecture
@@ -53,9 +55,36 @@ The library is layered; each layer has its own subdirectory under `packages/urls
 - Only JSON-serializable values; functions/symbols are dropped.
 - In Next.js App Router, pass `searchParams` for SSR correctness; in Next 15+, `await` them first.
 
+## Lighthouse (demo site)
+
+`pnpm run test:lighthouse` → `lighthouse/lighthouse.spec.ts`, driven by
+`playwright.lighthouse.config.ts`. `.github/workflows/lighthouse.yml` runs it on
+changes under `packages/example-nextjs16/**` and nowhere else.
+
+The subject is **`packages/example-nextjs16`** — the app https://state-in-url.dev
+actually serves, and the only example with public pages (`example-nextjs15` has
+nothing but the `(tests)` group). It audits the production build: `build:demo`
+(which rebuilds the library first, so the demo is never measured against a stale
+`dist/`) then `next start --port 3012`. Port 3012, not the demo's own 3002, so a
+server left over from `pnpm run dev` cannot be silently accepted in place of it.
+
+**Only the three public pages** — `/`, `/react-router`, `/remix`. The app also
+serves `/useUrlState`, `/test-ssr` and the rest of the `(tests)` group, but those
+are e2e fixtures that happen to be deployed: they exist to be asserted against,
+not read, and several render in ways no real page would.
+
+**Performance is held at 95, not 100, and that is deliberate.** Measured August
+2026, all three pages sit at **99** across repeated runs, and the shortfall is
+entirely one metric — LCP ~1030 ms scoring 0.94 of a weight-25 audit. Everything
+else is perfect (FCP ~290 ms, total blocking time 6-13 ms). 95 leaves ~4 points
+for runner variance while still failing on a real regression. Total blocking time
+being near zero is what makes that safe: almost no main-thread work is in play, so
+a slower CI runner moves this far less than it would for a hydration-heavy app.
+Accessibility, best-practices and SEO are deterministic and held at 100.
+
 ## Conventions
 
 - **Conventional commits** (commitlint + commitizen enforced via husky). Releases are automated by semantic-release. `fix:` and `feat:` bump the version and **must only be used for changes inside `packages/urlstate/` or `package.json`** — use `ci`, `build`, `docs`, `style`, `test`, `chore`, `refactor` for everything else (examples, tests, config).
 - ESLint config (`.eslintrc.cjs`) uses `plugin:maintainable/recommended` with a complexity cap of 12 and enforced import sorting; Prettier runs via lint-staged on commit. Unused vars must be prefixed `_`.
-- Node 20 (`.nvmrc`). Build target ES2022.
+- Node 24 (`.nvmrc`). Build target ES2022.
 - When adding a new entry point, add it to the `exports` map in `package.json` and ensure its `index.ts` is picked up by the Rollup glob (`packages/urlstate/**/index.ts`).

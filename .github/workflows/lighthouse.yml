@@ -1,0 +1,90 @@
+name: Lighthouse
+
+# Only when the demo site changes. It is a separate workflow rather than a job
+# in tests.yml because the two ask different questions: that one is the
+# library's correctness coverage across every example app and three browsers,
+# this one measures the single app that state-in-url.dev serves. Keeping it
+# apart means a change to `packages/urlstate` pays for neither the demo build
+# nor the ~100 MB `lighthouse` dependency.
+#
+# `packages/urlstate` is deliberately *not* a trigger path even though the demo
+# imports it: a library change that alters the demo's bundle is caught by the
+# next demo change or by a manual run. Auditing on every library commit would
+# put a timing measurement on the critical path of the package's own releases.
+on:
+  push:
+    branches: [ master ]
+    paths:
+      - 'packages/example-nextjs16/**'
+      - 'lighthouse/**'
+      - 'playwright.lighthouse.config.ts'
+      - '.github/workflows/lighthouse.yml'
+  pull_request:
+    branches: [ master ]
+    paths:
+      - 'packages/example-nextjs16/**'
+      - 'lighthouse/**'
+      - 'playwright.lighthouse.config.ts'
+      - '.github/workflows/lighthouse.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  lighthouse:
+    name: lighthouse
+    timeout-minutes: 20
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+    steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@9af89fc71515a100421586dfdb3dc9c984fbf411 # v2.19.4
+        with:
+          egress-policy: audit
+
+      # Actions are pinned to a commit SHA with the tag in the trailing comment,
+      # as everywhere else in this repo. `pnpm run pin-gh-deps` covers this file.
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: pnpm/action-setup@0977fd99725f1db4007ccb2928dbb4e90d06cc86 # v6.0.10
+        with:
+          version: 10.26.0
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'pnpm'
+
+      # No playwright container here, unlike the e2e job in tests.yml: that one
+      # needs three browser engines, Lighthouse only ever drives chromium.
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile && pnpm exec playwright install --with-deps chromium
+
+      # Builds the library, then the demo, then audits the three public pages.
+      # Both builds are part of the suite's webServer block, so there is no
+      # separate build step here.
+      #
+      # Performance is a timing measurement and this runner is shared, which is
+      # why that threshold sits at 95 rather than at the 99 the pages measure —
+      # see the note on THRESHOLDS in lighthouse/lighthouse.spec.ts. If it flakes
+      # anyway, lower that one number rather than dropping the assertion; the
+      # other three categories are deterministic and are why this job exists.
+      - name: Lighthouse audits
+        run: pnpm run test:lighthouse
+
+      # Playwright leaves an error context per failure. For a score that only
+      # drops on the runner, that is the only record of which audit gave way.
+      - name: Upload Lighthouse results
+        if: failure()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: lighthouse-results
+          path: test-results/
+          retention-days: 7
+          if-no-files-found: ignore
