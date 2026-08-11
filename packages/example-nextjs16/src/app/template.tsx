@@ -1,11 +1,11 @@
 import dynamic from 'next/dynamic';
+import Script from 'next/script';
 import React from 'react';
 
 import './styles.css';
 
 import { CONTENT_LAST_MODIFIED } from './contentDate';
 import { Logo } from './components/Logo';
-import { ForHireBadge } from './components/ForHireBadge';
 import { GithubLink } from './components/GithubLink';
 import { InstallCmd } from './components/InstallCmd';
 import { NpmLink } from './components/NpmLink';
@@ -67,7 +67,16 @@ export default async function Template({
       </div>
 
       <Footer lastModified={CONTENT_LAST_MODIFIED} />
-      <ForHireBadge />
+
+      {/* Shared across my sites — one implementation, served from the
+          portfolio. Shows itself only while the GitHub "Available for hire"
+          toggle is on. `theme="dark"` because this page has no light mode to
+          follow; the palette comes from the token overrides in styles.css. */}
+      <for-hire-badge theme="dark"></for-hire-badge>
+      <Script
+        src="https://asmyshlyaev177.dev/for-hire-badge.js"
+        strategy="lazyOnload"
+      />
     </main>
   );
 }
