@@ -51,7 +51,10 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />}
 
-        <link rel="alternate" type="text/markdown" href={`${siteUrl}/llms.txt`} title="LLM-friendly version" />
+        {/* The `text/markdown` alternates — this page's own `.md` mirror and
+            the site-wide llms.txt, in that order — come from Next's metadata
+            (`markdownAlternates` in seoStuff.ts). Declaring one here too
+            would put it ahead of them in an order nothing guarantees. */}
         <meta name="llms-txt" content={`${siteUrl}/llms.txt`} />
         <meta name="last-modified" content={CONTENT_LAST_MODIFIED} />
         <link rel="sitemap" type="application/xml" href={`${siteUrl}/sitemap.xml`} />

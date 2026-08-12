@@ -89,6 +89,23 @@ export const jsonLd: WithContext<SoftwareApplication> = {
   ],
 };
 
+/**
+ * The `text/markdown` alternates every page declares, in the order they matter.
+ *
+ * This page's own mirror first: a client that takes the first
+ * `rel="alternate" type="text/markdown"` it finds should get the page it asked
+ * about, and fall back to the site summary only after. Both go through Next's
+ * metadata rather than a hand-written <link> in layout.tsx, because tags from
+ * the two sources land in <head> in an order nothing guarantees — and this
+ * ordering is the whole point.
+ */
+function markdownAlternates(mirrorPath: string) {
+  return [
+    { url: `${vercelUrl}${mirrorPath}`, title: 'This page as Markdown' },
+    { url: `${vercelUrl}/llms.txt`, title: 'LLM-friendly summary (llms.txt)' },
+  ];
+}
+
 const meta = {
   title: 'state-in-url - store state in URL like in JSON, type-safe',
   description:
@@ -148,6 +165,7 @@ export const metadata = {
     // homepage as canonical, which asks Google to drop them from the index
     // while the sitemap still lists them.
     canonical: vercelUrl,
+    types: { 'text/markdown': markdownAlternates('/index.md') },
   },
 } as Metadata;
 
@@ -173,7 +191,13 @@ export function pageMetadata({
   return {
     title,
     description,
-    alternates: { canonical: url },
+    alternates: {
+      canonical: url,
+      // Appending `.md` to a URL is the convention agents converged on, but
+      // not one they reliably discover unaided — this is how the page says
+      // it is there.
+      types: { 'text/markdown': markdownAlternates(`${path}.md`) },
+    },
     openGraph: { ...metadata.openGraph, url, title, description },
     twitter: { ...metadata.twitter, title, description },
   };

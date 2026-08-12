@@ -1,7 +1,7 @@
 'use client';
 import React from 'react';
 
-const CMD = 'npm i state-in-url';
+const DEFAULT_CMD = 'npm i state-in-url';
 
 const CopyIcon = () => (
   <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -16,36 +16,42 @@ const CheckIcon = () => (
   </svg>
 );
 
-export const InstallCmd = () => {
+export const InstallCmd = ({
+  cmd = DEFAULT_CMD,
+  label = 'Copy install command',
+}: {
+  cmd?: string;
+  label?: string;
+} = {}) => {
   const [copied, setCopied] = React.useState(false);
   const timer = React.useRef<ReturnType<typeof setTimeout>>();
 
   const onCopy = React.useCallback(async () => {
     try {
-      await navigator.clipboard.writeText(CMD);
+      await navigator.clipboard.writeText(cmd);
       setCopied(true);
       clearTimeout(timer.current);
       timer.current = setTimeout(() => setCopied(false), 2000);
     } catch {
     }
-  }, []);
+  }, [cmd]);
 
   React.useEffect(() => () => clearTimeout(timer.current), []);
 
   return (
     <div className="install-cmd">
       <span className="install-prompt" aria-hidden="true">$</span>
-      <code>{CMD}</code>
+      <code>{cmd}</code>
       <button
         type="button"
         className={copied ? 'install-copy copied' : 'install-copy'}
         onClick={onCopy}
-        aria-label={copied ? 'Copied' : 'Copy install command'}
+        aria-label={copied ? 'Copied' : label}
       >
         {copied ? <CheckIcon /> : <CopyIcon />}
       </button>
       <span aria-live="polite" className="sr-only">
-        {copied ? 'Install command copied to clipboard' : ''}
+        {copied ? 'Command copied to clipboard' : ''}
       </span>
     </div>
   );

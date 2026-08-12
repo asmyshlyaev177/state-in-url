@@ -1,4 +1,5 @@
 import { DemoPart } from './DemoPart';
+import { AiSkills } from './components/AiSkills';
 import { Description } from './components/Description';
 import { TabsBlock } from './TabsBlock';
 import { CodeBlocks } from './CodeBlocksNext';
@@ -16,6 +17,8 @@ export default async function Home({ searchParams }: { searchParams: Promise<obj
           <CodeBlocks />
         </section>
       </div>
+
+      <AiSkills />
 
       <Description />
     </>
