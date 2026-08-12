@@ -53,13 +53,28 @@ export function useSearchState(searchParams?: object) {
 }
 ```
 
+```typescript
+// app/search/page.tsx — server component
+import { SearchBox } from './SearchBox';
+
+export default async function Page({
+  searchParams,
+}: {
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+}) {
+  return <SearchBox searchParams={await searchParams} />;
+}
+```
+
 ## Core Patterns
 
 ### Instant input, deferred URL write (onBlur)
 
 ```typescript
-function SearchBox() {
-  const { urlState, setState, setUrl } = useSearchState();
+'use client';
+
+function SearchBox({ searchParams }: { searchParams?: object }) {
+  const { urlState, setState, setUrl } = useSearchState(searchParams);
 
   return (
     <input

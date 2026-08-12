@@ -239,7 +239,9 @@ test.describe('useHistory true|false', () => {
         await page.getByLabel('name').focus();
         await page.getByLabel('name').pressSequentially(name, { delay: 5 });
         await bothToHaveName(page, name);
-        await expect(page).toHaveURL(/name=/);
+        // exact, not /name=/: typing straddles the debounce, so a partial write
+        // matches too and the reload would fetch a truncated value
+        await toHaveUrl(page, `${url}?name=%27A%26B%3DC%3FD+%23E%2527F%27`);
 
         await page.reload();
         await page.waitForSelector('[data-testid="wrapper"]');
