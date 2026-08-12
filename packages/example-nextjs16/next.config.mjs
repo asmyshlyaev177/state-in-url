@@ -110,8 +110,29 @@ const nextConfig = {
       value: 'public, s-maxage=600, stale-while-revalidate=86400',
     };
 
+    /**
+     * The one above does not survive on Vercel. A dynamic App Router response
+     * carries Next's own `private, no-cache, no-store, max-age=0,
+     * must-revalidate`, and that is what the Edge Network serves — `next start`
+     * returns the configured value, the deployment does not, so nothing here
+     * was ever being cached.
+     *
+     * This header exists for that case: the Edge Network reads it, never
+     * forwards it to the browser, and prefers it over `Cache-Control`. The
+     * browser still gets Next's no-store, which is correct — a visitor should
+     * not hold its own copy of a page that renders from the query string.
+     *
+     * `/` only. It takes the overwhelming majority of visits and is the one
+     * URL whose cache entry is certain to be read again; the other two demo
+     * pages can have it once this is confirmed working on a deployment.
+     */
+    const vercelCdnCache = {
+      key: 'Vercel-CDN-Cache-Control',
+      value: 'max-age=600, stale-while-revalidate=86400',
+    };
+
     return [
-      { source: '/', headers: [llmsTxtLink, cdnCache] },
+      { source: '/', headers: [llmsTxtLink, cdnCache, vercelCdnCache] },
       { source: '/react-router', headers: [llmsTxtLink, cdnCache] },
       { source: '/remix', headers: [llmsTxtLink, cdnCache] },
     ];
