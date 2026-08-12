@@ -1,10 +1,10 @@
-import { SYMBOLS } from "../constants";
-import { type JSONCompatible, type Simple, typeOf } from "../utils";
+import { SYMBOLS } from '../constants';
+import { type JSONCompatible, type Simple, typeOf } from '../utils';
 
 const ENCODE_REGEX = /['"]/g;
-const ENCODE_QUOTE_MAP: Record<string, string> = { "'": "%27", '"': "'" };
+const ENCODE_QUOTE_MAP: Record<string, string> = { "'": '%27', '"': "'" };
 const DECODE_REGEX = /'|%27/g;
-const DECODE_QUOTE_MAP: Record<string, string> = { "'": '"', "%27": "'" };
+const DECODE_QUOTE_MAP: Record<string, string> = { "'": '"', '%27': "'" };
 const ENC_REG = new RegExp(`^(${SYMBOLS.undefined}|${SYMBOLS.date})`);
 
 /**
@@ -16,13 +16,13 @@ const ENC_REG = new RegExp(`^(${SYMBOLS.undefined}|${SYMBOLS.date})`);
  *  * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/master/packages/urlstate/encoder#encode}
  */
 export function encode(payload: unknown): string {
-  if (typeof payload === "function" || typeof payload === "symbol") return "";
+  if (typeof payload === 'function' || typeof payload === 'symbol') return '';
 
   if (isEncoded(payload)) {
     return payload as string;
   }
 
-  return JSON.stringify(payload, replacer).replace(
+  return JSON.stringify(replacer('', payload)).replace(
     ENCODE_REGEX,
     (match) => ENCODE_QUOTE_MAP[match],
   );
@@ -31,11 +31,11 @@ export function encode(payload: unknown): string {
 function replacer(_key: string, value: unknown): unknown {
   const type = typeOf(value);
 
-  if (type !== "object" && type !== "array") {
+  if (type !== 'object' && type !== 'array') {
     return encodePrimitive(value as unknown as Simple);
   }
 
-  if (type === "object") {
+  if (type === 'object') {
     const _value = value as { [key: string]: unknown };
     const result: { [key: string]: unknown } = {};
 
@@ -44,7 +44,7 @@ function replacer(_key: string, value: unknown): unknown {
     }
     return result;
   }
-  if (type === "array") {
+  if (type === 'array') {
     return (value as unknown as Array<unknown>).map(
       (val) => replacer(_key, val) as Simple,
     );
@@ -55,9 +55,9 @@ function replacer(_key: string, value: unknown): unknown {
 
 export const encodePrimitive = (payload: Simple) => {
   switch (typeOf(payload)) {
-    case "date":
+    case 'date':
       return SYMBOLS.date + new Date(payload as Date).toISOString();
-    case "undefined":
+    case 'undefined':
       return SYMBOLS.undefined;
     default:
       return payload;
@@ -101,7 +101,7 @@ export function parseJSON<T extends JSONCompatible>(
 }
 
 export function reviver(_key: string, value: unknown): unknown {
-  return typeof value === "string" ? decodePrimitive(value) : value;
+  return typeof value === 'string' ? decodePrimitive(value) : value;
 }
 
 export const decodePrimitive = (str: string) => {

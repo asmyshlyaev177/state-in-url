@@ -4,6 +4,8 @@ import React from 'react';
 
 import './styles.css';
 
+import { isVercel } from './domain';
+
 import { CONTENT_LAST_MODIFIED } from './contentDate';
 import { Logo } from './components/Logo';
 import { GithubLink } from './components/GithubLink';
@@ -71,12 +73,21 @@ export default async function Template({
       {/* Shared across my sites — one implementation, served from the
           portfolio. Shows itself only while the GitHub "Available for hire"
           toggle is on. `theme="dark"` because this page has no light mode to
-          follow; the palette comes from the token overrides in styles.css. */}
-      <for-hire-badge theme="dark"></for-hire-badge>
-      <Script
-        src="https://asmyshlyaev177.dev/for-hire-badge.js"
-        strategy="lazyOnload"
-      />
+          follow; the palette comes from the token overrides in styles.css.
+
+          Deployed builds only, like the analytics script in layout.tsx: reading
+          that toggle calls api.github.com unauthenticated, which 403s once the
+          runner's IP is rate-limited and fails specs asserting no console
+          errors. */}
+      {isVercel && (
+        <>
+          <for-hire-badge theme="dark"></for-hire-badge>
+          <Script
+            src="https://asmyshlyaev177.dev/for-hire-badge.js"
+            strategy="lazyOnload"
+          />
+        </>
+      )}
     </main>
   );
 }

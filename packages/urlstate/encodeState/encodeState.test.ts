@@ -125,4 +125,34 @@ describe('decodeState', () => {
     expect(decodeState(undefined as unknown as string)).toEqual({});
     expect(decodeState(null as unknown as string)).toEqual({});
   });
+
+  // encodeState encodes per top-level key, so a Date sitting directly on the
+  // state — a `{ from, to }` range is the common shape — goes through `encode`
+  // as the whole payload rather than as a value inside one
+  describe('top-level Date', () => {
+    const from = new Date('2024-06-28T09:10:38.763Z');
+    const defaults = { from: undefined as Date | undefined, note: '' };
+
+    test('round trips as a Date', () => {
+      const encoded = encodeState({ ...defaults, from }, defaults);
+      expect(encoded).toContain('%E2%8F%B2');
+
+      const decoded = decodeState(encoded, defaults);
+      expect(decoded.from).toBeInstanceOf(Date);
+      expect((decoded.from as Date).toISOString()).toStrictEqual(
+        from.toISOString(),
+      );
+    });
+
+    test('an ISO string stays a string', () => {
+      const state = { from: from.toISOString(), note: '' };
+      const decoded = decodeState(encodeState(state, { from: '', note: '' }), {
+        from: '',
+        note: '',
+      });
+
+      expect(decoded.from).toStrictEqual(from.toISOString());
+      expect(decoded.from).not.toBeInstanceOf(Date);
+    });
+  });
 });

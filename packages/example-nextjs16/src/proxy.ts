@@ -200,7 +200,7 @@ setUrl();                                               // flush current state t
 - React Router / Remix: any \`NavigateOptions\` (e.g. \`preventScrollReset\`).
 
 Hook-level options (second arg to \`useUrlState\`):
-- \`searchParams\` — pass \`searchParams\` from a Next.js server component or \`useSearchParams()\` from a client component. **Required for SSR correctness in Next.js App Router.**
+- \`searchParams\` — pass \`searchParams\` from a Next.js server component. **Required for SSR correctness in Next.js App Router.** \`useSearchParams()\` is a fallback for components the prop cannot reach, and costs prerendering; see below.
 - \`useHistory?: boolean\` — Next.js only. Default \`true\`. Uses \`window.history.pushState\` to avoid \`_rsc\` server round-trips on URL changes. Flip to \`false\` only when server data must refetch on URL change.
 
 ## Recommended pattern: feature-scoped hook
@@ -223,17 +223,19 @@ export const JOBS_STATE: JobsState = {
 \`\`\`typescript
 // features/jobs/useJobsState.ts
 'use client';
-import { useSearchParams } from 'next/navigation';
 import { useUrlState } from 'state-in-url/next';
 import { JOBS_STATE } from './jobsState';
 
-export function useJobsState() {
-  const searchParams = useSearchParams();
+// \`searchParams\` comes from the server component at the top of the feature.
+// Nested callers pass nothing and share the same store.
+export function useJobsState(searchParams?: object) {
   return useUrlState(JOBS_STATE, { searchParams });
 }
 \`\`\`
 
 Any component calling \`useJobsState()\` shares the same URL-synced store. No Context, no Provider.
+
+Do not call \`useSearchParams()\` to feed the hook. It needs a \`<Suspense>\` boundary, opts the page out of prerendering, and buys nothing the server prop does not — on the client the hook already reads \`window.location.search\`. Thread \`searchParams\` from the server component. Reach for \`useSearchParams()\` only when a component genuinely cannot receive it, and accept the bailout.
 
 ## Next.js App Router — server page forwarding \`searchParams\`
 
@@ -264,6 +266,8 @@ export function JobsList({ searchParams }: { searchParams: object }) {
 \`\`\`
 
 Without \`searchParams\`, the first render uses defaults, then a client effect re-syncs from the URL on the next tick — visible flash plus hydration warning.
+
+The hook does not call \`useSearchParams\` itself, so a component using it needs no \`<Suspense>\` boundary and does not opt its page out of prerendering — PPR and \`cacheComponents: true\` included. Initial state comes from \`searchParams\` on the server and \`window.location.search\` on the client; later changes are tracked through the History API, which also catches a bare \`history.pushState\` from unrelated code. A prerendered page still renders defaults, since there is no query string at build time — render dynamically when a shared stateful link must be correct on first paint.
 
 ## Next.js App Router — server layout (Proxy workaround)
 

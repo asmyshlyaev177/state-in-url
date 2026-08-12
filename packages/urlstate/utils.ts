@@ -211,3 +211,50 @@ export const popstateEv = 'popstate';
 export function getSearch() {
   return isSSR ? '' : window.location.search;
 }
+
+type UrlCb = () => void;
+
+const urlListeners = new Set<UrlCb>();
+let historyPatched = false;
+
+// pushState/replaceState fire no event; popstate covers back/forward only.
+// Not guarded against a second copy of this module patching too — each copy
+// has its own listeners, and stacked wrappers call each set exactly once.
+function patchHistory() {
+  if (historyPatched || isSSR) return;
+  historyPatched = true;
+
+  for (const method of ['pushState', 'replaceState'] as const) {
+    const original = window.history[method];
+
+    window.history[method] = function patched(
+      this: History,
+      ...args: Parameters<History['pushState']>
+    ) {
+      const result = original.apply(this, args);
+      // copy, a listener can unsubscribe while iterating
+      for (const cb of [...urlListeners]) cb();
+      return result;
+    };
+  }
+}
+
+/**
+ * Subscribe to any URL change: back/forward, this library's own writes, or a
+ * router using the History API. Runs after `window.location` is updated.
+ *
+ * @param {() => void} cb - called on every URL change
+ * @returns {() => void} unsubscribe
+ */
+export function subscribeToUrl(cb: UrlCb) {
+  if (isSSR) return () => void 0;
+
+  patchHistory();
+  urlListeners.add(cb);
+  window.addEventListener(popstateEv, cb);
+
+  return () => {
+    urlListeners.delete(cb);
+    window.removeEventListener(popstateEv, cb);
+  };
+}

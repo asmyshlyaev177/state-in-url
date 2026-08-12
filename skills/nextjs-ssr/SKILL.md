@@ -2,16 +2,17 @@
 name: nextjs-ssr
 description: >
   SSR-safe useUrlState in Next.js App Router. Forward searchParams from server
-  pages (awaiting the Promise in Next.js 15+), call useSearchParams() in pure
-  client components, decide between useHistory true/false, and use a Proxy
-  (formerly middleware) to expose query params to server layouts. App Router
-  only — Pages Router is not supported. Load this skill for any use of
-  state-in-url/next or anytime URL state must be correct on first paint.
+  pages (awaiting the Promise in Next.js 15+) rather than calling
+  useSearchParams(), decide between useHistory true/false, keep pages
+  prerenderable, and use a Proxy (formerly middleware) to expose query params to
+  server layouts. App Router only — Pages Router is not supported. Load this
+  skill for any use of state-in-url/next or anytime URL state must be correct on
+  first paint.
 requires:
   - feature-state-hook
 sources:
   - 'asmyshlyaev177/state-in-url:packages/urlstate/next/useUrlState/useUrlState.ts'
-  - 'asmyshlyaev177/state-in-url:packages/example-nextjs16/src/middleware.ts'
+  - 'asmyshlyaev177/state-in-url:packages/example-nextjs16/src/proxy.ts'
   - 'asmyshlyaev177/state-in-url:README.md#with-server-side-rendering'
 metadata:
   type: framework
@@ -58,9 +59,13 @@ export function JobsList({ searchParams }: { searchParams: object }) {
 }
 ```
 
-### Pure client component using `useSearchParams`
+### Fallback: `useSearchParams` when the prop cannot reach the component
 
-When you can't (or don't want to) thread `searchParams` from a server parent:
+Use this only when a client component genuinely cannot receive `searchParams`
+from a server parent. It is not the default and not an equivalent alternative:
+`useSearchParams()` needs a `<Suspense>` boundary and opts the page out of
+prerendering, and it buys nothing the server prop does not — on the client the
+hook already reads `window.location.search` for itself.
 
 ```typescript
 'use client';
@@ -88,6 +93,35 @@ useUrlState(FORM_STATE, { searchParams, useHistory: false });
 ```
 
 Default is `true`. Flip to `false` only when the server page needs to re-render with the new query.
+
+### Prerendering, PPR and `cacheComponents`
+
+The hook does not call `useSearchParams` itself. A component that uses it needs
+no `<Suspense>` boundary and does not opt its page out of prerendering, so it
+works under PPR and `cacheComponents: true`.
+
+It reads the initial state from `searchParams` on the server and
+`window.location.search` on the client, and tracks later changes by observing
+the History API — which also catches changes Next's router never sees, including
+the hook's own writes under the default `useHistory: true`, and a bare
+`history.pushState` from unrelated code.
+
+A prerendered page still renders with the default state, because at build time
+there is no query string:
+
+```typescript
+// Static: correct for the bare URL, wrong for /jobs?status='open' until hydration.
+export default function Page() { return <JobsList />; }
+
+// Dynamic: correct on first paint for any URL.
+export default async function Page({ searchParams }) {
+  return <JobsList searchParams={await searchParams} />;
+}
+```
+
+Prerender when the bare URL is the common case and stateful URLs can settle
+after hydration. Render dynamically when a shared stateful link must be right on
+first paint.
 
 ### Decoding state on the server for data fetching
 
@@ -229,6 +263,34 @@ useUrlState(FORM_STATE, { searchParams });
 `useHistory: false` is only correct when the server page must re-fetch on URL changes. For UI-only state (filters, drawers, tabs) it triples request traffic.
 
 Source: JSDoc on `useUrlState` params; vercel/next.js#59167
+
+### MEDIUM Adding `useSearchParams` + `<Suspense>` just to use the hook
+
+Wrong:
+
+```typescript
+// page.tsx — now bails out of prerendering for no reason
+<Suspense fallback={<Skeleton />}><JobsList /></Suspense>
+
+// JobsList.tsx
+const searchParams = useSearchParams();
+const { urlState } = useUrlState(JOBS_STATE, { searchParams });
+```
+
+Correct:
+
+```typescript
+// page.tsx
+export default async function Page({ searchParams }) {
+  return <JobsList searchParams={await searchParams} />;
+}
+```
+
+The hook does not call `useSearchParams` internally, so it imposes no Suspense
+boundary. Calling it yourself costs prerendering for the whole subtree. Use it
+only when you genuinely cannot thread `searchParams` down.
+
+Source: packages/urlstate/next/useUrlState/useUrlState.ts
 
 ### MEDIUM Trying to read `searchParams` in a server layout directly
 

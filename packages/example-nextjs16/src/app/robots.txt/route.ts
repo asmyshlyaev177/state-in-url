@@ -11,14 +11,15 @@ import { siteUrl } from '../domain';
  * site actually serves. Every entry here used to carry a slash, which meant
  * the list blocked nothing at all. Do not put them back.
  *
- * Six prefixes cover all ten fixture routes: `/test-ssr` also catches `-sp`
- * and `-usp`, and `/useUrlState` also catches `/1` and `/2`. None of them is
- * a prefix of a documented route, so nothing real gets caught by accident.
+ * Six prefixes cover all twelve fixture routes: `/test-ssr` also catches `-sp`
+ * and `-usp`, `/test-use` catches `-client`, `-history` and `-router`, and
+ * `/useUrlState` also catches `/1` and `/2`. None of them is a prefix of a
+ * documented route, so nothing real gets caught by accident.
  */
 const testFixtures = [
   '/useUrlEncode',
   '/test-ssr',
-  '/test-use-client',
+  '/test-use',
   '/useSharedState',
   '/useUrlState',
   '/useHook-race-condition',

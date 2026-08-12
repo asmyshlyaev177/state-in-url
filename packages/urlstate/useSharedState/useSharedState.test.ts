@@ -33,7 +33,9 @@ describe('useSharedState', () => {
           const hook1 = renderHook(() => useSharedState(state, getInitial));
 
           expect(hook1.result.current.state).toStrictEqual(initial);
-          expect(stateSpy).toHaveBeenCalledTimes(0);
+          // the one read is the mount catch-up effect; renderHook flushes
+          // effects, a real server render does not
+          expect(stateSpy).toHaveBeenCalledTimes(1);
           expect(stateSpySet).toHaveBeenCalledTimes(0);
         });
       });
@@ -50,7 +52,8 @@ describe('useSharedState', () => {
           const hook1 = renderHook(() => useSharedState(state, getInitial));
 
           expect(hook1.result.current.state).toStrictEqual(initial);
-          expect(stateSpy).toHaveBeenCalledTimes(1);
+          // once while rendering, once by the mount catch-up effect
+          expect(stateSpy).toHaveBeenCalledTimes(2);
           expect(stateSpy).toHaveBeenNthCalledWith(1, state);
         });
 
@@ -67,7 +70,8 @@ describe('useSharedState', () => {
           vi.mocked(utils).isSSR = false;
           const hook1 = renderHook(() => useSharedState(state));
 
-          expect(stateSpyGet).toHaveBeenCalledTimes(1);
+          // once while rendering, once by the mount catch-up effect
+          expect(stateSpyGet).toHaveBeenCalledTimes(2);
           expect(stateSpyGet).toHaveBeenNthCalledWith(1, state);
 
           expect(stateSpySet).toHaveBeenCalledTimes(0);
@@ -86,7 +90,8 @@ describe('useSharedState', () => {
           vi.mocked(utils).isSSR = false;
           const hook1 = renderHook(() => useSharedState(state));
 
-          expect(stateSpyGet).toHaveBeenCalledTimes(1);
+          // once while rendering, once by the mount catch-up effect
+          expect(stateSpyGet).toHaveBeenCalledTimes(2);
           expect(stateSpyGet).toHaveBeenNthCalledWith(1, state);
 
           expect(stateSpySet).toHaveBeenCalledTimes(1);

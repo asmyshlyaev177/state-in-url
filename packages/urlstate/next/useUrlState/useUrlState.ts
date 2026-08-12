@@ -1,16 +1,18 @@
-import React from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import React from 'react';
+import { useRouter } from 'next/navigation';
 
-import { parseSPObj } from "../../parseSPObj";
-import { useUrlStateBase } from "../../useUrlStateBase";
+import { parseSPObj } from '../../parseSPObj';
+import { useUrlStateBase } from '../../useUrlStateBase';
 import {
   filterUnknownParams,
   filterUnknownParamsClient,
+  getParams,
   getSearch,
   isSSR,
   type JSONCompatible,
   routerHistory,
-} from "../../utils";
+  subscribeToUrl,
+} from '../../utils';
 
 /**
  * NextJS hook. Returns `urlState`, `setState`, and `setUrl` functions
@@ -147,21 +149,33 @@ export function useUrlState<T extends JSONCompatible>(
         );
   });
 
-  const sp = useSearchParams();
-  React.useEffect(() => {
+  // Resync when anything else changes the URL: <Link>, router.push, back/forward.
+  // Was an effect keyed on useSearchParams(), but that opts the component out of
+  // prerendering and was only ever a change subscription — initial state comes
+  // from `searchParams` (SSR) and window.location.search (client), above.
+  // Also sees this hook's own writes, which useSearchParams never did with the
+  // default useHistory: true.
+  const syncFromUrl = React.useCallback(() => {
     // when multiple instances of hook used, can be race condition with URL updates
-    if (!pendingUrlUpdate()) {
-      setState(
-        filterUnknownParams(
+    if (pendingUrlUpdate()) return;
+
+    setState(
+      filterUnknownParams(
+        defaultState,
+        parseSPObj(
+          Object.fromEntries(getParams(getSearch()).entries()),
           defaultState,
-          parseSPObj(
-            Object.fromEntries([...sp.entries()]),
-            defaultState,
-          ) as Partial<T>,
-        ),
-      );
-    }
-  }, [sp]);
+        ) as Partial<T>,
+      ),
+    );
+  }, []);
+
+  React.useEffect(() => {
+    // on mount too, state can be left over from a previous route
+    syncFromUrl();
+
+    return subscribeToUrl(syncFromUrl);
+  }, [syncFromUrl]);
 
   const defOpts = React.useMemo(() => {
     const opts = { ...defaultOptions };
@@ -194,7 +208,7 @@ export function useUrlState<T extends JSONCompatible>(
 
 type Router = ReturnType<typeof useRouter>;
 type RouterOptions = NonNullable<
-  Parameters<Router["push"]>[1] | Parameters<Router["replace"]>[1]
+  Parameters<Router['push']>[1] | Parameters<Router['replace']>[1]
 >;
 
 export interface Options extends RouterOptions {
