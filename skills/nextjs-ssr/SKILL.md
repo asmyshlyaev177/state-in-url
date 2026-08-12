@@ -63,9 +63,11 @@ export function JobsList({ searchParams }: { searchParams: object }) {
 
 Use this only when a client component genuinely cannot receive `searchParams`
 from a server parent. It is not the default and not an equivalent alternative:
-`useSearchParams()` needs a `<Suspense>` boundary and opts the page out of
-prerendering, and it buys nothing the server prop does not — on the client the
-hook already reads `window.location.search` for itself.
+on a statically rendered route `useSearchParams()` needs a `<Suspense>` boundary
+— `next build` fails without one — and everything inside that boundary is
+client-rendered, so it shows the fallback until hydration. On an already-dynamic
+route it costs nothing extra, but it still buys nothing the server prop does not
+— on the client the hook already reads `window.location.search` for itself.
 
 ```typescript
 'use client';
@@ -269,7 +271,7 @@ Source: JSDoc on `useUrlState` params; vercel/next.js#59167
 Wrong:
 
 ```typescript
-// page.tsx — now bails out of prerendering for no reason
+// page.tsx — JobsList now renders as the skeleton until hydration
 <Suspense fallback={<Skeleton />}><JobsList /></Suspense>
 
 // JobsList.tsx
@@ -287,8 +289,12 @@ export default async function Page({ searchParams }) {
 ```
 
 The hook does not call `useSearchParams` internally, so it imposes no Suspense
-boundary. Calling it yourself costs prerendering for the whole subtree. Use it
-only when you genuinely cannot thread `searchParams` down.
+boundary. Adding one is not free: it is narrow, so the rest of the page still
+prerenders, but `JobsList` itself becomes client-rendered — a static route ships
+the skeleton and fills in the real state only after hydration. Forwarding
+`searchParams` from the server page is the preferred approach and keeps the
+first paint correct; reach for `useSearchParams()` only when you genuinely
+cannot thread the prop down.
 
 Source: packages/urlstate/next/useUrlState/useUrlState.ts
 

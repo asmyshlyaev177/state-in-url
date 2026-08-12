@@ -52,11 +52,25 @@ export function useJobsState(searchParams?: object) {
 ```
 
 ```typescript
-// any component
+// app/jobs/page.tsx — server component
+import { JobsTabs } from './JobsTabs';
+
+export default async function Page({
+  searchParams,
+}: {
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+}) {
+  return <JobsTabs searchParams={await searchParams} />;
+}
+```
+
+```typescript
+// app/jobs/JobsTabs.tsx
+'use client';
 import { useJobsState } from 'features/jobs/useJobsState';
 
-export function JobsTabs() {
-  const { urlState, setUrl, reset } = useJobsState();
+export function JobsTabs({ searchParams }: { searchParams?: object }) {
+  const { urlState, setUrl, reset } = useJobsState(searchParams);
 
   return (
     <>
@@ -67,7 +81,7 @@ export function JobsTabs() {
 }
 ```
 
-The same `useJobsState()` called in two different components reads and writes the same URL state — no Context, no Provider.
+The same `useJobsState()` called in two different components reads and writes the same URL state — no Context, no Provider. Only the component the server renders needs `searchParams`; the rest call `useJobsState()` with no argument.
 
 ## Core Patterns
 
