@@ -41,12 +41,12 @@ export const JOBS_STATE: JobsState = {
 ```typescript
 // features/jobs/useJobsState.ts
 'use client';
-import { useSearchParams } from 'next/navigation';
 import { useUrlState } from 'state-in-url/next';
 import { JOBS_STATE } from './jobsState';
 
-export function useJobsState() {
-  const searchParams = useSearchParams();
+// `searchParams` comes from the server component at the top of the feature.
+// Do not call useSearchParams() here — see the nextjs-ssr skill.
+export function useJobsState(searchParams?: object) {
   return useUrlState(JOBS_STATE, { searchParams });
 }
 ```

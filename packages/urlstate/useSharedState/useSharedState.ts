@@ -1,8 +1,8 @@
-import React from "react";
+import React from 'react';
 
-import { stateMap, subscribers } from "../subscribers";
-import { useInsertionEffect } from "../useInsertionEffect";
-import { isEqual, isSSR, type JSONCompatible } from "../utils";
+import { stateMap, subscribers } from '../subscribers';
+import { useInsertionEffect } from '../useInsertionEffect';
+import { isEqual, isSSR, type JSONCompatible } from '../utils';
 
 /**
  * Custom React hook for sharing state between unrelated components.
@@ -53,7 +53,7 @@ export function useSharedState<T extends JSONCompatible>(
           ) => typeof stateShape.current),
     ): void => {
       const curr = stateMap.get(stateShape.current);
-      const isFunc = typeof value === "function";
+      const isFunc = typeof value === 'function';
 
       const newVal = isFunc
         ? value(curr as T, defaultState)
@@ -70,6 +70,13 @@ export function useSharedState<T extends JSONCompatible>(
       _setState(stateMap.get(stateShape.current) || stateShape.current);
     };
     return subscribers.add(stateShape.current, cb);
+  }, []);
+
+  // stateMap can change between render and subscribing; that write skips this
+  // instance, and later ones compare against the map, so it never catches up.
+  // Same object back when nothing changed, React bails out on identity.
+  React.useEffect(() => {
+    _setState((curr) => stateMap.get(stateShape.current) ?? curr);
   }, []);
 
   // get state without deps

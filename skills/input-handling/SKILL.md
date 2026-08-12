@@ -44,12 +44,11 @@ export const SEARCH_STATE: SearchState = { q: '', sort: 'name' };
 ```typescript
 // features/search/useSearchState.ts
 'use client';
-import { useSearchParams } from 'next/navigation';
 import { useUrlState } from 'state-in-url/next';
 import { SEARCH_STATE } from './searchState';
 
-export function useSearchState() {
-  const searchParams = useSearchParams();
+// `searchParams` comes from the server component at the top of the feature.
+export function useSearchState(searchParams?: object) {
   return useUrlState(SEARCH_STATE, { searchParams });
 }
 ```

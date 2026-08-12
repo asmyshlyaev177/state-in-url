@@ -99,7 +99,7 @@ Total: 23 failure modes across 6 skills.
 | Skill | Subsystems | Reference candidates |
 | --- | --- | --- |
 | react-router-remix-setup | /react-router (v7), /react-router6 (v6), /remix (v2) | — |
-| nextjs-ssr | server page + searchParams Promise; client + useSearchParams; Proxy + layout (middleware as deprecated alias) | — |
+| nextjs-ssr | server page + searchParams Promise; client + useSearchParams; prerendering/PPR; Proxy + layout (middleware as deprecated alias) | — |
 
 ## Remaining Gaps
 

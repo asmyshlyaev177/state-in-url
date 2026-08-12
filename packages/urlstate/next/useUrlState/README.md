@@ -23,6 +23,20 @@ An object containing:
 - `setUrl: Function` - Function to update both the state and the URL.
 - `reset: Function` - Function to reset state to default.
 
+### Prerendering
+
+The hook does not call `useSearchParams`, so a component using it does not need
+a `<Suspense>` boundary and does not opt its page out of prerendering. It reads
+the initial state from the `searchParams` you pass on the server and from
+`window.location.search` on the client, and it tracks later changes by observing
+the History API directly — which also catches URL changes Next's router never
+sees, such as the ones this hook makes itself in the default `useHistory: true`
+mode.
+
+A prerendered page still renders with the default state, because at build time
+there is no query string. Pass `searchParams` from a dynamically rendered server
+component when the first paint has to match a stateful URL.
+
 ### Example
 
 ```typescript

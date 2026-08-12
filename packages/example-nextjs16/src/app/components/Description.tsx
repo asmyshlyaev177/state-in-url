@@ -13,6 +13,9 @@ export const Description = () => (
       <p>Built test-first, with unit and cross-browser e2e suites running on every commit.</p>
     </div>
 
+    <h3 className='mt-8 mb-2 font-bold text-lg font-display text-ink'>Next.js: no Suspense boundary</h3>
+    <p className='text-base leading-relaxed text-ink2'>The hook never calls <Word>useSearchParams</Word>, so a component using it doesn&apos;t need wrapping in <Word>Suspense</Word> and doesn&apos;t opt its page out of prerendering — PPR and <Word>cacheComponents</Word> included. It reads the URL directly and follows every later change, including a <Word>history.pushState</Word> from code that knows nothing about it.</p>
+
     <h3 className='mt-8 mb-2 font-bold text-lg font-display text-ink'>Not on Next.js or react-router?</h3>
     <p className='text-base leading-relaxed text-ink2'>The <Word>encodeState</Word> / <Word>decodeState</Word> helpers work with any framework or plain JS — the hooks are a convenience on top.</p>
 

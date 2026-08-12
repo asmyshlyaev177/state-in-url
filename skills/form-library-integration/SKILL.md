@@ -48,14 +48,13 @@ export const FILTERS_STATE: FiltersState = {
 // features/filters/FiltersForm.tsx
 'use client';
 import React from 'react';
-import { useSearchParams } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useUrlState } from 'state-in-url/next';
 import { FILTERS_STATE, filtersSchema, type FiltersState } from './filtersState';
 
-export function FiltersForm() {
-  const searchParams = useSearchParams();
+// `searchParams` forwarded by the server page that renders this form
+export function FiltersForm({ searchParams }: { searchParams?: object }) {
   const { urlState, setUrl } = useUrlState(FILTERS_STATE, { searchParams });
 
   const form = useForm<FiltersState>({

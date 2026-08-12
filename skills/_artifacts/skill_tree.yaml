@@ -53,7 +53,8 @@ skills:
     path: 'skills/nextjs-ssr/SKILL.md'
     description: >
       SSR-safe useUrlState in Next.js App Router: forward searchParams from server pages (awaiting in
-      Next 15+), useSearchParams in client components, useHistory option, and the Proxy (formerly
+      Next 15+) rather than useSearchParams, useHistory option, prerendering (the hook does
+      not call useSearchParams, so no Suspense boundary is imposed), and the Proxy (formerly
       middleware) workaround for accessing query params in server layouts. App Router only — Pages
       Router unsupported.
     requires:

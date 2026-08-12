@@ -12,7 +12,10 @@ test.describe('Markdown Accept Header (landing only)', () => {
 
     expect(response.status()).toBe(200);
     expect(response.headers()['content-type']).toContain('text/markdown');
-    expect(response.headers()['cache-control']).toBe('public, max-age=3600');
+    // was `public, max-age=3600` — a second representation of `/` under the
+    // same URL, cached it gets served to human visitors.
+    // See tests/landing/negotiation.spec.ts
+    expect(response.headers()['cache-control']).toBe('no-store');
 
     const body = await response.text();
     expect(body).toContain('# state-in-url');

@@ -139,15 +139,29 @@ describe('encoder', () => {
     });
   });
 
+  // an instance and an ISO string are different values and have to encode
+  // differently, at the top level as well as inside an object — the symbol is
+  // the only thing that tells decode which one to give back
   describe('date', () => {
     test('instance', () => {
       const d = new Date('2024-06-28T09:10:38.763Z');
-      expect(encode(d)).toStrictEqual("'2024-06-28T09:10:38.763Z'");
+      expect(encode(d)).toStrictEqual("'⏲2024-06-28T09:10:38.763Z'");
     });
 
     test('iso string', () => {
       const d = '2024-06-28T09:10:38.763Z';
       expect(encode(d)).toStrictEqual("'2024-06-28T09:10:38.763Z'");
+    });
+
+    test('round trip keeps the two apart', () => {
+      const d = new Date('2024-06-28T09:10:38.763Z');
+      const decodedInstance = decode(encode(d));
+      expect(decodedInstance).toBeInstanceOf(Date);
+      expect((decodedInstance as Date).toISOString()).toStrictEqual(
+        d.toISOString(),
+      );
+
+      expect(decode(encode(d.toISOString()))).toStrictEqual(d.toISOString());
     });
   });
 
