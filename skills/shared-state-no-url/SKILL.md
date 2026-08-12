@@ -14,7 +14,7 @@ sources:
 metadata:
   type: core
   library: state-in-url
-  library_version: '6.2.4'
+  library_version: '6.3.0'
 ---
 
 # state-in-url — Shared state without URL sync

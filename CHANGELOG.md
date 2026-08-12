@@ -1,3 +1,10 @@
+# [6.3.0](https://github.com/asmyshlyaev177/state-in-url/compare/v6.2.4...v6.3.0) (2026-08-12)
+
+
+### Features
+
+* cacheable hook for next.js ([d326124](https://github.com/asmyshlyaev177/state-in-url/commit/d326124398c22753e16e695e2abb7ac9b6cc0460))
+
 ## [6.2.4](https://github.com/asmyshlyaev177/state-in-url/compare/v6.2.3...v6.2.4) (2026-07-31)
 
 

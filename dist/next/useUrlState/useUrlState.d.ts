@@ -1,5 +1,5 @@
-import { useRouter } from "next/navigation";
-import { type JSONCompatible } from "../../utils";
+import { useRouter } from 'next/navigation';
+import { type JSONCompatible } from '../../utils';
 /**
  * NextJS hook. Returns `urlState`, `setState`, and `setUrl` functions
  *
@@ -79,7 +79,7 @@ export declare function useUrlState<T extends JSONCompatible>(defaultState: T, p
     }) => void;
 };
 type Router = ReturnType<typeof useRouter>;
-type RouterOptions = NonNullable<Parameters<Router["push"]>[1] | Parameters<Router["replace"]>[1]>;
+type RouterOptions = NonNullable<Parameters<Router['push']>[1] | Parameters<Router['replace']>[1]>;
 export interface Options extends RouterOptions {
     replace?: boolean;
 }

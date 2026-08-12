@@ -1,4 +1,4 @@
-import { type JSONCompatible, type Simple } from "../utils";
+import { type JSONCompatible, type Simple } from '../utils';
 /**
  * Encode any JSON serializable value to URL friendly string
  *

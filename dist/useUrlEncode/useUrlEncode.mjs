@@ -1,1 +1,1 @@
-import o from"react";import{encodeState as s,decodeState as a}from"../encodeState/encodeState.mjs";function u(e){const n=o.useCallback((t,c)=>{return s(t,e,c)},[e]);const r=o.useCallback(t=>a(t,e),[e]);return{parse:r,stringify:n}}export{u as useUrlEncode};
+import o from"react";import{encodeState as a,decodeState as s}from"../encodeState/encodeState.mjs";function u(e){const n=o.useCallback((t,c)=>{return a(t,e,c)},[e]);const r=o.useCallback(t=>s(t,e),[e]);return{parse:r,stringify:n}}export{u as useUrlEncode};

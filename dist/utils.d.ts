@@ -34,3 +34,13 @@ export declare const routerHistory: Router;
 export declare const isSafari: boolean;
 export declare const popstateEv = "popstate";
 export declare function getSearch(): string;
+type UrlCb = () => void;
+/**
+ * Subscribe to any URL change: back/forward, this library's own writes, or a
+ * router using the History API. Runs after `window.location` is updated.
+ *
+ * @param {() => void} cb - called on every URL change
+ * @returns {() => void} unsubscribe
+ */
+export declare function subscribeToUrl(cb: UrlCb): () => void;
+export {};

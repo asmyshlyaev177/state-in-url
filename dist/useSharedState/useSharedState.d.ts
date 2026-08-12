@@ -1,4 +1,4 @@
-import { type JSONCompatible } from "../utils";
+import { type JSONCompatible } from '../utils';
 /**
  * Custom React hook for sharing state between unrelated components.
  *
