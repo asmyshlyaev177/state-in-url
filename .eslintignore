@@ -3,6 +3,7 @@ package.json
 playwright.config.ts
 rollup.config.*
 .eslintrc.cjs
+scripts
 *.test.ts
 *.test.tsx
 *.spec.ts

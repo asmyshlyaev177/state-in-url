@@ -6,9 +6,11 @@ description: >
   Covers drawer/modal open-state, tab switching, multi-select toggles,
   reset/defaults semantics, and the object-identity-based sharing model. Load
   this skill when storing filters, tabs, drawers, selections, paginators, or any
-  UI state that should survive reloads and be shareable by URL.
+  UI state that should survive reloads and be shareable by URL, and when a link
+  to another route has to carry that state with it.
 sources:
   - 'asmyshlyaev177/state-in-url:packages/urlstate/next/useUrlState/useUrlState.ts'
+  - 'asmyshlyaev177/state-in-url:packages/urlstate/useLinkProps/useLinkProps.ts'
   - 'asmyshlyaev177/state-in-url:packages/urlstate/utils.ts'
   - 'asmyshlyaev177/state-in-url:README.md'
 metadata:
@@ -355,6 +357,17 @@ Entity IDs (`jobId`, `memberId`, `channelId`) referencing public or semi-public 
 - **`useSharedState`** — cross-component state without URL sync. See `state-in-url/shared-state-no-url`.
 - **`encodeState` / `decodeState`** — server-side or Node.js encoding/decoding of state strings (e.g. inside Next.js Proxy or a layout). Imported from `state-in-url/encodeState`.
 - **`useUrlStateBase`** — build a `useUrlState` for an unsupported router (TanStack Router etc.). Imported from `state-in-url/useUrlStateBase`.
+- **`useLinkProps`** — carry the state to a link pointing at a *different route* (language switcher, "same filters, other view"). `setUrl` cannot express this: it always writes to the current path. Imported from `state-in-url/useLinkProps`.
+
+```tsx
+import { useLinkProps } from 'state-in-url/useLinkProps';
+
+const linkProps = useLinkProps(filters, useRouter().push);
+
+<Link {...linkProps('/de/jobs')}>Deutsch</Link>;
+```
+
+Spread it; never build the query into `href` yourself. The plain `href` keeps crawlers, prefetch and `hreflang` on the canonical URL, and a state-bearing `href` is a hydration mismatch — the server does not know the state yet.
 
 ## URL size
 

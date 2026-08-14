@@ -1,6 +1,6 @@
 <!-- i18n:start -->
 [English](./README.md) · [简体中文](./README.zh-CN.md) · [日本語](./README.ja.md) · [한국어](./README.ko.md) · [Русский](./README.ru.md) · [Español](./README.es.md) · Português (BR) · [Français](./README.fr.md) · [Tiếng Việt](./README.vi.md)
-<!-- i18n:meta locale=pt-BR source=README.md source-blob=01b5b4f72aa3c8871c185cfce21c6d696edb847b status=translated -->
+<!-- i18n:meta locale=pt-BR source=README.md source-blob=bbf45a10aae9e88f68b27d84f51ee3e7e8a1e436 status=translated -->
 <!-- i18n:end -->
 
 <div align="center">
@@ -134,6 +134,7 @@ Esta biblioteca é uma boa alternativa ao NUQS.
   - [Outros hooks e helpers](#outros-hooks-e-helpers)
     - [Hook `useUrlStateBase` para outros routers](#hook-useurlstatebase-para-outros-routers)
     - [Hook `useSharedState` para React.js](#hook-usesharedstate-para-reactjs)
+    - [Hook `useLinkProps` para React.js](#hook-uselinkprops-para-reactjs)
     - [Hook `useUrlEncode` para React.js](#hook-useurlencode-para-reactjs)
     - [Helpers `encodeState` e `decodeState`](#helpers-encodestate-e-decodestate)
     - [Helpers `encode` e `decode`](#helpers-encode-e-decode)
@@ -697,6 +698,29 @@ function SettingsComponent() {
 ```
 
 [Documentação da API](packages/urlstate/useSharedState/README.pt-BR.md)
+
+### Hook `useLinkProps` para React.js
+
+Hook para levar o estado até um link que aponta para outra rota, por exemplo um seletor de idioma. `setUrl` sempre escreve no caminho atual; este não.
+
+```tsx
+'use client'
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useLinkProps } from 'state-in-url/useLinkProps';
+
+export const form = { name: '' };
+
+function LanguagePicker() {
+  const linkProps = useLinkProps(form, useRouter().push);
+
+  return <Link {...linkProps('/de/pricing')}>Deutsch</Link>;
+}
+```
+
+A marcação mantém o `href` simples, então rastreadores e `hreflang` enxergam a URL canônica; o estado é lido no clique.
+
+[Documentação da API](packages/urlstate/useLinkProps/README.pt-BR.md)
 
 ### Hook `useUrlEncode` para React.js
 

@@ -10,13 +10,19 @@ import net from 'node:net';
  * invocations kill each other.
  */
 const PORTS = [3000, 3001, 3002, 5180, 5181, 5182, 5183];
+// Both loopback families, never a hostname. `vite preview` binds loopback only
+// ("use --host to expose"), and a container whose `localhost` resolves to the
+// family it did not pick makes a listening server look dead for the full
+// timeout — which is how CI failed on 5180 three minutes after vite announced
+// it. Next binds `0.0.0.0` and was never affected.
+const HOSTS = ['127.0.0.1', '::1'];
 const TIMEOUT_MS = 180_000;
 const RETRY_MS = 250;
 
-const listening = (port: number) =>
+const connects = (port: number, host: string) =>
   new Promise<boolean>((resolve) => {
     const socket = net
-      .connect({ port, host: '127.0.0.1' })
+      .connect({ port, host })
       .setTimeout(1000)
       .on('connect', () => {
         socket.destroy();
@@ -29,18 +35,29 @@ const listening = (port: number) =>
       });
   });
 
+const listening = async (port: number) =>
+  (await Promise.all(HOSTS.map((host) => connects(port, host)))).some(Boolean);
+
 async function waitFor(port: number, deadline: number) {
   while (Date.now() < deadline) {
-    if (await listening(port)) return;
+    if (await listening(port)) return true;
     await new Promise((resolve) => setTimeout(resolve, RETRY_MS));
   }
-  throw new Error(
-    `Demo server on port ${port} never came up. Start it with \`pnpm run start:ci\`, ` +
-      'or `pnpm run kill` first if a previous run left one wedged.',
-  );
+  return false;
 }
 
 export default async function globalSetup() {
   const deadline = Date.now() + TIMEOUT_MS;
-  await Promise.all(PORTS.map((port) => waitFor(port, deadline)));
+  const states = await Promise.all(
+    PORTS.map(async (port) => [port, await waitFor(port, deadline)] as const),
+  );
+
+  const down = states.filter(([, up]) => !up).map(([port]) => port);
+  if (!down.length) return;
+
+  const up = states.filter(([, isUp]) => isUp).map(([port]) => port);
+  throw new Error(
+    `Demo server(s) never came up on port(s) ${down.join(', ')} — up: ${up.join(', ') || 'none'}. ` +
+      'Start them with `pnpm run start:ci`, or `pnpm run kill` first if a previous run left one wedged.',
+  );
 }

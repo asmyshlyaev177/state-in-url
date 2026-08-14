@@ -1,6 +1,6 @@
 <!-- i18n:start -->
 [English](./README.md) · [简体中文](./README.zh-CN.md) · [日本語](./README.ja.md) · [한국어](./README.ko.md) · [Русский](./README.ru.md) · [Español](./README.es.md) · [Português (BR)](./README.pt-BR.md) · Français · [Tiếng Việt](./README.vi.md)
-<!-- i18n:meta locale=fr source=README.md source-blob=01b5b4f72aa3c8871c185cfce21c6d696edb847b status=translated -->
+<!-- i18n:meta locale=fr source=README.md source-blob=bbf45a10aae9e88f68b27d84f51ee3e7e8a1e436 status=translated -->
 <!-- i18n:end -->
 
 <div align="center">
@@ -134,6 +134,7 @@ Cette bibliothèque est une bonne alternative à NUQS.
   - [Autres hooks et helpers](#autres-hooks-et-helpers)
     - [Hook `useUrlStateBase` pour d'autres routeurs](#hook-useurlstatebase-pour-dautres-routeurs)
     - [Hook `useSharedState` pour React.js](#hook-usesharedstate-pour-reactjs)
+    - [Hook `useLinkProps` pour React.js](#hook-uselinkprops-pour-reactjs)
     - [Hook `useUrlEncode` pour React.js](#hook-useurlencode-pour-reactjs)
     - [Helpers `encodeState` et `decodeState`](#helpers-encodestate-et-decodestate)
     - [Helpers `encode` et `decode`](#helpers-encode-et-decode)
@@ -697,6 +698,29 @@ function SettingsComponent() {
 ```
 
 [Documentation de l'API](packages/urlstate/useSharedState/README.fr.md)
+
+### Hook `useLinkProps` pour React.js
+
+Hook qui emporte l'état vers un lien pointant sur une autre route, par exemple un sélecteur de langue. `setUrl` écrit toujours sur le chemin courant ; celui-ci non.
+
+```tsx
+'use client'
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useLinkProps } from 'state-in-url/useLinkProps';
+
+export const form = { name: '' };
+
+function LanguagePicker() {
+  const linkProps = useLinkProps(form, useRouter().push);
+
+  return <Link {...linkProps('/de/pricing')}>Deutsch</Link>;
+}
+```
+
+Le balisage conserve le `href` tel quel : les robots d'indexation et `hreflang` voient donc l'URL canonique ; l'état est lu au clic.
+
+[Documentation de l'API](packages/urlstate/useLinkProps/README.fr.md)
 
 ### Hook `useUrlEncode` pour React.js
 

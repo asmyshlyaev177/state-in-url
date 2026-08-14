@@ -8,6 +8,7 @@ import { useUrlState } from '../../dist/next';
 import { useUrlState as useUrlStateRR6 } from '../../dist/react-router6';
 import { useUrlState as useUrlStateRR } from '../../dist/react-router';
 import { useUrlState as useUrlStateRemix } from '../../dist/remix';
+import { useLinkProps } from '../../dist/useLinkProps';
 import { useSharedState } from '../../dist/useSharedState';
 import { useUrlEncode } from '../../dist/useUrlEncode';
 import { useUrlStateBase } from '../../dist/useUrlStateBase';
@@ -52,6 +53,9 @@ assert(loadFile('/useSharedState/useSharedState.d.ts').length > 15, errorMsg);
 
 assert.ok(useUrlEncode, errorMsg);
 assert(loadFile('/useUrlEncode/useUrlEncode.d.ts').length > 15, errorMsg);
+
+assert.ok(useLinkProps, errorMsg);
+assert(loadFile('/useLinkProps/useLinkProps.d.ts').length > 15, errorMsg);
 
 assert.ok(encodeState, errorMsg);
 assert(loadFile('/encodeState/encodeState.d.ts').length > 15, errorMsg);

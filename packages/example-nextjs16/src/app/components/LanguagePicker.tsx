@@ -2,10 +2,8 @@
 
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import type React from 'react';
 import { form } from 'shared/form';
-import { useUrlState } from 'state-in-url/next';
-import { useUrlEncode } from 'state-in-url/useUrlEncode';
+import { useLinkProps } from 'state-in-url/useLinkProps';
 
 import { ALL_LOCALES, localePrefix, PAGES, stripLocale, type Locale } from '../i18n';
 
@@ -22,26 +20,9 @@ import { ALL_LOCALES, localePrefix, PAGES, stripLocale, type Locale } from '../i
  */
 export function LanguagePicker({ current, label }: { current: Locale; label: string }) {
   const path = stripLocale(usePathname()).replace(/\/$/, '');
-  const router = useRouter();
-  // The demo's own `form` object — `useSharedState` keys on its identity.
-  const { urlState, setUrl } = useUrlState(form);
-  const { stringify } = useUrlEncode(form);
+  // `form` is the demo's own object — `useSharedState` keys on its identity.
+  const linkProps = useLinkProps(form, useRouter().push);
   if (!(PAGES as readonly string[]).includes(path)) return null;
-
-  /**
-   * Carry the demo state across, encoded by the library the page demonstrates.
-   * `stringify` sets over `window.location.search`, so non-form params survive.
-   *
-   * On click, not in `href`: the markup keeps the clean URL that `hreflang`
-   * has to agree with, and modified clicks fall through to it.
-   */
-  const keepDemoState = (event: React.MouseEvent<HTMLAnchorElement>) => {
-    if (event.metaKey || event.ctrlKey || event.shiftKey || event.button !== 0) return;
-    const query = stringify(urlState, window.location.search);
-    if (!query) return;
-    event.preventDefault();
-    router.push(`${event.currentTarget.getAttribute('href')}?${query}`);
-  };
 
   return (
     <details className="lang-picker">
@@ -69,9 +50,10 @@ export function LanguagePicker({ current, label }: { current: Locale; label: str
           ) : (
             <Link
               key={locale.code}
-              href={`${localePrefix(locale.code)}${path}`.replace(/\/$/, '') || '/'}
+              {...linkProps(
+                `${localePrefix(locale.code)}${path}`.replace(/\/$/, '') || '/',
+              )}
               hrefLang={locale.code}
-              onClick={keepDemoState}
             >
               {locale.label}
             </Link>

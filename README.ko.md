@@ -1,6 +1,6 @@
 <!-- i18n:start -->
 [English](./README.md) · [简体中文](./README.zh-CN.md) · [日本語](./README.ja.md) · 한국어 · [Русский](./README.ru.md) · [Español](./README.es.md) · [Português (BR)](./README.pt-BR.md) · [Français](./README.fr.md) · [Tiếng Việt](./README.vi.md)
-<!-- i18n:meta locale=ko source=README.md source-blob=01b5b4f72aa3c8871c185cfce21c6d696edb847b status=translated -->
+<!-- i18n:meta locale=ko source=README.md source-blob=bbf45a10aae9e88f68b27d84f51ee3e7e8a1e436 status=translated -->
 <!-- i18n:end -->
 
 <div align="center">
@@ -134,6 +134,7 @@ Next.js와 react-router용 `useUrlState` 훅과 그 외 JS 환경을 위한 헬�
   - [기타 훅과 헬퍼](#기타-훅과-헬퍼)
     - [다른 라우터용 `useUrlStateBase` 훅](#다른-라우터용-useurlstatebase-훅)
     - [React.js용 `useSharedState` 훅](#reactjs용-usesharedstate-훅)
+    - [React.js용 `useLinkProps` 훅](#reactjs용-uselinkprops-훅)
     - [React.js용 `useUrlEncode` 훅](#reactjs용-useurlencode-훅)
     - [`encodeState` 및 `decodeState` 헬퍼](#encodestate-및-decodestate-헬퍼)
     - [`encode` 및 `decode` 헬퍼](#encode-및-decode-헬퍼)
@@ -693,6 +694,29 @@ function SettingsComponent() {
 ```
 
 [API 문서](packages/urlstate/useSharedState/README.md)
+
+### React.js용 `useLinkProps` 훅
+
+다른 라우트를 가리키는 링크로 상태를 넘기는 훅입니다. 예를 들어 언어 전환기에 씁니다. `setUrl` 은 언제나 현재 경로에 쓰지만, 이 훅은 그렇지 않습니다.
+
+```tsx
+'use client'
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useLinkProps } from 'state-in-url/useLinkProps';
+
+export const form = { name: '' };
+
+function LanguagePicker() {
+  const linkProps = useLinkProps(form, useRouter().push);
+
+  return <Link {...linkProps('/de/pricing')}>Deutsch</Link>;
+}
+```
+
+마크업에는 원래의 `href` 가 남으므로 크롤러와 `hreflang` 은 정규 URL 을 봅니다. 상태는 클릭할 때 읽습니다.
+
+[API 문서](packages/urlstate/useLinkProps/README.ko.md)
 
 ### React.js용 `useUrlEncode` 훅
 

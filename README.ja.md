@@ -1,6 +1,6 @@
 <!-- i18n:start -->
 [English](./README.md) · [简体中文](./README.zh-CN.md) · 日本語 · [한국어](./README.ko.md) · [Русский](./README.ru.md) · [Español](./README.es.md) · [Português (BR)](./README.pt-BR.md) · [Français](./README.fr.md) · [Tiếng Việt](./README.vi.md)
-<!-- i18n:meta locale=ja source=README.md source-blob=01b5b4f72aa3c8871c185cfce21c6d696edb847b status=translated -->
+<!-- i18n:meta locale=ja source=README.md source-blob=bbf45a10aae9e88f68b27d84f51ee3e7e8a1e436 status=translated -->
 <!-- i18n:end -->
 
 <div align="center">
@@ -134,6 +134,7 @@ Next.js と react-router 用の `useUrlState` フックと、その他あらゆ�
   - [その他のフックとヘルパー](#その他のフックとヘルパー)
     - [他のルーター向け `useUrlStateBase` フック](#他のルーター向け-useurlstatebase-フック)
     - [React.js 向け `useSharedState` フック](#reactjs-向け-usesharedstate-フック)
+    - [React.js 向け `useLinkProps` フック](#reactjs-向け-uselinkprops-フック)
     - [React.js 向け `useUrlEncode` フック](#reactjs-向け-useurlencode-フック)
     - [`encodeState` と `decodeState` ヘルパー](#encodestate-と-decodestate-ヘルパー)
     - [`encode` と `decode` ヘルパー](#encode-と-decode-ヘルパー)
@@ -697,6 +698,29 @@ function SettingsComponent() {
 ```
 
 [API ドキュメント](packages/urlstate/useSharedState/README.ja.md)
+
+### React.js 向け `useLinkProps` フック
+
+別のルートを指すリンクに状態を引き継ぐためのフックです。言語切り替えなどに使います。`setUrl` は常に現在のパスに書き込みますが、こちらは違います。
+
+```tsx
+'use client'
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useLinkProps } from 'state-in-url/useLinkProps';
+
+export const form = { name: '' };
+
+function LanguagePicker() {
+  const linkProps = useLinkProps(form, useRouter().push);
+
+  return <Link {...linkProps('/de/pricing')}>Deutsch</Link>;
+}
+```
+
+マークアップには素の `href` が残るため、クローラーと `hreflang` は正規の URL を参照します。状態はクリック時に読み取られます。
+
+[API ドキュメント](packages/urlstate/useLinkProps/README.ja.md)
 
 ### React.js 向け `useUrlEncode` フック
 

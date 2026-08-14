@@ -1,6 +1,6 @@
 <!-- i18n:start -->
 [English](./README.md) · [简体中文](./README.zh-CN.md) · [日本語](./README.ja.md) · 한국어 · [Русский](./README.ru.md) · [Español](./README.es.md) · [Português (BR)](./README.pt-BR.md) · [Français](./README.fr.md) · [Tiếng Việt](./README.vi.md)
-<!-- i18n:meta locale=ko source=README.md source-blob=fbab0994576ed368b31b4f2646b17568ae27e788 status=translated -->
+<!-- i18n:meta locale=ko source=README.md source-blob=9e33210eb5f1c44c1a212e2c5851d4f3331bd148 status=translated -->
 <!-- i18n:end -->
 
 # 콘텐츠
@@ -10,6 +10,8 @@
 [`useUrlState` NextJS 훅](useUrlState/README.ko.md)
 
 [`useUrlEncode` React 훅](useUrlEncode/README.ko.md)
+
+[`useLinkProps` React 훅, 다른 라우트로 가는 링크용](useLinkProps/README.ko.md)
 
 [객체용 `encodeState` 함수](encodeState/README.ko.md)
 

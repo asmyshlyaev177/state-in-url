@@ -134,6 +134,7 @@ This library is a good alternative for NUQS.
   - [Other hooks and helpers](#other-hooks-and-helpers)
     - [`useUrlStateBase` hook for others routers](#useurlstatebase-hook-for-others-routers)
     - [`useSharedState` hook for React.js](#usesharedstate-hook-for-reactjs)
+    - [`useLinkProps` hook for React.js](#uselinkprops-hook-for-reactjs)
     - [`useUrlEncode` hook for React.js](#useurlencode-hook-for-reactjs)
     - [`encodeState` and `decodeState` helpers](#encodestate-and-decodestate-helpers)
     - [`encode` and `decode` helpers](#encode-and-decode-helpers)
@@ -697,6 +698,29 @@ function SettingsComponent() {
 ```
 
 [API Docs](packages/urlstate/useSharedState/README.md)
+
+### `useLinkProps` hook for React.js
+
+Hook to carry the state to a link pointing at a different route, e.g. a language switcher. `setUrl` always writes to the current path; this doesn't.
+
+```tsx
+'use client'
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useLinkProps } from 'state-in-url/useLinkProps';
+
+export const form = { name: '' };
+
+function LanguagePicker() {
+  const linkProps = useLinkProps(form, useRouter().push);
+
+  return <Link {...linkProps('/de/pricing')}>Deutsch</Link>;
+}
+```
+
+The markup keeps the plain `href`, so crawlers and `hreflang` see the canonical URL; the state is read on click.
+
+[API Docs](packages/urlstate/useLinkProps/README.md)
 
 ### `useUrlEncode` hook for React.js
 

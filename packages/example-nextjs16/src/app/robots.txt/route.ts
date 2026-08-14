@@ -19,6 +19,7 @@ import { ALL_LOCALES, localePrefix, PAGES } from '../i18n';
  */
 const testFixtures = [
   '/useUrlEncode',
+  '/test-link-props',
   '/test-ssr',
   '/test-use',
   '/useSharedState',

@@ -146,6 +146,17 @@ export function filterUnknownParamsClient<T extends object>(
   return shapeParams.toString();
 }
 
+/** Params of `search` that the state shape does not own, so they survive a write. */
+export function getOtherParams<T extends object>(shape: T, search: string) {
+  const shapeKeys = Object.keys(shape);
+  const params = new URLSearchParams();
+
+  for (const [key, value] of new URLSearchParams(search)) {
+    !shapeKeys.includes(key) && params.set(key, value);
+  }
+  return params;
+}
+
 export function filterUnknownParams<T extends object>(
   shape: T,
   searchParams?: object | URLSearchParams,

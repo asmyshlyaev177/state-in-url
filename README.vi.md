@@ -1,6 +1,6 @@
 <!-- i18n:start -->
 [English](./README.md) · [简体中文](./README.zh-CN.md) · [日本語](./README.ja.md) · [한국어](./README.ko.md) · [Русский](./README.ru.md) · [Español](./README.es.md) · [Português (BR)](./README.pt-BR.md) · [Français](./README.fr.md) · Tiếng Việt
-<!-- i18n:meta locale=vi source=README.md source-blob=01b5b4f72aa3c8871c185cfce21c6d696edb847b status=translated -->
+<!-- i18n:meta locale=vi source=README.md source-blob=bbf45a10aae9e88f68b27d84f51ee3e7e8a1e436 status=translated -->
 <!-- i18n:end -->
 
 <div align="center">
@@ -134,6 +134,7 @@ Thư viện này là một lựa chọn thay thế tốt cho NUQS.
   - [Các hook và helper khác](#các-hook-và-helper-khác)
     - [Hook `useUrlStateBase` cho các router khác](#hook-useurlstatebase-cho-các-router-khác)
     - [Hook `useSharedState` cho React.js](#hook-usesharedstate-cho-reactjs)
+    - [Hook `useLinkProps` cho React.js](#hook-uselinkprops-cho-reactjs)
     - [Hook `useUrlEncode` cho React.js](#hook-useurlencode-cho-reactjs)
     - [Helper `encodeState` và `decodeState`](#helper-encodestate-và-decodestate)
     - [Helper `encode` và `decode`](#helper-encode-và-decode)
@@ -697,6 +698,29 @@ function SettingsComponent() {
 ```
 
 [Tài liệu API](packages/urlstate/useSharedState/README.vi.md)
+
+### Hook `useLinkProps` cho React.js
+
+Hook mang trạng thái sang một liên kết trỏ tới route khác, ví dụ bộ chuyển ngôn ngữ. `setUrl` luôn ghi vào đường dẫn hiện tại, hook này thì không.
+
+```tsx
+'use client'
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useLinkProps } from 'state-in-url/useLinkProps';
+
+export const form = { name: '' };
+
+function LanguagePicker() {
+  const linkProps = useLinkProps(form, useRouter().push);
+
+  return <Link {...linkProps('/de/pricing')}>Deutsch</Link>;
+}
+```
+
+Phần đánh dấu vẫn giữ `href` nguyên bản, nên trình thu thập dữ liệu và `hreflang` thấy URL chuẩn tắc; trạng thái được đọc lúc nhấp chuột.
+
+[Tài liệu API](packages/urlstate/useLinkProps/README.vi.md)
 
 ### Hook `useUrlEncode` cho React.js
 

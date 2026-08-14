@@ -64,5 +64,11 @@ module.exports = {
         '@typescript-eslint/no-unused-vars': 'warn',
       },
     },
+    {
+      // `tsconfig.json` excludes `tests`, so type-aware parsing cannot reach
+      // these — without this they are a parsing error, not a lint result.
+      files: ['tests/**/*.ts'],
+      parserOptions: { project: null },
+    },
   ],
 };
