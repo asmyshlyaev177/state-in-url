@@ -73,6 +73,11 @@
       "types": "./dist/useSharedState/index.d.ts",
       "default": "./dist/useSharedState/index.mjs"
     },
+    "./useLinkProps": {
+      "require": "./dist/useLinkProps/index.js",
+      "types": "./dist/useLinkProps/index.d.ts",
+      "default": "./dist/useLinkProps/index.mjs"
+    },
     "./useUrlEncode": {
       "require": "./dist/useUrlEncode/index.js",
       "types": "./dist/useUrlEncode/index.d.ts",
@@ -182,7 +187,7 @@
       "command": "ps aux | grep -E '.next|.bin/vite|remix-serve|@remix-run/serve' | grep -v grep | awk '{print $2}' | xargs -r kill -9 2>&1; ps axu | grep '[w]ireit' | grep -v grep | awk -v me=$PPID '$2 != me {print $2}' | xargs -r kill -9 2>&1; exit 0"
     },
     "test:int:ci": {
-      "command": "npx cross-env HOME=/root PLAYWRIGHT_BROWSERS_PATH=0 playwright test"
+      "command": "pnpm exec cross-env HOME=/root PLAYWRIGHT_BROWSERS_PATH=0 playwright test"
     },
     "test:int": {
       "command": "playwright test --project=chromium --retries=2"
@@ -192,14 +197,14 @@
       "dependencies": [
         "build"
       ],
-      "command": "npx tsc --noEmit"
+      "command": "pnpm exec tsc --noEmit"
     },
     "test:unit": {
       "comment": "`--run`, not watch: `pnpm run test` depends on this and a watching vitest never exits. `npx vitest` for watch.",
       "dependencies": [
         "tsc"
       ],
-      "command": "npx vitest --run"
+      "command": "pnpm exec vitest --run"
     },
     "dev:lib": {
       "command": "cross-env IS_DEVELOPMENT=true rollup -c rollup.config.mjs -w",
@@ -282,7 +287,7 @@
       "dependencies": [
         "build"
       ],
-      "command": "cd packages/example-nextjs16 && npx cross-env TEST=true pnpm run build"
+      "command": "cd packages/example-nextjs16 && pnpm exec cross-env TEST=true pnpm run build"
     },
     "start:demo": {
       "dependencies": [
@@ -296,42 +301,42 @@
       "service": true
     },
     "start:react": {
-      "command": "npx vite preview --port 5180 packages/example-react",
+      "command": "pnpm exec vite preview --port 5180 packages/example-react",
       "dependencies": [
         "build:react"
       ],
       "service": true
     },
     "start:react:ci": {
-      "command": "npx vite preview --port 5180 packages/example-react",
+      "command": "pnpm exec vite preview --port 5180 packages/example-react",
       "dependencies": [
         "kill-services"
       ],
       "service": true
     },
     "start:router6": {
-      "command": "npx vite preview --port 5181 packages/example-react-router6",
+      "command": "pnpm exec vite preview --port 5181 packages/example-react-router6",
       "dependencies": [
         "build:router6"
       ],
       "service": true
     },
     "start:router6:ci": {
-      "command": "npx vite preview --port 5181 packages/example-react-router6",
+      "command": "pnpm exec vite preview --port 5181 packages/example-react-router6",
       "dependencies": [
         "kill-services"
       ],
       "service": true
     },
     "start:router7": {
-      "command": "npx vite preview --port 5183 packages/example-react-router7",
+      "command": "pnpm exec vite preview --port 5183 packages/example-react-router7",
       "dependencies": [
         "build:router7"
       ],
       "service": true
     },
     "start:router7:ci": {
-      "command": "npx vite preview --port 5183 packages/example-react-router7",
+      "command": "pnpm exec vite preview --port 5183 packages/example-react-router7",
       "dependencies": [
         "kill-services"
       ],

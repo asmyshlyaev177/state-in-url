@@ -50,7 +50,9 @@ jobs:
       #   run: npm run test:exports
 
       - name: Unit tests
-        run: pnpm exec tsc --noEmit && pnpm exec vitest --run --coverage
+        # Through wireit: the examples import `state-in-url`, so the typecheck
+        # needs a built `dist/`, and `tsc` depends on `build`.
+        run: pnpm run tsc && pnpm exec vitest --run --coverage
       - name: Run codacy-coverage-reporter
         uses: codacy/codacy-coverage-reporter-action@89d6c85cfafaec52c72b6c5e8b2878d33104c699 # v1.3.0
         continue-on-error: true

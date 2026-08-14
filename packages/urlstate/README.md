@@ -11,6 +11,8 @@ Here is links to relevant documentation, you can also just click on folder to se
 
 [`useUrlEncode` React hook](useUrlEncode/README.md)
 
+[`useLinkProps` React hook, for links to another route](useLinkProps/README.md)
+
 [`encodeState` function for objects](encodeState/README.md)
 
 [`encoder` for single query value](encoder/README.md)

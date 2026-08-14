@@ -1,6 +1,6 @@
 <!-- i18n:start -->
 [English](./README.md) · 简体中文 · [日本語](./README.ja.md) · [한국어](./README.ko.md) · [Русский](./README.ru.md) · [Español](./README.es.md) · [Português (BR)](./README.pt-BR.md) · [Français](./README.fr.md) · [Tiếng Việt](./README.vi.md)
-<!-- i18n:meta locale=zh-CN source=README.md source-blob=01b5b4f72aa3c8871c185cfce21c6d696edb847b status=translated -->
+<!-- i18n:meta locale=zh-CN source=README.md source-blob=bbf45a10aae9e88f68b27d84f51ee3e7e8a1e436 status=translated -->
 <!-- i18n:end -->
 
 <div align="center">
@@ -134,6 +134,7 @@
   - [其他 hooks 和辅助函数](#其他-hooks-和辅助函数)
     - [`useUrlStateBase` hook 用于其他路由器](#useurlstatebase-hook-用于其他路由器)
     - [`useSharedState` hook 用于 React.js](#usesharedstate-hook-用于-reactjs)
+    - [`useLinkProps` hook 用于 React.js](#uselinkprops-hook-用于-reactjs)
     - [`useUrlEncode` hook 用于 React.js](#useurlencode-hook-用于-reactjs)
     - [`encodeState` 和 `decodeState` 辅助函数](#encodestate-和-decodestate-辅助函数)
     - [`encode` 和 `decode` 辅助函数](#encode-和-decode-辅助函数)
@@ -697,6 +698,29 @@ function SettingsComponent() {
 ```
 
 [API 文档](packages/urlstate/useSharedState/README.md)
+
+### `useLinkProps` hook 用于 React.js
+
+用于把状态带到指向另一个路由的链接上的 hook，例如语言切换器。`setUrl` 始终写入当前路径，这个 hook 不会。
+
+```tsx
+'use client'
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useLinkProps } from 'state-in-url/useLinkProps';
+
+export const form = { name: '' };
+
+function LanguagePicker() {
+  const linkProps = useLinkProps(form, useRouter().push);
+
+  return <Link {...linkProps('/de/pricing')}>Deutsch</Link>;
+}
+```
+
+标记中保留原始的 `href`，因此爬虫和 `hreflang` 看到的是规范 URL；状态在点击时读取。
+
+[API 文档](packages/urlstate/useLinkProps/README.zh-CN.md)
 
 ### `useUrlEncode` hook 用于 React.js
 

@@ -10,14 +10,16 @@ character, keep their backticks, keep their capitalisation. If a sentence reads
 awkwardly around one, rewrite the sentence — not the identifier.
 
 **Hooks**
-`useUrlState` · `useUrlStateBase` · `useSharedState` · `useUrlEncode`
+`useUrlState` · `useUrlStateBase` · `useSharedState` · `useUrlEncode` ·
+`useLinkProps`
 
 **Functions**
 `encodeState` · `decodeState` · `encode` · `decode`
 
 **Returned members and options**
 `urlState` · `setUrlState` · `setState` · `reset` · `updateUrl` · `updateState` ·
-`replace` · `scroll` · `searchParams` · `defaultState` · `stateShape`
+`replace` · `scroll` · `searchParams` · `defaultState` · `stateShape` · `href` ·
+`onClick` · `navigate`
 
 **React and framework identifiers appearing as literals**
 `React.useState` · `useSearchParams` · `Suspense` · `useRouter` · `usePathname` ·

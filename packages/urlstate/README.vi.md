@@ -1,6 +1,6 @@
 <!-- i18n:start -->
 [English](./README.md) · [简体中文](./README.zh-CN.md) · [日本語](./README.ja.md) · [한국어](./README.ko.md) · [Русский](./README.ru.md) · [Español](./README.es.md) · [Português (BR)](./README.pt-BR.md) · [Français](./README.fr.md) · Tiếng Việt
-<!-- i18n:meta locale=vi source=README.md source-blob=fbab0994576ed368b31b4f2646b17568ae27e788 status=translated -->
+<!-- i18n:meta locale=vi source=README.md source-blob=9e33210eb5f1c44c1a212e2c5851d4f3331bd148 status=translated -->
 <!-- i18n:end -->
 
 # Nội dung
@@ -10,6 +10,8 @@
 [`useUrlState` hook NextJS](useUrlState/README.vi.md)
 
 [`useUrlEncode` hook React](useUrlEncode/README.vi.md)
+
+[`useLinkProps` hook React, cho liên kết sang route khác](useLinkProps/README.vi.md)
 
 [Hàm `encodeState` cho object](encodeState/README.vi.md)
 

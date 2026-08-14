@@ -1,16 +1,17 @@
-import React from "react";
+import React from 'react';
 
-import { TIMEOUT } from "../constants";
-import { useInsertionEffect } from "../useInsertionEffect";
-import { useSharedState } from "../useSharedState";
-import { useUrlEncode } from "../useUrlEncode";
+import { TIMEOUT } from '../constants';
+import { useInsertionEffect } from '../useInsertionEffect';
+import { useSharedState } from '../useSharedState';
+import { useUrlEncode } from '../useUrlEncode';
 import {
   filterUnknownParamsClient,
+  getOtherParams,
   getSearch,
   type JSONCompatible,
   popstateEv,
   type Router,
-} from "../utils";
+} from '../utils';
 
 /**
  * A custom React hook to create custom hooks.
@@ -52,7 +53,7 @@ let timer: ReturnType<typeof setTimeout> | undefined;
 let pendingUpdate:
   | {
       router: Router;
-      method: "push" | "replace";
+      method: 'push' | 'replace';
       url: string;
       opts?: Partial<Options>;
     }
@@ -64,7 +65,7 @@ export function useUrlStateBase<T extends JSONCompatible>(
   getInitialState?: ({
     parse,
   }: {
-    parse: ReturnType<typeof useUrlEncode<T>>["parse"];
+    parse: ReturnType<typeof useUrlEncode<T>>['parse'];
   }) => T,
   basename?: string,
 ) {
@@ -93,17 +94,20 @@ export function useUrlStateBase<T extends JSONCompatible>(
   const updateUrl = React.useCallback(
     (value?: Parameters<typeof setState>[0], options?: Options) => {
       const newVal =
-        typeof value === "function"
+        typeof value === 'function'
           ? value(getState(), defaultState)
           : {
               ...getState(),
               ...value,
             };
 
-      const qStr = stringify(newVal, getOtherParams(defaultState));
+      const qStr = stringify(
+        newVal,
+        getOtherParams(defaultState, window.location.search),
+      );
 
       const base = removeBasename(window.location.pathname, basename);
-      const newUrl = `${base}${qStr.length ? "?" : ""}${qStr}${window.location.hash}`;
+      const newUrl = `${base}${qStr.length ? '?' : ''}${qStr}${window.location.hash}`;
       const currUrl = `${base}${window.location.search}${window.location.hash}`;
       if (newUrl === currUrl) return;
 
@@ -116,7 +120,7 @@ export function useUrlStateBase<T extends JSONCompatible>(
 
       pendingUpdate = {
         router,
-        method: replace ? "replace" : "push",
+        method: replace ? 'replace' : 'push',
         url: newUrl,
         opts: _rest,
       };
@@ -153,18 +157,6 @@ export function useUrlStateBase<T extends JSONCompatible>(
   };
 }
 
-function getOtherParams<T extends object>(shape: T) {
-  const shapeKeys = Object.keys(shape);
-  const search = window.location.search;
-  const allParams = new URLSearchParams(search);
-  const params = new URLSearchParams();
-
-  for (const [key, value] of allParams) {
-    !shapeKeys.includes(key) && params.set(key, value);
-  }
-  return params;
-}
-
 interface OptionsObject {
   [key: string]: unknown;
 }
@@ -174,7 +166,7 @@ export interface Options extends OptionsObject {
 }
 
 function removeBasename(path: string, basename?: string) {
-  if (!basename || basename === "/") {
+  if (!basename || basename === '/') {
     return path;
   }
 

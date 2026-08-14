@@ -1,6 +1,6 @@
 <!-- i18n:start -->
 [English](./README.md) · [简体中文](./README.zh-CN.md) · [日本語](./README.ja.md) · [한국어](./README.ko.md) · Русский · [Español](./README.es.md) · [Português (BR)](./README.pt-BR.md) · [Français](./README.fr.md) · [Tiếng Việt](./README.vi.md)
-<!-- i18n:meta locale=ru source=README.md source-blob=01b5b4f72aa3c8871c185cfce21c6d696edb847b status=translated -->
+<!-- i18n:meta locale=ru source=README.md source-blob=bbf45a10aae9e88f68b27d84f51ee3e7e8a1e436 status=translated -->
 <!-- i18n:end -->
 
 <div align="center">
@@ -134,6 +134,7 @@
   - [Другие hook'и и вспомогательные функции](#другие-hookи-и-вспомогательные-функции)
     - [Hook `useUrlStateBase` для других роутеров](#hook-useurlstatebase-для-других-роутеров)
     - [Hook `useSharedState` для React.js](#hook-usesharedstate-для-reactjs)
+    - [Hook `useLinkProps` для React.js](#hook-uselinkprops-для-reactjs)
     - [Hook `useUrlEncode` для React.js](#hook-useurlencode-для-reactjs)
     - [Вспомогательные функции `encodeState` и `decodeState`](#вспомогательные-функции-encodestate-и-decodestate)
     - [Вспомогательные функции `encode` и `decode`](#вспомогательные-функции-encode-и-decode)
@@ -697,6 +698,29 @@ function SettingsComponent() {
 ```
 
 [Документация по API](packages/urlstate/useSharedState/README.ru.md)
+
+### Hook `useLinkProps` для React.js
+
+Хук, переносящий состояние на ссылку, которая ведёт на другой маршрут, — например, в переключателе языка. `setUrl` всегда пишет в текущий путь, этот хук — нет.
+
+```tsx
+'use client'
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useLinkProps } from 'state-in-url/useLinkProps';
+
+export const form = { name: '' };
+
+function LanguagePicker() {
+  const linkProps = useLinkProps(form, useRouter().push);
+
+  return <Link {...linkProps('/de/pricing')}>Deutsch</Link>;
+}
+```
+
+В разметке остаётся обычный `href`, поэтому краулеры и `hreflang` видят канонический URL; состояние читается в момент клика.
+
+[Документация по API](packages/urlstate/useLinkProps/README.ru.md)
 
 ### Hook `useUrlEncode` для React.js
 
