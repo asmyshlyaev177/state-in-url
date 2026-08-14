@@ -1,3 +1,10 @@
+# [6.4.0](https://github.com/asmyshlyaev177/state-in-url/compare/v6.3.0...v6.4.0) (2026-08-14)
+
+
+### Features
+
+* useLinkProps hook ([4c1eaf3](https://github.com/asmyshlyaev177/state-in-url/commit/4c1eaf35775620a508ae8c70bee8e3436064d39b))
+
 # [6.3.0](https://github.com/asmyshlyaev177/state-in-url/compare/v6.2.4...v6.3.0) (2026-08-12)
 
 

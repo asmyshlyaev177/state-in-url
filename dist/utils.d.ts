@@ -23,6 +23,8 @@ export type UnknownObj = object | {
 };
 export declare const isEqual: (val1: unknown, val2: unknown) => boolean;
 export declare function filterUnknownParamsClient<T extends object>(shape: T, params?: string | URLSearchParams | Record<string, string> | object): string;
+/** Params of `search` that the state shape does not own, so they survive a write. */
+export declare function getOtherParams<T extends object>(shape: T, search: string): URLSearchParams;
 export declare function filterUnknownParams<T extends object>(shape: T, searchParams?: object | URLSearchParams): T;
 export declare function filterUnknown<T extends object>(shape: T, entries: [key: string, value: string][]): string[][];
 export declare function assignValue<T extends object>(shape: T, newVal: Partial<T>): T;
