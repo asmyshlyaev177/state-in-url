@@ -1,6 +1,8 @@
 'use client';
 import React from 'react';
 
+import type { ChromeCopy } from '../i18n/copy/types';
+
 const DEFAULT_CMD = 'npm i state-in-url';
 
 const CopyIcon = () => (
@@ -18,11 +20,14 @@ const CheckIcon = () => (
 
 export const InstallCmd = ({
   cmd = DEFAULT_CMD,
-  label = 'Copy install command',
+  label,
+  copy,
 }: {
   cmd?: string;
+  /** Overrides `copy.installCopyLabel` — the AI-skills block copies a different command. */
   label?: string;
-} = {}) => {
+  copy: ChromeCopy;
+}) => {
   const [copied, setCopied] = React.useState(false);
   const timer = React.useRef<ReturnType<typeof setTimeout>>();
 
@@ -46,12 +51,12 @@ export const InstallCmd = ({
         type="button"
         className={copied ? 'install-copy copied' : 'install-copy'}
         onClick={onCopy}
-        aria-label={copied ? 'Copied' : label}
+        aria-label={copied ? copy.copied : (label ?? copy.installCopyLabel)}
       >
         {copied ? <CheckIcon /> : <CopyIcon />}
       </button>
       <span aria-live="polite" className="sr-only">
-        {copied ? 'Command copied to clipboard' : ''}
+        {copied ? copy.copiedAnnouncement : ''}
       </span>
     </div>
   );

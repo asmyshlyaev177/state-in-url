@@ -1,20 +1,22 @@
 import React from 'react';
 import clsx from 'clsx'
 
+import type { ChromeCopy } from '../i18n/copy/types';
+
 export const NpmLink = (
   props: React.DetailedHTMLProps<
     React.AnchorHTMLAttributes<HTMLAnchorElement>,
     HTMLAnchorElement
-  >,
+  > & { copy: ChromeCopy },
 ) => {
-  const { className, ...rest } = props;
+  const { className, copy, ...rest } = props;
 
   return (
     <a
       href="https://www.npmjs.com/package/state-in-url"
       target="_blank"
       rel="noopener noreferrer"
-      aria-label='NPM link'
+      aria-label={copy.npmLinkLabel}
       className={clsx("inline-flex items-center px-2 py-[2px] border border-line text-sm font-medium rounded-md text-ink bg-surface-2 hover:bg-surface-1 transition-colors focus:outline-none focus:ring-2 focus:ring-brand", className)}
       {...rest}
     >

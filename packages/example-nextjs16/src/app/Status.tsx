@@ -8,15 +8,18 @@ import { useUrlState } from 'state-in-url/next';
 import { typeOf } from 'packages/urlstate';
 
 import { SourceCodeBtn } from './components/SourceCodeBtn';
+import type { SiteCopy } from './i18n/copy/types';
 
 export const Status = React.memo(({
   className,
   sp,
-  ghLink
+  ghLink,
+  copy
 }: {
   className?: string;
   sp?: object;
   ghLink: string;
+  copy: SiteCopy;
 }) => {
   const { urlState } = useUrlState(form, {
     searchParams: sp,
@@ -54,9 +57,9 @@ export const Status = React.memo(({
   return (
     <div className={clsx("flex relative", className)}>
       <div className="font-semibold mb-2 ">
-        Other client component
+        {copy.demo.statusTitle}
       </div>
-      <h3 className="text-ink2 text-sm">Reads from URL — no props, no context, types and structure are preserved</h3>
+      <h3 className="text-ink2 text-sm">{copy.demo.statusSubtitle}</h3>
 
       <div className="flex-none">
         <pre
@@ -82,6 +85,7 @@ export const Status = React.memo(({
       <SourceCodeBtn
         href={ghLink}
         className="self-end ml-auto mt-4 md:mt-auto"
+        copy={copy.chrome}
       />
     </div>
   );

@@ -1,6 +1,9 @@
 import { execSync } from 'node:child_process';
 import path from 'path';
 
+// The one locale table, shared with the README tooling and with src/app/i18n.
+import { LOCALES } from '../../scripts/i18n/locales.mjs';
+
 const ROOT = path.resolve(import.meta.dirname, '../..');
 
 /**
@@ -131,11 +134,26 @@ const nextConfig = {
       value: 'max-age=600, stale-while-revalidate=86400',
     };
 
-    return [
-      { source: '/', headers: [llmsTxtLink, cdnCache, vercelCdnCache] },
-      { source: '/react-router', headers: [llmsTxtLink, cdnCache] },
-      { source: '/remix', headers: [llmsTxtLink, cdnCache] },
-    ];
+    // Generated from the locale table rather than listed. Twenty-seven
+    // sources is past the point where a hand-kept list stays correct, and a
+    // page missing from here silently loses its `Link:` header — which is the
+    // one that reaches clients that never parse markup.
+    const pages = ['', '/react-router', '/remix'];
+    const prefixes = ['', ...LOCALES.map((locale) => `/${locale.dir}`)];
+
+    return prefixes.flatMap((prefix) =>
+      pages.map((page) => ({
+        source: `${prefix}${page}` || '/',
+        headers:
+          // `Vercel-CDN-Cache-Control` stays on the English `/` alone, as the
+          // note above says: it is the one URL whose cache entry is certain to
+          // be read again. The locale roots can have it once there is traffic
+          // to justify it.
+          prefix === '' && page === ''
+            ? [llmsTxtLink, cdnCache, vercelCdnCache]
+            : [llmsTxtLink, cdnCache],
+      })),
+    );
   },
 };
 

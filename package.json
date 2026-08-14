@@ -91,6 +91,13 @@
   },
   "types": "./dist/index.d.ts",
   "scripts": {
+    "i18n": "node scripts/i18n/cli.mjs",
+    "i18n:init": "node scripts/i18n/cli.mjs init",
+    "i18n:toc": "node scripts/i18n/cli.mjs toc",
+    "i18n:check": "node scripts/i18n/cli.mjs check",
+    "i18n:copy": "node scripts/i18n/copy.mjs",
+    "i18n:copy:init": "node scripts/i18n/copy.mjs init",
+    "i18n:copy:check": "node scripts/i18n/copy.mjs check",
     "test:unit": "wireit",
     "test:int": "wireit",
     "test:int:ci": "wireit",
@@ -181,13 +188,18 @@
       "command": "playwright test --project=chromium --retries=2"
     },
     "tsc": {
+      "comment": "The examples import `state-in-url`, so they need a built `dist/`. Without this, `pnpm run test` runs tsc alongside `build`, whose `rmdist` wipes it: TS2307 everywhere.",
+      "dependencies": [
+        "build"
+      ],
       "command": "npx tsc --noEmit"
     },
     "test:unit": {
+      "comment": "`--run`, not watch: `pnpm run test` depends on this and a watching vitest never exits. `npx vitest` for watch.",
       "dependencies": [
         "tsc"
       ],
-      "command": "npx vitest"
+      "command": "npx vitest --run"
     },
     "dev:lib": {
       "command": "cross-env IS_DEVELOPMENT=true rollup -c rollup.config.mjs -w",

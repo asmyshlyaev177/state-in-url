@@ -13,9 +13,9 @@ files are written for that, and are far more specific than this one.
 
 This is a **pnpm** monorepo. `pnpm` is enforced (`only-allow`). Most scripts run through **wireit** (caching/dependency graph), so always invoke them via `pnpm run <script>`, not the underlying tool directly.
 
-- `pnpm run test` — full suite: `tsc` typecheck → unit tests → build all packages → exports test → integration (e2e) tests. This is what CI runs.
-- `pnpm run test:unit` — Vitest unit tests (depends on `tsc`). Runs `npx vitest` (watch by default; coverage is enabled in config).
-- `pnpm run test:int` — Playwright e2e (`--project=chromium`). Requires the demo servers running (`pnpm run start` or `pnpm run dev`).
+- `pnpm run test` — full suite: `tsc` typecheck → unit tests → build all packages → exports test → integration (e2e) tests. Everything CI checks, but not the command CI runs — `.github/workflows/tests.yml` splits it into three parallel jobs and calls the tools directly, so a break in this wiring shows up locally only.
+- `pnpm run test:unit` — Vitest unit tests (depends on `tsc`), single run, ~2s; coverage is on in the config. Use `npx vitest` directly for watch mode.
+- `pnpm run test:int` — Playwright e2e (`--project=chromium`). Starts the seven demo servers unless they are already up, and waits for all seven before the first test.
 - `pnpm run tsc` — `tsc --noEmit` typecheck only.
 - `pnpm run build` — Rollup build of the library into `dist/` (ESM `.mjs` + CJS `.js` + `.d.ts`).
 - `pnpm run dev` — library in Rollup watch mode + all example apps. Next.js 15 demo on `http://localhost:3000`.
@@ -23,6 +23,7 @@ This is a **pnpm** monorepo. `pnpm` is enforced (`only-allow`). Most scripts run
 - `pnpm run cleanup` / `pnpm run reinstall` — nuke build artifacts and node_modules.
 - `pnpm run setup` — `playwright install --with-deps` (needed before e2e on a fresh machine).
 - `pnpm run test:lighthouse` — Lighthouse audits of the demo site (see below). Builds and serves it itself; nothing needs to be running first.
+- `pnpm i18n status` / `pnpm i18n:check` — the eight translations: drift from the English source, and README structure/links/anchors. `pnpm i18n:toc` rebuilds the tables of contents; `pnpm i18n:copy:check` covers the demo's copy modules.
 
 Run a single unit test: `npx vitest run packages/urlstate/encoder/encoder.test.ts` (or pass a `-t "name"` filter).
 Run a single e2e spec: `npx playwright test tests/useUrlState/main.spec.ts --project=chromium`.
@@ -35,6 +36,7 @@ Run a single e2e spec: `npx playwright test tests/useUrlState/main.spec.ts --pro
 - `tests/` — Playwright e2e specs (separate from the colocated `*.test.ts` unit tests).
 - `lighthouse/` — the Lighthouse suite, its own directory so the e2e config's `testDir: './tests'` cannot pick it up. Driven by `playwright.lighthouse.config.ts`.
 - `skills/` — agent skill files (`SKILL.md` per topic) that are **published as part of the npm package** (see `files` in `package.json`). `skills/_artifacts/` is dev-only and excluded from publish; `skill_spec.md` there is a useful map of the library's domains and known user failure modes.
+- `scripts/i18n/` — the translation toolkit: the locale table, the drift and structure checks, and the translator's prompt and glossary. See `scripts/i18n/AGENTS.md`.
 
 ## Architecture
 

@@ -1,9 +1,13 @@
+import type { ChromeCopy } from '../i18n/copy/types';
+
 export const SourceCodeBtn = ({
   href,
   className,
+  copy,
 }: {
   href: string;
   className?: string;
+  copy: ChromeCopy;
 }) => {
   return (
     <div className={`flex w-auto h-auto relative ${className}`}>
@@ -25,7 +29,7 @@ export const SourceCodeBtn = ({
             <ellipse rx="11" ry="4.2" transform="rotate(120)" />
           </g>
         </svg>
-        <span className="whitespace-nowrap">Source code</span>
+        <span className="whitespace-nowrap">{copy.sourceCode}</span>
       </a>
     </div>
   );

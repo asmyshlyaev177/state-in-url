@@ -16,13 +16,18 @@ test.describe('robots.txt (landing only)', () => {
 
   const fixtureRoutes = fs
     .readdirSync(
-      path.join(process.cwd(), 'packages/example-nextjs16/src/app/(tests)'),
+      // `(en)` is a route group: it shapes the layout tree, not the URLs,
+      // so these are still served at `/test-ssr`, `/useUrlState` and so on.
+      path.join(process.cwd(), 'packages/example-nextjs16/src/app/(en)/(tests)'),
       { withFileTypes: true },
     )
     .filter((entry) => entry.isDirectory())
     .map((entry) => `/${entry.name}`);
 
-  const documented = ['/', '/react-router', '/remix'];
+  // The three public pages, English and translated. A locale prefix must not
+  // be caught by a fixture Disallow, and the fixtures exist only under the
+  // unprefixed English tree.
+  const documented = ['/', '/react-router', '/remix', '/ja', '/ja/react-router', '/zh-cn/remix'];
 
   const disallowedPrefixes = async (request: {
     get: (url: string) => Promise<{ text: () => Promise<string> }>;

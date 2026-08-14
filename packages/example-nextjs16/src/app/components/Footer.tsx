@@ -1,17 +1,29 @@
 import { siteUrl } from "../domain";
+import { dateLocale, type Locale } from "../i18n";
+import type { FooterCopy } from "../i18n/copy/types";
 
-export const Footer = ({ lastModified }: { lastModified: string }) => (
+export const Footer = ({
+  lastModified,
+  copy,
+  locale,
+}: {
+  lastModified: string;
+  copy: FooterCopy;
+  locale: Locale;
+}) => (
   <footer className="site-footer">
     <div className="footer-inner">
       <div className="footer-id">
         <span className="footer-mark">state-in-url</span>
-        <span className="footer-tag">typed state, living in the URL</span>
+        <span className="footer-tag">{copy.tagline}</span>
         <span className="footer-updated">
           {/* One interpolated string, not text + {expression}: React SSR splits
               adjacent text nodes with an HTML comment, which left the year in a
               separate node from the label and made the date unreadable to
-              anything parsing the markup rather than the DOM. */}
-          {`Updated ${new Date(lastModified).toLocaleDateString("en-GB", {
+              anything parsing the markup rather than the DOM. The label is a
+              copy key interpolated into that same literal, for the same
+              reason. */}
+          {`${copy.updated} ${new Date(lastModified).toLocaleDateString(dateLocale(locale.code), {
             day: "numeric",
             month: "long",
             year: "numeric",
@@ -20,7 +32,7 @@ export const Footer = ({ lastModified }: { lastModified: string }) => (
         </span>
       </div>
 
-      <nav className="footer-links" aria-label="Footer">
+      <nav className="footer-links" aria-label={copy.navLabel}>
         <a
           href="https://www.npmjs.com/package/state-in-url"
           target="_blank"

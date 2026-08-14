@@ -1,4 +1,5 @@
 import { siteUrl } from '../domain';
+import { ALL_LOCALES, localePrefix, PAGES } from '../i18n';
 
 /**
  * Routes that exist only as Playwright fixtures. They render deliberately
@@ -25,7 +26,20 @@ const testFixtures = [
   '/useHook-race-condition',
 ];
 
-const documented = ['/', '/react-router', '/remix'];
+/**
+ * The documented routes, in every language, generated from the locale table.
+ *
+ * `Allow: /` already permits all of these — the list is here to state the
+ * documented surface explicitly, next to the fixture prefixes it is being
+ * contrasted with, and generating it is what stops it saying "three pages"
+ * forever after the site gained twenty-four.
+ *
+ * The locale prefixes cannot collide with the fixture prefixes below: the
+ * fixtures live only under the unprefixed English tree.
+ */
+const documented = ALL_LOCALES.flatMap((locale) =>
+  PAGES.map((path) => `${localePrefix(locale.code)}${path}` || '/'),
+);
 
 /**
  * A route handler rather than the `robots.ts` metadata convention, because

@@ -1,13 +1,15 @@
 import React from 'react';
 import clsx from 'clsx'
 
+import type { ChromeCopy } from '../i18n/copy/types';
+
 export const GithubLink = (
   props: React.DetailedHTMLProps<
     React.AnchorHTMLAttributes<HTMLAnchorElement>,
     HTMLAnchorElement
-  >,
+  > & { copy: ChromeCopy },
 ) => {
-  const { className, ...rest } = props;
+  const { className, copy, ...rest } = props;
 
   return (
     <a
@@ -29,7 +31,7 @@ export const GithubLink = (
         />
       </svg>
       GitHub
-      <span className="sr-only"> (opens in new tab)</span>
+      <span className="sr-only"> {copy.opensInNewTab}</span>
     </a>
   );
 };

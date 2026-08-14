@@ -1,18 +1,19 @@
 import { File } from './components/File';
 import { CodeBlockState } from './CodeBlockState';
 import { tooltips } from './tooltips';
+import type { QuickStartCopy } from './i18n/copy/types';
 
-export const CodeBlocks = () => {
+export const CodeBlocks = ({ copy }: { copy: QuickStartCopy }) => {
   return (
     <div className="flex flex-col gap-4">
-      <h3 className='text-3xl font-bold font-display text-ink'>Quick start</h3>
+      <h3 className='text-3xl font-bold font-display text-ink'>{copy.title}</h3>
       <div className="codeTitle">
-        1. Define the state
+        {copy.stateStep}
       </div>
       <CodeBlockState />
 
       <div className="codeTitle">
-        2. Use it in any components
+        {copy.componentsStep}
       </div>
       <File
         name="ComponentA"
@@ -62,7 +63,7 @@ export const ComponentB = ({ searchParams }: { searchParams?: object }) => {
         matchers={tooltips}
       />
       <div className="codeTitle">
-        3. Create a reusable hook for a slice of state
+        {copy.hookStep}
       </div>
       <File
         name="useFormState - custom hook"

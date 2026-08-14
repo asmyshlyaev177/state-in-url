@@ -1,4 +1,7 @@
-English | [한국어](./README.KO.md) | [简体中文](./README.CN.md)
+<!-- i18n:start -->
+English · [简体中文](./README.zh-CN.md) · [日本語](./README.ja.md) · [한국어](./README.ko.md) · [Русский](./README.ru.md) · [Español](./README.es.md) · [Português (BR)](./README.pt-BR.md) · [Français](./README.fr.md) · [Tiếng Việt](./README.vi.md)
+<!-- i18n:meta locale=en -->
+<!-- i18n:end -->
 
 <div align="center">
   <img src="/packages/example-nextjs14/public/Logo_symbol.png" alt="state-in-url logo" width="120px" />
@@ -101,6 +104,8 @@ This library is a good alternative for NUQS.
 
 ## Table of content
 
+<!-- toc:start -->
+
 - [State in url](#state-in-url)
 - [Demo](#demo)
   - [Why use `state-in-url`?](#why-use-state-in-url)
@@ -137,12 +142,14 @@ This library is a good alternative for NUQS.
   - [Other](#other)
     - [Contribute and/or run locally](#contribute-andor-run-locally)
   - [Roadmap](#roadmap)
-  - [Contact \& Support](#contact--support)
+  - [Contact & Support](#contact--support)
   - [Changelog](#changelog)
   - [Mentions](#mentions)
   - [License](#license)
-  - [Personal website](#personal-website)
+  - [Hire me](#hire-me)
   - [Inspiration](#inspiration)
+
+<!-- toc:end -->
 
 ## installation
 

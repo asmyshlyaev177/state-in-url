@@ -2,6 +2,8 @@
 import { useSearchParams } from 'next/navigation';
 import React from 'react';
 
+import type { ChromeCopy } from '../i18n/copy/types';
+
 const GlobeIcon = () => (
   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
     <circle cx="12" cy="12" r="10" />
@@ -10,7 +12,13 @@ const GlobeIcon = () => (
   </svg>
 );
 
-export const UrlBox = ({ initialUrl = '/' }: { initialUrl?: string }) => {
+export const UrlBox = ({
+  initialUrl = '/',
+  copy,
+}: {
+  initialUrl?: string;
+  copy: ChromeCopy;
+}) => {
   const sp = useSearchParams();
   const [url, setUrl] = React.useState(initialUrl);
   const [flashKey, setFlashKey] = React.useState(0);
@@ -37,7 +45,7 @@ export const UrlBox = ({ initialUrl = '/' }: { initialUrl?: string }) => {
           id="url"
           readOnly
           value={url}
-          aria-label="Current URL with synced state"
+          aria-label={copy.urlBarLabel}
         />
       </form>
       {flashKey > 0 && (
