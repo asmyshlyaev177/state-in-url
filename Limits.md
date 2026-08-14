@@ -1,3 +1,8 @@
+<!-- i18n:start -->
+English · [简体中文](./Limits.zh-CN.md) · [日本語](./Limits.ja.md) · [한국어](./Limits.ko.md) · [Русский](./Limits.ru.md) · [Español](./Limits.es.md) · [Português (BR)](./Limits.pt-BR.md) · [Français](./Limits.fr.md) · [Tiếng Việt](./Limits.vi.md)
+<!-- i18n:meta locale=en -->
+<!-- i18n:end -->
+
 # Limitation of URL and headers size
 
 Modern browsers allow you specify very long URLs, 2MB easily.

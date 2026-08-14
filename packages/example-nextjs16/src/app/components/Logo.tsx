@@ -1,9 +1,17 @@
 import Image from 'next/image';
 
-export const Logo = ({ className }: { className: string }) => (
+import type { ChromeCopy } from '../i18n/copy/types';
+
+export const Logo = ({
+  className,
+  copy,
+}: {
+  className: string;
+  copy: ChromeCopy;
+}) => (
   <Image
     src="/Logo_symbol.png"
-    alt="Logo"
+    alt={copy.logoAlt}
     width="150"
     height="150"
     className={className}

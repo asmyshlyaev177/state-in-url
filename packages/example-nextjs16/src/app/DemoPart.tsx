@@ -7,8 +7,15 @@ import { UrlBox } from './components/UrlBox';
 import { Form } from './Form';
 import { Status } from './Status';
 import { Word } from './components/Word';
+import type { ErrorsCopy, SiteCopy } from './i18n/copy/types';
 
-export function DemoPart({ searchParams }: { searchParams: object }) {
+export function DemoPart({
+  searchParams,
+  copy,
+}: {
+  searchParams: object;
+  copy: SiteCopy;
+}) {
   const pathname = usePathname()
 
   const { routerKind, urls } = getUrls(pathname)
@@ -18,24 +25,24 @@ export function DemoPart({ searchParams }: { searchParams: object }) {
       <section className="demo">
         <header className="header">
           <div className="wrapper">
-            <h2 className="title">useUrlState — live with <Word>{routerKind}</Word></h2>
+            <h2 className="title">{copy.demo.titleLead} <Word>{routerKind}</Word></h2>
           </div>
 
           <div className="urlBox">
-            <UrlBox initialUrl={spToUrl(searchParams)} />
+            <UrlBox initialUrl={spToUrl(searchParams)} copy={copy.chrome} />
           </div>
 
-          <p className="demo-hint">Type below — watch the URL light up <span className="demo-hint-arrow" aria-hidden="true">↓</span></p>
+          <p className="demo-hint">{copy.demo.hint} <span className="demo-hint-arrow" aria-hidden="true">↓</span></p>
 
         </header>
 
         <section className="form-components">
-            <ErrorBoundary fallbackRender={fallbackRender}>
-              <Form className="form" searchParams={searchParams} ghLink={urls.form} />
+            <ErrorBoundary fallbackRender={(props) => fallbackRender(props, copy.errors)}>
+              <Form className="form" searchParams={searchParams} ghLink={urls.form} copy={copy} />
             </ErrorBoundary>
             <ErrorBoundary
-              fallbackRender={fallbackRender}>
-              <Status className="status" sp={searchParams} ghLink={urls.status} />
+              fallbackRender={(props) => fallbackRender(props, copy.errors)}>
+              <Status className="status" sp={searchParams} ghLink={urls.status} copy={copy} />
             </ErrorBoundary>
 
         </section>
@@ -44,12 +51,12 @@ export function DemoPart({ searchParams }: { searchParams: object }) {
   );
 }
 
-function fallbackRender({ error, resetErrorBoundary }: FallbackProps) {
+function fallbackRender({ error, resetErrorBoundary }: FallbackProps, copy: ErrorsCopy) {
   return (
     <div role="alert" className='max-w-[30%] flex flex-col items-center gap-4'>
-      <p>Something went wrong:</p>
-      <pre className='whitespace-break-spaces text-red-500 max-h-[350px]'>{error?.message || 'An error occurred'}</pre>
-      <button onClick={resetErrorBoundary} className='p-4 bg-brand-dim rounded-md text-ink'>Try again</button>
+      <p>{copy.boundaryTitle}</p>
+      <pre className='whitespace-break-spaces text-red-500 max-h-[350px]'>{error?.message || copy.boundaryFallback}</pre>
+      <button onClick={resetErrorBoundary} className='p-4 bg-brand-dim rounded-md text-ink'>{copy.retry}</button>
     </div>
   );
 }

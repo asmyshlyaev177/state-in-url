@@ -101,6 +101,58 @@
           .links {
             @apply ml-auto flex items-center gap-2;
           }
+
+          .lang-picker {
+            position: relative;
+
+            & > summary {
+              @apply inline-flex cursor-pointer list-none items-center gap-2 rounded-md px-4 py-2 text-sm font-medium;
+              color: var(--ink);
+              background: var(--surface-2);
+              border: 1px solid var(--line);
+              transition: background-color 0.15s ease;
+
+              /* Safari paints the disclosure triangle through `list-none`. */
+              &::-webkit-details-marker {
+                display: none;
+              }
+
+              &:hover {
+                background: var(--surface-1);
+              }
+
+              &:focus-visible {
+                outline: 2px solid var(--brand);
+                outline-offset: 2px;
+              }
+
+              & > svg {
+                @apply -ml-1 h-4 w-4 shrink-0;
+              }
+            }
+
+            & > nav {
+              @apply absolute right-0 z-20 mt-2 flex min-w-max flex-col rounded-md py-1;
+              background: var(--surface-2);
+              border: 1px solid var(--line);
+              box-shadow: 0 12px 32px oklch(0% 0 0 / 0.45);
+
+              & > a,
+              & > span {
+                @apply whitespace-nowrap px-4 py-2 text-sm;
+                color: var(--ink);
+              }
+
+              & > a:hover {
+                background: var(--surface-1);
+              }
+
+              & > span {
+                font-weight: 600;
+                color: var(--brand);
+              }
+            }
+          }
         }
 
         .title {

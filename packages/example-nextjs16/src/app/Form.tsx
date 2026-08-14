@@ -5,15 +5,18 @@ import { form } from 'shared/form';
 import { useUrlState } from 'state-in-url/next';
 
 import { SourceCodeBtn } from './components/SourceCodeBtn';
+import type { SiteCopy } from './i18n/copy/types';
 
 export const Form = ({
   className,
   searchParams,
-  ghLink
+  ghLink,
+  copy
 }: {
   className?: string;
   searchParams?: object;
   ghLink: string
+  copy: SiteCopy;
 }) => {
   const { urlState, setUrl: setUrlBase } = useUrlState(form, {
     searchParams,
@@ -64,11 +67,11 @@ export const Form = ({
     <div className={className}>
       <div className="flex flex-1 flex-col rounded-lg border border-line bg-surface-2 p-4">
         <div className="font-semibold mb-4">
-          First client component
+          {copy.demo.formTitle}
         </div>
 
         <div className="space-y-6 flex-col">
-          <Field id="name" text="Name">
+          <Field id="name" text={copy.demo.fields.name}>
             <Input
               id="name"
               value={urlState.name}
@@ -77,7 +80,7 @@ export const Form = ({
             />
           </Field>
 
-          <Field id="age" text="Age">
+          <Field id="age" text={copy.demo.fields.age}>
             <Input
               id="age"
               type="number"
@@ -89,7 +92,7 @@ export const Form = ({
 
           <Field
             id="agree_to_terms"
-            text="Agree to terms"
+            text={copy.demo.fields.agreeToTerms}
             className="flex flex-row justify-between gap-2 max-w-[150px] min-w-[150px]"
           >
             <Input
@@ -102,7 +105,7 @@ export const Form = ({
             />
           </Field>
 
-          <Field id="tags" text="Tags">
+          <Field id="tags" text={copy.demo.fields.tags}>
             <div className="flex flex-wrap gap-2">
               {tags.map((tag) => (
                 <Tag
@@ -115,12 +118,13 @@ export const Form = ({
             </div>
           </Field>
 
-          <RefreshButton />
+          <RefreshButton label={copy.chrome.reloadPage} />
         </div>
 
         <SourceCodeBtn
           href={ghLink}
           className="self-end ml-auto mt-4"
+          copy={copy.chrome}
         />
       </div>
     </div>

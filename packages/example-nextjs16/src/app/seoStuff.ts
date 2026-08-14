@@ -3,6 +3,9 @@ import { type SoftwareApplication, type WithContext } from 'schema-dts';
 import packageJson from '../../../../package.json';
 import { CONTENT_LAST_MODIFIED } from './contentDate';
 import { vercelUrl } from './domain';
+import { languageAlternates, localeFromParam, localePrefix, ogLocale } from './i18n';
+import { copyFor } from './i18n/copy';
+import { copy } from './i18n/copy/en';
 import { type Metadata } from 'next';
 import { isProd } from 'consts';
 
@@ -106,11 +109,10 @@ function markdownAlternates(mirrorPath: string) {
   ];
 }
 
-const meta = {
-  title: 'state-in-url - store state in URL like in JSON, type-safe',
-  description:
-    'Store any user state in query parameters; imagine JSON in a browser URL, while keeping types and structure of data. For Next.js, React-router and pure JS',
-};
+// The homepage's title and description, and the site-wide default the other
+// two routes override through `pageMetadata`. The JSON-LD above is structured
+// data, not copy, and stays here.
+const meta = copy.meta.home;
 
 export const metadata = {
   metadataBase: isProd
@@ -165,6 +167,10 @@ export const metadata = {
     // homepage as canonical, which asks Google to drop them from the index
     // while the sitemap still lists them.
     canonical: vercelUrl,
+    // English is one member of the hreflang cluster, not its owner: every
+    // locale of a page must list every other one *and* itself, or the cluster
+    // is discarded wholesale. `x-default` points back here.
+    languages: languageAlternates(vercelUrl, ''),
     types: { 'text/markdown': markdownAlternates('/index.md') },
   },
 } as Metadata;
@@ -193,6 +199,7 @@ export function pageMetadata({
     description,
     alternates: {
       canonical: url,
+      languages: languageAlternates(vercelUrl, path),
       // Appending `.md` to a URL is the convention agents converged on, but
       // not one they reliably discover unaided — this is how the page says
       // it is there.
@@ -200,5 +207,59 @@ export function pageMetadata({
     },
     openGraph: { ...metadata.openGraph, url, title, description },
     twitter: { ...metadata.twitter, title, description },
+  };
+}
+
+/**
+ * Metadata for a translated page.
+ *
+ * Three things have to move together and are easy to get half-right: the
+ * canonical points at this locale's own URL (never at English, which would ask
+ * Google to drop it), `languages` carries the full reciprocal hreflang cluster,
+ * and `openGraph.locale` uses OG's `language_TERRITORY` spelling rather than a
+ * BCP 47 tag.
+ *
+ * The Markdown alternates deliberately stay English. `/index.md`,
+ * `/react-router.md` and `/remix.md` all serve public/llms.txt, which is one
+ * English document by design — agents get English, and there is no per-locale
+ * mirror to point at.
+ */
+export function localeMetadata({
+  localeDir,
+  path,
+}: {
+  localeDir: string;
+  path: string;
+}): Metadata {
+  const locale = localeFromParam(localeDir);
+  if (!locale) return {};
+
+  const copy = copyFor(locale.code);
+  const page =
+    path === '/react-router'
+      ? copy.meta.reactRouter
+      : path === '/remix'
+        ? copy.meta.remix
+        : copy.meta.home;
+
+  const url = `${vercelUrl}${localePrefix(locale.code)}${path}`;
+  const mirror = path === '' ? '/index.md' : `${path}.md`;
+
+  return {
+    title: page.title,
+    description: page.description,
+    alternates: {
+      canonical: url,
+      languages: languageAlternates(vercelUrl, path),
+      types: { 'text/markdown': markdownAlternates(mirror) },
+    },
+    openGraph: {
+      ...metadata.openGraph,
+      url,
+      title: page.title,
+      description: page.description,
+      locale: ogLocale(locale.code),
+    },
+    twitter: { ...metadata.twitter, title: page.title, description: page.description },
   };
 }
