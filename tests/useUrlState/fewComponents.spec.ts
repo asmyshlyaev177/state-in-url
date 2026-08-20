@@ -5,24 +5,24 @@ import { toHaveUrl } from '../testUtils';
 const urls = [
   ['/useUrlState/1', '/useUrlState/2'],
   [
-    'http://localhost:3001/useUrlState/1',
-    'http://localhost:3001/useUrlState/2',
+    'http://example-nextjs15.localhost:1355/useUrlState/1',
+    'http://example-nextjs15.localhost:1355/useUrlState/2',
   ],
   [
-    'http://localhost:3002/useUrlState/1',
-    'http://localhost:3002/useUrlState/2',
+    'http://example-nextjs16.localhost:1355/useUrlState/1',
+    'http://example-nextjs16.localhost:1355/useUrlState/2',
   ],
   [
-    'http://localhost:5181/few-components/1',
-    'http://localhost:5181/few-components/2',
+    'http://example-react-router6.localhost:1355/few-components/1',
+    'http://example-react-router6.localhost:1355/few-components/2',
   ],
   [
-    'http://localhost:5182/few-components/1',
-    'http://localhost:5182/few-components/2',
+    'http://example-remix2.localhost:1355/few-components/1',
+    'http://example-remix2.localhost:1355/few-components/2',
   ],
   [
-    'http://localhost:5183/few-components/1',
-    'http://localhost:5183/few-components/2',
+    'http://example-react-router7.localhost:1355/few-components/1',
+    'http://example-react-router7.localhost:1355/few-components/2',
   ]
 ];
 

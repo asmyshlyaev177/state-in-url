@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "pnpm exec next dev --port 3001",
+    "dev": "pnpm exec next dev --port ${PORT:-3001}",
     "build": "pnpm exec next build",
-    "start": "pnpm exec next start --port 3001",
+    "start": "pnpm exec next start --port ${PORT:-3001}",
     "lint": "pnpm exec next lint"
   },
   "dependencies": {

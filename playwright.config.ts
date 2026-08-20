@@ -6,7 +6,7 @@ import { defineConfig, devices } from '@playwright/test';
  */
 // require('dotenv').config();
 
-const BASE_URL = 'http://127.0.0.1:3002';
+const BASE_URL = 'http://example-nextjs16.localhost:1355';
 
 /**
  * See https://playwright.dev/docs/test-configuration.

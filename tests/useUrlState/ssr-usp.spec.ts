@@ -6,18 +6,18 @@ import { ignoredErrors } from '../testUtils';
 // received a URLSearchParams instance from useSearchParams() and returned {}
 // instead of the actual params (Object.entries doesn't work on URLSearchParams).
 const nextjsUrls = [
-  'http://localhost:3000/test-ssr-usp',   // nextjs14
-  'http://localhost:3001/test-ssr-usp',   // nextjs15
-  'http://localhost:3002/test-ssr-usp',   // nextjs16
+  'http://example-nextjs14.localhost:1355/test-ssr-usp',
+  'http://example-nextjs15.localhost:1355/test-ssr-usp',
+  'http://example-nextjs16.localhost:1355/test-ssr-usp',
 ];
 
 // React-router and Remix examples: no SSR URLSearchParams bug (they use
 // filterUnknownParamsClient with sp.entries()), but should still read URL
 // params correctly on initial render.
 const otherUrls = [
-  'http://localhost:5181/test-ssr-usp',   // react-router6
-  'http://localhost:5182/test-ssr-usp',   // remix2
-  'http://localhost:5183/test-ssr-usp',   // react-router7
+  'http://example-react-router6.localhost:1355/test-ssr-usp',
+  'http://example-remix2.localhost:1355/test-ssr-usp',
+  'http://example-react-router7.localhost:1355/test-ssr-usp',
 ];
 
 const encodedName = "%27Alice%27";

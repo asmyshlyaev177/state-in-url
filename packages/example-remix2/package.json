@@ -5,9 +5,9 @@
   "type": "module",
   "scripts": {
     "build": "pnpm exec remix vite:build",
-    "dev": "pnpm exec remix vite:dev --port 5182",
+    "dev": "pnpm exec remix vite:dev --port ${PORT:-5182}",
     "lint": "pnpm exec eslint --ignore-path .gitignore --cache --cache-location ./node_modules/.cache/eslint .",
-    "start": "PORT=5182 pnpm exec remix-serve ./build/server/index.js",
+    "start": "PORT=${PORT:-5182} pnpm exec remix-serve ./build/server/index.js",
     "typecheck": "pnpm exectsc"
   },
   "dependencies": {

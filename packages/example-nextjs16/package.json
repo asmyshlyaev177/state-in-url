@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "pnpm run generate-middleware && pnpm exec next dev --port 3002",
+    "dev": "pnpm run generate-middleware && pnpm exec next dev --port ${PORT:-3002}",
     "build": "pnpm run generate-middleware && pnpm exec next build",
-    "start": "pnpm exec next start --port 3002",
+    "start": "pnpm exec next start --port ${PORT:-3002}",
     "lint": "pnpm exec next lint",
     "generate-middleware": "node scripts/generate-middleware-content.cjs"
   },

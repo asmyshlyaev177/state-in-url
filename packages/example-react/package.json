@@ -5,10 +5,10 @@
   "type": "module",
   "main": "./src/main.tsx",
   "scripts": {
-    "dev": "pnpm exec vite --port 5180",
+    "dev": "pnpm exec vite --port ${PORT:-5180}",
     "build": "pnpm exec vite build",
     "lint": "pnpm exec eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "start": "pnpm exec vite preview --port 5180"
+    "start": "pnpm exec vite preview --port ${PORT:-5180}"
   },
   "dependencies": {
     "react": "^18.3.1",
