@@ -17,9 +17,9 @@ import { toHaveUrl } from '../testUtils';
  */
 
 const hosts = [
-  'http://localhost:3000',
-  'http://localhost:3001',
-  'http://localhost:3002',
+  'http://example-nextjs14.localhost:1355',
+  'http://example-nextjs15.localhost:1355',
+  'http://example-nextjs16.localhost:1355',
 ];
 
 const modes = [

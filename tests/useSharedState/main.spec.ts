@@ -1,10 +1,10 @@
 import { expect, test } from '@playwright/test';
 
 const urls = [
-  'http://localhost:5180',
+  'http://example-react.localhost:1355',
   '/useSharedState',
-  'http://localhost:3001/useSharedState',
-  'http://localhost:3002/useSharedState',
+  'http://example-nextjs15.localhost:1355/useSharedState',
+  'http://example-nextjs16.localhost:1355/useSharedState',
 ];
 
 import { ignoredErrors } from '../testUtils';

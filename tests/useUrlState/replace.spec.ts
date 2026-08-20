@@ -4,11 +4,11 @@ import { toHaveUrl, ignoredErrors } from '../testUtils';
 
 const urls = [
   '/test-ssr-sp',
-  'http://localhost:3001/test-ssr-sp',
-  'http://localhost:3002/test-ssr-sp',
-  'http://localhost:5181',
-  'http://localhost:5182',
-  'http://localhost:5183',
+  'http://example-nextjs15.localhost:1355/test-ssr-sp',
+  'http://example-nextjs16.localhost:1355/test-ssr-sp',
+  'http://example-react-router6.localhost:1355',
+  'http://example-remix2.localhost:1355',
+  'http://example-react-router7.localhost:1355',
 ];
 
 for (const url of urls) {

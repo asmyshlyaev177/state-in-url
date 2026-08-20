@@ -18,7 +18,7 @@ This is a **pnpm** monorepo. `pnpm` is enforced (`only-allow`). Most scripts run
 - `pnpm run test:int` — Playwright e2e (`--project=chromium`). Starts the seven demo servers unless they are already up, and waits for all seven before the first test.
 - `pnpm run tsc` — `tsc --noEmit` typecheck only.
 - `pnpm run build` — Rollup build of the library into `dist/` (ESM `.mjs` + CJS `.js` + `.d.ts`).
-- `pnpm run dev` — library in Rollup watch mode + all example apps. Next.js 15 demo on `http://localhost:3000`.
+- `pnpm run dev` — library in Rollup watch mode + all example apps, each at `http://<package-name>.localhost:1355` (see Demo app URLs).
 - `pnpm run kill` — kill hung Next/Vite/wireit processes (use this if dev/test servers hang).
 - `pnpm run cleanup` / `pnpm run reinstall` — nuke build artifacts and node_modules.
 - `pnpm run setup` — `playwright install --with-deps` (needed before e2e on a fresh machine).
@@ -27,6 +27,61 @@ This is a **pnpm** monorepo. `pnpm` is enforced (`only-allow`). Most scripts run
 
 Run a single unit test: `npx vitest run packages/urlstate/encoder/encoder.test.ts` (or pass a `-t "name"` filter).
 Run a single e2e spec: `npx playwright test tests/useUrlState/main.spec.ts --project=chromium`.
+
+## Demo app URLs
+
+The seven example apps run behind [portless](https://portless.sh), a local
+reverse proxy, so each answers on its own hostname instead of a port anyone else
+might be holding:
+
+| App | URL |
+| --- | --- |
+| `example-nextjs14` | `http://example-nextjs14.localhost:1355` |
+| `example-nextjs15` | `http://example-nextjs15.localhost:1355` |
+| `example-nextjs16` | `http://example-nextjs16.localhost:1355` |
+| `example-react` | `http://example-react.localhost:1355` |
+| `example-react-router6` | `http://example-react-router6.localhost:1355` |
+| `example-remix2` | `http://example-remix2.localhost:1355` |
+| `example-react-router7` | `http://example-react-router7.localhost:1355` |
+
+The hostname is each package's own `name`, so portless infers it — nothing in
+`package.json` names an app twice. Actual ports are random (4000–4999) and
+nobody needs to know them; `portless list` prints the mapping.
+
+Only `example-nextjs16` has a homepage; the other two Next apps answer 404 at
+`/` and serve their test routes (`/test-ssr`, `/test-ssr-usp`, …) instead. A
+*portless* 404 — "No app registered for …" — means something else: the proxy is
+up but the app is not, which is what one crashed service looks like, because
+wireit tears down all seven when any of them fails.
+
+`scripts/portless.sh` is the only place the proxy port lives, and it is what
+every `dev:*`/`start:*` wireit task runs. It pins two things:
+
+- **Port 1355, not 443 or 80.** Anything under 1024 makes portless auto-elevate
+  with `sudo`, and portless [spawns the child dev server as root when it
+  does](https://github.com/vercel-labs/portless/issues/287) — root-owned `.next`
+  and `node_modules/.vite` caches that the next non-sudo run cannot delete.
+- **Plain HTTP.** HTTPS would put a generated CA in the system trust store,
+  which on Fedora/Arch [can fail outright](https://github.com/vercel-labs/portless/issues/267).
+
+Neither the CA nor `/etc/hosts` is touched: `*.localhost` already resolves to
+127.0.0.1 through glibc's `myhostname`, so nothing outside `~/.portless` changes.
+
+CI runs portless too — the e2e URLs are these hostnames, so there is no second
+set to keep in sync. `PORTLESS=0 pnpm run dev` skips the proxy entirely and each
+app falls back to the fixed port in its own `package.json` (`${PORT:-3000}` and
+friends), which is also what `lighthouse:serve` still uses on 3012.
+
+A dev server killed by hand leaves its route behind; `portless prune` clears
+those, and every task passes `--force` so a stale route never blocks a restart.
+
+Run the e2e suite from the main checkout. In a *linked* git worktree portless
+prepends the branch name as a subdomain — `fix-ui.example-nextjs15.localhost` —
+and every URL in `tests/` is a literal, so all seven apps look unregistered. A
+worktree on `main`/`master` is exempt and needs nothing. Turning the prefix off
+is not an option (`portless run` has no flag for it and `--name` keeps it), and
+would be the wrong trade anyway: two worktrees would then `--force` each other's
+routes away and quietly serve the other checkout's app.
 
 ## Layout
 

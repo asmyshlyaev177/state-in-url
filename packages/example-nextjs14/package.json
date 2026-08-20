@@ -4,9 +4,9 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "pnpm exec next dev --port 3000",
+    "dev": "pnpm exec next dev --port ${PORT:-3000}",
     "build": "pnpm exec next build",
-    "start": "pnpm exec next start --port 3000",
+    "start": "pnpm exec next start --port ${PORT:-3000}",
     "lint": "pnpm exec next lint"
   },
   "dependencies": {

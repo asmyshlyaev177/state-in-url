@@ -6,24 +6,24 @@ const urls = [
   '/test-ssr', //  expected hydration error
   '/test-use-client',
   '/test-ssr-sp',
-  'http://localhost:3001/test-ssr',
-  'http://localhost:3001/test-use-client',
-  'http://localhost:3001/test-ssr-sp',
-  'http://localhost:3002/test-ssr',
-  'http://localhost:3002/test-use-client',
-  'http://localhost:3002/test-ssr-sp',
-  'http://localhost:5181',
-  'http://localhost:5182',
-  'http://localhost:5183',
+  'http://example-nextjs15.localhost:1355/test-ssr',
+  'http://example-nextjs15.localhost:1355/test-use-client',
+  'http://example-nextjs15.localhost:1355/test-ssr-sp',
+  'http://example-nextjs16.localhost:1355/test-ssr',
+  'http://example-nextjs16.localhost:1355/test-use-client',
+  'http://example-nextjs16.localhost:1355/test-ssr-sp',
+  'http://example-react-router6.localhost:1355',
+  'http://example-remix2.localhost:1355',
+  'http://example-react-router7.localhost:1355',
 ];
 
 const useHookUrls = [
   '/useHook-race-condition',
-  'http://localhost:3001/useHook-race-condition',
-  'http://localhost:3002/useHook-race-condition',
-  'http://localhost:5181/useHook-race-condition',
-  'http://localhost:5182/useHook-race-condition',
-  'http://localhost:5183/useHook-race-condition',
+  'http://example-nextjs15.localhost:1355/useHook-race-condition',
+  'http://example-nextjs16.localhost:1355/useHook-race-condition',
+  'http://example-react-router6.localhost:1355/useHook-race-condition',
+  'http://example-remix2.localhost:1355/useHook-race-condition',
+  'http://example-react-router7.localhost:1355/useHook-race-condition',
 ]
 
 const delay = 1

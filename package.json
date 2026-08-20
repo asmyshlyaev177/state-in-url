@@ -155,7 +155,7 @@
       ],
       "service": {
         "readyWhen": {
-          "lineMatches": "http://localhost:3000"
+          "lineMatches": "Ready in"
         }
       },
       "command": "pnpm run dev:nextjs15"
@@ -169,22 +169,23 @@
       "command": "pnpm run test:exports && pnpm run test:int"
     },
     "kill-next": {
-      "command": "ps aux | grep .next | grep -v grep | awk '{print $2}' | xargs kill -9 2>&1; exit 0"
+      "command": "ps aux | grep -E 'next-server|next/dist/bin/next' | grep -v grep | awk '{print $2}' | xargs -r kill -9 2>&1; exit 0"
     },
     "kill-vite": {
-      "command": "ps aux | grep '.bin/vite' | grep -v grep | awk '{print $2}' | xargs kill -9 2>&1; exit 0"
+      "command": "ps aux | grep -E 'vite/bin/vite' | grep -v grep | awk '{print $2}' | xargs -r kill -9 2>&1; exit 0"
     },
     "kill-remix": {
-      "command": "ps aux | grep -E 'remix-serve|@remix-run/serve' | grep -v grep | awk '{print $2}' | xargs kill -9 2>&1; exit 0"
+      "command": "ps aux | grep -E 'remix-serve|remix-run/serve' | grep -v grep | awk '{print $2}' | xargs -r kill -9 2>&1; exit 0"
     },
     "kill-services": {
-      "command": "ps aux | grep -E '.next|.bin/vite|remix-serve|@remix-run/serve' | grep -v grep | awk '{print $2}' | xargs -r kill -9 2>&1; exit 0"
+      "command": "ps aux | grep -E 'next-server|next/dist/bin/next|vite/bin/vite|remix-serve|remix-run/serve' | grep -v grep | awk '{print $2}' | xargs -r kill -9 2>&1; exit 0",
+      "comment": "Patterns match how the servers actually appear in ps, not a loose 'next'. An unescaped dot used to make '.next' match the '-next' in 'example-nextjs16.localhost', so this killed any process whose arguments named a demo app — including CI's own wait-on, which exited the job 137."
     },
     "kill-wireit": {
       "command": "ps axu | grep '[w]ireit' | grep -v grep | awk -v me=$PPID '$2 != me {print $2}' | xargs -r kill -9 2>&1; exit 0"
     },
     "kill": {
-      "command": "ps aux | grep -E '.next|.bin/vite|remix-serve|@remix-run/serve' | grep -v grep | awk '{print $2}' | xargs -r kill -9 2>&1; ps axu | grep '[w]ireit' | grep -v grep | awk -v me=$PPID '$2 != me {print $2}' | xargs -r kill -9 2>&1; exit 0"
+      "command": "ps aux | grep -E 'next-server|next/dist/bin/next|vite/bin/vite|remix-serve|remix-run/serve' | grep -v grep | awk '{print $2}' | xargs -r kill -9 2>&1; ps axu | grep '[w]ireit' | grep -v grep | awk -v me=$PPID '$2 != me {print $2}' | xargs -r kill -9 2>&1; exit 0"
     },
     "test:int:ci": {
       "command": "pnpm exec cross-env HOME=/root PLAYWRIGHT_BROWSERS_PATH=0 playwright test"
@@ -218,27 +219,28 @@
       ]
     },
     "dev:router6": {
-      "command": "cd packages/example-react-router6 && pnpm run dev",
+      "command": "cd packages/example-react-router6 && ../../scripts/portless.sh -- pnpm run dev",
       "service": true
     },
     "dev:router7": {
-      "command": "cd packages/example-react-router7 && pnpm run dev",
+      "command": "cd packages/example-react-router7 && ../../scripts/portless.sh -- pnpm run dev",
       "service": true
     },
     "dev:remix2": {
-      "command": "cd packages/example-remix2 && PORT=3003 pnpm run dev",
+      "command": "cd packages/example-remix2 && ../../scripts/portless.sh -- pnpm run dev",
       "service": true
     },
     "dev:nextjs14": {
-      "command": "cd packages/example-nextjs14 && pnpm run dev --turbo",
+      "command": "cd packages/example-nextjs14 && ../../scripts/portless.sh -- pnpm run dev --turbo",
       "service": true
     },
     "dev:nextjs15": {
-      "command": "cd packages/example-nextjs15 && pnpm run dev --turbo",
-      "service": true
+      "command": "cd packages/example-nextjs15 && ../../scripts/portless.sh -- pnpm run dev",
+      "service": true,
+      "comment": "No --turbo: Turbopack 15.5.19 panics with \"Next.js package not found\" against this pnpm layout (it reports version 0.0.0), and one failed service tears down all seven. 14 and 16 are unaffected."
     },
     "dev:nextjs16": {
-      "command": "cd packages/example-nextjs16 && pnpm run dev --turbo",
+      "command": "cd packages/example-nextjs16 && ../../scripts/portless.sh -- pnpm run dev --turbo",
       "service": true
     },
     "build:next14": {
@@ -293,64 +295,64 @@
       "dependencies": [
         "build:demo"
       ],
-      "command": "cd packages/example-nextjs16 && pnpm run start",
+      "command": "cd packages/example-nextjs16 && ../../scripts/portless.sh -- pnpm run start",
       "service": true
     },
     "start:demo:ci": {
-      "command": "cd packages/example-nextjs16 && pnpm run start",
+      "command": "cd packages/example-nextjs16 && ../../scripts/portless.sh -- pnpm run start",
       "service": true
     },
     "start:react": {
-      "command": "pnpm exec vite preview --port 5180 packages/example-react",
+      "command": "cd packages/example-react && ../../scripts/portless.sh -- pnpm run start",
       "dependencies": [
         "build:react"
       ],
       "service": true
     },
     "start:react:ci": {
-      "command": "pnpm exec vite preview --port 5180 packages/example-react",
+      "command": "cd packages/example-react && ../../scripts/portless.sh -- pnpm run start",
       "dependencies": [
         "kill-services"
       ],
       "service": true
     },
     "start:router6": {
-      "command": "pnpm exec vite preview --port 5181 packages/example-react-router6",
+      "command": "cd packages/example-react-router6 && ../../scripts/portless.sh -- pnpm run preview",
       "dependencies": [
         "build:router6"
       ],
       "service": true
     },
     "start:router6:ci": {
-      "command": "pnpm exec vite preview --port 5181 packages/example-react-router6",
+      "command": "cd packages/example-react-router6 && ../../scripts/portless.sh -- pnpm run preview",
       "dependencies": [
         "kill-services"
       ],
       "service": true
     },
     "start:router7": {
-      "command": "pnpm exec vite preview --port 5183 packages/example-react-router7",
+      "command": "cd packages/example-react-router7 && ../../scripts/portless.sh -- pnpm run preview",
       "dependencies": [
         "build:router7"
       ],
       "service": true
     },
     "start:router7:ci": {
-      "command": "pnpm exec vite preview --port 5183 packages/example-react-router7",
+      "command": "cd packages/example-react-router7 && ../../scripts/portless.sh -- pnpm run preview",
       "dependencies": [
         "kill-services"
       ],
       "service": true
     },
     "start:remix2": {
-      "command": "cd packages/example-remix2 && pnpm run start",
+      "command": "cd packages/example-remix2 && ../../scripts/portless.sh -- pnpm run start",
       "dependencies": [
         "build:remix2"
       ],
       "service": true
     },
     "start:remix2:ci": {
-      "command": "cd packages/example-remix2 && pnpm run start",
+      "command": "cd packages/example-remix2 && ../../scripts/portless.sh -- pnpm run start",
       "dependencies": [
         "kill-services"
       ],
@@ -360,36 +362,36 @@
       "dependencies": [
         "build:next14"
       ],
-      "command": "cd packages/example-nextjs14 && pnpm run start",
+      "command": "cd packages/example-nextjs14 && ../../scripts/portless.sh -- pnpm run start",
       "service": true
     },
     "start:demo15": {
       "dependencies": [
         "build:next15"
       ],
-      "command": "cd packages/example-nextjs15 && pnpm run start",
+      "command": "cd packages/example-nextjs15 && ../../scripts/portless.sh -- pnpm run start",
       "service": true
     },
     "start:demo14:ci": {
-      "command": "cd packages/example-nextjs14 && pnpm run start",
+      "command": "cd packages/example-nextjs14 && ../../scripts/portless.sh -- pnpm run start",
       "dependencies": [
         "kill-services"
       ],
       "service": true
     },
     "start:demo15:ci": {
-      "command": "cd packages/example-nextjs15 && pnpm run start",
+      "command": "cd packages/example-nextjs15 && ../../scripts/portless.sh -- pnpm run start",
       "service": true
     },
     "start:demo16": {
       "dependencies": [
         "build:next16"
       ],
-      "command": "cd packages/example-nextjs16 && pnpm run start",
+      "command": "cd packages/example-nextjs16 && ../../scripts/portless.sh -- pnpm run start",
       "service": true
     },
     "start:demo16:ci": {
-      "command": "cd packages/example-nextjs16 && pnpm run start",
+      "command": "cd packages/example-nextjs16 && ../../scripts/portless.sh -- pnpm run start",
       "dependencies": [
         "kill-services"
       ],
@@ -420,7 +422,7 @@
       "service": true
     },
     "dev:react": {
-      "command": "cd packages/example-react && pnpm run dev",
+      "command": "cd packages/example-react && ../../scripts/portless.sh -- pnpm run dev",
       "service": true
     },
     "build:packages": {
@@ -531,6 +533,7 @@
     "pin-github-action": "^1.9.1",
     "playwright": "^1.55.1",
     "playwright-lighthouse": "^4.0.0",
+    "portless": "^0.15.5",
     "prettier": "^3.6.2",
     "prettier-plugin-tailwindcss": "^0.6.14",
     "react": "^19.2.6",
