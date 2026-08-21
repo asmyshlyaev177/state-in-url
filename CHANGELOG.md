@@ -1,3 +1,10 @@
+## [6.4.1](https://github.com/asmyshlyaev177/state-in-url/compare/v6.4.0...v6.4.1) (2026-08-21)
+
+
+### Bug Fixes
+
+* useInsertionEffect dev warning ([9e20066](https://github.com/asmyshlyaev177/state-in-url/commit/9e200667c0e0b7c17274a6883b1282d22c2ba2da))
+
 # [6.4.0](https://github.com/asmyshlyaev177/state-in-url/compare/v6.3.0...v6.4.0) (2026-08-14)
 
 

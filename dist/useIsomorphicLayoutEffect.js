@@ -1,0 +1,1 @@
+"use strict";var u=require("react");function f(e){return e&&e.__esModule?e:{default:e}}var t=f(u);const o=typeof window==="undefined"?t.default.useEffect:t.default.useLayoutEffect;exports.useIsomorphicLayoutEffect=o;

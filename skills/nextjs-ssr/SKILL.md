@@ -17,7 +17,7 @@ sources:
 metadata:
   type: framework
   library: state-in-url
-  library_version: '6.4.0'
+  library_version: '6.4.1'
   framework: react
 ---
 
