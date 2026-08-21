@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { TIMEOUT } from '../constants';
-import { useInsertionEffect } from '../useInsertionEffect';
+import { useIsomorphicLayoutEffect } from '../useIsomorphicLayoutEffect';
 import { useSharedState } from '../useSharedState';
 import { useUrlEncode } from '../useUrlEncode';
 import {
@@ -78,13 +78,20 @@ export function useUrlStateBase<T extends JSONCompatible>(
       }) || defaultState,
   );
 
-  useInsertionEffect(() => {
+  const searchAtRender = React.useRef<string>();
+  if (searchAtRender.current === undefined)
+    searchAtRender.current = getSearch();
+
+  useIsomorphicLayoutEffect(() => {
     // for history navigation
     const popCb = () => {
       setState(parse(filterUnknownParamsClient(defaultState, getSearch())));
     };
 
     window.addEventListener(popstateEv, popCb);
+
+    // popstate before registration is not replayed
+    if (searchAtRender.current !== getSearch()) popCb();
 
     return () => {
       window.removeEventListener(popstateEv, popCb);

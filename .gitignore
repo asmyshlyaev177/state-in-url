@@ -21,3 +21,5 @@ results
 .env
 
 .claude/settings.json
+
+next-env.d.ts

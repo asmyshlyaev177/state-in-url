@@ -1,4 +1,4 @@
-import { getParams, typeOf, assignValue, filterUnknownParamsClient, filterUnknown, filterUnknownParams, isPrimitive, getSearch } from './utils';
+import { getParams, typeOf, assignValue, filterUnknownParamsClient, filterUnknown, filterUnknownParams, isPrimitive, getSearch, subscribeToUrl } from './utils';
 
 describe('typeOf', () => {
   test('string', () => {
@@ -389,5 +389,35 @@ describe('getSearch', () => {
       value: originalLocation,
       writable: true
     });
+  });
+});
+
+describe('subscribeToUrl', () => {
+  test('notifies after the pushState call returns, not inside it', async () => {
+    const cb = vi.fn();
+    const originalHref = window.location.href;
+    const unsubscribe = subscribeToUrl(cb);
+
+    try {
+      window.history.pushState(null, '', '/sub?a=1');
+      expect(cb).not.toHaveBeenCalled();
+
+      await Promise.resolve();
+      expect(cb).toHaveBeenCalledTimes(1);
+
+      window.history.replaceState(null, '', '/sub?a=2');
+      expect(cb).toHaveBeenCalledTimes(1);
+
+      await Promise.resolve();
+      expect(cb).toHaveBeenCalledTimes(2);
+
+      unsubscribe();
+      window.history.pushState(null, '', '/sub?a=3');
+      await Promise.resolve();
+      expect(cb).toHaveBeenCalledTimes(2);
+    } finally {
+      unsubscribe();
+      window.history.replaceState(null, '', originalHref);
+    }
   });
 });
