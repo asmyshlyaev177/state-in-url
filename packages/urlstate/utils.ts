@@ -243,8 +243,11 @@ function patchHistory() {
       ...args: Parameters<History['pushState']>
     ) {
       const result = original.apply(this, args);
-      // copy, a listener can unsubscribe while iterating
-      for (const cb of [...urlListeners]) cb();
+      // Next writes history from a useInsertionEffect, which must not schedule updates
+      queueMicrotask(() => {
+        // copy, a listener can unsubscribe while iterating
+        for (const cb of [...urlListeners]) cb();
+      });
       return result;
     };
   }

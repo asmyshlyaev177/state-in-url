@@ -1,3 +1,4 @@
+import React from 'react';
 import { act, renderHook } from '@testing-library/react';
 
 import { useSharedState } from './useSharedState';
@@ -198,6 +199,54 @@ describe('useSharedState', () => {
     });
 
     expect(mockSubscriber).toHaveBeenCalledTimes(1);
+  });
+
+  test('should catch a store write that lands between render and subscribe', () => {
+    const defaultState = { count: 0 };
+    const updated = { count: 7 };
+    // renders after the hook, so the write lands before it subscribes
+    const WriteMidRender = () => {
+      subscribers.stateMap.set(defaultState, updated);
+      return null;
+    };
+
+    const { result } = renderHook(() => useSharedState(defaultState), {
+      wrapper: ({ children }) =>
+        React.createElement(
+          React.Fragment,
+          null,
+          children,
+          React.createElement(WriteMidRender),
+        ),
+    });
+
+    expect(result.current.state).toStrictEqual(updated);
+  });
+
+  test('should subscribe before paint, not after', () => {
+    const defaultState = { count: 0 };
+    const order: string[] = [];
+    vi.spyOn(subscribers.subscribers, 'add').mockImplementation(() => {
+      order.push('subscribe');
+      return () => void 0;
+    });
+    const Probe = () => {
+      React.useLayoutEffect(() => void order.push('layout'), []);
+      React.useEffect(() => void order.push('effect'), []);
+      return null;
+    };
+
+    renderHook(() => useSharedState(defaultState), {
+      wrapper: ({ children }) =>
+        React.createElement(
+          React.Fragment,
+          null,
+          children,
+          React.createElement(Probe),
+        ),
+    });
+
+    expect(order).toStrictEqual(['subscribe', 'layout', 'effect']);
   });
 
   describe('few instances', () => {

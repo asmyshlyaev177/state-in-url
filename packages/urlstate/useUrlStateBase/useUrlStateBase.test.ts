@@ -1,3 +1,4 @@
+import React from 'react';
 import { act, fireEvent, renderHook } from '@testing-library/react';
 
 // import { advanceTimersByTime } from '../../../tests/testUtils';
@@ -556,17 +557,12 @@ describe('useUrlStateBase', () => {
   describe('back/forward history navigation', () => {
     test('should update state on back/forward', () => {
       vi.mocked(utils).isSSR = false;
-      const search = '?num=55';
       const originalLocation = window.location;
-      vi
-        .spyOn(window, 'location', 'get')
-        .mockImplementationOnce(() => ({
-          ...originalLocation,
-        }))
-        .mockImplementationOnce(() => ({
-          ...originalLocation,
-          search,
-        }));
+      let search = '';
+      vi.spyOn(window, 'location', 'get').mockImplementation(() => ({
+        ...originalLocation,
+        search,
+      }));
       const { result } = renderHook(() =>
         useUrlStateBase(shape, router, ({ parse }) =>
           parse(window.location.search),
@@ -575,9 +571,70 @@ describe('useUrlStateBase', () => {
 
       expect(result.current.state).toStrictEqual(shape);
 
+      search = '?num=55';
       act(() => {
         fireEvent.popState(window);
       });
+      expect(result.current.state).toStrictEqual({ ...shape, num: 55 });
+    });
+
+    test('should pick up a popstate that fired before the listener registered', () => {
+      vi.mocked(utils).isSSR = false;
+      const originalLocation = window.location;
+      let search = '';
+      vi.spyOn(window, 'location', 'get').mockImplementation(() => ({
+        ...originalLocation,
+        search,
+      }));
+
+      // renders after the hook, so the url moves before it listens
+      const UrlChangedMidRender = () => {
+        search = '?num=55';
+        return null;
+      };
+      const { result } = renderHook(
+        () =>
+          useUrlStateBase(shape, router, ({ parse }) =>
+            parse(window.location.search),
+          ),
+        {
+          wrapper: ({ children }) =>
+            React.createElement(
+              React.Fragment,
+              null,
+              children,
+              React.createElement(UrlChangedMidRender),
+            ),
+        },
+      );
+
+      expect(result.current.state).toStrictEqual({ ...shape, num: 55 });
+    });
+
+    test('should keep an updateState-only value when the url did not move', () => {
+      vi.mocked(utils).isSSR = false;
+      const originalLocation = window.location;
+      vi.spyOn(window, 'location', 'get').mockImplementation(() => ({
+        ...originalLocation,
+        search: '',
+      }));
+      const { result } = renderHook(() =>
+        useUrlStateBase(shape, router, ({ parse }) =>
+          parse(window.location.search),
+        ),
+      );
+
+      act(() => {
+        result.current.updateState({ num: 55 });
+      });
+
+      const second = renderHook(() =>
+        useUrlStateBase(shape, router, ({ parse }) =>
+          parse(window.location.search),
+        ),
+      );
+
+      expect(second.result.current.state).toStrictEqual({ ...shape, num: 55 });
       expect(result.current.state).toStrictEqual({ ...shape, num: 55 });
     });
   });

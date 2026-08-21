@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { stateMap, subscribers } from '../subscribers';
-import { useInsertionEffect } from '../useInsertionEffect';
+import { useIsomorphicLayoutEffect } from '../useIsomorphicLayoutEffect';
 import { isEqual, isSSR, type JSONCompatible } from '../utils';
 
 /**
@@ -65,18 +65,16 @@ export function useSharedState<T extends JSONCompatible>(
     [],
   );
 
-  useInsertionEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     const cb = () => {
       _setState(stateMap.get(stateShape.current) || stateShape.current);
     };
-    return subscribers.add(stateShape.current, cb);
-  }, []);
+    const unsubscribe = subscribers.add(stateShape.current, cb);
 
-  // stateMap can change between render and subscribing; that write skips this
-  // instance, and later ones compare against the map, so it never catches up.
-  // Same object back when nothing changed, React bails out on identity.
-  React.useEffect(() => {
+    // catch a write that landed between render and subscribing
     _setState((curr) => stateMap.get(stateShape.current) ?? curr);
+
+    return unsubscribe;
   }, []);
 
   // get state without deps
