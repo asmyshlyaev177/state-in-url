@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
+import { useEffect, useRef } from 'react';
 import { form } from 'shared/form';
 import { useLinkProps } from 'state-in-url/useLinkProps';
 
@@ -22,10 +23,34 @@ export function LanguagePicker({ current, label }: { current: Locale; label: str
   const path = stripLocale(usePathname()).replace(/\/$/, '');
   // `form` is the demo's own object — `useSharedState` keys on its identity.
   const linkProps = useLinkProps(form, useRouter().push);
+  const ref = useRef<HTMLDetailsElement>(null);
+
+  // `<details>` has no light dismiss of its own — left alone, the panel stays
+  // open until the summary is clicked a second time. Read through the ref on
+  // every event rather than closing over it: this component renders null on
+  // the fixture routes, so the element does not exist when the effect runs.
+  useEffect(() => {
+    const close = () => {
+      if (ref.current?.open) ref.current.open = false;
+    };
+    const onPointerDown = (e: PointerEvent) => {
+      if (!ref.current?.contains(e.target as Node)) close();
+    };
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') close();
+    };
+    document.addEventListener('pointerdown', onPointerDown);
+    document.addEventListener('keydown', onKeyDown);
+    return () => {
+      document.removeEventListener('pointerdown', onPointerDown);
+      document.removeEventListener('keydown', onKeyDown);
+    };
+  }, []);
+
   if (!(PAGES as readonly string[]).includes(path)) return null;
 
   return (
-    <details className="lang-picker">
+    <details className="lang-picker" ref={ref}>
       <summary>
         <svg
           viewBox="0 0 24 24"
