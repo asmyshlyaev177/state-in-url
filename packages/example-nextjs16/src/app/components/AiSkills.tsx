@@ -33,7 +33,7 @@ const Link = ({ href, children }: { href: string; children: string }) => (
     href={href}
     target="_blank"
     rel="noopener"
-    className="font-semibold text-[var(--brand)] hover:underline"
+    className="font-semibold text-[var(--accent-on-soft)] hover:underline"
   >
     {children}
   </a>
@@ -83,7 +83,7 @@ export const AiSkills = ({ copy }: { copy: SiteCopy }) => (
           key={skill}
           className="flex flex-col gap-x-4 gap-y-1 border-b border-[var(--line)] py-2.5 last:border-b-0 sm:flex-row"
         >
-          <code className="shrink-0 font-mono text-[var(--brand)] sm:w-56">
+          <code className="shrink-0 font-mono text-[var(--accent-on-soft)] sm:w-56">
             {skill}
           </code>
           <span>{copy.aiSkills.skills[key]}</span>

@@ -18,7 +18,7 @@ export const Field = ({
         'mb-1 block whitespace-nowrap text-sm font-medium',
         className,
       )}
-      style={{ color: 'var(--ink-2, #6b7280)' }}
+      style={{ color: 'var(--muted, #6b7280)' }}
     >
       <label
         className="mb-2 block select-none hover:cursor-pointer"

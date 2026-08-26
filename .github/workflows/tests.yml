@@ -49,6 +49,12 @@ jobs:
       # - name: Test exports
       #   run: npm run test:exports
 
+      # The design-token contract at this repo's own hues — no browser, ~0.1s.
+      # `tests/landing/contrast.spec.ts` proves the pages use those tokens;
+      # this proves the tokens themselves still clear WCAG 2 AA and APCA.
+      - name: Design token contract
+        run: pnpm --filter example-nextjs16 test:tokens
+
       - name: Unit tests
         # Through wireit: the examples import `state-in-url`, so the typecheck
         # needs a built `dist/`, and `tsc` depends on `build`.

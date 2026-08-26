@@ -1,35 +1,53 @@
+/* @import must precede every other rule — a Tailwind v3 directive above this
+   line makes the whole import invalid and CSS drops it silently, leaving every
+   token undefined and every colour black. */
+@import '@asmyshlyaev177/design-tokens/tokens.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* The shared design system, identical across every project
+   (see https://asmyshlyaev177.dev/design). This site is dark-only — the
+   <html> element carries data-theme="dark" — so only the dark ramp applies.
+   What stays below is what this project owns. */
+
 :root {
-  --surface-0: oklch(14.5% 0.012 48);
-  --surface-1: oklch(18.5% 0.016 48);
-  --surface-2: oklch(23.5% 0.02 48);
-  --line: oklch(32% 0.024 48);
+  /* amber, carrying both roles — this site has no second signal colour */
+  --brand-hue: 48;
+  --accent-hue: 48;
+  --neutral-hue: 48;
 
-  --ink: oklch(94.5% 0.008 60);
-  --ink-2: oklch(78% 0.018 55);
-
-  --brand: oklch(73% 0.165 50);
-  --brand-strong: oklch(63% 0.19 45);
-  --brand-dim: oklch(31% 0.06 48);
-
+  /* The one inverted panel: form controls sit on a light ground so an input
+     reads as an input. Not part of the shared ramp, which has no light
+     surface on a dark-only site. */
   --lit: oklch(96.5% 0.01 75);
   --lit-ink: oklch(24% 0.025 48);
   --lit-line: oklch(86% 0.025 60);
 
-  --surface: var(--surface-0);
+  /* A filled control carrying a label cannot use --accent: it is a fill held
+     to 3:1, and at its lightness even pure black on it measures Lc 59.8,
+     under the 60 body-size text needs. --primary is the token for that job
+     everywhere else, but at hue 48 it clips to #b71100 — a red. Same hue and
+     chroma as --accent, lifted just enough to clear the floor at Lc 62.6.
+     `tests/landing/contrast.spec.ts` re-measures it. */
+  --accent-fill: oklch(80% 0.1647 var(--accent-hue));
+  --on-accent: oklch(16% 0.02 var(--accent-hue));
 
-  --button-fg: oklch(16% 0.02 48);
+  --button-bg: var(--accent-fill);
+  --button-fg: var(--on-accent);
   --tag-fg: var(--ink);
-  --tag-active-fg: oklch(16% 0.02 48);
+  --tag-active-bg: var(--accent-fill);
+  --tag-active-fg: var(--on-accent);
+
+  /* Also read by `highlighter.ts`, which lifts every Shiki token above the
+     contrast floor against this exact ground. */
+  --code-bg: oklch(21% 0.018 48);
   --input-bg: var(--lit);
   --input-ink: var(--lit-ink);
   --input-line: var(--lit-line);
-  --checkbox-fill: var(--brand-strong);
+  --checkbox-fill: var(--primary-strong);
 
-  --z-sticky: 10;
   --z-badge: 30;
 
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
@@ -38,7 +56,7 @@
 @layer base {
   body {
     color: var(--ink);
-    background: var(--surface-0);
+    background: var(--bg);
     letter-spacing: 0.01em;
   }
 
@@ -52,7 +70,7 @@
   }
 
   :focus-visible {
-    outline: 2px solid var(--brand);
+    outline: 2px solid var(--accent);
     outline-offset: 2px;
   }
 }
@@ -66,7 +84,7 @@
 @layer components {
   .page-main {
     color: var(--ink);
-    background: var(--surface-0);
+    background: var(--bg);
     overflow-x: clip;
 
     & > .wrapper {
@@ -118,11 +136,11 @@
               }
 
               &:hover {
-                background: var(--surface-1);
+                background: var(--surface);
               }
 
               &:focus-visible {
-                outline: 2px solid var(--brand);
+                outline: 2px solid var(--accent);
                 outline-offset: 2px;
               }
 
@@ -144,12 +162,12 @@
               }
 
               & > a:hover {
-                background: var(--surface-1);
+                background: var(--surface);
               }
 
               & > span {
                 font-weight: 600;
-                color: var(--brand);
+                color: var(--accent-on-soft);
               }
             }
           }
@@ -185,7 +203,7 @@
         .desc {
           font-size: clamp(1.05rem, 1.5vw, 1.2rem);
           font-weight: 400;
-          color: var(--ink-2);
+          color: var(--muted);
           max-width: 58ch;
           line-height: 1.55;
           margin-top: 1.25rem;
@@ -203,14 +221,14 @@
           row-gap: 0.35rem;
           margin-top: 1.5rem;
           font-size: 0.95rem;
-          color: var(--ink-2);
+          color: var(--muted);
 
           & li {
             @apply flex items-center;
 
             &:not(:first-child)::before {
               content: '\00B7';
-              color: var(--brand);
+              color: var(--accent-on-soft);
               font-weight: 700;
               margin-right: 0.65rem;
             }
@@ -226,7 +244,7 @@
       .demo {
         @apply w-full;
         max-width: 56rem;
-        background: var(--surface-1);
+        background: var(--surface);
         border: 1px solid var(--line);
         border-radius: 1rem;
         padding: 1.25rem;
@@ -263,7 +281,7 @@
 
           & > .status {
             @apply flex max-h-[550px] w-full flex-1 basis-1/2 flex-col rounded-lg p-4;
-            background: var(--surface-0);
+            background: var(--bg);
             border: 1px solid var(--line);
           }
         }
@@ -412,7 +430,7 @@
     @apply mt-2 flex items-center gap-2;
     font-size: 0.85rem;
     font-weight: 600;
-    color: var(--brand);
+    color: var(--accent-on-soft);
     user-select: none;
 
     .demo-hint-arrow {
@@ -427,13 +445,13 @@
     font-family: var(--font-geist-mono, ui-monospace, monospace), monospace;
     font-size: 0.95rem;
     color: var(--ink);
-    background: var(--surface-1);
+    background: var(--surface);
     border: 1px solid var(--line);
     border-radius: 0.6rem;
     padding: 0.6rem 0.6rem 0.6rem 1rem;
 
     .install-prompt {
-      color: var(--brand);
+      color: var(--accent-on-soft);
       user-select: none;
     }
 
@@ -442,7 +460,7 @@
       width: 2rem;
       height: 2rem;
       border-radius: 0.4rem;
-      color: var(--ink-2);
+      color: var(--muted);
       background: transparent;
       border: none;
       cursor: pointer;
@@ -468,7 +486,7 @@
 
   .codeblock {
     margin-bottom: 2rem;
-    background: oklch(21% 0.018 48);
+    background: var(--code-bg);
     border: 1px solid var(--line);
     border-radius: 0.75rem;
     overflow: hidden;
@@ -479,7 +497,7 @@
       font-family: var(--font-geist-mono, ui-monospace, monospace), monospace;
       background: var(--surface-2);
       border-bottom: 1px solid var(--line);
-      color: var(--ink-2);
+      color: var(--muted);
 
       .codeblock-dots {
         @apply flex items-center gap-2;
@@ -527,13 +545,13 @@
 
   .fw-tabs {
     @apply inline-flex rounded-lg p-1;
-    background: var(--surface-1);
+    background: var(--surface);
     border: 1px solid var(--line);
     box-shadow: 0 6px 24px oklch(0% 0 0 / 0.45);
 
     & .fw-tab {
       @apply inline-flex items-center rounded-md px-4 py-2 text-sm font-medium transition;
-      color: var(--ink-2);
+      color: var(--muted);
 
       &:hover {
         color: var(--ink);
@@ -541,8 +559,8 @@
       }
 
       &[aria-current='page'] {
-        background: var(--brand);
-        color: oklch(16% 0.02 48);
+        background: var(--accent-fill);
+        color: var(--on-accent);
         font-weight: 700;
       }
     }
@@ -640,7 +658,7 @@
   gap: 1rem 2.5rem;
   padding: 1.75rem 1.5rem;
   font-size: 0.875rem;
-  color: var(--ink-2);
+  color: var(--muted);
 }
 
 .footer-id {
@@ -658,13 +676,12 @@
 
 .footer-tag {
   font-size: 0.8rem;
-  color: var(--ink-2);
+  color: var(--muted);
 }
 
 .footer-updated {
   font-size: 0.75rem;
-  color: var(--ink-2);
-  opacity: 0.75;
+  color: var(--muted);
 }
 
 .footer-links {
@@ -681,8 +698,8 @@
       background-color 0.15s ease;
 
     &:hover {
-      color: var(--brand);
-      background: var(--surface-1);
+      color: var(--accent-on-soft);
+      background: var(--surface);
     }
   }
 }
@@ -691,7 +708,7 @@
   transition: color 0.15s ease;
 
   &:hover {
-    color: var(--brand);
+    color: var(--accent-on-soft);
   }
 }
 
@@ -702,7 +719,7 @@ for-hire-badge {
   --fhb-bg: var(--surface-2);
   --fhb-border: var(--line);
   --fhb-ink: var(--ink);
-  --fhb-muted: var(--ink-2);
+  --fhb-muted: var(--muted);
   --fhb-font: var(--font-syne), system-ui, sans-serif;
   --fhb-z: var(--z-badge, 30);
 }

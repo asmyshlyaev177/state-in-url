@@ -8,25 +8,22 @@
    shadow. The URL bar is the single light surface on the page. */
 
 :root {
-  --surface-0: oklch(14.5% 0.012 48); /* page */
-  --surface-1: oklch(18.5% 0.016 48); /* panels */
+  --bg: oklch(14.5% 0.012 48); /* page */
+  --surface: oklch(18.5% 0.016 48); /* panels */
   --surface-2: oklch(23.5% 0.02 48); /* elevated: inputs, chrome */
   --line: oklch(32% 0.024 48); /* hairline borders */
 
   --ink: oklch(94.5% 0.008 60);
-  --ink-2: oklch(78% 0.018 55);
+  --muted: oklch(78% 0.018 55);
 
-  --brand: oklch(73% 0.165 50); /* text/glow orange, lifted for dark */
-  --brand-strong: oklch(63% 0.19 45); /* fills */
-  --brand-dim: oklch(31% 0.06 48); /* orange-tinted dark surface */
+  --accent: oklch(73% 0.165 50); /* text/glow orange, lifted for dark */
+  --primary-strong: oklch(63% 0.19 45); /* fills */
+  --accent-soft: oklch(31% 0.06 48); /* orange-tinted dark surface */
 
   /* the lit URL bar */
   --lit: oklch(96.5% 0.01 75);
   --lit-ink: oklch(24% 0.025 48);
   --lit-line: oklch(86% 0.025 60);
-
-  /* legacy alias used by shared components and bg-surface utilities */
-  --surface: var(--surface-0);
 
   /* shared component overrides (light fallbacks live in shared/) */
   --button-fg: oklch(16% 0.02 48);
@@ -35,7 +32,7 @@
   --input-bg: var(--lit);
   --input-ink: var(--lit-ink);
   --input-line: var(--lit-line);
-  --checkbox-fill: var(--brand-strong);
+  --checkbox-fill: var(--primary-strong);
 
   /* semantic z-scale */
   --z-sticky: 10;
@@ -47,7 +44,7 @@
 @layer base {
   body {
     color: var(--ink);
-    background: var(--surface-0);
+    background: var(--bg);
     letter-spacing: 0.01em;
   }
 
@@ -61,7 +58,7 @@
   }
 
   :focus-visible {
-    outline: 2px solid var(--brand);
+    outline: 2px solid var(--accent);
     outline-offset: 2px;
   }
 }
@@ -75,7 +72,7 @@
 @layer components {
   .page-main {
     color: var(--ink);
-    background: var(--surface-0);
+    background: var(--bg);
     /* clip aurora bleed without creating a scroll container (keeps sticky working) */
     overflow-x: clip;
 
@@ -145,7 +142,7 @@
         .desc {
           font-size: clamp(1.05rem, 1.5vw, 1.2rem);
           font-weight: 400;
-          color: var(--ink-2);
+          color: var(--muted);
           max-width: 58ch;
           line-height: 1.55;
           margin-top: 1.25rem;
@@ -163,14 +160,14 @@
           row-gap: 0.35rem;
           margin-top: 1.5rem;
           font-size: 0.95rem;
-          color: var(--ink-2);
+          color: var(--muted);
 
           & li {
             @apply flex items-center;
 
             &:not(:first-child)::before {
               content: '·';
-              color: var(--brand);
+              color: var(--accent);
               font-weight: 700;
               margin-right: 0.65rem;
             }
@@ -187,7 +184,7 @@
       .demo {
         @apply w-full;
         max-width: 56rem;
-        background: var(--surface-1);
+        background: var(--surface);
         border: 1px solid var(--line);
         border-radius: 1rem;
         padding: 1.25rem;
@@ -224,7 +221,7 @@
 
           & > .status {
             @apply flex max-h-[550px] w-full flex-1 basis-1/2 flex-col rounded-lg p-4;
-            background: var(--surface-0);
+            background: var(--bg);
             border: 1px solid var(--line);
           }
         }
@@ -379,7 +376,7 @@
     @apply mt-2 flex items-center gap-2;
     font-size: 0.85rem;
     font-weight: 600;
-    color: var(--brand);
+    color: var(--accent);
     user-select: none;
 
     .demo-hint-arrow {
@@ -396,13 +393,13 @@
     font-family: var(--font-geist-mono, ui-monospace, monospace), monospace;
     font-size: 0.95rem;
     color: var(--ink);
-    background: var(--surface-1);
+    background: var(--surface);
     border: 1px solid var(--line);
     border-radius: 0.6rem;
     padding: 0.6rem 0.6rem 0.6rem 1rem;
 
     .install-prompt {
-      color: var(--brand);
+      color: var(--accent);
       user-select: none;
     }
 
@@ -411,7 +408,7 @@
       width: 2rem;
       height: 2rem;
       border-radius: 0.4rem;
-      color: var(--ink-2);
+      color: var(--muted);
       background: transparent;
       border: none;
       cursor: pointer;
@@ -450,7 +447,7 @@
       font-family: var(--font-geist-mono, ui-monospace, monospace), monospace;
       background: var(--surface-2);
       border-bottom: 1px solid var(--line);
-      color: var(--ink-2);
+      color: var(--muted);
 
       .codeblock-dots {
         @apply flex items-center gap-2;
@@ -500,13 +497,13 @@
 
   .fw-tabs {
     @apply inline-flex rounded-lg p-1;
-    background: var(--surface-1);
+    background: var(--surface);
     border: 1px solid var(--line);
     box-shadow: 0 6px 24px oklch(0% 0 0 / 0.45);
 
     & .fw-tab {
       @apply inline-flex items-center rounded-md px-4 py-2 text-sm font-medium transition;
-      color: var(--ink-2);
+      color: var(--muted);
 
       &:hover {
         color: var(--ink);
@@ -514,7 +511,7 @@
       }
 
       &[aria-current='page'] {
-        background: var(--brand);
+        background: var(--accent);
         color: oklch(16% 0.02 48);
         font-weight: 700;
       }
@@ -617,7 +614,7 @@
   gap: 1rem 2.5rem;
   padding: 1.75rem 1.5rem;
   font-size: 0.875rem;
-  color: var(--ink-2);
+  color: var(--muted);
 }
 
 .footer-id {
@@ -635,7 +632,7 @@
 
 .footer-tag {
   font-size: 0.8rem;
-  color: var(--ink-2);
+  color: var(--muted);
 }
 
 .footer-links {
@@ -652,8 +649,8 @@
       background-color 0.15s ease;
 
     &:hover {
-      color: var(--brand);
-      background: var(--surface-1);
+      color: var(--accent);
+      background: var(--surface);
     }
   }
 }
@@ -662,6 +659,6 @@
   transition: color 0.15s ease;
 
   &:hover {
-    color: var(--brand);
+    color: var(--accent);
   }
 }

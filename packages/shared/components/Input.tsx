@@ -16,13 +16,13 @@ export const Input = ({ value, className, ...props }: InputProps) => {
         // (background-color: currentColor + check icon) stays visible
         borderColor: isCheckbox
           ? undefined
-          : 'var(--input-line, var(--brand-dim, #fed7aa))',
+          : 'var(--input-line, var(--accent-soft, #fed7aa))',
         backgroundColor: isCheckbox ? undefined : 'var(--input-bg, #fff)',
         color: isCheckbox
           ? 'var(--checkbox-fill, #ea580c)'
           : 'var(--input-ink, inherit)',
         // @ts-expect-error fots
-        '--tw-ring-color': 'var(--brand, #ea580c)',
+        '--tw-ring-color': 'var(--accent, #ea580c)',
         '--tw-ring-offset-color': 'var(--surface, #fff)',
       }}
       value={value ?? ''}

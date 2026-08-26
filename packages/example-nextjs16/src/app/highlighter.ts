@@ -9,6 +9,7 @@ import tsx from 'shiki/langs/tsx.mjs';
 import githubTheme from 'shiki/themes/github-dark.mjs';
 import getWasm from 'shiki/wasm';
 
+import { shikiContrast } from './shikiContrast';
 import { Langs } from './types';
 
 export const createHighlighter = () =>
@@ -46,6 +47,7 @@ export const highlight = (content: string, opts?: { lang?: Langs}) => {
     transformers: [
       transformerNotationHighlight(),
       transformerNotationWordHighlight(),
+      shikiContrast,
     ],
   }) || '')
 };

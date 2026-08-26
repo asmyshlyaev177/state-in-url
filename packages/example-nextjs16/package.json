@@ -5,11 +5,13 @@
   "scripts": {
     "dev": "pnpm run generate-middleware && pnpm exec next dev --port ${PORT:-3002}",
     "build": "pnpm run generate-middleware && pnpm exec next build",
+    "test:tokens": "check-tokens src/app/styles.css",
     "start": "pnpm exec next start --port ${PORT:-3002}",
     "lint": "pnpm exec next lint",
     "generate-middleware": "node scripts/generate-middleware-content.cjs"
   },
   "dependencies": {
+    "@asmyshlyaev177/design-tokens": "^1.1.1",
     "@floating-ui/react": "^0.26.28",
     "@next/third-parties": "^16.3.0",
     "@shikijs/transformers": "^1.12.1",
