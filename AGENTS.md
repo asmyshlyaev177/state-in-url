@@ -88,7 +88,7 @@ routes away and quietly serve the other checkout's app.
 - `packages/urlstate/` — **the library source, and the root npm package itself.** It is deliberately NOT a pnpm workspace member (see `pnpm-workspace.yaml`); it's published from the repo root via `dist/`.
 - `packages/example-*` — the workspace members: demo apps for nextjs14/15/16, react (Vite), react-router6, react-router7, remix2. These exist to be driven by the Playwright e2e tests and to host the live demo.
 - `packages/shared/` — shared Tailwind config, styles, and components used by the example apps (aliased as `shared/*` in `tsconfig.base.json`).
-- `tests/` — Playwright e2e specs (separate from the colocated `*.test.ts` unit tests).
+- `tests/` — Playwright e2e specs (separate from the colocated `*.test.ts` unit tests). `tests/landing/a11y.spec.ts` is the accessibility gate over the demo site's public pages — axe-core plus rendered contrast, both from `@asmyshlyaev177/design-tokens`.
 - `lighthouse/` — the Lighthouse suite, its own directory so the e2e config's `testDir: './tests'` cannot pick it up. Driven by `playwright.lighthouse.config.ts`.
 - `skills/` — agent skill files (`SKILL.md` per topic) that are **published as part of the npm package** (see `files` in `package.json`). `skills/_artifacts/` is dev-only and excluded from publish; `skill_spec.md` there is a useful map of the library's domains and known user failure modes.
 - `scripts/i18n/` — the translation toolkit: the locale table, the drift and structure checks, and the translator's prompt and glossary. See `scripts/i18n/AGENTS.md`.

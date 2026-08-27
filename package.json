@@ -482,7 +482,8 @@
     }
   },
   "devDependencies": {
-    "@asmyshlyaev177/design-tokens": "^1.1.1",
+    "@asmyshlyaev177/design-tokens": "^1.2.0",
+    "@axe-core/playwright": "^4.13.0",
     "@babel/core": "^7.28.4",
     "@babel/node": "^7.28.0",
     "@babel/preset-env": "^7.28.3",
