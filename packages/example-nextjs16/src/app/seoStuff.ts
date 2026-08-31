@@ -3,7 +3,12 @@ import { type SoftwareApplication, type WithContext } from 'schema-dts';
 import packageJson from '../../../../package.json';
 import { CONTENT_LAST_MODIFIED } from './contentDate';
 import { vercelUrl } from './domain';
-import { languageAlternates, localeFromParam, localePrefix, ogLocale } from './i18n';
+import {
+  languageAlternates,
+  localeFromParam,
+  localePrefix,
+  ogLocale,
+} from './i18n';
 import { copyFor } from './i18n/copy';
 import { copy } from './i18n/copy/en';
 import { type Metadata } from 'next';
@@ -19,7 +24,11 @@ export const jsonLd: WithContext<SoftwareApplication> = {
   // `accessibilityControl` takes values from the "control" vocabulary
   // (fullKeyboardControl / fullMouseControl / fullTouchControl); "textual" is
   // an accessMode value and was rejected as an enum violation there.
-  accessibilityControl: ['fullKeyboardControl', 'fullMouseControl', 'fullTouchControl'],
+  accessibilityControl: [
+    'fullKeyboardControl',
+    'fullMouseControl',
+    'fullTouchControl',
+  ],
   accessMode: ['textual', 'visual'],
   author: {
     '@type': 'Person',
@@ -55,7 +64,10 @@ export const jsonLd: WithContext<SoftwareApplication> = {
     'https://www.npmjs.com/package/state-in-url',
     'https://state-in-url.netlify.app',
   ],
-  softwareRequirements: ['React 18 or later', 'TypeScript moduleResolution: Bundler'],
+  softwareRequirements: [
+    'React 18 or later',
+    'TypeScript moduleResolution: Bundler',
+  ],
   license: 'https://opensource.org/licenses/MIT',
   softwareVersion: packageJson.version,
   dateModified: CONTENT_LAST_MODIFIED.slice(0, 10),
@@ -123,8 +135,8 @@ export const metadata = {
   icons: {
     icon: [
       {
-        url: "/images/logo.svg",
-        href: "/images/logo.svg",
+        url: '/images/logo.svg',
+        href: '/images/logo.svg',
       },
     ],
   },
@@ -235,12 +247,12 @@ export function localeMetadata({
   if (!locale) return {};
 
   const copy = copyFor(locale.code);
-  const page =
-    path === '/react-router'
-      ? copy.meta.reactRouter
-      : path === '/remix'
-        ? copy.meta.remix
-        : copy.meta.home;
+  const metaByPath: Record<string, { title: string; description: string }> = {
+    '/react-router': copy.meta.reactRouter,
+    '/remix': copy.meta.remix,
+    '/vs/nuqs': copy.meta.vsNuqs,
+  };
+  const page = metaByPath[path] ?? copy.meta.home;
 
   const url = `${vercelUrl}${localePrefix(locale.code)}${path}`;
   const mirror = path === '' ? '/index.md' : `${path}.md`;
@@ -260,6 +272,10 @@ export function localeMetadata({
       description: page.description,
       locale: ogLocale(locale.code),
     },
-    twitter: { ...metadata.twitter, title: page.title, description: page.description },
+    twitter: {
+      ...metadata.twitter,
+      title: page.title,
+      description: page.description,
+    },
   };
 }

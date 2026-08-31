@@ -138,7 +138,7 @@ const nextConfig = {
     // sources is past the point where a hand-kept list stays correct, and a
     // page missing from here silently loses its `Link:` header — which is the
     // one that reaches clients that never parse markup.
-    const pages = ['', '/react-router', '/remix'];
+    const pages = ['', '/react-router', '/remix', '/vs/nuqs'];
     const prefixes = ['', ...LOCALES.map((locale) => `/${locale.dir}`)];
 
     return prefixes.flatMap((prefix) =>

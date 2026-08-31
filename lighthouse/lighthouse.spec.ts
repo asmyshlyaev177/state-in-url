@@ -23,6 +23,7 @@ const PAGES = [
   { path: '/', name: '/ (useUrlState demo)' },
   { path: '/react-router', name: '/react-router' },
   { path: '/remix', name: '/remix' },
+  { path: '/vs/nuqs', name: '/vs/nuqs' },
 ];
 
 /**

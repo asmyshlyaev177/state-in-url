@@ -1,6 +1,6 @@
 <!-- i18n:start -->
 [English](./README.md) · [简体中文](./README.zh-CN.md) · [日本語](./README.ja.md) · [한국어](./README.ko.md) · [Русский](./README.ru.md) · Español · [Português (BR)](./README.pt-BR.md) · [Français](./README.fr.md) · [Tiếng Việt](./README.vi.md)
-<!-- i18n:meta locale=es source=README.md source-blob=bbf45a10aae9e88f68b27d84f51ee3e7e8a1e436 status=translated -->
+<!-- i18n:meta locale=es source=README.md source-blob=065a903cd2cf7bc001b9e40ed8e0ad01c79f17d9 status=translated -->
 <!-- i18n:end -->
 
 <div align="center">
@@ -102,6 +102,28 @@ Esta biblioteca es una buena alternativa a NUQS.
 - **Bien probada**: [Pruebas unitarias y pruebas de Playwright para Chrome/Firefox/Safari](https://github.com/asmyshlyaev177/state-in-url/actions/workflows/tests.yml)
 - **Licencia permisiva**: MIT
 
+### Comparación con nuqs
+
+¿Buscas una alternativa a [nuqs](https://github.com/47ng/nuqs)? Ambas guardan estado tipado en la query string; difieren en cuánto hay que configurar y en qué puede ser un valor.
+
+| Qué | `state-in-url` | `nuqs` |
+| --- | --- | --- |
+| Configuración | Ninguna — importa el hook y listo | Un componente adaptador envuelve la app |
+| Forma del estado | Un objeto tipado, como `React.useState` | Valores por clave, con un parser declarado para cada una |
+| Reutilización entre componentes | Envuelve el hook una vez — cada componente comparte el estado, sin props | Extraes tu propio hook alrededor del mapa de parsers |
+| Objetos y arrays anidados | Integrado — estructura y tipos se conservan | Parser JSON más tu propio validador |
+| Fechas | Se conservan automáticamente | Parser integrado, declarado por clave |
+| Tamaño, import completo | ~2,9 KB gzip | ~6,7 KB gzip |
+| Dependencias en runtime | Ninguna | Una |
+| Routers | Next.js, React Router v6/v7, Remix, helpers para JS puro | Next.js, React Router, Remix, TanStack Router, React puro |
+
+Tamaños: import de toda la librería, esbuild minify + gzip, medido en agosto de 2026 contra nuqs 2.10.1.
+
+nuqs es una buena librería: elígela si quieres cada valor como su propio query param legible o usas TanStack Router. Elige state-in-url cuando quieras un objeto tipado completo en la URL sin configuración.
+
+
+La comparación completa — la misma feature en ambas, otras alternativas (TanStack Router, use-query-params) y notas de migración — está en <https://state-in-url.dev/vs/nuqs>.
+
 ## Tabla de contenido
 
 <!-- toc:start -->
@@ -111,6 +133,7 @@ Esta biblioteca es una buena alternativa a NUQS.
   - [¿Por qué usar `state-in-url`?](#por-qué-usar-state-in-url)
     - [Casos de uso](#casos-de-uso)
     - [Características](#características)
+    - [Comparación con nuqs](#comparación-con-nuqs)
   - [Tabla de contenido](#tabla-de-contenido)
   - [Instalación](#instalación)
     - [1. Instalar el paquete](#1-instalar-el-paquete)

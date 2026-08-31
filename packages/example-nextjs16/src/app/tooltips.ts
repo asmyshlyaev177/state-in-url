@@ -1,20 +1,23 @@
-import { type Tooltip, type Matcher } from "./types";
+import { type Tooltip, type Matcher } from './types';
 
-const formTooltip: Tooltip[] = [{
-  text: `(alias) const form: Form\n
-import form`, lang: 'tsx'
-}]
+const formTooltip: Tooltip[] = [
+  {
+    text: `(alias) const form: Form\n
+import form`,
+    lang: 'tsx',
+  },
+];
 
 const urlStateTooltip: Tooltip[] = [
   {
     text: `const urlState: Form\n\n`,
-    lang: 'tsx'
+    lang: 'tsx',
   },
   {
     text: `State object. Don't mutate directly, use setState or setUrl`,
-    lang: 'markdown'
-  }
-]
+    lang: 'markdown',
+  },
+];
 
 const descTooltip: Tooltip = {
   text: `
@@ -23,8 +26,9 @@ const descTooltip: Tooltip = {
   ...
   ...
 * Docs @link
-`, lang: 'markdown'
-}
+`,
+  lang: 'markdown',
+};
 
 const useUrlStateTooltipImp: Tooltip[] = [
   {
@@ -34,10 +38,10 @@ const useUrlStateTooltipImp: Tooltip[] = [
     setUrl: (value?: Partial<T> | ((currState: T) => T)) => void;
 } (+1 overload)
 import useUrlState`,
-    lang: 'tsx'
+    lang: 'tsx',
   },
-  descTooltip
-]
+  descTooltip,
+];
 
 const useUrlStateTooltip: Tooltip[] = [
   {
@@ -50,30 +54,65 @@ const useUrlStateTooltip: Tooltip[] = [
         [key: string]: unknown;
     }) => void;
 } (+1 overload)
-import useUrlState`, lang: 'tsx'
+import useUrlState`,
+    lang: 'tsx',
   },
 
-  descTooltip
-]
+  descTooltip,
+];
 
-const setStateTooltip: Tooltip[] = [{ text: `const setState: (value:
+const setStateTooltip: Tooltip[] = [
+  {
+    text: `const setState: (value:
   Partial<Form> |
-  ((currState: Form, initial: Form) => Form)) => void`, lang: 'tsx' }, descTooltip]
+  ((currState: Form, initial: Form) => Form)) => void`,
+    lang: 'tsx',
+  },
+  descTooltip,
+];
 
-const setUrlTooltip: Tooltip[] = [{ text: `const setUrl: (value?:
+const setUrlTooltip: Tooltip[] = [
+  {
+    text: `const setUrl: (value?:
   Partial<Form> |
   ((currState: Form, initial: Form) => Form),
-  options?: Options) => void`, lang: 'tsx' }, descTooltip]
+  options?: Options) => void`,
+    lang: 'tsx',
+  },
+  descTooltip,
+];
 
-const resetTooltip: Tooltip[] = [{
-  text: `const reset: (options?: Options & {
+const resetTooltip: Tooltip[] = [
+  {
+    text: `const reset: (options?: Options & {
     [key: string]: unknown;
-}) => void`, lang: 'tsx'
-}, descTooltip]
+}) => void`,
+    lang: 'tsx',
+  },
+  descTooltip,
+];
 
-const formParamTooltip: Tooltip[] = [{ text: `(parameter) curr: Form`, lang: 'tsx' }]
+const useFormStateTooltip: Tooltip[] = [
+  {
+    text: `const useFormState: (searchParams?: object) => {
+    urlState: Form;
+    setState: (value: Partial<Form> | ((currState: Form) => Form)) => void;
+    setUrl: (value?: Partial<Form> | ((currState: Form) => Form), options?: Options) => void;
+    reset: (options?: Options) => void;
+}`,
+    lang: 'tsx',
+  },
+  descTooltip,
+];
+
+const formParamTooltip: Tooltip[] = [
+  { text: `(parameter) curr: Form`, lang: 'tsx' },
+];
 
 export const tooltips: Matcher[] = [
+  ['useFormState}', useFormStateTooltip],
+  ['useFormState(', useFormStateTooltip],
+  ['useFormState =', useFormStateTooltip],
   ['useUrlState}', useUrlStateTooltipImp],
   ['form}', formTooltip],
   ['form);', formTooltip],
@@ -82,71 +121,26 @@ export const tooltips: Matcher[] = [
   ['(curr', formTooltip],
   ['initial)', formTooltip],
   ['useUrlState(', useUrlStateTooltip],
-  [
-    'urlState,', urlStateTooltip
-  ],
-  [
-    'urlState}', urlStateTooltip
-  ],
-  [
-    '{urlState.name', urlStateTooltip
-  ],
-  [
-    'urlState.', urlStateTooltip
-  ],
-  [
-    'name}', [
-      { text: '(property) name: string', lang: 'tsx' }
-    ]
-  ],
-  [
-    'name}</', [
-      { text: '(property) name: string', lang: 'tsx' }
-    ]
-  ],
-  [
-    'setState,', setStateTooltip
-  ],
-  [
-    'setState(', setStateTooltip
-  ],
-  [
-    'setState((', setStateTooltip
-  ],
-  [
-    'setState}', setStateTooltip
-  ],
-  [
-    'setUrl,', setUrlTooltip
-  ],
-  [
-    'setUrl}', setUrlTooltip
-  ],
-  [
-    'setUrl({', setUrlTooltip
-  ],
-  [
-    'setUrl((', setUrlTooltip
-  ],
-  [
-    'setUrl()}', setUrlTooltip
-  ],
-  [
-    'setUrl:', setUrlTooltip
-  ],
-  [
-    `setUrl({ name:`, setUrlTooltip
-  ],
+  ['urlState,', urlStateTooltip],
+  ['urlState}', urlStateTooltip],
+  ['{urlState.name', urlStateTooltip],
+  ['urlState.', urlStateTooltip],
+  ['name}', [{ text: '(property) name: string', lang: 'tsx' }]],
+  ['name}</', [{ text: '(property) name: string', lang: 'tsx' }]],
+  ['setState,', setStateTooltip],
+  ['setState(', setStateTooltip],
+  ['setState((', setStateTooltip],
+  ['setState}', setStateTooltip],
+  ['setUrl,', setUrlTooltip],
+  ['setUrl}', setUrlTooltip],
+  ['setUrl({', setUrlTooltip],
+  ['setUrl((', setUrlTooltip],
+  ['setUrl()}', setUrlTooltip],
+  ['setUrl:', setUrlTooltip],
+  [`setUrl({ name:`, setUrlTooltip],
   ['curr=>', formParamTooltip],
   ['curr, name:', formParamTooltip],
-  [
-    'setUrlBase,', setUrlTooltip
-  ],
-  [
-    'setUrlBase(', setUrlTooltip
-  ],
-  [
-    'reset}', resetTooltip
-  ]
-
-]
+  ['setUrlBase,', setUrlTooltip],
+  ['setUrlBase(', setUrlTooltip],
+  ['reset}', resetTooltip],
+];

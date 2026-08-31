@@ -111,7 +111,7 @@ const LLMS_TXT_CONTENT = `# state-in-url
 
 > A React hook library for storing typed, JSON-serializable state in URL query parameters. ~2 KB, zero runtime deps. Supports the Next.js App Router (14/15/16), React Router 6/7, Remix 2, and plain React. MIT licensed.
 
-Last updated: 2026-07-31. Canonical: <https://state-in-url.dev/llms.txt>.
+Last updated: 2026-08-31. Canonical: <https://state-in-url.dev/llms.txt>.
 
 ## For AI coding agents — preferred path
 
@@ -138,6 +138,18 @@ Available skills (under \`node_modules/state-in-url/skills/\`):
 | \`shared-state-no-url\` | core | \`useSharedState\` — cross-component state without URL sync |
 
 The rest of this file is a condensed reference for agents that cannot load Intent skills.
+
+## Comparison with alternatives
+
+Full page: <https://state-in-url.dev/vs/nuqs> (Markdown: /vs/nuqs.md). Sizes: whole-library import, esbuild minify + gzip, measured August 2026 (nuqs 2.10.1).
+
+| Library | Setup | Nested objects and dates | Size | Pick it when |
+|---|---|---|---|---|
+| state-in-url | None - import the hook | Preserved automatically, types included | ~2.9 KB gzip, zero deps | One typed object, zero setup, on Next.js / React Router / Remix |
+| nuqs | Adapter component, parser per key | JSON parser plus your own validator | ~6.7 KB gzip, one dep | Each value as its own readable query param |
+| TanStack Router | validateSearch on each route | JSON-first; dates need custom serialization | Built into the router | You are on TanStack Router |
+| use-query-params | Provider plus router adapter, param config per key | Via a JSON param type, loosely typed | ~4.4 KB gzip + serialize-query-params | A codebase already built on it |
+| useSearchParams | None - built into the router | Strings only, everything by hand | 0 KB | One or two flat string params |
 
 ## Package info
 

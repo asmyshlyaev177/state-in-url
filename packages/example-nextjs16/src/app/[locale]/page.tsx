@@ -27,7 +27,7 @@ export default async function Home({
   return (
     <DemoPage
       searchParams={searchParams}
-      copy={copy}
+      copy={copy} vsHref={`/${dir}/vs/nuqs`}
       codeBlocks={<CodeBlocks copy={copy.quickStart} />}
       aiSkills
     />

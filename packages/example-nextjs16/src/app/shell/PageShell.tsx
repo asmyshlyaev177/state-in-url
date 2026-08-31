@@ -1,4 +1,5 @@
 import dynamic from 'next/dynamic';
+import Link from 'next/link';
 import Script from 'next/script';
 import React from 'react';
 
@@ -6,12 +7,13 @@ import '../styles.css';
 
 import { CONTENT_LAST_MODIFIED } from '../contentDate';
 import { isVercel } from '../domain';
+import { Breadcrumbs } from '../components/Breadcrumbs';
 import { GithubLink } from '../components/GithubLink';
 import { InstallCmd } from '../components/InstallCmd';
 import { LanguagePicker } from '../components/LanguagePicker';
 import { Logo } from '../components/Logo';
 import { NpmLink } from '../components/NpmLink';
-import type { Locale } from '../i18n';
+import { localePrefix, type Locale } from '../i18n';
 import type { SiteCopy } from '../i18n/copy/types';
 
 const Footer = dynamic(
@@ -49,14 +51,25 @@ export function PageShell({
 
         <header className="header">
           <div className="branding">
-            <Logo className="logo" copy={copy.chrome} />
-            <span className="wordmark">state-in-url</span>
+            <Link
+              href={localePrefix(locale.code) || '/'}
+              aria-label={copy.chrome.homeLink}
+              className="flex items-center gap-3"
+            >
+              <Logo className="logo" copy={copy.chrome} />
+              <span className="wordmark">state-in-url</span>
+            </Link>
             <div className="links">
               <NpmLink copy={copy.chrome} />
               <GithubLink copy={copy.chrome} />
-              <LanguagePicker current={locale} label={copy.chrome.languageLabel} />
+              <LanguagePicker
+                current={locale}
+                label={copy.chrome.languageLabel}
+              />
             </div>
           </div>
+
+          <Breadcrumbs copy={copy} locale={locale} />
 
           <h1 className="title">
             {copy.header.titleLead}{' '}

@@ -51,7 +51,8 @@ export const localePrefix = (code: string) => {
 };
 
 /** Resolve a `[locale]` route param; `undefined` for anything unknown. */
-export const localeFromParam = (dir: string) => LOCALES.find((l) => l.dir === dir);
+export const localeFromParam = (dir: string) =>
+  LOCALES.find((l) => l.dir === dir);
 
 /**
  * Strip a leading locale segment, giving the locale-independent path.
@@ -65,8 +66,8 @@ export function stripLocale(pathname: string): string {
   return rest === '' ? '/' : rest;
 }
 
-/** The three public pages, locale-independent. */
-export const PAGES = ['', '/react-router', '/remix'] as const;
+/** The public pages, locale-independent. */
+export const PAGES = ['', '/react-router', '/remix', '/vs/nuqs'] as const;
 
 /**
  * The reciprocal hreflang cluster for one page.

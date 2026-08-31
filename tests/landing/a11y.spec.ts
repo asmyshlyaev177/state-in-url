@@ -22,7 +22,7 @@ import { expect, test, type Page } from '@playwright/test';
  * Public pages only — the `(tests)` group renders deliberately broken usage for
  * the e2e suite, and its failures are not ones anyone should act on.
  */
-const PAGES = ['/', '/react-router', '/remix'];
+const PAGES = ['/', '/react-router', '/remix', '/vs/nuqs'];
 
 /** Rules axe declines to decide. Anything unlisted fails, so a new one gets a
  *  decision once instead of living unread in the report. */

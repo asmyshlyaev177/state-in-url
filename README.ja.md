@@ -1,6 +1,6 @@
 <!-- i18n:start -->
 [English](./README.md) · [简体中文](./README.zh-CN.md) · 日本語 · [한국어](./README.ko.md) · [Русский](./README.ru.md) · [Español](./README.es.md) · [Português (BR)](./README.pt-BR.md) · [Français](./README.fr.md) · [Tiếng Việt](./README.vi.md)
-<!-- i18n:meta locale=ja source=README.md source-blob=bbf45a10aae9e88f68b27d84f51ee3e7e8a1e436 status=translated -->
+<!-- i18n:meta locale=ja source=README.md source-blob=065a903cd2cf7bc001b9e40ed8e0ad01c79f17d9 status=translated -->
 <!-- i18n:end -->
 
 <div align="center">
@@ -102,6 +102,28 @@ Next.js と react-router 用の `useUrlState` フックと、その他あらゆ�
 - **十分にテスト済み**: [Chrome/Firefox/Safari 向けのユニットテストと Playwright テスト](https://github.com/asmyshlyaev177/state-in-url/actions/workflows/tests.yml)
 - **寛容なライセンス**: MIT
 
+### nuqs との比較
+
+[nuqs](https://github.com/47ng/nuqs) の代替をお探しですか？どちらも型付きの状態をクエリ文字列に保存しますが、必要な設定量と、値として扱えるものが異なります。
+
+| 項目 | `state-in-url` | `nuqs` |
+| --- | --- | --- |
+| セットアップ | 不要 — hook を import するだけ | アダプターコンポーネントでアプリをラップ |
+| 状態の形 | `React.useState` のような型付きオブジェクト1つ | キーごとの値、それぞれにパーサーを宣言 |
+| コンポーネント間の再利用 | hook を一度包むだけ — 全コンポーネントが状態を共有、props 不要 | パーサー群を包む hook は自分で抽出 |
+| ネストしたオブジェクトと配列 | 標準対応 — 構造と型を保持 | JSON パーサーに加えて自前のバリデーターが必要 |
+| 日付 | 自動的に保持 | 組み込みパーサーをキーごとに宣言 |
+| サイズ（全体 import） | 約 2.9 KB gzip | 約 6.7 KB gzip |
+| ランタイム依存 | なし | 1つ |
+| ルーター | Next.js、React Router v6/v7、Remix、素の JS 用ヘルパー | Next.js、React Router、Remix、TanStack Router、素の React |
+
+サイズはライブラリ全体の import を esbuild minify + gzip で計測（2026年8月、nuqs 2.10.1 と比較）。
+
+nuqs も優れたライブラリです。値ごとに読みやすいクエリパラメータが欲しいとき、TanStack Router を使っているときは nuqs を。型付きオブジェクトを丸ごと URL に、設定ゼロで入れたいなら state-in-url を選んでください。
+
+
+完全版の比較 — 同じ機能の両実装、ほかの代替（TanStack Router、use-query-params）、移行メモ — は <https://state-in-url.dev/vs/nuqs> にあります。
+
 ## 目次
 
 <!-- toc:start -->
@@ -111,6 +133,7 @@ Next.js と react-router 用の `useUrlState` フックと、その他あらゆ�
   - [なぜ `state-in-url` を使うのか？](#なぜ-state-in-url-を使うのか)
     - [ユースケース](#ユースケース)
     - [特徴](#特徴)
+    - [nuqs との比較](#nuqs-との比較)
   - [目次](#目次)
   - [インストール](#インストール)
     - [1. パッケージのインストール](#1-パッケージのインストール)

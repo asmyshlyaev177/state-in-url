@@ -1,6 +1,6 @@
 <!-- i18n:start -->
 [English](./README.md) · [简体中文](./README.zh-CN.md) · [日本語](./README.ja.md) · [한국어](./README.ko.md) · [Русский](./README.ru.md) · [Español](./README.es.md) · [Português (BR)](./README.pt-BR.md) · [Français](./README.fr.md) · Tiếng Việt
-<!-- i18n:meta locale=vi source=README.md source-blob=bbf45a10aae9e88f68b27d84f51ee3e7e8a1e436 status=translated -->
+<!-- i18n:meta locale=vi source=README.md source-blob=065a903cd2cf7bc001b9e40ed8e0ad01c79f17d9 status=translated -->
 <!-- i18n:end -->
 
 <div align="center">
@@ -102,6 +102,28 @@ Thư viện này là một lựa chọn thay thế tốt cho NUQS.
 - **Được kiểm thử kỹ**: [Unit test và Playwright test cho Chrome/Firefox/Safari](https://github.com/asmyshlyaev177/state-in-url/actions/workflows/tests.yml)
 - **Giấy phép thoáng**: MIT
 
+### So sánh với nuqs
+
+Đang tìm một lựa chọn thay thế [nuqs](https://github.com/47ng/nuqs)? Cả hai đều lưu state có kiểu trong query string; khác nhau ở lượng cấu hình cần thiết và giá trị có thể là gì.
+
+| Tiêu chí | `state-in-url` | `nuqs` |
+| --- | --- | --- |
+| Cài đặt | Không cần — import hook là dùng được | Component adapter bọc quanh ứng dụng |
+| Hình dạng state | Một object có kiểu, giống `React.useState` | Giá trị theo từng khóa, mỗi khóa khai báo một parser |
+| Tái sử dụng giữa các component | Bọc hook một lần — mọi component chia sẻ state, không cần props | Bạn tự tách hook quanh bộ parser |
+| Object và mảng lồng nhau | Có sẵn — giữ nguyên cấu trúc và kiểu | Parser JSON cộng thêm validator tự viết |
+| Ngày tháng | Giữ nguyên tự động | Parser có sẵn, khai báo theo từng khóa |
+| Kích thước, import toàn bộ | ~2.9 KB gzip | ~6.7 KB gzip |
+| Phụ thuộc runtime | Không | Một |
+| Router | Next.js, React Router v6/v7, Remix, helper cho JS thuần | Next.js, React Router, Remix, TanStack Router, React thuần |
+
+Kích thước: import cả thư viện, esbuild minify + gzip, đo tháng 8/2026 với nuqs 2.10.1.
+
+nuqs là một thư viện tốt — hãy chọn nó khi bạn muốn mỗi giá trị là một query param dễ đọc, hoặc đang dùng TanStack Router. Chọn state-in-url khi bạn muốn cả một object có kiểu nằm trong URL mà không cần cấu hình.
+
+
+Bản so sánh đầy đủ — cùng một tính năng trong cả hai, các lựa chọn khác (TanStack Router, use-query-params) và ghi chú di chuyển — nằm tại <https://state-in-url.dev/vs/nuqs>.
+
 ## Mục lục
 
 <!-- toc:start -->
@@ -111,6 +133,7 @@ Thư viện này là một lựa chọn thay thế tốt cho NUQS.
   - [Tại sao dùng `state-in-url`?](#tại-sao-dùng-state-in-url)
     - [Trường hợp sử dụng](#trường-hợp-sử-dụng)
     - [Tính năng](#tính-năng)
+    - [So sánh với nuqs](#so-sánh-với-nuqs)
   - [Mục lục](#mục-lục)
   - [Cài đặt](#cài-đặt)
     - [1. Cài đặt package](#1-cài-đặt-package)

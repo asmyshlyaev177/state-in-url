@@ -1,6 +1,6 @@
 <!-- i18n:start -->
 [English](./README.md) · 简体中文 · [日本語](./README.ja.md) · [한국어](./README.ko.md) · [Русский](./README.ru.md) · [Español](./README.es.md) · [Português (BR)](./README.pt-BR.md) · [Français](./README.fr.md) · [Tiếng Việt](./README.vi.md)
-<!-- i18n:meta locale=zh-CN source=README.md source-blob=bbf45a10aae9e88f68b27d84f51ee3e7e8a1e436 status=translated -->
+<!-- i18n:meta locale=zh-CN source=README.md source-blob=065a903cd2cf7bc001b9e40ed8e0ad01c79f17d9 status=translated -->
 <!-- i18n:end -->
 
 <div align="center">
@@ -102,6 +102,28 @@
 - **经过充分测试**: [Chrome/Firefox/Safari 的单元测试和 Playwright 测试](https://github.com/asmyshlyaev177/state-in-url/actions/workflows/tests.yml)
 - **宽松许可证**: MIT
 
+### 与 nuqs 的对比
+
+在找 [nuqs](https://github.com/47ng/nuqs) 的替代品？两者都把带类型的状态存进查询字符串；区别在于需要多少配置，以及值可以是什么。
+
+| 对比项 | `state-in-url` | `nuqs` |
+| --- | --- | --- |
+| 配置 | 无需配置——导入 hook 即可使用 | 需要用适配器组件包裹应用 |
+| 状态形态 | 一个带类型的对象，用法类似 `React.useState` | 按键存值，每个键都要声明解析器 |
+| 跨组件复用 | 把 hook 包一次——所有组件共享状态，无需 props | 需要自己围绕解析器映射抽一个 hook |
+| 嵌套对象和数组 | 内置支持——结构和类型都保留 | JSON 解析器加自己写的运行时校验 |
+| 日期 | 自动保留 | 内置解析器，需逐键声明 |
+| 体积（完整导入） | 约 2.9 KB gzip | 约 6.7 KB gzip |
+| 运行时依赖 | 无 | 1 个 |
+| 路由器 | Next.js、React Router v6/v7、Remix，纯 JS 辅助函数 | Next.js、React Router、Remix、TanStack Router、纯 React |
+
+体积说明：整库导入，esbuild minify + gzip，2026 年 8 月对照 nuqs 2.10.1 测得。
+
+nuqs 也是一个不错的库——如果你希望每个值都是一条可读的查询参数，或正在用 TanStack Router，就选它。想把整个带类型的对象放进 URL、零配置上手，就选 state-in-url。
+
+
+完整对比——同一个功能在两个库里的写法、其他替代品（TanStack Router、use-query-params）以及迁移说明——见 <https://state-in-url.dev/vs/nuqs>。
+
 ## 目录
 
 <!-- toc:start -->
@@ -111,6 +133,7 @@
   - [为什么使用 `state-in-url`?](#为什么使用-state-in-url)
     - [使用场景](#使用场景)
     - [特性](#特性)
+    - [与 nuqs 的对比](#与-nuqs-的对比)
   - [目录](#目录)
   - [安装](#安装)
     - [1. 安装包](#1-安装包)

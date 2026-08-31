@@ -6,24 +6,30 @@ import type { QuickStartCopy } from '../../i18n/copy/types';
 export const CodeBlocksRR = ({ copy }: { copy: QuickStartCopy }) => {
   return (
     <div className="flex flex-col gap-4">
-      <h3 className='text-3xl font-bold font-display text-ink'>{copy.title}</h3>
-      <div className="codeTitle">
-        {copy.stateStep}
-      </div>
+      <h3 className="font-display text-ink text-3xl font-bold">{copy.title}</h3>
+      <div className="codeTitle">{copy.stateStep}</div>
       <CodeBlockState />
 
-      <div className="codeTitle">
-        {copy.componentsStep}
-      </div>
+      <div className="codeTitle">{copy.hookStep}</div>
       <File
-        name="ComponentA"
+        name="useFormState"
         matchers={tooltips}
         content={`import { useUrlState } from 'state-in-url/remix';// [!code highlight:1]
 import { form } from './form';
 
+// One hook per feature - the whole API for this state
+export const useFormState = () => useUrlState(form);// [!code highlight:1]`}
+      />
+
+      <div className="codeTitle">{copy.componentsStep}</div>
+      <File
+        name="ComponentA"
+        matchers={tooltips}
+        content={`import { useFormState } from './useFormState';// [!code highlight:1]
+
 export const ComponentA = () => {
   // see docs for all possible params https://github.com/asmyshlyaev177/state-in-url/tree/master/packages/urlstate/remix/useUrlState
-  const { urlState, setUrl, setState } = useUrlState(form);// [!code highlight:1]
+  const { urlState, setUrl, setState } = useFormState();// [!code highlight:1]
 
   return <>
     <input
@@ -46,39 +52,24 @@ export const ComponentA = () => {
       <File
         name="ComponentB"
         matchers={tooltips}
-        content={`import { useUrlState } from 'state-in-url/remix';// [!code highlight:1]
-import { form } from './form';
+        content={`import { useFormState } from './useFormState';// [!code highlight:1]
 
 export const ComponentB = () => {
-  const { urlState } = useUrlState(form);// [!code highlight:1]
+  // same state as ComponentA - no props, no context
+  const { urlState } = useFormState();// [!code highlight:1]
 
 // will be defaultValue from \`form\` if not in url, no need to check
 // [!code word:urlState]
   return <div>name: {urlState.name}</div>
 };`}
       />
-      <div className="codeTitle">
-        {copy.hookStep}
-      </div>
+      <div className="codeTitle">{copy.advancedStep}</div>
       <File
-        name="useFormState - custom hook"
+        name="useFormState - extended"
         matchers={tooltips}
         content={`import React from 'react';
 import { useUrlState } from 'state-in-url/remix';
-
-const form: Form={
-  name: '',
-  age: undefined,
-  agree_to_terms: false,
-  tags: [],
-};
-
-type Form = {
-  name: string;
-  age?: number;
-  agree_to_terms: boolean;
-  tags: {id: string; value: {text: string; time: Date } }[];
-};
+import { form } from './form';
 
 export const useFormState = () => {// [!code highlight:1]
   const { urlState, setUrl: setUrlBase, reset } = useUrlState(form);
@@ -97,7 +88,8 @@ export const useFormState = () => {// [!code highlight:1]
   }, [setUrlBase]);
 
   return { urlState, setUrl, resetUrl: reset };
-};`} />
+};`}
+      />
     </div>
   );
 };

@@ -102,6 +102,27 @@ This library is a good alternative for NUQS.
 - **Well tested**: [Unit tests and Playwright tests for Chrome/Firefox/Safari](https://github.com/asmyshlyaev177/state-in-url/actions/workflows/tests.yml)
 - **Permissive license**: MIT
 
+### Comparison with nuqs
+
+Searching for a [nuqs](https://github.com/47ng/nuqs) alternative? Both keep typed state in the query string; they differ in how much you set up and what a value can be.
+
+| What | `state-in-url` | `nuqs` |
+| --- | --- | --- |
+| Setup | None — import the hook and go | Adapter component wraps the app |
+| State shape | One typed object, like `React.useState` | Per-key values, a parser declared for each |
+| Reuse across components | Wrap the hook once — every component shares the state, no props | Extract your own hook around the parser map |
+| Nested objects and arrays | Built in — structure and types preserved | JSON parser plus your own runtime validator |
+| Dates | Preserved automatically | Built-in parser, declared per key |
+| Size, full import | ~2.9 KB gzipped | ~6.7 KB gzipped |
+| Runtime dependencies | None | One |
+| Routers | Next.js, React Router v6/v7, Remix, plain JS helpers | Next.js, React Router, Remix, TanStack Router, plain React |
+
+Sizes: whole-library import, esbuild minify + gzip, measured August 2026 against nuqs 2.10.1.
+
+nuqs is a fine library — reach for it when you want each value as its own readable query param, or you are on TanStack Router. Reach for state-in-url when you want a whole typed object in the URL with zero setup.
+
+The full comparison — the same feature built in both, other alternatives (TanStack Router, use-query-params) and migration notes — lives at <https://state-in-url.dev/vs/nuqs>.
+
 ## Table of content
 
 <!-- toc:start -->
@@ -111,6 +132,7 @@ This library is a good alternative for NUQS.
   - [Why use `state-in-url`?](#why-use-state-in-url)
     - [Use cases](#use-cases)
     - [Features](#features)
+    - [Comparison with nuqs](#comparison-with-nuqs)
   - [Table of content](#table-of-content)
   - [installation](#installation)
     - [1. Install package](#1-install-package)

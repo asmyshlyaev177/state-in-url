@@ -1,6 +1,6 @@
 <!-- i18n:start -->
 [English](./README.md) · [简体中文](./README.zh-CN.md) · [日本語](./README.ja.md) · 한국어 · [Русский](./README.ru.md) · [Español](./README.es.md) · [Português (BR)](./README.pt-BR.md) · [Français](./README.fr.md) · [Tiếng Việt](./README.vi.md)
-<!-- i18n:meta locale=ko source=README.md source-blob=bbf45a10aae9e88f68b27d84f51ee3e7e8a1e436 status=translated -->
+<!-- i18n:meta locale=ko source=README.md source-blob=065a903cd2cf7bc001b9e40ed8e0ad01c79f17d9 status=translated -->
 <!-- i18n:end -->
 
 <div align="center">
@@ -102,6 +102,28 @@ Next.js와 react-router용 `useUrlState` 훅과 그 외 JS 환경을 위한 헬�
 - **충분한 테스트**: [Chrome/Firefox/Safari용 단위 테스트 및 Playwright 테스트](https://github.com/asmyshlyaev177/state-in-url/actions/workflows/tests.yml)
 - **자유로운 라이선스**: MIT
 
+### nuqs와 비교
+
+[nuqs](https://github.com/47ng/nuqs) 대안을 찾고 계신가요? 둘 다 타입이 유지되는 상태를 쿼리 문자열에 저장하지만, 필요한 설정량과 값으로 담을 수 있는 것이 다릅니다.
+
+| 항목 | `state-in-url` | `nuqs` |
+| --- | --- | --- |
+| 설정 | 불필요 — hook을 import하면 끝 | 어댑터 컴포넌트로 앱을 감싸야 함 |
+| 상태 형태 | `React.useState` 같은 타입 객체 하나 | 키별 값, 각 키마다 파서 선언 |
+| 컴포넌트 간 재사용 | hook을 한 번 감싸면 — 모든 컴포넌트가 상태 공유, props 불필요 | 파서 맵을 감싸는 hook은 직접 추출 |
+| 중첩 객체와 배열 | 기본 지원 — 구조와 타입 유지 | JSON 파서에 자체 런타임 검증 추가 필요 |
+| 날짜 | 자동으로 유지 | 내장 파서를 키마다 선언 |
+| 크기, 전체 import | 약 2.9 KB gzip | 약 6.7 KB gzip |
+| 런타임 의존성 | 없음 | 1개 |
+| 라우터 | Next.js, React Router v6/v7, Remix, 순수 JS 헬퍼 | Next.js, React Router, Remix, TanStack Router, 순수 React |
+
+크기: 라이브러리 전체 import, esbuild minify + gzip, 2026년 8월 nuqs 2.10.1 기준 측정.
+
+nuqs도 훌륭한 라이브러리입니다. 값마다 읽기 쉬운 쿼리 파라미터를 원하거나 TanStack Router를 쓴다면 nuqs를, 타입 객체 전체를 설정 없이 URL에 넣고 싶다면 state-in-url을 선택하세요.
+
+
+전체 비교 — 같은 기능의 두 구현, 다른 대안(TanStack Router, use-query-params), 마이그레이션 노트 — 는 <https://state-in-url.dev/vs/nuqs> 에 있습니다.
+
 ## 목차
 
 <!-- toc:start -->
@@ -111,6 +133,7 @@ Next.js와 react-router용 `useUrlState` 훅과 그 외 JS 환경을 위한 헬�
   - [왜 `state-in-url`을 사용해야 하나요?](#왜-state-in-url을-사용해야-하나요)
     - [사용 사례](#사용-사례)
     - [특징](#특징)
+    - [nuqs와 비교](#nuqs와-비교)
   - [목차](#목차)
   - [설치](#설치)
     - [1. 패키지 설치](#1-패키지-설치)

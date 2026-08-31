@@ -29,6 +29,8 @@ export interface MetaCopy {
   reactRouter: PageMeta;
   /** `/remix` */
   remix: PageMeta;
+  /** `/vs/nuqs` */
+  vsNuqs: PageMeta;
 }
 
 /** The page header in `(en)/template.tsx`. */
@@ -84,8 +86,12 @@ export interface DemoCopy {
 export interface QuickStartCopy {
   title: string;
   stateStep: string;
-  componentsStep: string;
+  /** Step 2 — wrapping the state in the reusable feature hook. */
   hookStep: string;
+  /** Step 3 — components consuming that hook. */
+  componentsStep: string;
+  /** Step 4 — the extended hook recipe. */
+  advancedStep: string;
 }
 
 /**
@@ -137,6 +143,95 @@ export interface AiSkillsCopy {
   sourcesMid: string;
   /** See `sourcesLead`. */
   sourcesTail: string;
+}
+
+/** One row of the comparison table: the criterion and both cells. */
+export interface ComparisonRowCopy {
+  label: string;
+  /** The state-in-url cell. */
+  siu: string;
+  /** The nuqs cell. */
+  nuqs: string;
+}
+
+/** The "state-in-url vs nuqs" table: `components/Comparison.tsx`. */
+export interface ComparisonCopy {
+  title: string;
+  /** Paragraph above the table; carries the "nuqs alternative" phrasing. */
+  intro: string;
+  /** Header of the criterion column. The package-name headers stay in the markup. */
+  colFeature: string;
+  rows: {
+    setup: ComparisonRowCopy;
+    stateShape: ComparisonRowCopy;
+    reuse: ComparisonRowCopy;
+    nested: ComparisonRowCopy;
+    dates: ComparisonRowCopy;
+    size: ComparisonRowCopy;
+    deps: ComparisonRowCopy;
+    routers: ComparisonRowCopy;
+  };
+  /** Fine print under the table: how the sizes were measured. */
+  sizeNote: string;
+  /** Honest closing paragraph — when nuqs is the better pick. */
+  outro: string;
+  /** Text of the link to the full `/vs/nuqs` page, shown when a link target is passed. */
+  fullLink: string;
+}
+
+/** One row of the wider-alternatives table; the library name stays in markup. */
+export interface AlternativeRowCopy {
+  setup: string;
+  nested: string;
+  size: string;
+  pick: string;
+}
+
+/** The "beyond nuqs" table on `/vs/nuqs`: `components/Alternatives.tsx`. */
+export interface AlternativesCopy {
+  title: string;
+  intro: string;
+  colLibrary: string;
+  colSetup: string;
+  colNested: string;
+  colSize: string;
+  colPick: string;
+  rows: {
+    siu: AlternativeRowCopy;
+    nuqs: AlternativeRowCopy;
+    tanstack: AlternativeRowCopy;
+    useQueryParams: AlternativeRowCopy;
+    useSearchParams: AlternativeRowCopy;
+  };
+}
+
+/** The `/vs/nuqs` comparison page: `pages/VsNuqsPage.tsx`. */
+export interface VsNuqsCopy {
+  /** Heading above the side-by-side code samples. */
+  codeTitle: string;
+  /** One paragraph describing the feature both samples build. */
+  codeIntro: string;
+  /** The payoff paragraph under the code grid: hook reuse + preserved types. */
+  codeOutro: string;
+  setupTitle: string;
+  setupBody: string;
+  ssrTitle: string;
+  /** `{ssrLead} ⟦useSearchParams⟧{ssrMid} ⟦Suspense⟧ {ssrTail}` */
+  ssrLead: string;
+  /** See `ssrLead` — opens with a comma. */
+  ssrMid: string;
+  /** See `ssrLead`. */
+  ssrTail: string;
+  migrateTitle: string;
+  migrateBody: string;
+  /** Heading of the FAQ block. */
+  faqTitle: string;
+  /**
+   * Question/answer pairs, also emitted as FAQPage JSON-LD. Questions are
+   * phrased the way people search; answers must stand alone (40-60 words).
+   */
+  faq: ReadonlyArray<{ q: string; a: string }>;
+  alternatives: AlternativesCopy;
 }
 
 /** The "Why state-in-url?" prose section. */
@@ -261,6 +356,12 @@ export interface ChromeCopy {
   reloadPage: string;
   /** `aria-label` of the language switcher in the header. */
   languageLabel: string;
+  /** Visible "Home" crumb in breadcrumbs. */
+  home: string;
+  /** `aria-label` of the logo+wordmark link to the home page. */
+  homeLink: string;
+  /** `aria-label` of the breadcrumb nav. */
+  breadcrumbs: string;
 }
 
 export interface SiteCopy {
@@ -270,6 +371,8 @@ export interface SiteCopy {
   demo: DemoCopy;
   quickStart: QuickStartCopy;
   aiSkills: AiSkillsCopy;
+  comparison: ComparisonCopy;
+  vsNuqs: VsNuqsCopy;
   description: DescriptionCopy;
   share: ShareCopy;
   footer: FooterCopy;

@@ -25,6 +25,6 @@ export default async function Home({
   const copy = copyFor(locale.code);
 
   return (
-    <DemoPage searchParams={searchParams} copy={copy} codeBlocks={<CodeBlocksRR copy={copy.quickStart} />} />
+    <DemoPage searchParams={searchParams} copy={copy} vsHref={`/${dir}/vs/nuqs`} codeBlocks={<CodeBlocksRR copy={copy.quickStart} />} />
   );
 }

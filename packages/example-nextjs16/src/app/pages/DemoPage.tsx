@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { AiSkills } from '../components/AiSkills';
+import { Comparison } from '../components/Comparison';
 import { Description } from '../components/Description';
 import { DemoPart } from '../DemoPart';
 import type { SiteCopy } from '../i18n/copy/types';
@@ -28,11 +29,14 @@ export async function DemoPage({
   copy,
   codeBlocks,
   aiSkills = false,
+  vsHref = '/vs/nuqs',
 }: {
   searchParams: Promise<object>;
   copy: SiteCopy;
   codeBlocks: React.ReactNode;
   aiSkills?: boolean;
+  /** Locale-aware href of the full comparison page. */
+  vsHref?: string;
 }) {
   const resolvedSearchParams = await searchParams;
 
@@ -47,6 +51,8 @@ export async function DemoPage({
       </div>
 
       {aiSkills && <AiSkills copy={copy} />}
+
+      <Comparison copy={copy.comparison} fullComparisonHref={vsHref} />
 
       <Description copy={copy} />
     </>
