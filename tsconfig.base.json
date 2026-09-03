@@ -8,7 +8,6 @@
     "declarationMap": true,
     "sourceMap": true,
     "rootDir": "./",
-    "baseUrl": ".",
     "isolatedModules": true,
     "removeComments": false,
     "moduleResolution": "Bundler",
@@ -37,13 +36,13 @@
     "strict": true,
     "skipLibCheck": true,
     "paths": {
-      "shared/tailwind": ["packages/shared/tailwind.ts"],
-      "shared/styles.css": ["packages/shared/styles.css"],
-      "shared/vite-config": ["packages/shared/vite-config.ts"],
-      "shared/components/*": ["packages/shared/components/*"],
-      "shared/components": ["packages/shared/components/index.ts"],
-      "shared/*": ["packages/shared/*"],
-      "shared": ["packages/shared"]
+      "shared/tailwind": ["./packages/shared/tailwind.ts"],
+      "shared/styles.css": ["./packages/shared/styles.css"],
+      "shared/vite-config": ["./packages/shared/vite-config.ts"],
+      "shared/components/*": ["./packages/shared/components/*"],
+      "shared/components": ["./packages/shared/components/index.ts"],
+      "shared/*": ["./packages/shared/*"],
+      "shared": ["./packages/shared"]
     }
   },
   "include": [

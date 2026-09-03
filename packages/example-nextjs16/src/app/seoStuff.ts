@@ -12,7 +12,7 @@ import {
 import { copyFor } from './i18n/copy';
 import { copy } from './i18n/copy/en';
 import { type Metadata } from 'next';
-import { isProd } from 'consts';
+import { isProd } from '../../../../consts';
 
 export const jsonLd: WithContext<SoftwareApplication> = {
   '@context': 'https://schema.org',

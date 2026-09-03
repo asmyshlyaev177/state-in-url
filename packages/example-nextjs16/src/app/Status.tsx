@@ -5,7 +5,7 @@ import React from 'react';
 import { form } from 'shared/form';
 import { useUrlState } from 'state-in-url/next';
 
-import { typeOf } from 'packages/urlstate';
+import { typeOf } from 'state-in-url/utils';
 
 import { SourceCodeBtn } from './components/SourceCodeBtn';
 import type { SiteCopy } from './i18n/copy/types';
