@@ -11,12 +11,13 @@ import path from 'node:path';
  * the other two. Splitting it into three near-identical files would create
  * three things to keep in sync and answer no question better.
  *
- * Read from public/llms.txt so there is exactly one source: the file is also
- * served verbatim at /llms.txt, and src/proxy.ts gets its copy of the same
- * bytes through scripts/generate-middleware-content.cjs.
+ * Read from public/llms.txt so there is one source: the same file is served
+ * verbatim at /llms.txt, and `/` redirects agents here rather than answering
+ * with a second copy of the bytes (src/proxy.ts).
  *
- * Cacheable, unlike the negotiated `/`: these URLs have one representation
- * each, so there is no second variant behind them to hand to the wrong caller.
+ * Cacheable, unlike `/`: one representation each, so nothing behind these URLs
+ * can be handed to the wrong caller. That is why the negotiation sends agents
+ * to a URL and not a body.
  */
 export async function llmsTxtResponse() {
   const source = await readFile(
@@ -29,6 +30,9 @@ export async function llmsTxtResponse() {
     headers: {
       'Content-Type': 'text/markdown; charset=utf-8',
       'Cache-Control': 'public, max-age=3600',
+      // What /robots.txt grants (contentsignals.org), on the one document an
+      // agent redirected from `/` is sure to read.
+      'Content-Signal': 'search=yes, ai-train=yes, ai-input=yes',
     },
   });
 }

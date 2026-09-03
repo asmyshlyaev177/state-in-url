@@ -75,57 +75,76 @@ const nextConfig = {
         '</llms.txt>; rel="alternate"; type="text/markdown"; title="LLM-friendly reference (llms.txt)"',
     };
 
-    // No `Vary: Accept`, though `/` has two representations (src/proxy.ts
-    // answers it with llms.txt for a Markdown client). Next overwrites Vary
-    // with its own RSC values on every dynamic response, so it would look like
-    // a control and be none. `Cache-Control: no-store` on the Markdown branch
-    // is what actually keeps the two apart — see the note in src/proxy.ts.
-
-    // Demo pages only: they render from the query string, and Vercel keys a
-    // dynamic function response on the full URL, so each distinct state gets
-    // its own entry and none can serve another's. Most entries are written
-    // once and evicted unread; what pays is the bare `/` and shared stateful
-    // links. Short `s-maxage` because a new deployment gets its own key anyway.
+    // Demo pages only. They render from the query string, and Vercel keys a
+    // dynamic response on the full URL, so each state gets its own entry and
+    // none can serve another's. Short `s-maxage` because a deployment gets its
+    // own key anyway.
     const cdnCache = {
       key: 'Cache-Control',
       value: 'public, s-maxage=600, stale-while-revalidate=86400',
     };
 
-    // The one above never survives on Vercel: a dynamic response carries
-    // Next's own `no-store` and that is what the Edge Network serves (`next
-    // start` returns the configured value, the deployment does not). This
-    // header is read by the Edge Network, preferred over `Cache-Control`, and
-    // never forwarded — so the browser still gets no-store, which is right for
-    // a page rendered from the query string.
+    // The one above does not reach a deployment: a dynamic response carries
+    // Next's own `no-store` and that is what the Edge Network serves, though
+    // `next start` returns the configured value. This one the Edge Network
+    // reads, prefers over `Cache-Control`, and never forwards — so the browser
+    // still gets no-store, right for a page rendered from the query string.
     const vercelCdnCache = {
       key: 'Vercel-CDN-Cache-Control',
       value: 'max-age=600, stale-while-revalidate=86400',
     };
 
-    // Built from the locale table, not listed: twenty-seven sources is past
-    // where a hand-kept list stays correct, and a missing page silently loses
-    // its `Link:` header.
+    // The AI discovery set (ai-visibility.org.uk) plus llms.txt, robots.txt and
+    // the sitemap. Served from `public/` or as `force-static` routes, neither
+    // of which sets a `Cache-Control`, so Vercel's `max-age=0,
+    // must-revalidate` applied and every fetch revalidated. They change only
+    // on deploy, and a deploy invalidates the CDN.
     //
-    // `cdnCache` must not reach `/vs/nuqs`. That page is prerendered (`○` in
-    // the build output) so the header survives, and Vercel then serves the
-    // entry with an `age` far past `s-maxage=600` — the client never gets a
-    // response it considers fresh and revalidates on a loop. Measured on
-    // production 2026-09-03: ~26 requests a second from one idle tab. Its
-    // layout's `revalidate = 604800` already caches it for a week.
+    // The `age > s-maxage` trap below does not reach these: nothing prefetches
+    // a text file, so a stale-marked response costs one conditional GET.
+    const aiFiles = [
+      '/llms.txt',
+      '/ai.txt',
+      '/ai.json',
+      '/identity.json',
+      '/brand.txt',
+      '/faq-ai.txt',
+      '/developer-ai.txt',
+      '/robots-ai.txt',
+      '/ai-visibility-verify.txt',
+      '/robots.txt',
+      '/sitemap.xml',
+    ];
+    const aiFileCache = {
+      key: 'Cache-Control',
+      value: 'public, max-age=3600, s-maxage=86400, stale-while-revalidate=604800',
+    };
+
+    // Built from the locale table, not listed: a missing page silently loses
+    // its `Link:` header, and 27 sources is past where a hand-kept list holds.
+    //
+    // `cdnCache` must not reach `/vs/nuqs`. It is prerendered (`○` in the build
+    // output) so the header survives there, and Vercel then serves the entry at
+    // an `age` far past `s-maxage=600` — the client never sees a fresh response
+    // and `<Link>` prefetch revalidates on a loop, measured at ~26 requests a
+    // second from one idle tab. Its layout's `revalidate` caches it for a week.
     const demoPages = ['', '/react-router', '/remix'];
     const pages = [...demoPages, '/vs/nuqs'];
     const prefixes = ['', ...LOCALES.map((locale) => `/${locale.dir}`)];
 
-    return prefixes.flatMap((prefix) =>
-      pages.map((page) => {
-        const headers = [llmsTxtLink];
-        if (demoPages.includes(page)) headers.push(cdnCache);
-        // English `/` alone: the one URL whose cache entry is certain to be
-        // read again. The others can have it once traffic justifies it.
-        if (prefix === '' && page === '') headers.push(vercelCdnCache);
-        return { source: `${prefix}${page}` || '/', headers };
-      }),
-    );
+    return [
+      ...prefixes.flatMap((prefix) =>
+        pages.map((page) => {
+          const headers = [llmsTxtLink];
+          if (demoPages.includes(page)) headers.push(cdnCache);
+          // English `/` alone: the one URL whose cache entry is certain to be
+          // read again. The others can have it once traffic justifies it.
+          if (prefix === '' && page === '') headers.push(vercelCdnCache);
+          return { source: `${prefix}${page}` || '/', headers };
+        }),
+      ),
+      ...aiFiles.map((source) => ({ source, headers: [aiFileCache] })),
+    ];
   },
 };
 

@@ -3,19 +3,15 @@ import { expect, test } from '@playwright/test';
 /**
  * A prerendered page must not carry the demo pages' short `s-maxage`.
  *
- * `cdnCache` in next.config.mjs is written for the three demo routes, which
- * render from the query string. Next marks those dynamic and overwrites the
- * header with its own `no-store`, so it never reaches a client. On a
- * prerendered route it survives — and on a deployment that turns `<Link>`
- * prefetch into a hot loop: Vercel's CDN serves the entry with an `age` well
- * past `s-maxage=600`, the client never receives a response it considers
- * fresh, and it revalidates for as long as the link is on screen. Measured on
- * production 2026-09-03: ten seconds with the "full comparison" link parked in
- * the viewport cost 262 `/vs/nuqs?_rsc=` requests.
+ * `cdnCache` in next.config.mjs is written for the dynamic demo routes, where
+ * Next overwrites it with `no-store`. On a prerendered route it survives, and
+ * a deployment then serves the entry at an `age` past `s-maxage=600` — the
+ * client never sees a fresh response and `<Link>` prefetch revalidates for as
+ * long as the link is on screen, measured at 262 requests in ten seconds.
  *
- * Asserted against the served response rather than by reading the config, so
- * it holds whatever route ends up prerendered. The loop itself needs a CDN and
- * so cannot be reproduced here; the header that causes it can.
+ * Asserted against the served response, not the config, so it holds for
+ * whatever route ends up prerendered. The loop needs a CDN and cannot be
+ * reproduced here; the header that causes it can.
  */
 test.describe('cache headers (landing only)', () => {
   test.skip(({ browserName }) => browserName !== 'chromium', 'Chromium only');
@@ -30,8 +26,8 @@ test.describe('cache headers (landing only)', () => {
       const cacheControl = response.headers()['cache-control'] ?? '';
       const sMaxAge = /s-maxage=(\d+)/.exec(cacheControl);
 
-      // Next derives its own from the layout's `revalidate` (7 days). Anything
-      // shorter than a day is the demo-page header leaking onto a static route.
+      // Next derives its own from the layout's `revalidate` (7 days). Under a
+      // day means the demo-page header leaked onto a static route.
       const A_DAY = 86_400;
       expect(
         sMaxAge ? Number(sMaxAge[1]) : Infinity,

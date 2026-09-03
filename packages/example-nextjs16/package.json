@@ -3,12 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "pnpm run generate-middleware && pnpm exec next dev --port ${PORT:-3002}",
-    "build": "pnpm run generate-middleware && pnpm exec next build",
+    "dev": "pnpm exec next dev --port ${PORT:-3002}",
+    "build": "pnpm exec next build",
     "test:tokens": "check-tokens src/app/styles.css",
     "start": "pnpm exec next start --port ${PORT:-3002}",
-    "lint": "pnpm exec next lint",
-    "generate-middleware": "node scripts/generate-middleware-content.cjs"
+    "lint": "pnpm exec next lint"
   },
   "dependencies": {
     "@floating-ui/react": "^0.26.28",

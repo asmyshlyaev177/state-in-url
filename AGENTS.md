@@ -157,7 +157,7 @@ answers agents in four overlapping ways — they disagree about which to try:
 | Surface | Where |
 | --- | --- |
 | `/llms.txt` | `public/llms.txt` — the single source |
-| `/` under `Accept: text/markdown`, or a known agent user-agent | `src/proxy.ts`, generated from `public/llms.txt` by `scripts/generate-middleware-content.cjs` |
+| `/` under `Accept: text/markdown`, or a known agent user-agent — 307 to `/index.md` | `src/proxy.ts` |
 | `/index.md`, `/react-router.md`, `/remix.md` | `src/app/<route>.md/route.ts`, all three through `src/app/llmsTxtResponse.ts` |
 | `<link rel="alternate">` and a `Link:` response header | `src/app/seoStuff.ts` (`markdownAlternates`), `next.config.mjs` |
 
@@ -166,15 +166,25 @@ page repeated per router variant, and `public/llms.txt` documents Next.js,
 React Router and Remix together. Three near-identical files would be three
 things to keep in sync and would answer no question better.
 
-`src/proxy.ts` is **generated** — edit `public/llms.txt` or the generator
-script, never the proxy itself; `pnpm run generate-middleware` runs on dev and
-build.
+**The one rule that matters: `/` must never carry a Markdown body.** Vercel's
+edge cache keys on the URL path and does not honour `Vary`, and Next overwrites
+`Vary` on dynamic App Router responses anyway. A cacheable Markdown variant is
+pinned into the entry for `/` by the first agent that asks, and every reader
+after it gets raw text until it expires — a 200 throughout, so nothing alerts.
 
-**The one rule that matters:** the negotiated Markdown response must stay
-`Cache-Control: no-store`. Vercel's edge/ISR cache keys on the URL path and
-does not honour `Vary` — and Next overwrites `Vary` on dynamic App Router
-responses anyway, so it cannot be leaned on. A cacheable Markdown variant gets
-pinned into the cache entry for `/` by the first agent that asks for it, and
-every human visitor afterwards is served raw text until it expires: a 200
-throughout, so nothing alerts. That happened on a sibling site. `/llms.txt` and
-`/index.md` have one representation each and are safe to cache.
+`src/proxy.ts` therefore answers an agent with a **307 to `/index.md`**. `/` is
+left holding only HTML, and the document sits on a URL with one representation
+that caches normally — `max-age=3600` and a CDN hit, instead of the `no-store`
+an inline body needs.
+
+307, not 308: a permanent redirect is heuristically cacheable under RFC 9111,
+and one held under `/` would send readers to the mirror.
+
+The negotiation stays in the proxy rather than moving to `next.config.mjs`
+`redirects()`, which would decide it at the CDN with no function involved. Next
+compiles a `has` condition to ``new RegExp(`^${value}$`)`` — anchored, no `i`
+flag — so these patterns cannot be ported as written: `(?i)` throws in JS,
+`(?i:…)` is a V8-only ES2025 modifier Vercel's router need not accept, and the
+anchoring turns a token list into a whole-string match no real user-agent
+satisfies. Two engines disagreeing about one rule is the shape of every
+incident in this file. One engine, testable locally.

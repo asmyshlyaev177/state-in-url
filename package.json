@@ -169,23 +169,23 @@
       "command": "pnpm run test:exports && pnpm run test:int"
     },
     "kill-next": {
-      "command": "ps aux | grep -E 'next-server|next/dist/bin/next' | grep -v grep | awk '{print $2}' | xargs -r kill -9 2>&1; exit 0"
+      "command": "node scripts/kill-demos.mjs next"
     },
     "kill-vite": {
-      "command": "ps aux | grep -E 'vite/bin/vite' | grep -v grep | awk '{print $2}' | xargs -r kill -9 2>&1; exit 0"
+      "command": "node scripts/kill-demos.mjs vite"
     },
     "kill-remix": {
-      "command": "ps aux | grep -E 'remix-serve|remix-run/serve' | grep -v grep | awk '{print $2}' | xargs -r kill -9 2>&1; exit 0"
+      "command": "node scripts/kill-demos.mjs remix"
     },
     "kill-services": {
-      "command": "ps aux | grep -E 'next-server|next/dist/bin/next|vite/bin/vite|remix-serve|remix-run/serve' | grep -v grep | awk '{print $2}' | xargs -r kill -9 2>&1; exit 0",
-      "comment": "Patterns match how the servers actually appear in ps, not a loose 'next'. An unescaped dot used to make '.next' match the '-next' in 'example-nextjs16.localhost', so this killed any process whose arguments named a demo app — including CI's own wait-on, which exited the job 137."
+      "command": "node scripts/kill-demos.mjs next vite remix",
+      "comment": "Matching is by repo cwd plus the server's own argv, and never touches an ancestor of the killer. See scripts/kill-demos.mjs for the two ways the old ps|grep|xargs form mis-fired."
     },
     "kill-wireit": {
-      "command": "ps axu | grep '[w]ireit' | grep -v grep | awk -v me=$PPID '$2 != me {print $2}' | xargs -r kill -9 2>&1; exit 0"
+      "command": "node scripts/kill-demos.mjs wireit"
     },
     "kill": {
-      "command": "ps aux | grep -E 'next-server|next/dist/bin/next|vite/bin/vite|remix-serve|remix-run/serve' | grep -v grep | awk '{print $2}' | xargs -r kill -9 2>&1; ps axu | grep '[w]ireit' | grep -v grep | awk -v me=$PPID '$2 != me {print $2}' | xargs -r kill -9 2>&1; exit 0"
+      "command": "node scripts/kill-demos.mjs"
     },
     "test:int:ci": {
       "command": "pnpm exec cross-env HOME=/root PLAYWRIGHT_BROWSERS_PATH=0 playwright test"
