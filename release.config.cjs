@@ -21,7 +21,10 @@ module.exports = {
       // pinned, already-installed `intent` binary — no network fetch on release.
       "@semantic-release/exec",
       {
-        "prepareCmd": "pnpm exec intent validate --set-version ${nextRelease.version}"
+        "prepareCmd": "pnpm exec intent validate --set-version ${nextRelease.version}",
+        // Runs only after a release was actually published and pushed, which is
+        // what Context7 re-clones. The release is done by then, so never fail it.
+        "successCmd": "curl -fsS -X POST https://context7.com/api/v1/refresh -H 'Content-Type: application/json' -H \"Authorization: Bearer $CONTEXT7_API_KEY\" -d '{\"libraryName\": \"/asmyshlyaev177/state-in-url\"}' || echo 'Context7 refresh failed'"
       }
     ],
     [
