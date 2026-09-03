@@ -1,6 +1,6 @@
 'use client';
 
-import Link from 'next/link';
+import { Link } from './Link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useRef } from 'react';
 import { form } from 'shared/form';
@@ -13,11 +13,10 @@ import { ALL_LOCALES, localePrefix, PAGES, stripLocale, type Locale } from '../i
  * page in that language.
  *
  * Anchors, not a `<select>` — a crawler follows links, not change handlers.
- * `<details>` because nine endonyms overflow the header row inline. Hidden
- * panel also means Next never prefetches the eight translations unopened.
+ * `<details>` because nine endonyms overflow the header row inline.
  *
  * Returns null off the three translated pages: the fixture routes share this
- * chrome, and `/ja/test-ssr` is a 404 Next would prefetch into a console error.
+ * chrome, and `/ja/test-ssr` is a 404.
  */
 export function LanguagePicker({ current, label }: { current: Locale; label: string }) {
   const path = stripLocale(usePathname()).replace(/\/$/, '');

@@ -1,4 +1,4 @@
-import Link from 'next/link';
+import { Link } from './Link';
 
 import type { ComparisonCopy } from '../i18n/copy/types';
 

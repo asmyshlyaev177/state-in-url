@@ -66,93 +66,65 @@ const nextConfig = {
     ignoreBuildErrors: true,
   },
   async headers() {
-    // Point AI clients at the Markdown reference from the response itself,
-    // not only from the <link rel="alternate"> in <head>: a `Link:` header
-    // survives a HEAD request and reaches clients that never parse markup.
-    // Listed per documented page rather than globbed, so it can't end up
-    // stapled to every image and hashed asset as well.
+    // A `Link:` header survives a HEAD request and reaches clients that never
+    // parse markup. Per documented page, not globbed, so it can't end up on
+    // every image and hashed asset too.
     const llmsTxtLink = {
       key: 'Link',
       value:
         '</llms.txt>; rel="alternate"; type="text/markdown"; title="LLM-friendly reference (llms.txt)"',
     };
 
-    // Deliberately no `Vary: Accept` here, though `/` does have two
-    // representations (src/proxy.ts answers it with llms.txt when the client
-    // prefers Markdown). Next overwrites Vary with its own RSC values on
-    // every dynamic App Router response — set from here or from middleware,
-    // it is gone by the time the response leaves — so it would be a comment
-    // that looks like a control. What actually keeps the two representations
-    // apart is `Cache-Control: no-store` on the Markdown branch in
-    // src/proxy.ts; see the note there before changing it.
-    /**
-     * Cache the demo pages on Vercel's CDN, keyed by the full URL.
-     *
-     * These routes render from the query string, so they are dynamic and ISR
-     * is the wrong tool: an ISR entry is one render keyed on path alone, and
-     * reusing it would serve one visitor's demo state to everyone after them.
-     * CDN caching is different. Vercel derives the cache key from "the request
-     * URL (query strings are ignored *for static files*)" — so for a dynamic
-     * function response the query string *is* part of the key, and each
-     * distinct state gets its own entry. Different state, different key: it
-     * cannot serve the wrong one.
-     *
-     * The cost is cardinality, not correctness. Every keystroke is a new URL
-     * and most will never be requested twice, so most of these entries are
-     * written and never read. What pays for itself is the traffic that
-     * concentrates: the bare `/`, which is the overwhelming majority of
-     * visits, and whatever stateful URLs people actually share. Entries that
-     * go unread are evicted. The downside is a miss, never a wrong answer.
-     *
-     * `s-maxage` is deliberately short and `stale-while-revalidate` long: the
-     * render only changes when the deployment does, and a new deployment gets
-     * its own cache key anyway.
-     */
+    // No `Vary: Accept`, though `/` has two representations (src/proxy.ts
+    // answers it with llms.txt for a Markdown client). Next overwrites Vary
+    // with its own RSC values on every dynamic response, so it would look like
+    // a control and be none. `Cache-Control: no-store` on the Markdown branch
+    // is what actually keeps the two apart — see the note in src/proxy.ts.
+
+    // Demo pages only: they render from the query string, and Vercel keys a
+    // dynamic function response on the full URL, so each distinct state gets
+    // its own entry and none can serve another's. Most entries are written
+    // once and evicted unread; what pays is the bare `/` and shared stateful
+    // links. Short `s-maxage` because a new deployment gets its own key anyway.
     const cdnCache = {
       key: 'Cache-Control',
       value: 'public, s-maxage=600, stale-while-revalidate=86400',
     };
 
-    /**
-     * The one above does not survive on Vercel. A dynamic App Router response
-     * carries Next's own `private, no-cache, no-store, max-age=0,
-     * must-revalidate`, and that is what the Edge Network serves — `next start`
-     * returns the configured value, the deployment does not, so nothing here
-     * was ever being cached.
-     *
-     * This header exists for that case: the Edge Network reads it, never
-     * forwards it to the browser, and prefers it over `Cache-Control`. The
-     * browser still gets Next's no-store, which is correct — a visitor should
-     * not hold its own copy of a page that renders from the query string.
-     *
-     * `/` only. It takes the overwhelming majority of visits and is the one
-     * URL whose cache entry is certain to be read again; the other two demo
-     * pages can have it once this is confirmed working on a deployment.
-     */
+    // The one above never survives on Vercel: a dynamic response carries
+    // Next's own `no-store` and that is what the Edge Network serves (`next
+    // start` returns the configured value, the deployment does not). This
+    // header is read by the Edge Network, preferred over `Cache-Control`, and
+    // never forwarded — so the browser still gets no-store, which is right for
+    // a page rendered from the query string.
     const vercelCdnCache = {
       key: 'Vercel-CDN-Cache-Control',
       value: 'max-age=600, stale-while-revalidate=86400',
     };
 
-    // Generated from the locale table rather than listed. Twenty-seven
-    // sources is past the point where a hand-kept list stays correct, and a
-    // page missing from here silently loses its `Link:` header — which is the
-    // one that reaches clients that never parse markup.
-    const pages = ['', '/react-router', '/remix', '/vs/nuqs'];
+    // Built from the locale table, not listed: twenty-seven sources is past
+    // where a hand-kept list stays correct, and a missing page silently loses
+    // its `Link:` header.
+    //
+    // `cdnCache` must not reach `/vs/nuqs`. That page is prerendered (`○` in
+    // the build output) so the header survives, and Vercel then serves the
+    // entry with an `age` far past `s-maxage=600` — the client never gets a
+    // response it considers fresh and revalidates on a loop. Measured on
+    // production 2026-09-03: ~26 requests a second from one idle tab. Its
+    // layout's `revalidate = 604800` already caches it for a week.
+    const demoPages = ['', '/react-router', '/remix'];
+    const pages = [...demoPages, '/vs/nuqs'];
     const prefixes = ['', ...LOCALES.map((locale) => `/${locale.dir}`)];
 
     return prefixes.flatMap((prefix) =>
-      pages.map((page) => ({
-        source: `${prefix}${page}` || '/',
-        headers:
-          // `Vercel-CDN-Cache-Control` stays on the English `/` alone, as the
-          // note above says: it is the one URL whose cache entry is certain to
-          // be read again. The locale roots can have it once there is traffic
-          // to justify it.
-          prefix === '' && page === ''
-            ? [llmsTxtLink, cdnCache, vercelCdnCache]
-            : [llmsTxtLink, cdnCache],
-      })),
+      pages.map((page) => {
+        const headers = [llmsTxtLink];
+        if (demoPages.includes(page)) headers.push(cdnCache);
+        // English `/` alone: the one URL whose cache entry is certain to be
+        // read again. The others can have it once traffic justifies it.
+        if (prefix === '' && page === '') headers.push(vercelCdnCache);
+        return { source: `${prefix}${page}` || '/', headers };
+      }),
     );
   },
 };

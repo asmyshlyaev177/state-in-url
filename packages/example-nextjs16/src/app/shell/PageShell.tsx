@@ -1,5 +1,5 @@
 import dynamic from 'next/dynamic';
-import Link from 'next/link';
+import { Link } from '../components/Link';
 import Script from 'next/script';
 import React from 'react';
 
