@@ -1,0 +1,52 @@
+{
+  "$schema": "https://context7.com/schema/context7.json",
+  "url": "https://context7.com/asmyshlyaev177/state-in-url",
+  "public_key": "pk_aBG9eyfVOOEEihsixOASG",
+  "projectTitle": "state-in-url",
+  "description": "Type-safe URL state for React, Next.js, React Router and Remix",
+  "excludeFolders": [
+    ".claude",
+    ".agents",
+    ".github",
+    "scripts",
+    "tests",
+    "**/.next",
+    "coverage-reports",
+    "playwright-report",
+    "test-results",
+    "lighthouse",
+    "dist"
+  ],
+  "excludeFiles": [
+    "README.ru.md",
+    "README.ja.md",
+    "README.ko.md",
+    "README.fr.md",
+    "README.es.md",
+    "README.vi.md",
+    "README.pt-BR.md",
+    "README.zh-CN.md",
+    "README.CN.md",
+    "Limits.ru.md",
+    "Limits.ja.md",
+    "Limits.ko.md",
+    "Limits.fr.md",
+    "Limits.es.md",
+    "Limits.vi.md",
+    "Limits.pt-BR.md",
+    "Limits.zh-CN.md",
+    "CHANGELOG.md",
+    "CODE_OF_CONDUCT.md",
+    "SECURITY.md",
+    "PULL_REQUEST_TEMPLATE.md",
+    "CONTRIBUTING.md",
+    "PRODUCT.md",
+    "CLAUDE.md"
+  ],
+  "rules": [
+    "Import from 'state-in-url/next' for Next.js app router, 'state-in-url/react-router' for React Router, 'state-in-url/remix' for Remix",
+    "Define the state shape as a plain object with default values; types are inferred from it, do not pass generics",
+    "Never mutate returned state; call setUrl or setState with a new object or updater function"
+  ],
+  "previousVersions": [{ "tag": "v5.3.0" }]
+}
