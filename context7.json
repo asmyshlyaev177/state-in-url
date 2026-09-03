@@ -8,9 +8,11 @@
     ".claude",
     ".agents",
     ".github",
+    ".impaccable",
     "scripts",
     "tests",
-    "**/.next",
+    "packages/example-*",
+    "skills/_artifacts",
     "coverage-reports",
     "playwright-report",
     "test-results",
@@ -41,12 +43,18 @@
     "PULL_REQUEST_TEMPLATE.md",
     "CONTRIBUTING.md",
     "PRODUCT.md",
-    "CLAUDE.md"
+    "CLAUDE.md",
+    "AGENTS.md"
   ],
   "rules": [
-    "Import from 'state-in-url/next' for Next.js app router, 'state-in-url/react-router' for React Router, 'state-in-url/remix' for Remix",
-    "Define the state shape as a plain object with default values; types are inferred from it, do not pass generics",
-    "Never mutate returned state; call setUrl or setState with a new object or updater function"
+    "Import useUrlState from 'state-in-url/next' (Next.js App Router), 'state-in-url/react-router' (React Router v7), 'state-in-url/react-router6' (React Router v6) or 'state-in-url/remix' (Remix v2); the bare 'state-in-url' export has only framework-agnostic helpers",
+    "Pass a plain JSON-serializable object with default values as the state shape; keep it in a module-level const so the reference is stable across renders",
+    "Never mutate urlState; call setUrl or setState with a new object or an updater function, same API as React.useState",
+    "Keep total URL state under ~12KB; CDNs and web servers reject longer URIs (see Limits.md)"
   ],
-  "previousVersions": [{ "tag": "v5.3.0" }]
+  "previousVersions": [
+    {
+      "tag": "v5.2.0"
+    }
+  ]
 }
