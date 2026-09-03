@@ -38,7 +38,9 @@ export const createHighlighter = () =>
     loadWasm: getWasm,
   });
 
-export let highlighter: HighlighterCore;
+/** The promise, not the resolved value: concurrent callers must share one
+    instance, and awaiting before caching creates one highlighter each. */
+let highlighter: Promise<HighlighterCore> | undefined;
 
 export const highlight = (content: string, opts?: { lang?: Langs}) => {
   return getHighlighter().then(hi => hi.codeToHtml?.(content, {
@@ -53,12 +55,6 @@ export const highlight = (content: string, opts?: { lang?: Langs}) => {
 };
 
 function getHighlighter() {
-  if (highlighter) {
-    return Promise.resolve(highlighter)
-  }
-
-  return createHighlighter().then(hi => {
-    highlighter = hi
-    return Promise.resolve(hi)
-  })
+  highlighter ??= createHighlighter()
+  return highlighter
 }

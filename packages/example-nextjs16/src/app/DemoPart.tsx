@@ -32,7 +32,7 @@ export function DemoPart({
             <UrlBox initialUrl={spToUrl(searchParams)} copy={copy.chrome} />
           </div>
 
-          <p className="demo-hint">{copy.demo.hint} <span className="demo-hint-arrow" aria-hidden="true">↓</span></p>
+          <p className="demo-hint">{copy.demo.hint} <span className="demo-hint-arrow" aria-hidden="true"><DownArrow /></span></p>
 
         </header>
 
@@ -50,6 +50,14 @@ export function DemoPart({
     </>
   );
 }
+
+/** Stroked rather than the `↓` glyph: the weight is ours to set, not the font's. */
+const DownArrow = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M12 3.5v15" />
+    <path d="M5 12l7 7 7-7" />
+  </svg>
+);
 
 function fallbackRender({ error, resetErrorBoundary }: FallbackProps, copy: ErrorsCopy) {
   return (

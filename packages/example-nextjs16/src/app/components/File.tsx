@@ -1,6 +1,7 @@
 import dynamicImport from 'next/dynamic';
 
 import { Code } from './Code';
+import { renderTooltips } from '../renderTooltips';
 import { type Matcher } from '../types';
 
 import { stringToHash } from '../utils';
@@ -12,7 +13,7 @@ const FakeTypes = dynamicImport(
   },
 );
 
-export const File = ({
+export const File = async ({
   name,
   content,
   matchers,
@@ -25,6 +26,7 @@ export const File = ({
   className?: string;
 }) => {
   const id = stringToHash(content);
+  const rendered = await renderTooltips(matchers);
 
   return (
     <div
@@ -41,7 +43,7 @@ export const File = ({
         </div>
       </div>
 
-      <FakeTypes matchers={matchers} id={id} />
+      <FakeTypes matchers={rendered} id={id} />
 
       <Code
         content={content}

@@ -48,6 +48,13 @@
   --input-line: var(--lit-line);
   --checkbox-fill: var(--primary-strong);
 
+  /* The demo hint cycles three signals. Off-ramp colours by definition — this
+     site is single-hue — so they are pinned at --accent-fill's lightness,
+     which is the one measured to clear the floor on these surfaces. */
+  --signal-orange: var(--accent-fill);
+  --signal-green: oklch(80% 0.16 150);
+  --signal-blue: oklch(80% 0.11 240);
+
   --z-badge: 30;
 
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
@@ -335,10 +342,13 @@
     }
   }
 
+  /* No `filter: blur()` here. These drift forever, and a blurred layer has to
+     be re-rasterized on every frame of its own transform — the one measurable
+     rendering cost on this page. `closest-side` already fades to transparent,
+     so the blur bought nothing the gradient does not. */
   .aurora-blob {
     position: absolute;
     border-radius: 50%;
-    filter: blur(90px);
     will-change: transform;
   }
 
@@ -427,16 +437,25 @@
   }
 
   .demo-hint {
-    @apply mt-2 flex items-center gap-2;
-    font-size: 0.85rem;
-    font-weight: 600;
+    @apply mt-3 flex items-center gap-2;
+    font-size: 0.95rem;
+    font-weight: 700;
     color: var(--accent-on-soft);
     user-select: none;
 
     .demo-hint-arrow {
-      display: inline-block;
-      font-size: 1rem;
-      animation: arrowPulse 2.2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+      @apply inline-flex items-center justify-center;
+      width: 1.5rem;
+      height: 1.5rem;
+      color: var(--signal-orange);
+      animation:
+        arrowHop 1.6s cubic-bezier(0.4, 0, 0.6, 1) infinite,
+        arrowFlash 1.8s linear infinite;
+
+      & > svg {
+        width: 100%;
+        height: 100%;
+      }
     }
   }
 
@@ -609,13 +628,28 @@
     forwards;
 }
 
-@keyframes arrowPulse {
+@keyframes arrowHop {
   0%,
   100% {
-    transform: translateY(0);
+    transform: translateY(0) scale(1);
   }
   50% {
-    transform: translateY(4px);
+    transform: translateY(6px) scale(1.12);
+  }
+}
+
+/* All three sit at one lightness, so every colour the crossfade passes through
+   holds the contrast the endpoints were picked for. */
+@keyframes arrowFlash {
+  0%,
+  100% {
+    color: var(--signal-orange);
+  }
+  33% {
+    color: var(--signal-green);
+  }
+  66% {
+    color: var(--signal-blue);
   }
 }
 

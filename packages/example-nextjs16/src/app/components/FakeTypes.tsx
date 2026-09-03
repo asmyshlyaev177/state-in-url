@@ -2,75 +2,81 @@
 
 import React from 'react';
 
-import { useFloating, autoUpdate, useClientPoint, offset } from '@floating-ui/react';
+import { type RenderedMatcher } from '../types';
 
-import { type Matcher, type Tooltip, type Langs } from '../types';
-import { highlight } from '../highlighter';
+const MAX_WIDTH = 600;
+const GAP = 16;
 
-export const FakeTypes = ({ matchers, id }: { matchers?: Matcher[], id: string }) => {
-  const [tooltip, setTooltip] = React.useState<{ x: number, y: number, nodes: Tooltip[] }>({ nodes: [], x: 0, y: 0 });
+type State = { x: number; y: number; nodes: string[] };
 
-  const { refs, floatingStyles, context } = useFloating({
-    whileElementsMounted: autoUpdate,
-    placement: 'top',
-    middleware: [
-      offset({ mainAxis: 20, crossAxis: 50 })
-    ]
+const EMPTY: string[] = [];
+
+export const FakeTypes = ({
+  matchers,
+  id,
+}: {
+  matchers?: RenderedMatcher[];
+  id: string;
+}) => {
+  const [tooltip, setTooltip] = React.useState<State>({
+    nodes: EMPTY,
+    x: 0,
+    y: 0,
   });
-  useClientPoint(context,
-    { x: tooltip.x, y: tooltip.y }
-  )
 
   React.useEffect(() => {
-    const codeBlock = document.querySelector(`[id="${id}"]`)
+    const codeBlock = document.querySelector<HTMLDivElement>(`[id="${id}"]`);
+    if (!codeBlock) return;
 
-    if (codeBlock && !(codeBlock as HTMLDivElement).onmousemove) {
-    const matchTooltips = (ev: MouseEvent) => {
-      // @ts-expect-error fots
-      const text = (ev?.target?.textContent || '').trim();
-      // @ts-expect-error fots
-      const next = (ev?.target?.nextSibling?.textContent || '').trim()
+    const onMove = (ev: MouseEvent) => {
+      const target = ev.target as Node | null;
+      const text = (target?.textContent || '').trim();
+      const next = (target?.nextSibling?.textContent || '').trim();
+      const match = matchers?.find((el) => el[0] === `${text}${next}`);
 
-        const match = matchers?.find(el => el[0] === `${text}${next}`)
-
-        if (match) {
-          if (match[1] !== tooltip.nodes) {
-            setTooltip({ nodes: match[1], x: ev.clientX, y: ev.clientY })
-          }
-        } else if (tooltip.nodes.length || text.length > 20 && !next) {
-          setTooltip(curr => ({ ...curr, nodes: [] }))
-        }
+      if (match) {
+        setTooltip((curr) =>
+          curr.nodes === match[1]
+            ? curr
+            : { nodes: match[1], x: ev.clientX, y: ev.clientY },
+        );
+        return;
       }
 
-      (codeBlock as HTMLDivElement).onmousemove = matchTooltips;
-      (codeBlock as HTMLDivElement).onmouseleave = () => setTooltip(curr => ({...curr, nodes: []}));
-    }
+      setTooltip((curr) =>
+        curr.nodes.length ? { ...curr, nodes: EMPTY } : curr,
+      );
+    };
+
+    const onLeave = () => setTooltip((curr) => ({ ...curr, nodes: EMPTY }));
+
+    codeBlock.addEventListener('mousemove', onMove);
+    codeBlock.addEventListener('mouseleave', onLeave);
 
     return () => {
-      if (codeBlock) {
-        (codeBlock as HTMLDivElement).onmousemove = null;
-        (codeBlock as HTMLDivElement).onmouseleave = null;
-      }
-      }
-  }, [id, tooltip.nodes, matchers, context])
+      codeBlock.removeEventListener('mousemove', onMove);
+      codeBlock.removeEventListener('mouseleave', onLeave);
+    };
+  }, [id, matchers]);
 
-  return tooltip.nodes.length ? <div
-    style={floatingStyles}
-    ref={refs.setFloating}
-    className="text-[12px] p-4 absolute bg-slate-800 rounded-md max-w-[600px] transition-none border border-slate-500"
-  >
-    {tooltip.nodes.map((node, ind) => (
-      <CodeClient content={node.text} lang={node.lang} key={ind} />
-    ))}
-  </div> : null
-}
+  if (!tooltip.nodes.length) return null;
 
-const CodeClient = ({ content, lang }: { content: string, lang?: Langs, id?: string }) => {
-  const [text, setText] = React.useState('');
-
-  React.useEffect(() => {
-    highlight(content, { lang }).then(setText)
-  }, [content, lang])
-
-  return <div dangerouslySetInnerHTML={{ __html: text || "." }} />
-}
+  return (
+    <div
+      style={{
+        position: 'fixed',
+        left: Math.max(
+          GAP,
+          Math.min(tooltip.x + GAP, window.innerWidth - MAX_WIDTH - GAP),
+        ),
+        top: Math.max(GAP, tooltip.y - GAP),
+        transform: 'translateY(-100%)',
+      }}
+      className="pointer-events-none z-50 max-w-[600px] rounded-md border border-slate-500 bg-slate-800 p-4 text-[12px] transition-none"
+    >
+      {tooltip.nodes.map((html, ind) => (
+        <div key={ind} dangerouslySetInnerHTML={{ __html: html }} />
+      ))}
+    </div>
+  );
+};
