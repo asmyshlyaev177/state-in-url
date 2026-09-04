@@ -1,3 +1,4 @@
+import fs from 'fs';
 import path from 'path';
 import { defineConfig } from 'vite';
 
@@ -10,8 +11,12 @@ export default defineConfig({
     ...(getConfig().resolve || {}),
     alias: {
       ...(getConfig().resolve?.alias || {}),
-      // Force react-router to resolve from local node_modules
-      'react-router': path.resolve(__dirname, 'node_modules/react-router'),
+      // Force react-router to resolve from local node_modules. The real path,
+      // not the symlink: with preserveSymlinks its own imports (`cookie`) would
+      // otherwise walk up to whatever version is hoisted at the repo root.
+      'react-router': fs.realpathSync(
+        path.resolve(__dirname, 'node_modules/react-router'),
+      ),
     },
   },
 });

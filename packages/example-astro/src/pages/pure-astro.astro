@@ -1,0 +1,32 @@
+---
+// No framework island: the state lives in the request URL and the helpers
+// run in the frontmatter. Links carry the next state, the server decodes it.
+import { decodeState, encodeState } from 'state-in-url/encodeState';
+import { form } from 'shared/form';
+import Layout from '../layouts/Layout.astro';
+
+const state = decodeState(Astro.url.searchParams, form);
+
+const withName = encodeState({ ...state, name: 'Alice' }, form, Astro.url.searchParams);
+const withTag = encodeState(
+  {
+    ...state,
+    tags: [{ id: '1', value: { text: 'Astro', time: new Date('2024-07-17T04:53:17.000Z') } }],
+  },
+  form,
+  Astro.url.searchParams,
+);
+// drops the keys the state owns, keeps the rest
+const cleared = encodeState(form, form, Astro.url.searchParams);
+---
+
+<Layout title="Pure Astro">
+  <div class="p-8 flex flex-col gap-4 text-black">
+    <h1 class="text-3xl font-bold">Pure Astro: encodeState / decodeState</h1>
+    <pre class="bg-gray-100 p-4 rounded-md" data-testid="parsed-pure">{JSON.stringify(state, null, 2)}</pre>
+    <p data-testid="time-type">{state.tags[0]?.value.time instanceof Date ? 'Date' : 'not a Date'}</p>
+    <a href={`?${withName}`} data-testid="link-name">Set name</a>
+    <a href={`?${withTag}`} data-testid="link-tag">Set tag</a>
+    <a href={`?${cleared}`} data-testid="link-clear">Clear</a>
+  </div>
+</Layout>

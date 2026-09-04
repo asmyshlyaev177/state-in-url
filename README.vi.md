@@ -1,6 +1,6 @@
 <!-- i18n:start -->
 [English](./README.md) · [简体中文](./README.zh-CN.md) · [日本語](./README.ja.md) · [한국어](./README.ko.md) · [Русский](./README.ru.md) · [Español](./README.es.md) · [Português (BR)](./README.pt-BR.md) · [Français](./README.fr.md) · Tiếng Việt
-<!-- i18n:meta locale=vi source=README.md source-blob=065a903cd2cf7bc001b9e40ed8e0ad01c79f17d9 status=translated -->
+<!-- i18n:meta locale=vi source=README.md source-blob=4d98ba970e6aab8f29987fbcba29fb6c61c2fc67 status=translated -->
 <!-- i18n:end -->
 
 <div align="center">
@@ -69,7 +69,7 @@ Hãy chia sẻ nếu nó hữu ích cho bạn.
 Lưu bất kỳ state người dùng nào trong tham số truy vấn; hãy tưởng tượng JSON trong URL của trình duyệt. Tất cả đều giữ nguyên kiểu và cấu trúc dữ liệu, ví dụ số sẽ được giải mã thành số chứ không phải chuỗi, ngày thành ngày, v.v., hỗ trợ object và array.
 Cực kỳ đơn giản, nhanh và có kiểm tra TypeScript tĩnh. Deep link, hay còn gọi là đồng bộ URL, trở nên dễ dàng.
 
-Bao gồm hook `useUrlState` cho Next.js và react-router, cùng các helper cho mọi thứ khác trên JS.
+Bao gồm hook `useUrlState` cho Next.js, react-router, Remix và Astro, cùng các helper cho mọi thứ khác trên JS.
 Vì các trình duyệt hiện đại hỗ trợ URL khổng lồ và người dùng không quan tâm đến chuỗi truy vấn (đó là quy trình chọn tất cả và sao chép/dán).
 
 Đã đến lúc dùng chuỗi truy vấn cho việc quản lý state, như mục đích ban đầu của nó.
@@ -98,7 +98,7 @@ Thư viện này là một lựa chọn thay thế tốt cho NUQS.
 - **Server Side Rendering**: Có thể dùng trong Server Component, hỗ trợ Next.js 14, 15 và 16
 - **Nhẹ**: Không phụ thuộc, thư viện dưới 2KB
 - **DX**: Trải nghiệm lập trình tốt, tài liệu, chú thích JSDoc và ví dụ
-- **Linh hoạt framework**: Hook cho `Next.js` và `react-router`, helper để dùng với framework khác hoặc JS thuần
+- **Linh hoạt framework**: Hook cho `Next.js`, `react-router`, `Remix` và `Astro`, helper để dùng với framework khác hoặc JS thuần
 - **Được kiểm thử kỹ**: [Unit test và Playwright test cho Chrome/Firefox/Safari](https://github.com/asmyshlyaev177/state-in-url/actions/workflows/tests.yml)
 - **Giấy phép thoáng**: MIT
 
@@ -115,7 +115,7 @@ Thư viện này là một lựa chọn thay thế tốt cho NUQS.
 | Ngày tháng | Giữ nguyên tự động | Parser có sẵn, khai báo theo từng khóa |
 | Kích thước, import toàn bộ | ~2.9 KB gzip | ~6.7 KB gzip |
 | Phụ thuộc runtime | Không | Một |
-| Router | Next.js, React Router v6/v7, Remix, helper cho JS thuần | Next.js, React Router, Remix, TanStack Router, React thuần |
+| Router | Next.js, React Router v6/v7, Remix, Astro, helper cho JS thuần | Next.js, React Router, Remix, TanStack Router, React thuần |
 
 Kích thước: import cả thư viện, esbuild minify + gzip, đo tháng 8/2026 với nuqs 2.10.1.
 
@@ -150,6 +150,8 @@ Bản so sánh đầy đủ — cùng một tính năng trong cả hai, các l�
       - [Ví dụ](#ví-dụ)
     - [Hook useUrlState cho React-Router](#hook-useurlstate-cho-react-router)
       - [Ví dụ](#ví-dụ-1)
+    - [Hook useUrlState cho Astro](#hook-useurlstate-cho-astro)
+      - [Ví dụ](#ví-dụ-2)
   - [Công thức nấu ăn](#công-thức-nấu-ăn)
         - [Hook tùy chỉnh để làm việc thuận tiện với một phần của state](#hook-tùy-chỉnh-để-làm-việc-thuận-tiện-với-một-phần-của-state)
         - [Với hình dạng state phức tạp](#với-hình-dạng-state-phức-tạp)
@@ -538,6 +540,123 @@ const tags = [
 
 [Ví dụ code](packages/example-react-router6/src/Form-for-test.tsx)
 
+### Hook useUrlState cho Astro
+
+Dành cho React island. Astro mặc định không có router phía client, nên hook ghi URL bằng `window.history` và đọc lại nó khi back/forward cũng như khi có bất kỳ lời gọi `pushState`/`replaceState` nào khác, kể cả `<ClientRouter />` của chính Astro. Các island trên cùng một trang chia sẻ state mà không cần bọc chúng trong bất cứ thứ gì.
+
+[Tài liệu API](packages/urlstate/astro/useUrlState)
+
+#### Ví dụ
+
+```typescript
+// src/state.ts
+export const form: Form = {
+  name: '',
+  age: undefined,
+  agree_to_terms: false,
+  tags: [],
+};
+
+type Form = {
+  name: string;
+  age?: number;
+  agree_to_terms: boolean;
+  tags: { id: string; value: { text: string; time: Date } }[];
+};
+```
+
+Trang phải được render theo yêu cầu (`output: 'server'`, hoặc `export const prerender = false` trên trang, kèm một adapter): trang prerender không có request, nên island nhận `{}` và đọc URL sau khi hydration.
+
+```astro
+---
+// src/pages/index.astro
+import { Form } from '../components/Form';
+import { Status } from '../components/Status';
+
+// Kết quả render trên server khớp với URL, nên hydration không phải sửa gì.
+// Một object thuần: prop của island được tuần tự hóa, URLSearchParams thì không.
+const searchParams = Object.fromEntries(Astro.url.searchParams);
+---
+
+<Form client:load searchParams={searchParams} />
+<Status client:load searchParams={searchParams} />
+```
+
+```typescript
+// src/components/Form.tsx
+import React from 'react';
+import { useUrlState } from 'state-in-url/astro';
+
+import { form } from '../state';
+
+export function Form({ searchParams }: { searchParams?: Record<string, string> }) {
+  const { urlState, setUrl, setState } = useUrlState(form, { searchParams });
+
+  const onChangeTags = React.useCallback(
+    (tag: (typeof tags)[number]) => {
+      setUrl((curr) => ({
+        ...curr,
+        tags: curr.tags.find((t) => t.id === tag.id)
+          ? curr.tags.filter((t) => t.id !== tag.id)
+          : curr.tags.concat(tag),
+      }));
+    },
+    [setUrl],
+  );
+
+  return (
+    <div>
+      {tags.map((tag) => (
+        <Tag
+          active={!!urlState.tags.find((t) => t.id === tag.id)}
+          text={tag.value.text}
+          onClick={() => onChangeTags(tag)}
+          key={tag.id}
+        />
+      ))}
+
+      <input value={urlState.name}
+        onChange={(ev) => { setState(curr => ({ ...curr, name: ev.target.value })) }}
+        // Có thể cập nhật state ngay lập tức nhưng đồng bộ thay đổi với url khi cần
+        onBlur={() => setUrl()}
+      />
+    </div>
+  );
+}
+
+const tags = [
+  { id: '1', value: { text: 'React.js', time: new Date('2024-07-17T04:53:17.000Z') } },
+  { id: '2', value: { text: 'Next.js', time: new Date('2024-07-18T04:53:17.000Z') } },
+  { id: '3', value: { text: 'TailwindCSS', time: new Date('2024-07-19T04:53:17.000Z') } },
+];
+
+// Status.tsx, một island thứ hai, đọc cùng state đó
+export function Status({ searchParams }: { searchParams?: Record<string, string> }) {
+  const { urlState } = useUrlState(form, { searchParams });
+  return <pre>{JSON.stringify(urlState, null, 2)}</pre>;
+}
+```
+
+Preact island hoạt động theo cùng cách: với `@astrojs/preact` và `compat: true`, `react` được phân giải thành `preact/compat` trong cả bản build server lẫn client, và import ở trên giữ nguyên.
+
+Không dùng island, trên một trang hoàn toàn không có framework phía client, cùng state đó nằm trong frontmatter thông qua [`decodeState` và `encodeState`](#helper-encodestate-và-decodestate):
+
+```astro
+---
+import { decodeState, encodeState } from 'state-in-url/encodeState';
+
+import { form } from '../state';
+
+const state = decodeState(Astro.url.searchParams, form);
+const withName = encodeState({ ...state, name: 'Alice' }, form, Astro.url.searchParams);
+---
+
+<pre>{JSON.stringify(state)}</pre>
+<a href={`?${withName}`}>Alice</a>
+```
+
+[Ví dụ code](packages/example-astro/src/components/Form-for-test.tsx), [trang Astro thuần](packages/example-astro/src/pages/pure-astro.astro)
+
 ## Công thức nấu ăn
 ##### Hook tùy chỉnh để làm việc thuận tiện với một phần của state
 <details>
@@ -810,7 +929,7 @@ Xem [tài liệu đóng góp](CONTRIBUTING.md)
 - [x] hook cho `react-router`
 - [x] hook cho `remix`
 - [ ] hook cho `svelte`
-- [ ] hook cho `astro`
+- [x] hook cho `astro`
 - [ ] hook để lưu state trong hash ?
 
 ## Liên hệ & Hỗ trợ

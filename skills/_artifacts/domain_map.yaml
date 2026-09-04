@@ -25,9 +25,9 @@ domains:
     slug: 'nextjs-integration'
     description: 'SSR safety, searchParams forwarding, hydration, middleware/proxy patterns for accessing query params in server layouts.'
 
-  - name: 'React Router and Remix integration'
+  - name: 'React Router, Remix and Astro integration'
     slug: 'router-integration'
-    description: 'useUrlState for react-router v6/v7 and remix v2; identical core API with router-specific NavigateOptions.'
+    description: 'useUrlState for react-router v6/v7 and remix v2 (identical core API with router-specific NavigateOptions), and for Astro islands with no client router at all.'
 
   - name: 'Composition with form libraries'
     slug: 'form-composition'

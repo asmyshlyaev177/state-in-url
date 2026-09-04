@@ -81,8 +81,8 @@ export default defineConfig({
     // },
   ],
 
-  // `start:ci` brings up all seven demo apps; `url` can only wait for one of
-  // them, so globalSetup waits for the other six.
+  // `start:ci` brings up every demo app; `url` can only wait for one of
+  // them, so globalSetup waits for the rest.
   globalSetup: './tests/wait-for-servers.ts',
   webServer: {
     command: 'pnpm run start:ci',

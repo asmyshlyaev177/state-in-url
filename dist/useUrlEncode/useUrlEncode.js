@@ -1,1 +1,0 @@
-"use strict";var c=require("react");var u=require("../encodeState/encodeState.js");function l(e){return e&&e.__esModule?e:{default:e}}var a=l(c);function d(e){const n=a.default.useCallback((t,o)=>{return u.encodeState(t,e,o)},[e]);const r=a.default.useCallback(t=>u.decodeState(t,e),[e]);return{parse:r,stringify:n}}exports.useUrlEncode=d;

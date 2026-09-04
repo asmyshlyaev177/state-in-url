@@ -1,0 +1,14 @@
+---
+// Built once, so Astro.url has no query: the island is handed {} and has to
+// read the URL after hydration. What a static site with islands gets.
+export const prerender = true;
+
+import Layout from '../layouts/Layout.astro';
+import { StatusUsp } from '../components/StatusUsp-for-test';
+
+const searchParams = Object.fromEntries(Astro.url.searchParams);
+---
+
+<Layout title="Prerendered">
+  <StatusUsp client:load searchParams={searchParams} />
+</Layout>

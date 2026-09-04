@@ -56,6 +56,20 @@ describe('encodeState', () => {
     ).toEqual('str=%27test%27&num=123&bool=true');
   });
 
+  test('should drop a param that is back at its default', () => {
+    expect(encodeState({ str: '' }, { str: '' }, 'str=%27a%27&k=1')).toEqual(
+      'k=1',
+    );
+  });
+
+  test('should not mutate the URLSearchParams it was given', () => {
+    const existing = new URLSearchParams('key1=value1');
+
+    encodeState({ str: 'test' }, { str: '' }, existing);
+
+    expect(existing.toString()).toEqual('key1=value1');
+  });
+
   test('should return an empty string for an empty state object', () => {
     expect(encodeState({})).toEqual('');
     expect(encodeState(undefined as unknown as JSONCompatible)).toEqual('');
@@ -65,7 +79,7 @@ describe('encodeState', () => {
 
 describe('decodeState', () => {
   test('should decode a simple state object', () => {
-    const uriString = "key1=%27value1%27&key2=%27value2%27";
+    const uriString = 'key1=%27value1%27&key2=%27value2%27';
     const expected = { key1: 'value1', key2: 'value2' };
     const result = decodeState(uriString, { key1: '', key2: '' });
     expect(result).toEqual(expected);
@@ -83,7 +97,7 @@ describe('decodeState', () => {
     const expected = { key1: 'value1', key2: 'value2' };
     const defaults = { key1: '1', key2: '2' };
     expect(decodeState('', defaults)).toEqual(defaults);
-    expect(decodeState("key1=%27value1%27", defaults)).toEqual({
+    expect(decodeState('key1=%27value1%27', defaults)).toEqual({
       ...expected,
       key2: defaults.key2,
     });

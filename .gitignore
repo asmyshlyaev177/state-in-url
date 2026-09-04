@@ -23,3 +23,6 @@ results
 .claude/settings.json
 
 next-env.d.ts
+
+# Astro generated types
+.astro

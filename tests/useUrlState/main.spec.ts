@@ -15,6 +15,7 @@ const urls = [
   'http://example-react-router6.localhost:1355',
   'http://example-remix2.localhost:1355',
   'http://example-react-router7.localhost:1355',
+  'http://example-astro.localhost:1355',
 ];
 
 const useHookUrls = [
@@ -24,6 +25,7 @@ const useHookUrls = [
   'http://example-react-router6.localhost:1355/useHook-race-condition',
   'http://example-remix2.localhost:1355/useHook-race-condition',
   'http://example-react-router7.localhost:1355/useHook-race-condition',
+  'http://example-astro.localhost:1355/useHook-race-condition',
 ]
 
 const delay = 1

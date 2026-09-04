@@ -7,7 +7,7 @@
 # needs a CA in the system trust store. Neither is worth it for demo apps.
 # The port lives here and in the URLs the tests use — nowhere else. Both are
 # set, not defaulted: those URLs are literals, so an inherited PORTLESS_PORT
-# or PORTLESS_HTTPS would move all seven apps out from under every test.
+# or PORTLESS_HTTPS would move every app out from under every test.
 #
 # PORTLESS=0 makes portless exec the command untouched, falling back to the
 # ${PORT:-<default>} each example's own scripts carry.

@@ -1,6 +1,6 @@
 <!-- i18n:start -->
 [English](./README.md) · [简体中文](./README.zh-CN.md) · [日本語](./README.ja.md) · 한국어 · [Русский](./README.ru.md) · [Español](./README.es.md) · [Português (BR)](./README.pt-BR.md) · [Français](./README.fr.md) · [Tiếng Việt](./README.vi.md)
-<!-- i18n:meta locale=ko source=README.md source-blob=065a903cd2cf7bc001b9e40ed8e0ad01c79f17d9 status=translated -->
+<!-- i18n:meta locale=ko source=README.md source-blob=4d98ba970e6aab8f29987fbcba29fb6c61c2fc67 status=translated -->
 <!-- i18n:end -->
 
 <div align="center">
@@ -69,7 +69,7 @@
 쿼리 매개변수에 모든 사용자 상태를 저장하세요. 브라우저 URL에 JSON이 있다고 상상해보세요. 데이터의 타입과 구조를 유지하면서 모든 것을 저장할 수 있습니다. 예를 들어 숫자는 문자열이 아닌 숫자로, 날짜는 날짜로 디코딩되며, 객체와 배열도 지원됩니다.
 매우 간단하고 빠르며 정적 Typescript 유효성 검사를 제공합니다. 딥 링크, 즉 URL 동기화가 쉬워집니다.
 
-Next.js와 react-router용 `useUrlState` 훅과 그 외 JS 환경을 위한 헬퍼를 포함합니다.
+Next.js, react-router, Remix, Astro용 `useUrlState` 훅과 그 외 JS 환경을 위한 헬퍼를 포함합니다.
 최신 브라우저는 거대한 URL을 지원하고 사용자는 쿼리 문자열을 신경 쓰지 않습니다(전체 선택 후 복사/붙여넣기 워크플로우입니다).
 
 쿼리 문자열을 원래 의도대로 상태 관리에 사용할 때입니다.
@@ -98,7 +98,7 @@ Next.js와 react-router용 `useUrlState` 훅과 그 외 JS 환경을 위한 헬�
 - **서버 사이드 렌더링**: 서버 컴포넌트에서 사용 가능, Next.js 14 및 15 지원
 - **경량**: 의존성 없음, 라이브러리 크기 2KB 미만
 - **개발자 경험**: 좋은 개발자 경험, 문서, JSDoc 주석 및 예제
-- **프레임워크 유연성**: `Next.js` 및 `react-router`용 훅, 다른 프레임워크나 순수 JS와 함께 사용할 수 있는 헬퍼
+- **프레임워크 유연성**: `Next.js`, `react-router`, `Remix`, `Astro`용 훅, 다른 프레임워크나 순수 JS와 함께 사용할 수 있는 헬퍼
 - **충분한 테스트**: [Chrome/Firefox/Safari용 단위 테스트 및 Playwright 테스트](https://github.com/asmyshlyaev177/state-in-url/actions/workflows/tests.yml)
 - **자유로운 라이선스**: MIT
 
@@ -115,7 +115,7 @@ Next.js와 react-router용 `useUrlState` 훅과 그 외 JS 환경을 위한 헬�
 | 날짜 | 자동으로 유지 | 내장 파서를 키마다 선언 |
 | 크기, 전체 import | 약 2.9 KB gzip | 약 6.7 KB gzip |
 | 런타임 의존성 | 없음 | 1개 |
-| 라우터 | Next.js, React Router v6/v7, Remix, 순수 JS 헬퍼 | Next.js, React Router, Remix, TanStack Router, 순수 React |
+| 라우터 | Next.js, React Router v6/v7, Remix, Astro, 순수 JS 헬퍼 | Next.js, React Router, Remix, TanStack Router, 순수 React |
 
 크기: 라이브러리 전체 import, esbuild minify + gzip, 2026년 8월 nuqs 2.10.1 기준 측정.
 
@@ -150,6 +150,8 @@ nuqs도 훌륭한 라이브러리입니다. 값마다 읽기 쉬운 쿼리 파�
       - [예제](#예제)
     - [React-Router용 useUrlState 훅](#react-router용-useurlstate-훅)
       - [예제](#예제-1)
+    - [Astro용 useUrlState 훅](#astro용-useurlstate-훅)
+      - [예제](#예제-2)
   - [레시피](#레시피)
         - [상태의 일부를 편리하게 다루기 위한 커스텀 훅](#상태의-일부를-편리하게-다루기-위한-커스텀-훅)
         - [복잡한 상태 구조 사용](#복잡한-상태-구조-사용)
@@ -534,6 +536,123 @@ const tags = [
 
 [예제 코드](packages/example-react-router6/src/Form-for-test.tsx)
 
+### Astro용 useUrlState 훅
+
+React 아일랜드용입니다. Astro에는 기본적으로 클라이언트 측 라우터가 없으므로, 이 훅은 `window.history`로 URL을 쓰고, 뒤로/앞으로 이동과 그 외 모든 `pushState`/`replaceState` 시점에 (Astro 자체의 `<ClientRouter />` 포함) URL을 다시 읽어 옵니다. 한 페이지의 아일랜드들은 감싸는 것 없이 상태를 공유합니다.
+
+[API 문서](packages/urlstate/astro/useUrlState)
+
+#### 예제
+
+```typescript
+// src/state.ts
+export const form: Form = {
+  name: '',
+  age: undefined,
+  agree_to_terms: false,
+  tags: [],
+};
+
+type Form = {
+  name: string;
+  age?: number;
+  agree_to_terms: boolean;
+  tags: { id: string; value: { text: string; time: Date } }[];
+};
+```
+
+페이지는 온디맨드로 렌더링되어야 합니다(어댑터와 함께 `output: 'server'`를 쓰거나, 해당 페이지에 `export const prerender = false`를 선언). 프리렌더링된 페이지에는 요청이 없으므로 아일랜드는 `{}`를 받고 하이드레이션 후에 URL을 읽습니다.
+
+```astro
+---
+// src/pages/index.astro
+import { Form } from '../components/Form';
+import { Status } from '../components/Status';
+
+// 서버 렌더링이 URL과 일치하므로 하이드레이션이 바로잡을 것이 없습니다.
+// 일반 객체여야 합니다. 아일랜드 props는 직렬화되지만 URLSearchParams는 직렬화되지 않습니다.
+const searchParams = Object.fromEntries(Astro.url.searchParams);
+---
+
+<Form client:load searchParams={searchParams} />
+<Status client:load searchParams={searchParams} />
+```
+
+```typescript
+// src/components/Form.tsx
+import React from 'react';
+import { useUrlState } from 'state-in-url/astro';
+
+import { form } from '../state';
+
+export function Form({ searchParams }: { searchParams?: Record<string, string> }) {
+  const { urlState, setUrl, setState } = useUrlState(form, { searchParams });
+
+  const onChangeTags = React.useCallback(
+    (tag: (typeof tags)[number]) => {
+      setUrl((curr) => ({
+        ...curr,
+        tags: curr.tags.find((t) => t.id === tag.id)
+          ? curr.tags.filter((t) => t.id !== tag.id)
+          : curr.tags.concat(tag),
+      }));
+    },
+    [setUrl],
+  );
+
+  return (
+    <div>
+      {tags.map((tag) => (
+        <Tag
+          active={!!urlState.tags.find((t) => t.id === tag.id)}
+          text={tag.value.text}
+          onClick={() => onChangeTags(tag)}
+          key={tag.id}
+        />
+      ))}
+
+      <input value={urlState.name}
+        onChange={(ev) => { setState(curr => ({ ...curr, name: ev.target.value })) }}
+        // 상태를 즉시 업데이트하되 필요에 따라 URL에 동기화
+        onBlur={() => setUrl()}
+      />
+    </div>
+  );
+}
+
+const tags = [
+  { id: '1', value: { text: 'React.js', time: new Date('2024-07-17T04:53:17.000Z') } },
+  { id: '2', value: { text: 'Next.js', time: new Date('2024-07-18T04:53:17.000Z') } },
+  { id: '3', value: { text: 'TailwindCSS', time: new Date('2024-07-19T04:53:17.000Z') } },
+];
+
+// 두 번째 아일랜드인 Status.tsx는 같은 상태를 읽습니다
+export function Status({ searchParams }: { searchParams?: Record<string, string> }) {
+  const { urlState } = useUrlState(form, { searchParams });
+  return <pre>{JSON.stringify(urlState, null, 2)}</pre>;
+}
+```
+
+Preact 아일랜드도 같은 방식으로 동작합니다. `@astrojs/preact`와 `compat: true`를 쓰면 서버 빌드와 클라이언트 빌드 모두에서 `react`가 `preact/compat`으로 해석되므로, 위의 import는 그대로입니다.
+
+아일랜드 없이, 클라이언트 프레임워크가 전혀 없는 페이지에서는 같은 상태가 [`decodeState`와 `encodeState`](#encodestate-및-decodestate-헬퍼)를 통해 프론트매터에 존재합니다:
+
+```astro
+---
+import { decodeState, encodeState } from 'state-in-url/encodeState';
+
+import { form } from '../state';
+
+const state = decodeState(Astro.url.searchParams, form);
+const withName = encodeState({ ...state, name: 'Alice' }, form, Astro.url.searchParams);
+---
+
+<pre>{JSON.stringify(state)}</pre>
+<a href={`?${withName}`}>Alice</a>
+```
+
+[예제 코드](packages/example-astro/src/components/Form-for-test.tsx), [순수 Astro 페이지](packages/example-astro/src/pages/pure-astro.astro)
+
 ## 레시피
 ##### 상태의 일부를 편리하게 다루기 위한 커스텀 훅
 <details>
@@ -805,7 +924,7 @@ export const useUserState = () => {
 - [x] `react-router`용 훅
 - [x] `remix`용 훅
 - [ ] `svelte`용 훅
-- [ ] `astro`용 훅
+- [x] `astro`용 훅
 - [ ] 해시에 상태를 저장하는 훅?
 
 ## 문의 및 지원

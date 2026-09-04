@@ -2,6 +2,7 @@ import assert from 'assert';
 import fs from 'fs';
 import path from 'path';
 
+import { useUrlState as useUrlStateAstro } from '../../dist/astro';
 import { decode, encode } from '../../dist/encoder';
 import { decodeState, encodeState } from '../../dist/encodeState';
 import { useUrlState } from '../../dist/next';
@@ -42,6 +43,10 @@ assert(loadFile('/react-router/useUrlState/useUrlState.d.ts').length > 15, error
 // Remix
 assert.ok(useUrlStateRemix, errorMsg);
 assert(loadFile('/remix/useUrlState/useUrlState.d.ts').length > 15, errorMsg);
+
+// Astro
+assert.ok(useUrlStateAstro, errorMsg);
+assert(loadFile('/astro/useUrlState/useUrlState.d.ts').length > 15, errorMsg);
 
 // React
 assert.ok(useUrlStateBase, errorMsg);

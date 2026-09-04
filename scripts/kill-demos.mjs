@@ -36,6 +36,7 @@ const SERVERS = {
   next: /next-server|next[/\\]dist[/\\]bin[/\\]next/,
   vite: /vite[/\\]bin[/\\]vite/,
   remix: /remix-serve|remix-run[/\\]serve/,
+  astro: /astro[/\\]bin[/\\]astro\.mjs|dist[/\\]server[/\\]entry\.mjs/,
   wireit: /node_modules[/\\](\.bin[/\\]wireit|wireit[/\\])/,
 };
 

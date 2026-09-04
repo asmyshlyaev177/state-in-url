@@ -1,0 +1,10 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { StatusUsp } from '../components/StatusUsp-for-test';
+
+const searchParams = Object.fromEntries(Astro.url.searchParams);
+---
+
+<Layout>
+  <StatusUsp client:load searchParams={searchParams} />
+</Layout>

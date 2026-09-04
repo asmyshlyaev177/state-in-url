@@ -1,6 +1,6 @@
 <!-- i18n:start -->
 [English](./README.md) · [简体中文](./README.zh-CN.md) · [日本語](./README.ja.md) · [한국어](./README.ko.md) · [Русский](./README.ru.md) · Español · [Português (BR)](./README.pt-BR.md) · [Français](./README.fr.md) · [Tiếng Việt](./README.vi.md)
-<!-- i18n:meta locale=es source=README.md source-blob=065a903cd2cf7bc001b9e40ed8e0ad01c79f17d9 status=translated -->
+<!-- i18n:meta locale=es source=README.md source-blob=4d98ba970e6aab8f29987fbcba29fb6c61c2fc67 status=translated -->
 <!-- i18n:end -->
 
 <div align="center">
@@ -69,7 +69,7 @@ Comparte si te resulta útil.
 Guarda cualquier estado de usuario en los parámetros de consulta; imagina JSON en la URL de un navegador. Todo ello manteniendo los tipos y la estructura de los datos: por ejemplo, los números se decodificarán como números y no como cadenas, las fechas como fechas, etc.; se admiten objetos y matrices.
 Simple a más no poder, rápido y con validación estática de TypeScript. Los enlaces profundos, es decir, la sincronización de URL, se vuelven fáciles.
 
-Incluye el hook `useUrlState` para Next.js y react-router, y helpers para cualquier otra cosa en JS.
+Incluye el hook `useUrlState` para Next.js, react-router, Remix y Astro, y helpers para cualquier otra cosa en JS.
 Como los navegadores modernos soportan URLs enormes y a los usuarios no les importan las cadenas de consulta (es un flujo de seleccionar todo y copiar/pegar).
 
 Es hora de usar la cadena de consulta para gestionar el estado, como se pensó originalmente.
@@ -98,7 +98,7 @@ Esta biblioteca es una buena alternativa a NUQS.
 - **Renderizado en el servidor**: Se puede usar en componentes de servidor, se soportan Next.js 14, 15 y 16
 - **Ligero**: Cero dependencias, biblioteca de menos de 2KB
 - **DX**: Buena experiencia de desarrollo, documentación, comentarios JSDoc y ejemplos
-- **Flexibilidad de frameworks**: Hooks para `Next.js` y `react-router`, helpers para usarla con otros frameworks o JS puro
+- **Flexibilidad de frameworks**: Hooks para `Next.js`, `react-router`, `Remix` y `Astro`, helpers para usarla con otros frameworks o JS puro
 - **Bien probada**: [Pruebas unitarias y pruebas de Playwright para Chrome/Firefox/Safari](https://github.com/asmyshlyaev177/state-in-url/actions/workflows/tests.yml)
 - **Licencia permisiva**: MIT
 
@@ -115,7 +115,7 @@ Esta biblioteca es una buena alternativa a NUQS.
 | Fechas | Se conservan automáticamente | Parser integrado, declarado por clave |
 | Tamaño, import completo | ~2,9 KB gzip | ~6,7 KB gzip |
 | Dependencias en runtime | Ninguna | Una |
-| Routers | Next.js, React Router v6/v7, Remix, helpers para JS puro | Next.js, React Router, Remix, TanStack Router, React puro |
+| Routers | Next.js, React Router v6/v7, Remix, Astro, helpers para JS puro | Next.js, React Router, Remix, TanStack Router, React puro |
 
 Tamaños: import de toda la librería, esbuild minify + gzip, medido en agosto de 2026 contra nuqs 2.10.1.
 
@@ -150,6 +150,8 @@ La comparación completa — la misma feature en ambas, otras alternativas (TanS
       - [Ejemplo](#ejemplo)
     - [Hook useUrlState para React-Router](#hook-useurlstate-para-react-router)
       - [Ejemplo](#ejemplo-1)
+    - [Hook useUrlState para Astro](#hook-useurlstate-para-astro)
+      - [Ejemplo](#ejemplo-2)
   - [Recetas](#recetas)
         - [Hook personalizado para trabajar cómodamente con una porción del estado](#hook-personalizado-para-trabajar-cómodamente-con-una-porción-del-estado)
         - [Con una forma de estado compleja](#con-una-forma-de-estado-compleja)
@@ -538,6 +540,123 @@ const tags = [
 
 [Ejemplo de código](packages/example-react-router6/src/Form-for-test.tsx)
 
+### Hook useUrlState para Astro
+
+Para islas de React. Astro no tiene router del lado del cliente por defecto, así que el hook escribe la URL con `window.history` y la vuelve a leer al navegar atrás/adelante y en cualquier otro `pushState`/`replaceState`, incluido el propio `<ClientRouter />` de Astro. Las islas de una página comparten el estado, sin nada que las envuelva.
+
+[Documentación de la API](packages/urlstate/astro/useUrlState)
+
+#### Ejemplo
+
+```typescript
+// src/state.ts
+export const form: Form = {
+  name: '',
+  age: undefined,
+  agree_to_terms: false,
+  tags: [],
+};
+
+type Form = {
+  name: string;
+  age?: number;
+  agree_to_terms: boolean;
+  tags: { id: string; value: { text: string; time: Date } }[];
+};
+```
+
+La página debe renderizarse bajo demanda (`output: 'server'`, o `export const prerender = false` en la página, con un adaptador): una página prerenderizada no tiene petición, así que la isla recibe `{}` y lee la URL después de la hidratación.
+
+```astro
+---
+// src/pages/index.astro
+import { Form } from '../components/Form';
+import { Status } from '../components/Status';
+
+// El renderizado en el servidor coincide con la URL, así que la hidratación no tiene nada que corregir.
+// Un objeto plano: las props de las islas se serializan, URLSearchParams no.
+const searchParams = Object.fromEntries(Astro.url.searchParams);
+---
+
+<Form client:load searchParams={searchParams} />
+<Status client:load searchParams={searchParams} />
+```
+
+```typescript
+// src/components/Form.tsx
+import React from 'react';
+import { useUrlState } from 'state-in-url/astro';
+
+import { form } from '../state';
+
+export function Form({ searchParams }: { searchParams?: Record<string, string> }) {
+  const { urlState, setUrl, setState } = useUrlState(form, { searchParams });
+
+  const onChangeTags = React.useCallback(
+    (tag: (typeof tags)[number]) => {
+      setUrl((curr) => ({
+        ...curr,
+        tags: curr.tags.find((t) => t.id === tag.id)
+          ? curr.tags.filter((t) => t.id !== tag.id)
+          : curr.tags.concat(tag),
+      }));
+    },
+    [setUrl],
+  );
+
+  return (
+    <div>
+      {tags.map((tag) => (
+        <Tag
+          active={!!urlState.tags.find((t) => t.id === tag.id)}
+          text={tag.value.text}
+          onClick={() => onChangeTags(tag)}
+          key={tag.id}
+        />
+      ))}
+
+      <input value={urlState.name}
+        onChange={(ev) => { setState(curr => ({ ...curr, name: ev.target.value })) }}
+        // Puede actualizar el estado inmediatamente pero sincronizar el cambio con la url según sea necesario
+        onBlur={() => setUrl()}
+      />
+    </div>
+  );
+}
+
+const tags = [
+  { id: '1', value: { text: 'React.js', time: new Date('2024-07-17T04:53:17.000Z') } },
+  { id: '2', value: { text: 'Next.js', time: new Date('2024-07-18T04:53:17.000Z') } },
+  { id: '3', value: { text: 'TailwindCSS', time: new Date('2024-07-19T04:53:17.000Z') } },
+];
+
+// Status.tsx, una segunda isla, lee el mismo estado
+export function Status({ searchParams }: { searchParams?: Record<string, string> }) {
+  const { urlState } = useUrlState(form, { searchParams });
+  return <pre>{JSON.stringify(urlState, null, 2)}</pre>;
+}
+```
+
+Las islas de Preact funcionan igual: con `@astrojs/preact` y `compat: true`, `react` se resuelve a `preact/compat` tanto en la compilación del servidor como en la del cliente, y el import de arriba no cambia.
+
+Sin islas, en una página sin ningún framework de cliente, el mismo estado vive en el frontmatter a través de [`decodeState` y `encodeState`](#helpers-encodestate-y-decodestate):
+
+```astro
+---
+import { decodeState, encodeState } from 'state-in-url/encodeState';
+
+import { form } from '../state';
+
+const state = decodeState(Astro.url.searchParams, form);
+const withName = encodeState({ ...state, name: 'Alice' }, form, Astro.url.searchParams);
+---
+
+<pre>{JSON.stringify(state)}</pre>
+<a href={`?${withName}`}>Alice</a>
+```
+
+[Ejemplo de código](packages/example-astro/src/components/Form-for-test.tsx), [página en Astro puro](packages/example-astro/src/pages/pure-astro.astro)
+
 ## Recetas
 ##### Hook personalizado para trabajar cómodamente con una porción del estado
 <details>
@@ -810,7 +929,7 @@ Consulta el [documento de contribución](CONTRIBUTING.md)
 - [x] hook para `react-router`
 - [x] hook para `remix`
 - [ ] hook para `svelte`
-- [ ] hook para `astro`
+- [x] hook para `astro`
 - [ ] hook para guardar el estado en el hash ?
 
 ## Contacto y soporte
