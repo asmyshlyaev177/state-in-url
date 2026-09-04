@@ -24,7 +24,7 @@ import {
  * @param {?SearchParams<T>} params.searchParams searchParams from Next server component
  * @param {boolean} params.scroll reset scroll, default `false`
  * @returns {Object} [result] State and callbacks
- * @returns {Object} [result.state] - current state object
+ * @returns {Object} [result.urlState] - current state object
  * @returns {Function} [result.setUrl] - function to update state and url
  * @returns {Function} [result.setState] - function to update state only
  * @returns {Function} [result.reset] - function to reset state and url to default
@@ -65,7 +65,7 @@ export function useUrlState<T extends JSONCompatible>(
    * setState(curr => ({ ...curr, name: 'test' }) );
    *  ```
    *
-   *  * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/master/packages/urlstate/next/useUrlState#updatestate}
+   *  * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/master/packages/urlstate/next/useUrlState#setstate}
    */
   setState: (value: Partial<T> | ((currState: T, initial: T) => T)) => void;
   /**
@@ -78,7 +78,7 @@ export function useUrlState<T extends JSONCompatible>(
    *  setUrl((_curr, initialState) => initialState, { replace: true, scroll: false  } );
    *  ```
    *
-   *  * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/master/packages/urlstate/next/useUrlState#updateurl}
+   *  * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/master/packages/urlstate/next/useUrlState#seturl}
    */
   setUrl: (
     value?: Partial<T> | ((currState: T, initialState: T) => T),
@@ -187,14 +187,14 @@ export function useUrlState<T extends JSONCompatible>(
   const setUrl = React.useCallback(
     (value?: Parameters<typeof updateUrlBase>[0], options?: Options) =>
       updateUrlBase(value, { ...defOpts, ...options }),
-    [updateUrlBase],
+    [updateUrlBase, defOpts],
   );
 
   const reset = React.useCallback(
     (options?: Options & { [key: string]: unknown }) => {
       resetBase({ ...defOpts, ...options });
     },
-    [resetBase],
+    [resetBase, defOpts],
   );
 
   return {

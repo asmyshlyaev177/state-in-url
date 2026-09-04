@@ -82,6 +82,24 @@ skills:
       - 'asmyshlyaev177/state-in-url:packages/urlstate/remix/useUrlState/'
       - 'asmyshlyaev177/state-in-url:CHANGELOG.md#600-2025-08-05'
 
+  - name: 'astro-setup'
+    slug: 'astro-setup'
+    type: 'framework'
+    domain: 'router-integration'
+    path: 'skills/astro-setup/SKILL.md'
+    description: >
+      Set up useUrlState in Astro (state-in-url/astro) inside React islands — searchParams island
+      prop for a matching server render, state shared between islands, replace/push with no client
+      router — and keep URL state on framework-free pages through encodeState/decodeState in the
+      frontmatter.
+    requires:
+      - 'feature-state-hook'
+    sources:
+      - 'asmyshlyaev177/state-in-url:packages/urlstate/astro/useUrlState/'
+      - 'asmyshlyaev177/state-in-url:packages/urlstate/encodeState/'
+      - 'asmyshlyaev177/state-in-url:packages/example-astro/'
+      - 'asmyshlyaev177/state-in-url:README.md#useurlstate-hook-for-astro'
+
   - name: 'form-library-integration'
     slug: 'form-library-integration'
     type: 'composition'

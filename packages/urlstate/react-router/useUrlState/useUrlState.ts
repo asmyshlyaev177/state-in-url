@@ -1,20 +1,20 @@
-import React from "react";
+import React from 'react';
 import {
   type NavigateOptions,
   useHref,
   useNavigate,
   useSearchParams,
-} from "react-router";
+} from 'react-router';
 
-import { parseSPObj } from "../../parseSPObj";
-import { useUrlStateBase } from "../../useUrlStateBase";
+import { parseSPObj } from '../../parseSPObj';
+import { useUrlStateBase } from '../../useUrlStateBase';
 import {
   assignValue,
   filterUnknownParams,
   filterUnknownParamsClient,
   type JSONCompatible,
   routerHistory,
-} from "../../utils";
+} from '../../utils';
 
 /**
  * React-router hook. Returns `urlState`, `setState`, and `setUrl` functions
@@ -26,7 +26,7 @@ import {
  * @param {boolean} params.useHistory use window.history for navigation, default `false`
  * @param {boolean} params.preventScrollReset keep scroll position, default `true`
  * @returns {Object} [result] State and callbacks
- * @returns {Object} [result.state] - current state object
+ * @returns {Object} [result.urlState] - current state object
  * @returns {Function} [result.setUrl] - function to update state and url
  * @returns {Function} [result.setState] - function to update state only
  * @returns {Function} [result.reset] - function to reset state and url to default
@@ -64,7 +64,7 @@ export function useUrlState<T extends JSONCompatible>(
    * setState((curr, initial) => ({ ...curr, name: 'test' }) );
    *  ```
    *
-   *  * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/master/packages/urlstate/react-router/useUrlState#updatestate}
+   *  * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/master/packages/urlstate/react-router/useUrlState#setstate}
    */
   setState: (value: Partial<T> | ((currState: T, initial: T) => T)) => void;
   /**
@@ -77,7 +77,7 @@ export function useUrlState<T extends JSONCompatible>(
    * setUrl(curr => ({ ...curr, name: 'test' }), { preventScrollReset: false } );
    *  ```
    *
-   *  * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/master/packages/urlstate/react-router/useUrlState#updateurl}
+   *  * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/master/packages/urlstate/react-router/useUrlState#seturl}
    */
   setUrl: (
     value?: Partial<T> | ((currState: T, initial: T) => T),
@@ -127,7 +127,7 @@ export function useUrlState<T extends JSONCompatible>(
 
   const [sp] = useSearchParams();
 
-  const basename = useHref("/");
+  const basename = useHref('/');
 
   const {
     state: urlState,

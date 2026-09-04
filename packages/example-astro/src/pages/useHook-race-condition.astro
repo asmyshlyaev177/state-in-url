@@ -1,0 +1,10 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { UseHookRaceConditionPage } from '../components/useHook-race-condition/Page';
+
+const searchParams = Object.fromEntries(Astro.url.searchParams);
+---
+
+<Layout>
+  <UseHookRaceConditionPage client:load searchParams={searchParams} />
+</Layout>

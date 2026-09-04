@@ -1,0 +1,26 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { Component } from '../../components/FewComponents/Component';
+
+const { id } = Astro.params;
+const to = id === '1' ? '2' : '1';
+const newUrl = `/few-components/${to}`;
+const searchParams = Object.fromEntries(Astro.url.searchParams);
+---
+
+<Layout>
+  <div class="flex flex-col gap-4 h-[1250px]" data-testid="wrapper">
+    <h1>Page {id}</h1>
+
+    <Component client:load searchParams={searchParams} />
+    <Component client:load searchParams={searchParams} />
+
+    <a href={newUrl} class="text-lg" data-testid="link">To Page {to}</a>
+    <a href={`${newUrl}${Astro.url.search}`} class="text-lg" data-testid="link-sp">
+      To Page {to} with QS
+    </a>
+    <a href={`${newUrl}${Astro.url.search}`} data-testid="link-client">
+      To Page {to} with QS Client
+    </a>
+  </div>
+</Layout>

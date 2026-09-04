@@ -1,6 +1,6 @@
 <!-- i18n:start -->
 [English](./README.md) · [简体中文](./README.zh-CN.md) · [日本語](./README.ja.md) · [한국어](./README.ko.md) · [Русский](./README.ru.md) · [Español](./README.es.md) · [Português (BR)](./README.pt-BR.md) · Français · [Tiếng Việt](./README.vi.md)
-<!-- i18n:meta locale=fr source=README.md source-blob=065a903cd2cf7bc001b9e40ed8e0ad01c79f17d9 status=translated -->
+<!-- i18n:meta locale=fr source=README.md source-blob=4d98ba970e6aab8f29987fbcba29fb6c61c2fc67 status=translated -->
 <!-- i18n:end -->
 
 <div align="center">
@@ -69,7 +69,7 @@ Partagez si cela vous est utile.
 Stockez n'importe quel état utilisateur dans les paramètres de requête ; imaginez du JSON dans une URL de navigateur. Tout cela en conservant les types et la structure des données : par exemple, les nombres seront décodés comme des nombres et non comme des chaînes, les dates comme des dates, etc., les objets et les tableaux sont pris en charge.
 Extrêmement simple, rapide et avec une validation TypeScript statique. Les liens profonds, autrement dit la synchronisation d'URL, deviennent faciles.
 
-Contient le hook `useUrlState` pour Next.js et react-router, ainsi que des helpers pour tout le reste en JS.
+Contient le hook `useUrlState` pour Next.js, react-router, Remix et Astro, ainsi que des helpers pour tout le reste en JS.
 Comme les navigateurs modernes prennent en charge d'énormes URL et que les utilisateurs ne se soucient pas des chaînes de requête (c'est un flux de travail « tout sélectionner et copier/coller »).
 
 Il est temps d'utiliser la chaîne de requête pour la gestion d'état, comme cela était prévu à l'origine.
@@ -98,7 +98,7 @@ Cette bibliothèque est une bonne alternative à NUQS.
 - **Rendu côté serveur** : Utilisable dans les composants serveur, Next.js 14, 15 et 16 sont pris en charge
 - **Léger** : Zéro dépendance, bibliothèque de moins de 2KB
 - **DX** : Bonne expérience de développement, documentation, commentaires JSDoc et exemples
-- **Flexibilité de frameworks** : Hooks pour `Next.js` et `react-router`, helpers pour l'utiliser avec d'autres frameworks ou du JS pur
+- **Flexibilité de frameworks** : Hooks pour `Next.js`, `react-router`, `Remix` et `Astro`, helpers pour l'utiliser avec d'autres frameworks ou du JS pur
 - **Bien testée** : [Tests unitaires et tests Playwright pour Chrome/Firefox/Safari](https://github.com/asmyshlyaev177/state-in-url/actions/workflows/tests.yml)
 - **Licence permissive** : MIT
 
@@ -115,7 +115,7 @@ Vous cherchez une alternative à [nuqs](https://github.com/47ng/nuqs) ? Les deux
 | Dates | Préservées automatiquement | Parseur intégré, déclaré par clé |
 | Taille, import complet | ~2,9 Ko gzip | ~6,7 Ko gzip |
 | Dépendances au runtime | Aucune | Une |
-| Routeurs | Next.js, React Router v6/v7, Remix, helpers pour JS pur | Next.js, React Router, Remix, TanStack Router, React pur |
+| Routeurs | Next.js, React Router v6/v7, Remix, Astro, helpers pour JS pur | Next.js, React Router, Remix, TanStack Router, React pur |
 
 Tailles : import de la bibliothèque entière, esbuild minify + gzip, mesuré en août 2026 face à nuqs 2.10.1.
 
@@ -150,6 +150,8 @@ La comparaison complète — la même fonctionnalité dans les deux, d’autres 
       - [Exemple](#exemple)
     - [Hook useUrlState pour React-Router](#hook-useurlstate-pour-react-router)
       - [Exemple](#exemple-1)
+    - [Hook useUrlState pour Astro](#hook-useurlstate-pour-astro)
+      - [Exemple](#exemple-2)
   - [Recettes](#recettes)
         - [Hook personnalisé pour travailler confortablement avec une tranche d'état](#hook-personnalisé-pour-travailler-confortablement-avec-une-tranche-détat)
         - [Avec une forme d'état complexe](#avec-une-forme-détat-complexe)
@@ -538,6 +540,123 @@ const tags = [
 
 [Exemple de code](packages/example-react-router6/src/Form-for-test.tsx)
 
+### Hook useUrlState pour Astro
+
+Pour les îlots React. Astro n'a pas de routeur côté client par défaut, donc le hook écrit l'URL avec `window.history` et la relit lors des navigations précédent/suivant et lors de tout autre `pushState`/`replaceState`, y compris le `<ClientRouter />` d'Astro. Les îlots d'une page partagent l'état, sans avoir à les envelopper dans quoi que ce soit.
+
+[Documentation de l'API](packages/urlstate/astro/useUrlState)
+
+#### Exemple
+
+```typescript
+// src/state.ts
+export const form: Form = {
+  name: '',
+  age: undefined,
+  agree_to_terms: false,
+  tags: [],
+};
+
+type Form = {
+  name: string;
+  age?: number;
+  agree_to_terms: boolean;
+  tags: { id: string; value: { text: string; time: Date } }[];
+};
+```
+
+La page doit être rendue à la demande (`output: 'server'`, ou `export const prerender = false` sur la page, avec un adaptateur) : une page prérendue n'a pas de requête, donc l'îlot reçoit `{}` et lit l'URL après l'hydratation.
+
+```astro
+---
+// src/pages/index.astro
+import { Form } from '../components/Form';
+import { Status } from '../components/Status';
+
+// Le rendu serveur correspond à l'URL, donc l'hydratation n'a rien à corriger.
+// Un objet simple : les props d'îlot sont sérialisées, URLSearchParams ne l'est pas.
+const searchParams = Object.fromEntries(Astro.url.searchParams);
+---
+
+<Form client:load searchParams={searchParams} />
+<Status client:load searchParams={searchParams} />
+```
+
+```typescript
+// src/components/Form.tsx
+import React from 'react';
+import { useUrlState } from 'state-in-url/astro';
+
+import { form } from '../state';
+
+export function Form({ searchParams }: { searchParams?: Record<string, string> }) {
+  const { urlState, setUrl, setState } = useUrlState(form, { searchParams });
+
+  const onChangeTags = React.useCallback(
+    (tag: (typeof tags)[number]) => {
+      setUrl((curr) => ({
+        ...curr,
+        tags: curr.tags.find((t) => t.id === tag.id)
+          ? curr.tags.filter((t) => t.id !== tag.id)
+          : curr.tags.concat(tag),
+      }));
+    },
+    [setUrl],
+  );
+
+  return (
+    <div>
+      {tags.map((tag) => (
+        <Tag
+          active={!!urlState.tags.find((t) => t.id === tag.id)}
+          text={tag.value.text}
+          onClick={() => onChangeTags(tag)}
+          key={tag.id}
+        />
+      ))}
+
+      <input value={urlState.name}
+        onChange={(ev) => { setState(curr => ({ ...curr, name: ev.target.value })) }}
+        // Peut mettre à jour l'état immédiatement mais synchroniser le changement avec l'url selon les besoins
+        onBlur={() => setUrl()}
+      />
+    </div>
+  );
+}
+
+const tags = [
+  { id: '1', value: { text: 'React.js', time: new Date('2024-07-17T04:53:17.000Z') } },
+  { id: '2', value: { text: 'Next.js', time: new Date('2024-07-18T04:53:17.000Z') } },
+  { id: '3', value: { text: 'TailwindCSS', time: new Date('2024-07-19T04:53:17.000Z') } },
+];
+
+// Status.tsx, un second îlot, lit le même état
+export function Status({ searchParams }: { searchParams?: Record<string, string> }) {
+  const { urlState } = useUrlState(form, { searchParams });
+  return <pre>{JSON.stringify(urlState, null, 2)}</pre>;
+}
+```
+
+Les îlots Preact fonctionnent de la même manière : avec `@astrojs/preact` et `compat: true`, `react` est résolu vers `preact/compat` aussi bien dans le build serveur que dans le build client, et l'import ci-dessus reste inchangé.
+
+Sans îlots, sur une page sans aucun framework client, le même état vit dans le frontmatter via [`decodeState` et `encodeState`](#helpers-encodestate-et-decodestate) :
+
+```astro
+---
+import { decodeState, encodeState } from 'state-in-url/encodeState';
+
+import { form } from '../state';
+
+const state = decodeState(Astro.url.searchParams, form);
+const withName = encodeState({ ...state, name: 'Alice' }, form, Astro.url.searchParams);
+---
+
+<pre>{JSON.stringify(state)}</pre>
+<a href={`?${withName}`}>Alice</a>
+```
+
+[Exemple de code](packages/example-astro/src/components/Form-for-test.tsx), [page Astro pure](packages/example-astro/src/pages/pure-astro.astro)
+
 ## Recettes
 ##### Hook personnalisé pour travailler confortablement avec une tranche d'état
 <details>
@@ -810,7 +929,7 @@ Voir le [document de contribution](CONTRIBUTING.md)
 - [x] hook pour `react-router`
 - [x] hook pour `remix`
 - [ ] hook pour `svelte`
-- [ ] hook pour `astro`
+- [x] hook pour `astro`
 - [ ] hook pour stocker l'état dans le hash ?
 
 ## Contact et support

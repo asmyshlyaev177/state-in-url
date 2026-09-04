@@ -1,6 +1,6 @@
 <!-- i18n:start -->
 [English](./README.md) · [简体中文](./README.zh-CN.md) · [日本語](./README.ja.md) · [한국어](./README.ko.md) · Русский · [Español](./README.es.md) · [Português (BR)](./README.pt-BR.md) · [Français](./README.fr.md) · [Tiếng Việt](./README.vi.md)
-<!-- i18n:meta locale=ru source=README.md source-blob=065a903cd2cf7bc001b9e40ed8e0ad01c79f17d9 status=translated -->
+<!-- i18n:meta locale=ru source=README.md source-blob=4d98ba970e6aab8f29987fbcba29fb6c61c2fc67 status=translated -->
 <!-- i18n:end -->
 
 <div align="center">
@@ -69,7 +69,7 @@
 Храните любое пользовательское состояние в параметрах запроса — представьте JSON в URL браузера. При этом сохраняются типы и структура данных: например, числа декодируются как числа, а не строки, даты — как даты и т. д., поддерживаются объекты и массивы.
 До безобразия просто, быстро и со статической проверкой TypeScript. Глубокие ссылки, то есть синхронизация URL, становятся лёгкими.
 
-Содержит hook `useUrlState` для Next.js и react-router, а также вспомогательные функции для всего остального на JS.
+Содержит hook `useUrlState` для Next.js, react-router, Remix и Astro, а также вспомогательные функции для всего остального на JS.
 Современные браузеры поддерживают огромные URL, а пользователям всё равно на строку запроса (это просто «выделить всё и скопировать/вставить»).
 
 Пора использовать строку запроса для управления состоянием, как это и было задумано изначально.
@@ -98,7 +98,7 @@
 - **Серверный рендеринг**: Можно использовать в серверных компонентах, поддерживаются Next.js 14, 15 и 16
 - **Лёгкость**: Ноль зависимостей, библиотека меньше 2KB
 - **DX**: Хороший developer experience, документация, JSDoc-комментарии и примеры
-- **Гибкость по фреймворкам**: Hook'и для `Next.js` и `react-router`, вспомогательные функции для других фреймворков или чистого JS
+- **Гибкость по фреймворкам**: Hook'и для `Next.js`, `react-router`, `Remix` и `Astro`, вспомогательные функции для других фреймворков или чистого JS
 - **Хорошо протестирована**: [Юнит-тесты и тесты Playwright для Chrome/Firefox/Safari](https://github.com/asmyshlyaev177/state-in-url/actions/workflows/tests.yml)
 - **Разрешительная лицензия**: MIT
 
@@ -115,7 +115,7 @@
 | Даты | Сохраняются автоматически | Встроенный парсер, объявляется на каждый ключ |
 | Размер, полный импорт | ~2,9 КБ gzip | ~6,7 КБ gzip |
 | Зависимости в рантайме | Нет | Одна |
-| Роутеры | Next.js, React Router v6/v7, Remix, хелперы для чистого JS | Next.js, React Router, Remix, TanStack Router, чистый React |
+| Роутеры | Next.js, React Router v6/v7, Remix, Astro, хелперы для чистого JS | Next.js, React Router, Remix, TanStack Router, чистый React |
 
 Размеры: импорт всей библиотеки, esbuild minify + gzip, замер в августе 2026 против nuqs 2.10.1.
 
@@ -150,6 +150,8 @@ nuqs — достойная библиотека: берите её, если х
       - [Пример](#пример)
     - [Hook useUrlState для React-Router](#hook-useurlstate-для-react-router)
       - [Пример](#пример-1)
+    - [Hook useUrlState для Astro](#hook-useurlstate-для-astro)
+      - [Пример](#пример-2)
   - [Рецепты](#рецепты)
         - [Пользовательский hook для удобной работы со срезом состояния](#пользовательский-hook-для-удобной-работы-со-срезом-состояния)
         - [Со сложной формой состояния](#со-сложной-формой-состояния)
@@ -538,6 +540,123 @@ const tags = [
 
 [Пример кода](packages/example-react-router6/src/Form-for-test.tsx)
 
+### Hook useUrlState для Astro
+
+Для React-островов. У Astro по умолчанию нет клиентского роутера, поэтому hook записывает URL через `window.history` и считывает его обратно при переходах назад/вперёд и при любом другом `pushState`/`replaceState`, включая собственный `<ClientRouter />` Astro. Острова на странице используют общее состояние, и оборачивать их ни во что не нужно.
+
+[Документация по API](packages/urlstate/astro/useUrlState)
+
+#### Пример
+
+```typescript
+// src/state.ts
+export const form: Form = {
+  name: '',
+  age: undefined,
+  agree_to_terms: false,
+  tags: [],
+};
+
+type Form = {
+  name: string;
+  age?: number;
+  agree_to_terms: boolean;
+  tags: { id: string; value: { text: string; time: Date } }[];
+};
+```
+
+Страница должна рендериться по запросу (`output: 'server'` или `export const prerender = false` на странице, с адаптером): у предрендеренной страницы нет запроса, поэтому остров получает `{}` и читает URL после гидратации.
+
+```astro
+---
+// src/pages/index.astro
+import { Form } from '../components/Form';
+import { Status } from '../components/Status';
+
+// Серверный рендер совпадает с URL, поэтому гидратации нечего исправлять.
+// Обычный объект: props островов сериализуются, URLSearchParams — нет.
+const searchParams = Object.fromEntries(Astro.url.searchParams);
+---
+
+<Form client:load searchParams={searchParams} />
+<Status client:load searchParams={searchParams} />
+```
+
+```typescript
+// src/components/Form.tsx
+import React from 'react';
+import { useUrlState } from 'state-in-url/astro';
+
+import { form } from '../state';
+
+export function Form({ searchParams }: { searchParams?: Record<string, string> }) {
+  const { urlState, setUrl, setState } = useUrlState(form, { searchParams });
+
+  const onChangeTags = React.useCallback(
+    (tag: (typeof tags)[number]) => {
+      setUrl((curr) => ({
+        ...curr,
+        tags: curr.tags.find((t) => t.id === tag.id)
+          ? curr.tags.filter((t) => t.id !== tag.id)
+          : curr.tags.concat(tag),
+      }));
+    },
+    [setUrl],
+  );
+
+  return (
+    <div>
+      {tags.map((tag) => (
+        <Tag
+          active={!!urlState.tags.find((t) => t.id === tag.id)}
+          text={tag.value.text}
+          onClick={() => onChangeTags(tag)}
+          key={tag.id}
+        />
+      ))}
+
+      <input value={urlState.name}
+        onChange={(ev) => { setState(curr => ({ ...curr, name: ev.target.value })) }}
+        // Можно обновить состояние сразу, но синхронизировать изменения с URL по мере необходимости
+        onBlur={() => setUrl()}
+      />
+    </div>
+  );
+}
+
+const tags = [
+  { id: '1', value: { text: 'React.js', time: new Date('2024-07-17T04:53:17.000Z') } },
+  { id: '2', value: { text: 'Next.js', time: new Date('2024-07-18T04:53:17.000Z') } },
+  { id: '3', value: { text: 'TailwindCSS', time: new Date('2024-07-19T04:53:17.000Z') } },
+];
+
+// Status.tsx, второй остров, читает то же состояние
+export function Status({ searchParams }: { searchParams?: Record<string, string> }) {
+  const { urlState } = useUrlState(form, { searchParams });
+  return <pre>{JSON.stringify(urlState, null, 2)}</pre>;
+}
+```
+
+Preact-острова работают так же: с `@astrojs/preact` и `compat: true` `react` разрешается в `preact/compat` и в серверной, и в клиентской сборке, а импорт выше остаётся без изменений.
+
+Без островов, на странице вообще без клиентского фреймворка, то же состояние живёт в frontmatter через [`decodeState` и `encodeState`](#вспомогательные-функции-encodestate-и-decodestate):
+
+```astro
+---
+import { decodeState, encodeState } from 'state-in-url/encodeState';
+
+import { form } from '../state';
+
+const state = decodeState(Astro.url.searchParams, form);
+const withName = encodeState({ ...state, name: 'Alice' }, form, Astro.url.searchParams);
+---
+
+<pre>{JSON.stringify(state)}</pre>
+<a href={`?${withName}`}>Alice</a>
+```
+
+[Пример кода](packages/example-astro/src/components/Form-for-test.tsx), [страница на чистом Astro](packages/example-astro/src/pages/pure-astro.astro)
+
 ## Рецепты
 ##### Пользовательский hook для удобной работы со срезом состояния
 <details>
@@ -810,7 +929,7 @@ export const useUserState = () => {
 - [x] hook для `react-router`
 - [x] hook для `remix`
 - [ ] hook для `svelte`
-- [ ] hook для `astro`
+- [x] hook для `astro`
 - [ ] hook для хранения состояния в hash ?
 
 ## Контакты и поддержка

@@ -69,7 +69,7 @@ Share if it useful for you.
 Store any user state in query parameters; imagine JSON in a browser URL. All of it with keeping types and structure of data, e.g. numbers will be decoded as numbers not strings, dates as dates, etc, objects and arrays supported.
 Dead simple, fast, and with static Typescript validation. Deep links, aka URL synchronization, made easy.
 
-Contains `useUrlState` hook for Next.js and react-router, and helpers for anything else on JS.
+Contains `useUrlState` hook for Next.js, react-router, Remix and Astro, and helpers for anything else on JS.
 Since modern browsers support huge URLs and users don't care about query strings (it is a select all and copy/past workflow).
 
 Time to use query string for state management, as it was originally intended.
@@ -98,7 +98,7 @@ This library is a good alternative for NUQS.
 - **Server Side Rendering**: Can use it in Server Components, Next.js 14, 15, and 16 are supported
 - **Lightweight**: Zero dependencies, library less than 2KB
 - **DX**: Good developer experience, documentation, JSDoc comments, and examples
-- **Framework Flexibility**: Hooks for `Next.js` and `react-router`, helpers to use it with other frameworks or pure JS
+- **Framework Flexibility**: Hooks for `Next.js`, `react-router`, `Remix` and `Astro`, helpers to use it with other frameworks or pure JS
 - **Well tested**: [Unit tests and Playwright tests for Chrome/Firefox/Safari](https://github.com/asmyshlyaev177/state-in-url/actions/workflows/tests.yml)
 - **Permissive license**: MIT
 
@@ -115,7 +115,7 @@ Searching for a [nuqs](https://github.com/47ng/nuqs) alternative? Both keep type
 | Dates | Preserved automatically | Built-in parser, declared per key |
 | Size, full import | ~2.9 KB gzipped | ~6.7 KB gzipped |
 | Runtime dependencies | None | One |
-| Routers | Next.js, React Router v6/v7, Remix, plain JS helpers | Next.js, React Router, Remix, TanStack Router, plain React |
+| Routers | Next.js, React Router v6/v7, Remix, Astro, plain JS helpers | Next.js, React Router, Remix, TanStack Router, plain React |
 
 Sizes: whole-library import, esbuild minify + gzip, measured August 2026 against nuqs 2.10.1.
 
@@ -149,6 +149,8 @@ The full comparison — the same feature built in both, other alternatives (TanS
       - [Example](#example)
     - [useUrlState hook for React-Router](#useurlstate-hook-for-react-router)
       - [Example](#example-1)
+    - [useUrlState hook for Astro](#useurlstate-hook-for-astro)
+      - [Example](#example-2)
   - [Recipes](#recipes)
         - [Custom hook to work with slice of state conveniently](#custom-hook-to-work-with-slice-of-state-conveniently)
         - [With complex state shape](#with-complex-state-shape)
@@ -537,6 +539,123 @@ const tags = [
 
 [Example code](packages/example-react-router6/src/Form-for-test.tsx)
 
+### useUrlState hook for Astro
+
+For React islands. Astro has no client-side router by default, so the hook writes the URL with `window.history` and reads it back on back/forward and on any other `pushState`/`replaceState`, Astro's own `<ClientRouter />` included. Islands on a page share the state, with nothing to wrap them in.
+
+[API Docs](packages/urlstate/astro/useUrlState)
+
+#### Example
+
+```typescript
+// src/state.ts
+export const form: Form = {
+  name: '',
+  age: undefined,
+  agree_to_terms: false,
+  tags: [],
+};
+
+type Form = {
+  name: string;
+  age?: number;
+  agree_to_terms: boolean;
+  tags: { id: string; value: { text: string; time: Date } }[];
+};
+```
+
+The page must be rendered on demand (`output: 'server'`, or `export const prerender = false` on the page, with an adapter): a prerendered page has no request, so the island gets `{}` and reads the URL after hydration.
+
+```astro
+---
+// src/pages/index.astro
+import { Form } from '../components/Form';
+import { Status } from '../components/Status';
+
+// The server render matches the URL, so hydration has nothing to correct.
+// A plain object: island props are serialized, URLSearchParams is not.
+const searchParams = Object.fromEntries(Astro.url.searchParams);
+---
+
+<Form client:load searchParams={searchParams} />
+<Status client:load searchParams={searchParams} />
+```
+
+```typescript
+// src/components/Form.tsx
+import React from 'react';
+import { useUrlState } from 'state-in-url/astro';
+
+import { form } from '../state';
+
+export function Form({ searchParams }: { searchParams?: Record<string, string> }) {
+  const { urlState, setUrl, setState } = useUrlState(form, { searchParams });
+
+  const onChangeTags = React.useCallback(
+    (tag: (typeof tags)[number]) => {
+      setUrl((curr) => ({
+        ...curr,
+        tags: curr.tags.find((t) => t.id === tag.id)
+          ? curr.tags.filter((t) => t.id !== tag.id)
+          : curr.tags.concat(tag),
+      }));
+    },
+    [setUrl],
+  );
+
+  return (
+    <div>
+      {tags.map((tag) => (
+        <Tag
+          active={!!urlState.tags.find((t) => t.id === tag.id)}
+          text={tag.value.text}
+          onClick={() => onChangeTags(tag)}
+          key={tag.id}
+        />
+      ))}
+
+      <input value={urlState.name}
+        onChange={(ev) => { setState(curr => ({ ...curr, name: ev.target.value })) }}
+        // Can update state immediately but sync change to url as needed
+        onBlur={() => setUrl()}
+      />
+    </div>
+  );
+}
+
+const tags = [
+  { id: '1', value: { text: 'React.js', time: new Date('2024-07-17T04:53:17.000Z') } },
+  { id: '2', value: { text: 'Next.js', time: new Date('2024-07-18T04:53:17.000Z') } },
+  { id: '3', value: { text: 'TailwindCSS', time: new Date('2024-07-19T04:53:17.000Z') } },
+];
+
+// Status.tsx, a second island, reads the same state
+export function Status({ searchParams }: { searchParams?: Record<string, string> }) {
+  const { urlState } = useUrlState(form, { searchParams });
+  return <pre>{JSON.stringify(urlState, null, 2)}</pre>;
+}
+```
+
+Preact islands work the same way: with `@astrojs/preact` and `compat: true`, `react` resolves to `preact/compat` in both the server and the client build, and the import above is unchanged.
+
+Without islands, on a page with no client framework at all, the same state lives in the frontmatter through [`decodeState` and `encodeState`](#encodestate-and-decodestate-helpers):
+
+```astro
+---
+import { decodeState, encodeState } from 'state-in-url/encodeState';
+
+import { form } from '../state';
+
+const state = decodeState(Astro.url.searchParams, form);
+const withName = encodeState({ ...state, name: 'Alice' }, form, Astro.url.searchParams);
+---
+
+<pre>{JSON.stringify(state)}</pre>
+<a href={`?${withName}`}>Alice</a>
+```
+
+[Example code](packages/example-astro/src/components/Form-for-test.tsx), [pure Astro page](packages/example-astro/src/pages/pure-astro.astro)
+
 ## Recipes
 ##### Custom hook to work with slice of state conveniently
 <details>
@@ -809,7 +928,7 @@ See [Contributing doc](CONTRIBUTING.md)
 - [x] hook for `react-router`
 - [x] hook for `remix`
 - [ ] hook for `svelte`
-- [ ] hook for `astro`
+- [x] hook for `astro`
 - [ ] hook for store state in hash ?
 
 ## Contact & Support

@@ -1,0 +1,28 @@
+---
+// Same page pair as few-components, navigated by Astro's <ClientRouter />:
+// no full load, islands unmount and mount, and the URL moves through
+// history.pushState made by Astro rather than by the hook.
+import { ClientRouter } from 'astro:transitions';
+import Layout from '../../layouts/Layout.astro';
+import { Component } from '../../components/FewComponents/Component';
+
+const { id } = Astro.params;
+const to = id === '1' ? '2' : '1';
+const newUrl = `/view-transitions/${to}`;
+const searchParams = Object.fromEntries(Astro.url.searchParams);
+---
+
+<Layout title={`View transitions ${id}`}>
+  <ClientRouter slot="head" />
+  <div class="flex flex-col gap-4 h-[1250px]" data-testid="wrapper">
+    <h1>Page {id}</h1>
+
+    <Component client:load searchParams={searchParams} />
+    <Component client:load searchParams={searchParams} />
+
+    <a href={newUrl} class="text-lg" data-testid="link">To Page {to}</a>
+    <a href={`${newUrl}${Astro.url.search}`} class="text-lg" data-testid="link-sp">
+      To Page {to} with QS
+    </a>
+  </div>
+</Layout>

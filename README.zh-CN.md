@@ -1,6 +1,6 @@
 <!-- i18n:start -->
 [English](./README.md) · 简体中文 · [日本語](./README.ja.md) · [한국어](./README.ko.md) · [Русский](./README.ru.md) · [Español](./README.es.md) · [Português (BR)](./README.pt-BR.md) · [Français](./README.fr.md) · [Tiếng Việt](./README.vi.md)
-<!-- i18n:meta locale=zh-CN source=README.md source-blob=065a903cd2cf7bc001b9e40ed8e0ad01c79f17d9 status=translated -->
+<!-- i18n:meta locale=zh-CN source=README.md source-blob=4d98ba970e6aab8f29987fbcba29fb6c61c2fc67 status=translated -->
 <!-- i18n:end -->
 
 <div align="center">
@@ -69,7 +69,7 @@
 在查询参数中存储任何用户状态;想象一下在浏览器 URL 中使用 JSON。所有这些都保持数据的类型和结构,例如数字将被解码为数字而不是字符串,日期作为日期,支持对象和数组。
 简单明了、快速,并提供静态 TypeScript 验证。轻松实现深层链接(又名 URL 同步)。
 
-包含用于 Next.js 和 react-router 的 `useUrlState` hook,以及用于任何其他 JS 框架的辅助函数。
+包含用于 Next.js、react-router、Remix 和 Astro 的 `useUrlState` hook,以及用于任何其他 JS 框架的辅助函数。
 由于现代浏览器支持巨大的 URL,用户也不关心查询字符串(这是一个全选和复制/粘贴的工作流程)。
 
 是时候使用查询字符串进行状态管理了,正如它最初的用途。
@@ -98,7 +98,7 @@
 - **服务器端渲染**: 可以在服务器组件中使用,支持 Next.js 14 和 15
 - **轻量级**: 零依赖,库小于 2KB
 - **开发体验**: 良好的开发者体验、文档、JSDoc 注释和示例
-- **框架灵活性**: 为 `Next.js` 和 `react-router` 提供 hooks,以及用于其他框架或纯 JS 的辅助函数
+- **框架灵活性**: 为 `Next.js`、`react-router`、`Remix` 和 `Astro` 提供 hooks,以及用于其他框架或纯 JS 的辅助函数
 - **经过充分测试**: [Chrome/Firefox/Safari 的单元测试和 Playwright 测试](https://github.com/asmyshlyaev177/state-in-url/actions/workflows/tests.yml)
 - **宽松许可证**: MIT
 
@@ -115,7 +115,7 @@
 | 日期 | 自动保留 | 内置解析器，需逐键声明 |
 | 体积（完整导入） | 约 2.9 KB gzip | 约 6.7 KB gzip |
 | 运行时依赖 | 无 | 1 个 |
-| 路由器 | Next.js、React Router v6/v7、Remix，纯 JS 辅助函数 | Next.js、React Router、Remix、TanStack Router、纯 React |
+| 路由器 | Next.js、React Router v6/v7、Remix、Astro，纯 JS 辅助函数 | Next.js、React Router、Remix、TanStack Router、纯 React |
 
 体积说明：整库导入，esbuild minify + gzip，2026 年 8 月对照 nuqs 2.10.1 测得。
 
@@ -150,6 +150,8 @@ nuqs 也是一个不错的库——如果你希望每个值都是一条可读的
       - [示例](#示例)
     - [用于 React-Router 的 useUrlState hook](#用于-react-router-的-useurlstate-hook)
       - [示例](#示例-1)
+    - [用于 Astro 的 useUrlState hook](#用于-astro-的-useurlstate-hook)
+      - [示例](#示例-2)
   - [实用技巧](#实用技巧)
         - [自定义 hook 以便捷地处理状态切片](#自定义-hook-以便捷地处理状态切片)
         - [使用复杂状态形状](#使用复杂状态形状)
@@ -538,6 +540,123 @@ const tags = [
 
 [示例代码](packages/example-react-router6/src/Form-for-test.tsx)
 
+### 用于 Astro 的 useUrlState hook
+
+适用于 React 岛屿（islands）。Astro 默认没有客户端路由器，因此该 hook 通过 `window.history` 写入 URL，并在浏览器前进/后退以及任何其他 `pushState`/`replaceState` 调用时将其读回，Astro 自带的 `<ClientRouter />` 也包括在内。同一页面上的岛屿共享状态，无需用任何东西将它们包裹起来。
+
+[API 文档](packages/urlstate/astro/useUrlState)
+
+#### 示例
+
+```typescript
+// src/state.ts
+export const form: Form = {
+  name: '',
+  age: undefined,
+  agree_to_terms: false,
+  tags: [],
+};
+
+type Form = {
+  name: string;
+  age?: number;
+  agree_to_terms: boolean;
+  tags: { id: string; value: { text: string; time: Date } }[];
+};
+```
+
+页面必须按需渲染（`output: 'server'`，或在页面上声明 `export const prerender = false`，并配置适配器）：预渲染的页面没有请求，因此岛屿拿到的是 `{}`，并在 hydration 之后再读取 URL。
+
+```astro
+---
+// src/pages/index.astro
+import { Form } from '../components/Form';
+import { Status } from '../components/Status';
+
+// 服务端渲染结果与 URL 一致，因此 hydration 无需纠正任何内容。
+// 须为普通对象：岛屿的 props 会被序列化，URLSearchParams 则不会。
+const searchParams = Object.fromEntries(Astro.url.searchParams);
+---
+
+<Form client:load searchParams={searchParams} />
+<Status client:load searchParams={searchParams} />
+```
+
+```typescript
+// src/components/Form.tsx
+import React from 'react';
+import { useUrlState } from 'state-in-url/astro';
+
+import { form } from '../state';
+
+export function Form({ searchParams }: { searchParams?: Record<string, string> }) {
+  const { urlState, setUrl, setState } = useUrlState(form, { searchParams });
+
+  const onChangeTags = React.useCallback(
+    (tag: (typeof tags)[number]) => {
+      setUrl((curr) => ({
+        ...curr,
+        tags: curr.tags.find((t) => t.id === tag.id)
+          ? curr.tags.filter((t) => t.id !== tag.id)
+          : curr.tags.concat(tag),
+      }));
+    },
+    [setUrl],
+  );
+
+  return (
+    <div>
+      {tags.map((tag) => (
+        <Tag
+          active={!!urlState.tags.find((t) => t.id === tag.id)}
+          text={tag.value.text}
+          onClick={() => onChangeTags(tag)}
+          key={tag.id}
+        />
+      ))}
+
+      <input value={urlState.name}
+        onChange={(ev) => { setState(curr => ({ ...curr, name: ev.target.value })) }}
+        // 可以立即更新状态,但根据需要将更改同步到 url
+        onBlur={() => setUrl()}
+      />
+    </div>
+  );
+}
+
+const tags = [
+  { id: '1', value: { text: 'React.js', time: new Date('2024-07-17T04:53:17.000Z') } },
+  { id: '2', value: { text: 'Next.js', time: new Date('2024-07-18T04:53:17.000Z') } },
+  { id: '3', value: { text: 'TailwindCSS', time: new Date('2024-07-19T04:53:17.000Z') } },
+];
+
+// Status.tsx，第二个岛屿，读取同一份状态
+export function Status({ searchParams }: { searchParams?: Record<string, string> }) {
+  const { urlState } = useUrlState(form, { searchParams });
+  return <pre>{JSON.stringify(urlState, null, 2)}</pre>;
+}
+```
+
+Preact 岛屿的用法相同：使用 `@astrojs/preact` 并设置 `compat: true` 后，`react` 在服务端和客户端构建中都会解析为 `preact/compat`，上面的导入语句无需改动。
+
+不使用岛屿时，即页面上完全没有客户端框架，同一份状态可通过 [`decodeState` 和 `encodeState`](#encodestate-和-decodestate-辅助函数) 放在 frontmatter 中：
+
+```astro
+---
+import { decodeState, encodeState } from 'state-in-url/encodeState';
+
+import { form } from '../state';
+
+const state = decodeState(Astro.url.searchParams, form);
+const withName = encodeState({ ...state, name: 'Alice' }, form, Astro.url.searchParams);
+---
+
+<pre>{JSON.stringify(state)}</pre>
+<a href={`?${withName}`}>Alice</a>
+```
+
+[示例代码](packages/example-astro/src/components/Form-for-test.tsx)，[纯 Astro 页面](packages/example-astro/src/pages/pure-astro.astro)
+
 ## 实用技巧
 ##### 自定义 hook 以便捷地处理状态切片
 <details>
@@ -810,7 +929,7 @@ export const useUserState = () => {
 - [x] 用于 `react-router` 的 hook
 - [x] 用于 `remix` 的 hook
 - [ ] 用于 `svelte` 的 hook
-- [ ] 用于 `astro` 的 hook
+- [x] 用于 `astro` 的 hook
 - [ ] 用于在 hash 中存储状态的 hook ?
 
 ## 联系和支持

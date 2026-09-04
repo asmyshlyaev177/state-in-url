@@ -1,7 +1,7 @@
 {
   "name": "state-in-url",
   "version": "6.4.1",
-  "description": "Store state in URL as in object, types and structure are preserved, with TS validation. Same API as React.useState, wthout any hasssle or boilerplate. Next.js@14-15, react-router@6-7, and remix@2.",
+  "description": "Store state in URL as in object, types and structure are preserved, with TS validation. Same API as React.useState, wthout any hasssle or boilerplate. Next.js@14-16, react-router@6-7, remix@2, and Astro.",
   "homepage": "https://state-in-url.dev",
   "repository": {
     "type": "git",
@@ -57,6 +57,11 @@
       "require": "./dist/remix/index.js",
       "types": "./dist/remix/index.d.ts",
       "default": "./dist/remix/index.mjs"
+    },
+    "./astro": {
+      "require": "./dist/astro/index.js",
+      "types": "./dist/astro/index.d.ts",
+      "default": "./dist/astro/index.mjs"
     },
     "./encodeState": {
       "require": "./dist/encodeState/index.js",
@@ -135,12 +140,14 @@
     "install:all": "pnpm install",
     "install:ci": "pnpm install --frozen-lockfile",
     "rmdist": "rm -rf dist",
-    "cleanup": "rm -rf dist .wireit node_modules test-results playwright-report coverage-reports nyc_coverage packages/example-nextjs14/node_modules packages/example-nextjs14/.next packages/example-nextjs15/node_modules packages/example-nextjs15/.next packages/example-nextjs16/node_modules packages/example-nextjs16/.next packages/example-react/node_modules packages/example-react-router6/node_modules packages/example-react-router7/node_modules packages/example-remix2/node_modules",
+    "cleanup": "rm -rf dist .wireit node_modules test-results playwright-report coverage-reports nyc_coverage packages/example-nextjs14/node_modules packages/example-nextjs14/.next packages/example-nextjs15/node_modules packages/example-nextjs15/.next packages/example-nextjs16/node_modules packages/example-nextjs16/.next packages/example-react/node_modules packages/example-react-router6/node_modules packages/example-react-router7/node_modules packages/example-remix2/node_modules packages/example-astro/node_modules packages/example-astro/dist packages/example-astro/.astro",
     "reinstall": "pnpm run cleanup && pnpm install",
     "setup": "playwright install --with-deps",
     "prepack": "pnpm run build && cp package.json dist/package.json",
     "pin-gh-deps": "pin-github-action -i .github/workflows/tests.yml .github/workflows/lighthouse.yml",
-    "prepare": "pnpm exec husky"
+    "prepare": "pnpm exec husky",
+    "dev:astro": "wireit",
+    "kill-astro": "wireit"
   },
   "wireit": {
     "dev": {
@@ -151,7 +158,8 @@
         "dev:router6",
         "dev:router7",
         "dev:nextjs16",
-        "start:demo14"
+        "start:demo14",
+        "dev:astro"
       ],
       "service": {
         "readyWhen": {
@@ -178,7 +186,7 @@
       "command": "node scripts/kill-demos.mjs remix"
     },
     "kill-services": {
-      "command": "node scripts/kill-demos.mjs next vite remix",
+      "command": "node scripts/kill-demos.mjs next vite remix astro",
       "comment": "Matching is by repo cwd plus the server's own argv, and never touches an ancestor of the killer. See scripts/kill-demos.mjs for the two ways the old ps|grep|xargs form mis-fired."
     },
     "kill-wireit": {
@@ -191,6 +199,10 @@
       "command": "pnpm exec cross-env HOME=/root PLAYWRIGHT_BROWSERS_PATH=0 playwright test"
     },
     "test:int": {
+      "comment": "Kills leftover demo servers first: a finished run leaves a partial set behind, and Playwright's reuseExistingServer adopts it as soon as example-nextjs16 answers without ever starting the missing apps (tests/wait-for-servers.ts names the failure). To test against servers you started yourself, run `pnpm exec playwright test` directly.",
+      "dependencies": [
+        "kill-services"
+      ],
       "command": "playwright test --project=chromium --retries=2"
     },
     "tsc": {
@@ -237,7 +249,7 @@
     "dev:nextjs15": {
       "command": "cd packages/example-nextjs15 && ../../scripts/portless.sh -- pnpm run dev",
       "service": true,
-      "comment": "No --turbo: Turbopack 15.5.19 panics with \"Next.js package not found\" against this pnpm layout (it reports version 0.0.0), and one failed service tears down all seven. 14 and 16 are unaffected."
+      "comment": "No --turbo: Turbopack 15.5.19 panics with \"Next.js package not found\" against this pnpm layout (it reports version 0.0.0), and one failed service tears down the rest. 14 and 16 are unaffected."
     },
     "dev:nextjs16": {
       "command": "cd packages/example-nextjs16 && ../../scripts/portless.sh -- pnpm run dev --turbo",
@@ -405,7 +417,8 @@
         "start:react",
         "start:router6",
         "start:router7",
-        "start:remix2"
+        "start:remix2",
+        "start:astro"
       ],
       "service": true
     },
@@ -417,7 +430,8 @@
         "start:react:ci",
         "start:router6:ci",
         "start:router7:ci",
-        "start:remix2:ci"
+        "start:remix2:ci",
+        "start:astro:ci"
       ],
       "service": true
     },
@@ -434,7 +448,8 @@
         "build:next15",
         "build:router6",
         "build:router7",
-        "build:remix2"
+        "build:remix2",
+        "build:astro"
       ]
     },
     "build:react": {
@@ -445,6 +460,34 @@
       "dependencies": [
         "rmdist"
       ]
+    },
+    "kill-astro": {
+      "command": "node scripts/kill-demos.mjs astro"
+    },
+    "dev:astro": {
+      "command": "cd packages/example-astro && ../../scripts/portless.sh -- pnpm run dev",
+      "service": true,
+      "comment": "ASTRO_DEV_BACKGROUND=1 is Astro 7's opt-out of its agent detection, which otherwise backgrounds `astro dev` under Claude Code/Cursor and ends this service; --ignore-lock keeps a stale .astro/dev.json from a killed run from blocking it."
+    },
+    "build:astro": {
+      "command": "cd packages/example-astro && pnpm run build",
+      "dependencies": [
+        "build"
+      ]
+    },
+    "start:astro": {
+      "command": "cd packages/example-astro && ../../scripts/portless.sh -- pnpm run start",
+      "dependencies": [
+        "build:astro"
+      ],
+      "service": true
+    },
+    "start:astro:ci": {
+      "command": "cd packages/example-astro && ../../scripts/portless.sh -- pnpm run start",
+      "dependencies": [
+        "kill-services"
+      ],
+      "service": true
     }
   },
   "browserslist": [
@@ -550,6 +593,7 @@
     "ts-node": "^10.9.2",
     "typescript": "^5.9.2",
     "unplugin-auto-import": "^0.18.6",
+    "vite": "^5.4.21",
     "vitest": "^2.1.9",
     "wait-on": "^8.0.5",
     "wireit": "^0.14.13"
@@ -571,6 +615,7 @@
     "react-router",
     "remix",
     "remixjs",
+    "astro",
     "url",
     "url synchronization",
     "url sync",

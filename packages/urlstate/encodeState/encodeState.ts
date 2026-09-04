@@ -1,5 +1,5 @@
-import { decode, encode } from "../encoder";
-import { getParams, type JSONCompatible, type UnknownObj } from "../utils";
+import { decode, encode } from '../encoder';
+import { getParams, type JSONCompatible, type UnknownObj } from '../utils';
 
 /**
  * Encodes the state object into a URL query string.
@@ -21,7 +21,9 @@ export function encodeState<T extends JSONCompatible>(
   defaults?: T,
   paramsToKeep?: string | URLSearchParams,
 ) {
-  const params = getParams(paramsToKeep);
+  // a copy: getParams hands back the instance it was given, and a caller's
+  // Astro.url.searchParams must not gain the keys of every link on the page
+  const params = new URLSearchParams(getParams(paramsToKeep));
   const keys = Object.keys(state || {});
   for (let i = 0; i < keys.length; i++) {
     const key = keys[i];
@@ -29,6 +31,8 @@ export function encodeState<T extends JSONCompatible>(
     const initialVal = defaults?.[key as keyof typeof defaults];
     if (JSON.stringify(value) !== JSON.stringify(initialVal)) {
       params.set(key, encode(value));
+    } else {
+      params.delete(key);
     }
   }
   return params.toString();

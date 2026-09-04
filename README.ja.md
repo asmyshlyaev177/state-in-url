@@ -1,6 +1,6 @@
 <!-- i18n:start -->
 [English](./README.md) · [简体中文](./README.zh-CN.md) · 日本語 · [한국어](./README.ko.md) · [Русский](./README.ru.md) · [Español](./README.es.md) · [Português (BR)](./README.pt-BR.md) · [Français](./README.fr.md) · [Tiếng Việt](./README.vi.md)
-<!-- i18n:meta locale=ja source=README.md source-blob=065a903cd2cf7bc001b9e40ed8e0ad01c79f17d9 status=translated -->
+<!-- i18n:meta locale=ja source=README.md source-blob=4d98ba970e6aab8f29987fbcba29fb6c61c2fc67 status=translated -->
 <!-- i18n:end -->
 
 <div align="center">
@@ -69,7 +69,7 @@
 任意のユーザー状態をクエリパラメータに保存します。ブラウザの URL に JSON があるイメージです。データの型と構造を保持したまま、たとえば数値は文字列ではなく数値として、日付は日付としてデコードされ、オブジェクトや配列もサポートされます。
 非常にシンプルで高速、そして静的 TypeScript バリデーション付き。ディープリンク(別名 URL 同期)が簡単になります。
 
-Next.js と react-router 用の `useUrlState` フックと、その他あらゆる JS 向けのヘルパーを備えています。
+Next.js、react-router、Remix、Astro 用の `useUrlState` フックと、その他あらゆる JS 向けのヘルパーを備えています。
 現代のブラウザは巨大な URL をサポートしており、ユーザーはクエリ文字列を気にしません(全選択してコピー/ペーストするワークフローです)。
 
 本来の目的どおりに、クエリ文字列を状態管理に使うときが来ました。
@@ -98,7 +98,7 @@ Next.js と react-router 用の `useUrlState` フックと、その他あらゆ�
 - **サーバーサイドレンダリング**: サーバーコンポーネントで使用可能。Next.js 14、15、16 をサポート
 - **軽量**: 依存関係ゼロ。ライブラリは 2KB 未満
 - **DX**: 優れた開発者体験。ドキュメント、JSDoc コメント、サンプル付き
-- **フレームワークの柔軟性**: `Next.js` と `react-router` 用のフック、その他のフレームワークやピュア JS で使うためのヘルパー
+- **フレームワークの柔軟性**: `Next.js`、`react-router`、`Remix`、`Astro` 用のフック、その他のフレームワークやピュア JS で使うためのヘルパー
 - **十分にテスト済み**: [Chrome/Firefox/Safari 向けのユニットテストと Playwright テスト](https://github.com/asmyshlyaev177/state-in-url/actions/workflows/tests.yml)
 - **寛容なライセンス**: MIT
 
@@ -115,7 +115,7 @@ Next.js と react-router 用の `useUrlState` フックと、その他あらゆ�
 | 日付 | 自動的に保持 | 組み込みパーサーをキーごとに宣言 |
 | サイズ（全体 import） | 約 2.9 KB gzip | 約 6.7 KB gzip |
 | ランタイム依存 | なし | 1つ |
-| ルーター | Next.js、React Router v6/v7、Remix、素の JS 用ヘルパー | Next.js、React Router、Remix、TanStack Router、素の React |
+| ルーター | Next.js、React Router v6/v7、Remix、Astro、素の JS 用ヘルパー | Next.js、React Router、Remix、TanStack Router、素の React |
 
 サイズはライブラリ全体の import を esbuild minify + gzip で計測（2026年8月、nuqs 2.10.1 と比較）。
 
@@ -150,6 +150,8 @@ nuqs も優れたライブラリです。値ごとに読みやすいクエリパ
       - [例](#例)
     - [React-Router 向け useUrlState フック](#react-router-向け-useurlstate-フック)
       - [例](#例-1)
+    - [Astro 向け useUrlState フック](#astro-向け-useurlstate-フック)
+      - [例](#例-2)
   - [レシピ](#レシピ)
         - [状態の一部を便利に扱うカスタムフック](#状態の一部を便利に扱うカスタムフック)
         - [複雑な状態の形を使用](#複雑な状態の形を使用)
@@ -538,6 +540,123 @@ const tags = [
 
 [サンプルコード](packages/example-react-router6/src/Form-for-test.tsx)
 
+### Astro 向け useUrlState フック
+
+React アイランド向けです。Astro にはデフォルトでクライアントサイドルーターがないため、このフックは `window.history` で URL を書き込み、戻る/進む操作時およびその他あらゆる `pushState`/`replaceState` の際（Astro 自身の `<ClientRouter />` を含む）に URL を読み戻します。ページ上のアイランドは状態を共有し、それらをラップするものは何も必要ありません。
+
+[API ドキュメント](packages/urlstate/astro/useUrlState)
+
+#### 例
+
+```typescript
+// src/state.ts
+export const form: Form = {
+  name: '',
+  age: undefined,
+  agree_to_terms: false,
+  tags: [],
+};
+
+type Form = {
+  name: string;
+  age?: number;
+  agree_to_terms: boolean;
+  tags: { id: string; value: { text: string; time: Date } }[];
+};
+```
+
+ページはオンデマンドでレンダリングされる必要があります（`output: 'server'`、またはページ側で `export const prerender = false` を指定し、アダプターを併用）。プリレンダリングされたページにはリクエストがないため、アイランドは `{}` を受け取り、ハイドレーション後に URL を読み取ります。
+
+```astro
+---
+// src/pages/index.astro
+import { Form } from '../components/Form';
+import { Status } from '../components/Status';
+
+// サーバーレンダリングが URL と一致するため、ハイドレーションで修正すべきものはありません。
+// プレーンなオブジェクトにします。アイランドの props はシリアライズされますが、URLSearchParams はされません。
+const searchParams = Object.fromEntries(Astro.url.searchParams);
+---
+
+<Form client:load searchParams={searchParams} />
+<Status client:load searchParams={searchParams} />
+```
+
+```typescript
+// src/components/Form.tsx
+import React from 'react';
+import { useUrlState } from 'state-in-url/astro';
+
+import { form } from '../state';
+
+export function Form({ searchParams }: { searchParams?: Record<string, string> }) {
+  const { urlState, setUrl, setState } = useUrlState(form, { searchParams });
+
+  const onChangeTags = React.useCallback(
+    (tag: (typeof tags)[number]) => {
+      setUrl((curr) => ({
+        ...curr,
+        tags: curr.tags.find((t) => t.id === tag.id)
+          ? curr.tags.filter((t) => t.id !== tag.id)
+          : curr.tags.concat(tag),
+      }));
+    },
+    [setUrl],
+  );
+
+  return (
+    <div>
+      {tags.map((tag) => (
+        <Tag
+          active={!!urlState.tags.find((t) => t.id === tag.id)}
+          text={tag.value.text}
+          onClick={() => onChangeTags(tag)}
+          key={tag.id}
+        />
+      ))}
+
+      <input value={urlState.name}
+        onChange={(ev) => { setState(curr => ({ ...curr, name: ev.target.value })) }}
+        // 状態は即座に更新しつつ、変更は必要に応じて URL に同期できます
+        onBlur={() => setUrl()}
+      />
+    </div>
+  );
+}
+
+const tags = [
+  { id: '1', value: { text: 'React.js', time: new Date('2024-07-17T04:53:17.000Z') } },
+  { id: '2', value: { text: 'Next.js', time: new Date('2024-07-18T04:53:17.000Z') } },
+  { id: '3', value: { text: 'TailwindCSS', time: new Date('2024-07-19T04:53:17.000Z') } },
+];
+
+// 2つ目のアイランド Status.tsx は同じ状態を読み取ります
+export function Status({ searchParams }: { searchParams?: Record<string, string> }) {
+  const { urlState } = useUrlState(form, { searchParams });
+  return <pre>{JSON.stringify(urlState, null, 2)}</pre>;
+}
+```
+
+Preact アイランドも同じように動作します。`@astrojs/preact` を `compat: true` で使うと、サーバービルドとクライアントビルドの両方で `react` が `preact/compat` に解決され、上記のインポートはそのまま変わりません。
+
+アイランドを使わず、クライアントフレームワークをまったく使わないページでは、同じ状態を [`decodeState` と `encodeState`](#encodestate-と-decodestate-ヘルパー) を通じてフロントマターに置けます:
+
+```astro
+---
+import { decodeState, encodeState } from 'state-in-url/encodeState';
+
+import { form } from '../state';
+
+const state = decodeState(Astro.url.searchParams, form);
+const withName = encodeState({ ...state, name: 'Alice' }, form, Astro.url.searchParams);
+---
+
+<pre>{JSON.stringify(state)}</pre>
+<a href={`?${withName}`}>Alice</a>
+```
+
+[サンプルコード](packages/example-astro/src/components/Form-for-test.tsx)、[素の Astro ページ](packages/example-astro/src/pages/pure-astro.astro)
+
 ## レシピ
 ##### 状態の一部を便利に扱うカスタムフック
 <details>
@@ -810,7 +929,7 @@ export const useUserState = () => {
 - [x] `react-router` 向けフック
 - [x] `remix` 向けフック
 - [ ] `svelte` 向けフック
-- [ ] `astro` 向けフック
+- [x] `astro` 向けフック
 - [ ] ハッシュに状態を保存するフック?
 
 ## 連絡先とサポート

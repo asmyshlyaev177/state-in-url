@@ -7,7 +7,7 @@ files are written for that, and are far more specific than this one.
 
 ## What this is
 
-`state-in-url` is a ~2KB, zero-runtime-dependency React library that stores typed, JSON-serializable state objects in URL query parameters while preserving types and structure (numbers stay numbers, dates stay dates, nested objects/arrays work). It ships a `useUrlState` hook for Next.js App Router, React Router v6/v7, and Remix v2, plus framework-agnostic encode/decode helpers. Positioned as a NUQS alternative.
+`state-in-url` is a ~2KB, zero-runtime-dependency React library that stores typed, JSON-serializable state objects in URL query parameters while preserving types and structure (numbers stay numbers, dates stay dates, nested objects/arrays work). It ships a `useUrlState` hook for Next.js App Router, React Router v6/v7, Remix v2, and Astro (React islands), plus framework-agnostic encode/decode helpers. Positioned as a NUQS alternative.
 
 ## Commands
 
@@ -15,7 +15,7 @@ This is a **pnpm** monorepo. `pnpm` is enforced (`only-allow`). Most scripts run
 
 - `pnpm run test` — full suite: `tsc` typecheck → unit tests → build all packages → exports test → integration (e2e) tests. Everything CI checks, but not the command CI runs — `.github/workflows/tests.yml` splits it into three parallel jobs and calls the tools directly, so a break in this wiring shows up locally only.
 - `pnpm run test:unit` — Vitest unit tests (depends on `tsc`), single run, ~2s; coverage is on in the config. Use `npx vitest` directly for watch mode.
-- `pnpm run test:int` — Playwright e2e (`--project=chromium`). Starts the seven demo servers unless they are already up, and waits for all seven before the first test.
+- `pnpm run test:int` — Playwright e2e (`--project=chromium`). Kills any leftover demo servers, starts all eight, and waits for all eight before the first test. To run against a set you started yourself (`pnpm run start`), call `pnpm exec playwright test` directly — a partial leftover set is reused as-is by Playwright and never completed, which is the failure the kill avoids.
 - `pnpm run tsc` — `tsc --noEmit` typecheck only.
 - `pnpm run build` — Rollup build of the library into `dist/` (ESM `.mjs` + CJS `.js` + `.d.ts`).
 - `pnpm run dev` — library in Rollup watch mode + all example apps, each at `http://<package-name>.localhost:1355` (see Demo app URLs).
@@ -30,7 +30,7 @@ Run a single e2e spec: `npx playwright test tests/useUrlState/main.spec.ts --pro
 
 ## Demo app URLs
 
-The seven example apps run behind [portless](https://portless.sh), a local
+The eight example apps run behind [portless](https://portless.sh), a local
 reverse proxy, so each answers on its own hostname instead of a port anyone else
 might be holding:
 
@@ -43,6 +43,7 @@ might be holding:
 | `example-react-router6` | `http://example-react-router6.localhost:1355` |
 | `example-remix2` | `http://example-remix2.localhost:1355` |
 | `example-react-router7` | `http://example-react-router7.localhost:1355` |
+| `example-astro` | `http://example-astro.localhost:1355` |
 
 The hostname is each package's own `name`, so portless infers it — nothing in
 `package.json` names an app twice. Actual ports are random (4000–4999) and
@@ -52,7 +53,7 @@ Only `example-nextjs16` has a homepage; the other two Next apps answer 404 at
 `/` and serve their test routes (`/test-ssr`, `/test-ssr-usp`, …) instead. A
 *portless* 404 — "No app registered for …" — means something else: the proxy is
 up but the app is not, which is what one crashed service looks like, because
-wireit tears down all seven when any of them fails.
+wireit tears down all eight when any of them fails.
 
 `scripts/portless.sh` is the only place the proxy port lives, and it is what
 every `dev:*`/`start:*` wireit task runs. It pins two things:
@@ -72,12 +73,29 @@ set to keep in sync. `PORTLESS=0 pnpm run dev` skips the proxy entirely and each
 app falls back to the fixed port in its own `package.json` (`${PORT:-3000}` and
 friends), which is also what `lighthouse:serve` still uses on 3012.
 
+`example-astro` is SSR through `@astrojs/node` (every page reads
+`Astro.url.searchParams`). Astro 7's `astro dev` and `astro preview` background
+themselves when they detect an AI-agent environment (`CLAUDECODE`, Cursor and
+the like) or are given `--background`, and a command that returns at once is a
+failed service to wireit and portless. So `dev` sets `ASTRO_DEV_BACKGROUND=1`,
+the CLI's opt-out, plus `--ignore-lock` so a stale `.astro/dev.json` from a
+killed run cannot block it; and `start` skips the CLI and runs the adapter's own
+entry, `node ./dist/server/entry.mjs`, which reads `PORT` from the environment,
+which is how portless hands the port over. The Vite alias in `astro.config.mjs` points `state-in-url` at the
+library *source*, like the other Vite examples, so `pnpm dev` reflects edits
+without a rebuild; `pnpm test`'s `tsc` still needs `dist/`, for the
+`workspace:*` types. The same `state-in-url/astro` entry runs under
+`@astrojs/preact` with `compat: true` and nothing else — SSR from the
+`searchParams` prop, islands sharing state, back/forward were checked against
+the built package in a scratch app; there is deliberately no ninth example app
+for it.
+
 A dev server killed by hand leaves its route behind; `portless prune` clears
 those, and every task passes `--force` so a stale route never blocks a restart.
 
 Run the e2e suite from the main checkout. In a *linked* git worktree portless
 prepends the branch name as a subdomain — `fix-ui.example-nextjs15.localhost` —
-and every URL in `tests/` is a literal, so all seven apps look unregistered. A
+and every URL in `tests/` is a literal, so all eight apps look unregistered. A
 worktree on `main`/`master` is exempt and needs nothing. Turning the prefix off
 is not an option (`portless run` has no flag for it and `--name` keeps it), and
 would be the wrong trade anyway: two worktrees would then `--force` each other's
@@ -86,8 +104,8 @@ routes away and quietly serve the other checkout's app.
 ## Layout
 
 - `packages/urlstate/` — **the library source, and the root npm package itself.** It is deliberately NOT a pnpm workspace member (see `pnpm-workspace.yaml`); it's published from the repo root via `dist/`.
-- `packages/example-*` — the workspace members: demo apps for nextjs14/15/16, react (Vite), react-router6, react-router7, remix2. These exist to be driven by the Playwright e2e tests and to host the live demo.
-- `packages/shared/` — shared Tailwind config, styles, and components used by the example apps (aliased as `shared/*` in `tsconfig.base.json`).
+- `packages/example-*` — the workspace members: demo apps for nextjs14/15/16, react (Vite), react-router6, react-router7, remix2, astro. These exist to be driven by the Playwright e2e tests and to host the live demo.
+- `packages/shared/` — shared Tailwind config, styles, and components used by the example apps (aliased as `shared/*` in `tsconfig.base.json`). Its `vite-config.ts` types against whichever `vite` `shamefully-hoist` puts at the root `node_modules`, and root `tsc` checks every example's `vite.config.ts` against it; the root `vite` devDep pins that copy to the Vite examples' major, because `example-astro` brought vite 8 into the hoist set and the root copy went with it (tsc fails without the pin).
 - `tests/` — Playwright e2e specs (separate from the colocated `*.test.ts` unit tests). `tests/landing/a11y.spec.ts` is the accessibility gate over the demo site's public pages — axe-core plus rendered contrast, both from `@asmyshlyaev177/design-tokens`.
 - `lighthouse/` — the Lighthouse suite, its own directory so the e2e config's `testDir: './tests'` cannot pick it up. Driven by `playwright.lighthouse.config.ts`.
 - `skills/` — agent skill files (`SKILL.md` per topic) that are **published as part of the npm package** (see `files` in `package.json`). `skills/_artifacts/` is dev-only and excluded from publish; `skill_spec.md` there is a useful map of the library's domains and known user failure modes.
@@ -103,7 +121,7 @@ The library is layered; each layer has its own subdirectory under `packages/urls
 
 3. **`useUrlStateBase/`** — generic hook composing `useSharedState` + `useUrlEncode` and accepting a `router` with `push`/`replace`. Contains the **"last update wins" URL-write throttling**: a module-global timer batches rapid `setUrl` calls (`TIMEOUT` = 70ms, 330ms on Safari). URL updates are therefore async/debounced, not synchronous.
 
-4. **Framework wrappers** — `next/`, `react-router/` (v7), `react-router6/`, `remix/` each export a `useUrlState` that adapts the framework's router to `useUrlStateBase` and handles SSR (`parseSPObj`, `filterUnknownParams`). The Next.js wrapper defaults to `window.history` navigation (`useHistory: true`) to avoid `_rsc` refetches, and accepts server `searchParams`.
+4. **Framework wrappers** — `next/`, `react-router/` (v7), `react-router6/`, `remix/`, `astro/` each export a `useUrlState` that adapts the framework's router to `useUrlStateBase` and handles SSR (`parseSPObj`, `filterUnknownParams`). The Next.js wrapper defaults to `window.history` navigation (`useHistory: true`) to avoid `_rsc` refetches, and accepts server `searchParams`. The Astro wrapper is the Next.js one without `next/navigation`: `window.history` only, `searchParams` as an island prop for the server render (a `URLSearchParams` there serializes to `{}`, so it must be a plain object), and a resync through `subscribeToUrl` on every URL change, because islands hydrate independently. The two bodies are copies for now, on purpose.
 
 `index.ts` re-exports the public surface: `useUrlState` (Next), `useSharedState`, `useUrlEncode`, `useUrlStateBase`, `encode`/`decode`, `encodeState`/`decodeState`, `typeOf`, `isSSR`.
 

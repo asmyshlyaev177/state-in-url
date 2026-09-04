@@ -43,6 +43,7 @@ export const documents = [
   { source: 'packages/urlstate/react-router/useUrlState/README.md', toc: null },
   { source: 'packages/urlstate/react-router6/useUrlState/README.md', toc: null },
   { source: 'packages/urlstate/remix/useUrlState/README.md', toc: null },
+  { source: 'packages/urlstate/astro/useUrlState/README.md', toc: null },
   { source: 'packages/urlstate/useLinkProps/README.md', toc: null },
   { source: 'packages/urlstate/useSharedState/README.md', toc: null },
   { source: 'packages/urlstate/useUrlEncode/README.md', toc: null },

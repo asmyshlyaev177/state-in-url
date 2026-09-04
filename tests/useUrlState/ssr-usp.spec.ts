@@ -2,13 +2,16 @@ import { expect, test } from '@playwright/test';
 
 import { ignoredErrors } from '../testUtils';
 
-// Next.js examples: the bug affected the SSR path where filterUnknownParams
+// Server-rendered examples: the bug affected the SSR path where filterUnknownParams
 // received a URLSearchParams instance from useSearchParams() and returned {}
 // instead of the actual params (Object.entries doesn't work on URLSearchParams).
-const nextjsUrls = [
+// Astro renders the island on the server from `searchParams`, so it is held to
+// the no-JS check as well.
+const serverRenderedUrls = [
   'http://example-nextjs14.localhost:1355/test-ssr-usp',
   'http://example-nextjs15.localhost:1355/test-ssr-usp',
   'http://example-nextjs16.localhost:1355/test-ssr-usp',
+  'http://example-astro.localhost:1355/test-ssr-usp',
 ];
 
 // React-router and Remix examples: no SSR URLSearchParams bug (they use
@@ -20,15 +23,17 @@ const otherUrls = [
   'http://example-react-router7.localhost:1355/test-ssr-usp',
 ];
 
-const encodedName = "%27Alice%27";
+const encodedName = '%27Alice%27';
 const expectedName = 'Alice';
 
 test.describe('SSR with URLSearchParams from useSearchParams()', () => {
   // This is the regression test for the filterUnknownParams bug. JS is disabled so
   // only the server-rendered HTML is checked — with the bug, the server always
   // returned the schema default ("") because Object.entries(URLSearchParams) === [].
-  for (const url of nextjsUrls) {
-    test(`server-renders correct URL params without JS: ${url}`, async ({ browser }) => {
+  for (const url of serverRenderedUrls) {
+    test(`server-renders correct URL params without JS: ${url}`, async ({
+      browser,
+    }) => {
       const context = await browser.newContext({ javaScriptEnabled: false });
       const page = await context.newPage();
 
@@ -50,8 +55,10 @@ test.describe('SSR with URLSearchParams from useSearchParams()', () => {
     });
   }
 
-  for (const url of [...nextjsUrls, ...otherUrls]) {
-    test(`loads URL params on initial render without hydration mismatch: ${url}`, async ({ page }) => {
+  for (const url of [...serverRenderedUrls, ...otherUrls]) {
+    test(`loads URL params on initial render without hydration mismatch: ${url}`, async ({
+      page,
+    }) => {
       const errorLogs: string[] = [];
       page.on('console', (msg) => {
         if (msg.type() === 'error') {
@@ -74,7 +81,9 @@ test.describe('SSR with URLSearchParams from useSearchParams()', () => {
       // No console errors means no hydration mismatch — server and client
       // rendered the same value, confirming filterUnknownParams correctly
       // handles URLSearchParams instances on the server.
-      const filteredErrors = errorLogs.filter((e) => !ignoredErrors.some((ignored) => e.includes(ignored)));
+      const filteredErrors = errorLogs.filter(
+        (e) => !ignoredErrors.some((ignored) => e.includes(ignored)),
+      );
       expect(filteredErrors).toHaveLength(0);
     });
   }
