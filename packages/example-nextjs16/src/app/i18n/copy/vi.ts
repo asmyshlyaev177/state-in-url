@@ -3,7 +3,7 @@
 // Values only: every key, its order and its type come from en.ts, and a
 // missing or renamed one is a type error rather than a silently English
 // page. Do not add keys here that en.ts does not have.
-// i18n:meta locale=vi source=en.ts source-blob=0b8e15b33eef39645b3d11c606155cb4178a6817 status=translated
+// i18n:meta locale=vi source=en.ts source-blob=7ed7b2279891828661b2d22fb37cb520b35aae17 status=translated
 import type { SiteCopy } from './types';
 
 export const copy: SiteCopy = {
@@ -24,6 +24,11 @@ export const copy: SiteCopy = {
       description:
         'Lưu state lồng nhau, có kiểu trong chuỗi truy vấn với Remix v2. Demo trực tiếp và hướng dẫn cho hook useUrlState của state-in-url.',
     },
+    astro: {
+      title: 'state-in-url cho Astro — state có kiểu trong URL với island',
+      description:
+        'Lưu state lồng nhau, có kiểu trong chuỗi truy vấn với Astro: island React hoặc Preact, hoặc trang không có framework phía client. Demo trực tiếp và hướng dẫn cho hook useUrlState của state-in-url.',
+    },
     vsNuqs: {
       title: 'state-in-url vs nuqs — so sánh state URL có kiểu trong React',
       description:
@@ -41,13 +46,13 @@ export const copy: SiteCopy = {
       '~2 KB nén gzip',
       'không phụ thuộc',
       'TypeScript-first',
-      'Next.js / react-router / Remix',
+      'Next.js / react-router / Remix / Astro',
       'MIT',
     ],
   },
 
   tabs: {
-    heading: 'Cùng một API, ba router',
+    heading: 'Cùng một API, bốn framework',
     selectLabel: 'Chọn framework',
   },
 
@@ -81,7 +86,7 @@ export const copy: SiteCopy = {
     pitfallsMid: ', mà ràng buộc',
     pitfallsTail:
       ' từ chối ngay lập tức. Và chúng xây dựng object state mặc định bên trong component, điều này ngầm phá vỡ việc chia sẻ — nó được khóa theo định danh object, nên không có lỗi, hai component chỉ đơn giản ngừng nhìn thấy nhau.',
-    shipsLead: 'Vậy nên package kèm theo sáu',
+    shipsLead: 'Vậy nên package kèm theo bảy',
     shipsMid: ' file. Agent của bạn tải một file theo yêu cầu qua',
     intentLinkText: 'TanStack Intent',
     shipsTail:
@@ -97,6 +102,7 @@ export const copy: SiteCopy = {
         'Ô nhập văn bản, thanh trượt, bất cứ thứ gì thay đổi nhanh',
       nextjsSsr: 'App Router: chuyển tiếp searchParams, Proxy cho layout',
       reactRouterRemixSetup: 'Thiết lập React Router v6/v7 hoặc Remix v2',
+      astroSetup: 'Island của Astro (React hoặc Preact), hoặc trang không có framework phía client',
       formLibraryIntegration: 'Kết hợp với react-hook-form (hoặc formik)',
       sharedStateNoUrl: 'useSharedState — chia sẻ mà không chạm vào URL',
     },
@@ -114,7 +120,7 @@ export const copy: SiteCopy = {
     rows: {
       setup: {
         label: 'Cài đặt',
-        siu: 'Không cần — import hook là dùng được',
+        siu: 'Next.js, React Router v6/v7, Remix, Astro, helper cho JS thuần',
         nuqs: 'Component adapter bọc quanh ứng dụng',
       },
       stateShape: {

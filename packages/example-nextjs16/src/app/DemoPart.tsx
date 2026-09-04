@@ -78,6 +78,7 @@ function getUrls(pathname: string) {
   let routerKind: keyof typeof sourceUrls = 'next.js'
   if (pathname.includes('/react-router')) routerKind = 'react-router';
   else if (pathname.includes('/remix')) routerKind = 'remix.js';
+  else if (pathname.includes('/astro')) routerKind = 'astro';
   else routerKind = 'next.js';
   const urls = sourceUrls[routerKind]
   return { routerKind, urls }
@@ -95,5 +96,9 @@ const sourceUrls = {
   'remix.js': {
     form: 'https://github.com/asmyshlyaev177/state-in-url/blob/master/packages/example-remix2/app/routes/Form-for-test.tsx',
     status: 'https://github.com/asmyshlyaev177/state-in-url/blob/master/packages/example-remix2/app/routes/Status-for-test.tsx'
+  },
+  astro: {
+    form: 'https://github.com/asmyshlyaev177/state-in-url/blob/master/packages/example-astro/src/components/Form-for-test.tsx',
+    status: 'https://github.com/asmyshlyaev177/state-in-url/blob/master/packages/example-astro/src/components/Status-for-test.tsx'
   }
 } as const;

@@ -189,7 +189,7 @@ test.describe('Landing content negotiation (landing only)', () => {
   test('only `/` is negotiated', async ({ request }) => {
     // The proxy matches `/` and the fixture routes, nothing else. A demo page
     // asked for Markdown is still a demo page; its mirror is `<route>.md`.
-    for (const path of ['/react-router', '/remix', '/ja', '/vs/nuqs']) {
+    for (const path of ['/react-router', '/remix', '/astro', '/ja', '/vs/nuqs']) {
       const response = await request.get(path, {
         headers: { ...BROWSER, accept: 'text/markdown' },
         maxRedirects: 0,
@@ -217,7 +217,7 @@ test.describe('Landing content negotiation (landing only)', () => {
   }) => {
     // Unlike `/`, these URLs have one representation each: nothing behind them
     // can be handed to the wrong caller, so they are ordinary static assets.
-    for (const path of ['/index.md', '/react-router.md', '/remix.md']) {
+    for (const path of ['/index.md', '/react-router.md', '/remix.md', '/astro.md']) {
       const response = await request.get(path, { headers: BROWSER });
 
       expect(response.status(), `${path} should exist`).toBe(200);

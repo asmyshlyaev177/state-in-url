@@ -67,7 +67,7 @@ export function stripLocale(pathname: string): string {
 }
 
 /** The public pages, locale-independent. */
-export const PAGES = ['', '/react-router', '/remix', '/vs/nuqs'] as const;
+export const PAGES = ['', '/react-router', '/remix', '/astro', '/vs/nuqs'] as const;
 
 /**
  * The reciprocal hreflang cluster for one page.

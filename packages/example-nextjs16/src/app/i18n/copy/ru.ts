@@ -3,7 +3,7 @@
 // Values only: every key, its order and its type come from en.ts, and a
 // missing or renamed one is a type error rather than a silently English
 // page. Do not add keys here that en.ts does not have.
-// i18n:meta locale=ru source=en.ts source-blob=0b8e15b33eef39645b3d11c606155cb4178a6817 status=translated
+// i18n:meta locale=ru source=en.ts source-blob=7ed7b2279891828661b2d22fb37cb520b35aae17 status=translated
 import type { SiteCopy } from './types';
 
 export const copy: SiteCopy = {
@@ -25,6 +25,11 @@ export const copy: SiteCopy = {
       description:
         'Храните вложенное типизированное состояние в строке запроса с Remix v2. Живое демо и настройка hook useUrlState из state-in-url.',
     },
+    astro: {
+      title: 'state-in-url для Astro — типизированное состояние в URL в островах',
+      description:
+        'Храните вложенное типизированное состояние в строке запроса с Astro: острова React или Preact, либо страницы без клиентского фреймворка. Живое демо и настройка hook useUrlState из state-in-url.',
+    },
     vsNuqs: {
       title:
         'state-in-url vs nuqs — типизированное состояние URL в React, сравнение',
@@ -43,13 +48,13 @@ export const copy: SiteCopy = {
       '~2 KB в gzip',
       'ноль зависимостей',
       'TypeScript-first',
-      'Next.js / react-router / Remix',
+      'Next.js / react-router / Remix / Astro',
       'MIT',
     ],
   },
 
   tabs: {
-    heading: 'Один API, три роутера',
+    heading: 'Один API, четыре фреймворка',
     selectLabel: 'Выбор фреймворка',
   },
 
@@ -83,7 +88,7 @@ export const copy: SiteCopy = {
     pitfallsMid: ', а ограничение',
     pitfallsTail:
       ' его сразу отвергает. И они создают объект состояния по умолчанию внутри компонента, что незаметно ломает обмен — он адресуется по идентичности объекта, поэтому ошибки нет, просто два компонента перестают видеть друг друга.',
-    shipsLead: 'Поэтому пакет поставляется с шестью',
+    shipsLead: 'Поэтому пакет поставляется с семью',
     shipsMid: '-файлами. Ваш агент загружает один по запросу через',
     intentLinkText: 'TanStack Intent',
     shipsTail:
@@ -98,6 +103,7 @@ export const copy: SiteCopy = {
       inputHandling: 'Текстовые поля, слайдеры — всё, что меняется быстро',
       nextjsSsr: 'App Router: проброс searchParams, Proxy для layout',
       reactRouterRemixSetup: 'Настройка React Router v6/v7 или Remix v2',
+      astroSetup: 'Острова Astro (React или Preact) либо страницы без клиентского фреймворка',
       formLibraryIntegration:
         'Совместное использование с react-hook-form (или formik)',
       sharedStateNoUrl: 'useSharedState — обмен без обращения к URL',
@@ -117,7 +123,7 @@ export const copy: SiteCopy = {
     rows: {
       setup: {
         label: 'Настройка',
-        siu: 'Не нужна — импортируйте hook и работайте',
+        siu: 'Next.js, React Router v6/v7, Remix, Astro, хелперы для чистого JS',
         nuqs: 'Компонент-адаптер оборачивает приложение',
       },
       stateShape: {

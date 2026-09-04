@@ -13,7 +13,7 @@ export const Tabs = ({ className = '', copy }: { className: string; copy: TabsCo
   const router = useRouter();
 
   // The tabs switch router, not language, so they stay inside whichever
-  // language the reader is already in. `TABS` lists the three routes
+  // language the reader is already in. `TABS` lists the routes
   // locale-independently and the prefix is applied here.
   //
   // Without this the mobile <select> threw on every translated page:
@@ -61,4 +61,5 @@ const TABS = [
   { text: "Next.js", url: '/' },
   { text: "react-router", url: '/react-router' },
   { text: "remix", url: '/remix' },
+  { text: "astro", url: '/astro' },
 ]

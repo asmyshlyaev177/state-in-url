@@ -1,6 +1,6 @@
 # state-in-url
 
-> A React hook library for storing typed, JSON-serializable state in URL query parameters. ~2 KB, zero runtime deps. Supports the Next.js App Router (14/15/16), React Router 6/7, Remix 2, and plain React. MIT licensed.
+> A React hook library for storing typed, JSON-serializable state in URL query parameters. ~2 KB, zero runtime deps. Supports the Next.js App Router (14/15/16), React Router 6/7, Remix 2, Astro (React/Preact islands), and plain React. MIT licensed.
 
 Last updated: 2026-08-31. Canonical: <https://state-in-url.dev/llms.txt>.
 
@@ -25,6 +25,7 @@ Available skills (under `node_modules/state-in-url/skills/`):
 | `input-handling` | core | Text inputs / sliders / fast-changing controls |
 | `nextjs-ssr` | framework | Next.js App Router: `searchParams` forwarding, Proxy for layouts |
 | `react-router-remix-setup` | framework | React Router v6/v7 or Remix v2 setup |
+| `astro-setup` | framework | Astro: React/Preact islands with the `searchParams` prop, or no client framework via `encodeState`/`decodeState` |
 | `form-library-integration` | composition | Pairing with `react-hook-form` (or formik) |
 | `shared-state-no-url` | core | `useSharedState` — cross-component state without URL sync |
 
@@ -36,7 +37,7 @@ Full page: <https://state-in-url.dev/vs/nuqs> (Markdown: /vs/nuqs.md). Sizes: wh
 
 | Library | Setup | Nested objects and dates | Size | Pick it when |
 |---|---|---|---|---|
-| state-in-url | None - import the hook | Preserved automatically, types included | ~2.9 KB gzip, zero deps | One typed object, zero setup, on Next.js / React Router / Remix |
+| state-in-url | None - import the hook | Preserved automatically, types included | ~2.9 KB gzip, zero deps | One typed object, zero setup, on Next.js / React Router / Remix / Astro |
 | nuqs | Adapter component, parser per key | JSON parser plus your own validator | ~6.7 KB gzip, one dep | Each value as its own readable query param |
 | TanStack Router | validateSearch on each route | JSON-first; dates need custom serialization | Built into the router | You are on TanStack Router |
 | use-query-params | Provider plus router adapter, param config per key | Via a JSON param type, loosely typed | ~4.4 KB gzip + serialize-query-params | A codebase already built on it |
@@ -57,6 +58,7 @@ Full page: <https://state-in-url.dev/vs/nuqs> (Markdown: /vs/nuqs.md). Sizes: wh
 | React Router | v7 | `state-in-url/react-router` |
 | React Router | v6 | `state-in-url/react-router6` |
 | Remix | v2 | `state-in-url/remix` |
+| Astro | React or Preact (compat) islands, on-demand rendered pages | `state-in-url/astro` |
 | Framework-agnostic | — | `state-in-url` (`useSharedState`), `state-in-url/encodeState` |
 
 Pages Router is **not** supported.
@@ -228,6 +230,29 @@ import { useUrlState } from 'state-in-url/remix';          // Remix v2
 setUrl({ tab: 'b' }, { replace: false, preventScrollReset: true });
 ```
 
+## Astro
+
+Same API inside a React (or Preact `compat: true`) island. Pass `Object.fromEntries(Astro.url.searchParams)` as the island's `searchParams` prop so the server render matches the URL — a plain object, `URLSearchParams` serializes to `{}`. The page must render on demand (`output: 'server'` or `export const prerender = false`, with an adapter). Islands sharing one default-state object share state; there is no client router, so `replace` defaults to `true`.
+
+```astro
+---
+import { Filters } from '../components/Filters';
+const searchParams = Object.fromEntries(Astro.url.searchParams);
+---
+<Filters client:load searchParams={searchParams} />
+```
+
+```typescript
+import { useUrlState } from 'state-in-url/astro';
+
+export function Filters({ searchParams }: { searchParams?: Record<string, string> }) {
+  const { urlState, setUrl } = useUrlState(FILTERS_STATE, { searchParams });
+  ...
+}
+```
+
+No client framework at all: `decodeState(Astro.url.searchParams, FILTERS_STATE)` and `encodeState(next, FILTERS_STATE, Astro.url.searchParams)` from `state-in-url/encodeState` do the same job in the frontmatter, for links.
+
 ## react-hook-form integration
 
 Share one defaults object, hydrate `useForm` from `urlState`, push form changes back via RHF `subscribe()` (not `watch()`):
@@ -278,7 +303,7 @@ Same module-scoped default-state-identity rule. Use only when URL sync is explic
 
 - Full README (humans): https://github.com/asmyshlyaev177/state-in-url/blob/master/README.md
 - URL size limits: https://github.com/asmyshlyaev177/state-in-url/blob/master/Limits.md
-- Working examples per framework: `packages/example-nextjs{14,15,16}`, `packages/example-react-router{6,7}`, `packages/example-remix2`
+- Working examples per framework: `packages/example-nextjs{14,15,16}`, `packages/example-react-router{6,7}`, `packages/example-remix2`, `packages/example-astro`
 - JSDoc comments are available in IDE for all exported functions
 
 ## Contact

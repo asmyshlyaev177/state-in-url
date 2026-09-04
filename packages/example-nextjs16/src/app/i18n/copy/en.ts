@@ -21,6 +21,11 @@ export const copy: SiteCopy = {
       description:
         'Store nested, typed state in the query string with Remix v2. Live demo and setup for the state-in-url useUrlState hook.',
     },
+    astro: {
+      title: 'state-in-url for Astro — typed URL state in islands',
+      description:
+        'Store nested, typed state in the query string with Astro: React or Preact islands, or plain pages with no client framework. Live demo and setup for the state-in-url useUrlState hook.',
+    },
     vsNuqs: {
       title: 'state-in-url vs nuqs — typed URL state in React, compared',
       description:
@@ -38,13 +43,13 @@ export const copy: SiteCopy = {
       '~2 KB gzipped',
       'zero dependencies',
       'TypeScript-first',
-      'Next.js / react-router / Remix',
+      'Next.js / react-router / Remix / Astro',
       'MIT',
     ],
   },
 
   tabs: {
-    heading: 'Same API, three routers',
+    heading: 'Same API, four frameworks',
     selectLabel: 'Select framework',
   },
 
@@ -78,7 +83,7 @@ export const copy: SiteCopy = {
     pitfallsMid: ', which the',
     pitfallsTail:
       'constraint rejects outright. And they build the default-state object inside the component, which breaks sharing silently — it is keyed by object identity, so nothing errors, the two components simply stop seeing each other.',
-    shipsLead: 'So the package ships six',
+    shipsLead: 'So the package ships seven',
     shipsMid: 'files. Your agent loads one on demand through',
     intentLinkText: 'TanStack Intent',
     shipsTail:
@@ -93,6 +98,7 @@ export const copy: SiteCopy = {
       inputHandling: 'Text inputs, sliders, anything that changes fast',
       nextjsSsr: 'App Router: searchParams forwarding, Proxy for layouts',
       reactRouterRemixSetup: 'React Router v6/v7 or Remix v2 setup',
+      astroSetup: 'Astro islands (React or Preact), or pages with no client framework',
       formLibraryIntegration: 'Pairing with react-hook-form (or formik)',
       sharedStateNoUrl: 'useSharedState — sharing without touching the URL',
     },
@@ -110,7 +116,7 @@ export const copy: SiteCopy = {
     rows: {
       setup: {
         label: 'Setup',
-        siu: 'None — import the hook and go',
+        siu: 'Next.js, React Router v6/v7, Remix, Astro, plain JS helpers',
         nuqs: 'Adapter component wraps the app',
       },
       stateShape: {

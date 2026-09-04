@@ -3,7 +3,7 @@
 // Values only: every key, its order and its type come from en.ts, and a
 // missing or renamed one is a type error rather than a silently English
 // page. Do not add keys here that en.ts does not have.
-// i18n:meta locale=ja source=en.ts source-blob=0b8e15b33eef39645b3d11c606155cb4178a6817 status=translated
+// i18n:meta locale=ja source=en.ts source-blob=7ed7b2279891828661b2d22fb37cb520b35aae17 status=translated
 import type { SiteCopy } from './types';
 
 export const copy: SiteCopy = {
@@ -23,6 +23,11 @@ export const copy: SiteCopy = {
       description:
         'Remix v2 で、ネストした型付き状態をクエリ文字列に保存。state-in-url useUrlState フックのライブデモとセットアップ。',
     },
+    astro: {
+      title: 'Astro 向け state-in-url — アイランドでの型付き URL 状態',
+      description:
+        'Astro で、ネストした型付き状態をクエリ文字列に保存。React / Preact のアイランド、またはクライアントフレームワークなしのページに対応。state-in-url useUrlState フックのライブデモとセットアップ。',
+    },
     vsNuqs: {
       title: 'state-in-url vs nuqs — React の型付き URL 状態を比較',
       description:
@@ -40,13 +45,13 @@ export const copy: SiteCopy = {
       '~2 KB gzip 圧縮',
       '依存関係ゼロ',
       'TypeScript ファースト',
-      'Next.js / react-router / Remix',
+      'Next.js / react-router / Remix / Astro',
       'MIT',
     ],
   },
 
   tabs: {
-    heading: '同じ API、3 つのルーター',
+    heading: '同じ API、4 つのフレームワーク',
     selectLabel: 'フレームワークを選択',
   },
 
@@ -80,7 +85,7 @@ export const copy: SiteCopy = {
     pitfallsMid: ' で定義しますが、',
     pitfallsTail:
       ' 制約はそれを即座に拒否します。さらに、デフォルト状態のオブジェクトをコンポーネント内で構築すると、共有が静かに壊れます。オブジェクトの同一性でキー付けされるためエラーにはならず、2 つのコンポーネントが互いを見失うだけです。',
-    shipsLead: 'このパッケージは 6 つの',
+    shipsLead: 'このパッケージは 7 つの',
     shipsMid: ' ファイルを同梱しています。エージェントは',
     intentLinkText: 'TanStack Intent',
     shipsTail:
@@ -96,6 +101,7 @@ export const copy: SiteCopy = {
       nextjsSsr: 'App Router: searchParams の転送、レイアウト用の Proxy',
       reactRouterRemixSetup:
         'React Router v6/v7 または Remix v2 のセットアップ',
+      astroSetup: 'Astro のアイランド（React または Preact）、またはクライアントフレームワークなしのページ',
       formLibraryIntegration: 'react-hook-form(または formik)との組み合わせ',
       sharedStateNoUrl: 'useSharedState — URL に触れずに共有',
     },
@@ -114,7 +120,7 @@ export const copy: SiteCopy = {
     rows: {
       setup: {
         label: 'セットアップ',
-        siu: '不要 — hook を import するだけ',
+        siu: 'Next.js、React Router v6/v7、Remix、Astro、素の JS 用ヘルパー',
         nuqs: 'アダプターコンポーネントでアプリをラップ',
       },
       stateShape: {

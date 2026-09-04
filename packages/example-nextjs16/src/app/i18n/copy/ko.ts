@@ -3,7 +3,7 @@
 // Values only: every key, its order and its type come from en.ts, and a
 // missing or renamed one is a type error rather than a silently English
 // page. Do not add keys here that en.ts does not have.
-// i18n:meta locale=ko source=en.ts source-blob=0b8e15b33eef39645b3d11c606155cb4178a6817 status=translated
+// i18n:meta locale=ko source=en.ts source-blob=7ed7b2279891828661b2d22fb37cb520b35aae17 status=translated
 import type { SiteCopy } from './types';
 
 export const copy: SiteCopy = {
@@ -23,6 +23,11 @@ export const copy: SiteCopy = {
       description:
         'Remix v2에서 중첩된 타입 상태를 쿼리 문자열에 저장하세요. state-in-url useUrlState 훅의 라이브 데모와 설정.',
     },
+    astro: {
+      title: 'Astro용 state-in-url — 아일랜드의 타입이 지정된 URL 상태',
+      description:
+        'Astro에서 중첩된 타입 상태를 쿼리 문자열에 저장하세요. React 또는 Preact 아일랜드, 혹은 클라이언트 프레임워크가 없는 페이지에서 사용할 수 있습니다. state-in-url useUrlState 훅의 라이브 데모와 설정.',
+    },
     vsNuqs: {
       title: 'state-in-url vs nuqs — React 타입 URL 상태 비교',
       description:
@@ -40,13 +45,13 @@ export const copy: SiteCopy = {
       '~2 KB gzip 압축',
       '의존성 없음',
       'TypeScript 우선',
-      'Next.js / react-router / Remix',
+      'Next.js / react-router / Remix / Astro',
       'MIT',
     ],
   },
 
   tabs: {
-    heading: '같은 API, 세 가지 라우터',
+    heading: '같은 API, 네 가지 프레임워크',
     selectLabel: '프레임워크 선택',
   },
 
@@ -79,7 +84,7 @@ export const copy: SiteCopy = {
     pitfallsMid: ' 로 입력하는데, 이는',
     pitfallsTail:
       ' 제약이 즉시 거부합니다. 그리고 컴포넌트 안에서 기본 상태 객체를 만들어 공유를 조용히 깨뜨립니다. 객체 동일성으로 키가 지정되므로 오류가 발생하지 않고, 두 컴포넌트가 서로를 보지 못하게 될 뿐입니다.',
-    shipsLead: '그래서 이 패키지는 6개의',
+    shipsLead: '그래서 이 패키지는 7개의',
     shipsMid: ' 파일을 제공합니다. 에이전트는',
     intentLinkText: 'TanStack Intent',
     shipsTail:
@@ -93,6 +98,7 @@ export const copy: SiteCopy = {
       inputHandling: '텍스트 입력, 슬라이더 등 빠르게 변하는 모든 것',
       nextjsSsr: 'App Router: searchParams 전달, 레이아웃용 Proxy',
       reactRouterRemixSetup: 'React Router v6/v7 또는 Remix v2 설정',
+      astroSetup: 'Astro 아일랜드(React 또는 Preact), 혹은 클라이언트 프레임워크가 없는 페이지',
       formLibraryIntegration: 'react-hook-form(또는 formik)과 함께 사용',
       sharedStateNoUrl: 'useSharedState — URL을 건드리지 않고 공유',
     },
@@ -110,7 +116,7 @@ export const copy: SiteCopy = {
     rows: {
       setup: {
         label: '설정',
-        siu: '불필요 — hook을 import하면 끝',
+        siu: 'Next.js, React Router v6/v7, Remix, Astro, 순수 JS 헬퍼',
         nuqs: '어댑터 컴포넌트로 앱을 감싸야 함',
       },
       stateShape: {

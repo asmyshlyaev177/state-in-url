@@ -128,7 +128,7 @@ const nextConfig = {
     // an `age` far past `s-maxage=600` — the client never sees a fresh response
     // and `<Link>` prefetch revalidates on a loop, measured at ~26 requests a
     // second from one idle tab. Its layout's `revalidate` caches it for a week.
-    const demoPages = ['', '/react-router', '/remix'];
+    const demoPages = ['', '/react-router', '/remix', '/astro'];
     const pages = [...demoPages, '/vs/nuqs'];
     const prefixes = ['', ...LOCALES.map((locale) => `/${locale.dir}`)];
 
