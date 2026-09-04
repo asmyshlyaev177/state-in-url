@@ -31,6 +31,8 @@ export interface MetaCopy {
   remix: PageMeta;
   /** `/astro` */
   astro: PageMeta;
+  /** `/nextjs` */
+  nextjs: PageMeta;
   /** `/vs/nuqs` */
   vsNuqs: PageMeta;
 }
@@ -208,6 +210,49 @@ export interface AlternativesCopy {
   };
 }
 
+/**
+ * One question/answer pair, rendered as a `<dl>` row and emitted as FAQPage
+ * JSON-LD. Questions are phrased the way people search; answers must stand
+ * alone (40-60 words) — a rich result shows them without the page.
+ */
+export interface FaqItem {
+  q: string;
+  a: string;
+}
+
+/** A FAQ block: `components/Faq.tsx`. */
+export interface FaqCopy {
+  title: string;
+  items: ReadonlyArray<FaqItem>;
+}
+
+/** The `/nextjs` guide: `pages/NextjsPage.tsx`. Code samples stay in English. */
+export interface NextjsGuideCopy {
+  /** Breadcrumb label, and the link text pointing here from the home page. */
+  crumb: string;
+  title: string;
+  intro: string;
+  /** `{demoLead} ⟦<a>{demoLinkText}</a>⟧{demoTail}` */
+  demoLead: string;
+  /** See `demoLead`. */
+  demoLinkText: string;
+  /** See `demoLead` — the sentence-final punctuation after the link. */
+  demoTail: string;
+  serverTitle: string;
+  serverBody: string;
+  /** Heading above the shared `description.suspense*` paragraph. */
+  suspenseTitle: string;
+  /** One extra sentence after that paragraph: what prerendering still costs. */
+  prerenderNote: string;
+  layoutTitle: string;
+  layoutBody: string;
+  historyTitle: string;
+  historyBody: string;
+  inputTitle: string;
+  inputBody: string;
+  faq: FaqCopy;
+}
+
 /** The `/vs/nuqs` comparison page: `pages/VsNuqsPage.tsx`. */
 export interface VsNuqsCopy {
   /** Heading above the side-by-side code samples. */
@@ -229,11 +274,8 @@ export interface VsNuqsCopy {
   migrateBody: string;
   /** Heading of the FAQ block. */
   faqTitle: string;
-  /**
-   * Question/answer pairs, also emitted as FAQPage JSON-LD. Questions are
-   * phrased the way people search; answers must stand alone (40-60 words).
-   */
-  faq: ReadonlyArray<{ q: string; a: string }>;
+  /** See `FaqItem`. */
+  faq: ReadonlyArray<FaqItem>;
   alternatives: AlternativesCopy;
 }
 
@@ -376,6 +418,9 @@ export interface SiteCopy {
   aiSkills: AiSkillsCopy;
   comparison: ComparisonCopy;
   vsNuqs: VsNuqsCopy;
+  /** The home page FAQ, also emitted as FAQPage JSON-LD there. */
+  faq: FaqCopy;
+  nextjs: NextjsGuideCopy;
   description: DescriptionCopy;
   share: ShareCopy;
   footer: FooterCopy;

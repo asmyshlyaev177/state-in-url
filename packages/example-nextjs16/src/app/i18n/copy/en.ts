@@ -7,9 +7,9 @@ import type { SiteCopy } from './types';
 export const copy: SiteCopy = {
   meta: {
     home: {
-      title: 'state-in-url - store state in URL like in JSON, type-safe',
+      title: 'state-in-url — typed URL state for React & Next.js, like useState',
       description:
-        'Store any user state in query parameters; imagine JSON in a browser URL, while keeping types and structure of data. For Next.js, React-router and pure JS',
+        'URL state management for React: keep typed state in the query string, like useState. Survives refresh, every state is a shareable link, back button works. Next.js, React Router, Remix, Astro.',
     },
     reactRouter: {
       title: 'state-in-url for React Router — typed URL state, v6 and v7',
@@ -26,17 +26,22 @@ export const copy: SiteCopy = {
       description:
         'Store nested, typed state in the query string with Astro: React or Preact islands, or plain pages with no client framework. Live demo and setup for the state-in-url useUrlState hook.',
     },
+    nextjs: {
+      title: 'URL state management in Next.js App Router — state-in-url',
+      description:
+        'Keep typed state in the Next.js URL: searchParams from Server Components, no Suspense boundary, prerendering kept, layouts via proxy.ts, shallow history updates. Guide and FAQ for the state-in-url useUrlState hook.',
+    },
     vsNuqs: {
-      title: 'state-in-url vs nuqs — typed URL state in React, compared',
+      title: 'nuqs alternative — state-in-url vs nuqs, typed URL state in React compared',
       description:
         'Honest state-in-url vs nuqs comparison: setup, state shape, nested objects, dates and bundle size — plus TanStack Router, use-query-params and plain useSearchParams, with a live demo.',
     },
   },
 
   header: {
-    titleLead: 'Typed state, living in',
-    titleUrl: 'the URL',
-    desc: 'is React state that writes itself to the query string. Objects, arrays and dates keep their types, every state is a shareable link, and it survives reloads — no providers, no boilerplate.',
+    titleLead: 'Typed URL state for React & Next.js —',
+    titleUrl: 'like useState',
+    desc: 'is React state that writes itself to the query string. Objects, arrays and dates keep their types, every state is a shareable link, it survives reloads and the back button works — no providers, no Suspense boundary, no boilerplate.',
     factsLabel: 'Library facts',
     // The thin space in "~2 KB" is what `&thinsp;` rendered in the markup.
     facts: [
@@ -49,7 +54,7 @@ export const copy: SiteCopy = {
   },
 
   tabs: {
-    heading: 'Same API, four frameworks',
+    heading: 'URL state management for Next.js, React Router, Remix and Astro — same API',
     selectLabel: 'Select framework',
   },
 
@@ -246,6 +251,94 @@ export const copy: SiteCopy = {
           pick: 'One or two flat string params, no library worth it',
         },
       },
+    },
+  },
+
+  faq: {
+    title: 'URL state in React — frequently asked questions',
+    items: [
+      {
+        q: 'Why keep React state in the URL?',
+        a: 'A URL that holds the state is a shareable link: reload, bookmark or send it and the same filters, tab or page open. Back and forward work for free, and unrelated components can read the same values without a provider. state-in-url does this with one typed object instead of hand-parsed strings.',
+      },
+      {
+        q: 'What state belongs in the URL?',
+        a: 'Anything a reader might bookmark or share: filters, sorting, pagination, the active tab, a date range, search text. Keep out what is private, huge or purely transient — auth tokens, whether a dialog is open, mouse position. A quick test: would a shared link still make sense with this value in it?',
+      },
+      {
+        q: 'How do I read and set URL params in React with state-in-url?',
+        a: 'Call useUrlState with a default-state object. urlState holds the current values, already typed; setUrl writes a partial object to the query string; setState updates the state without touching the URL until you flush it. Numbers, booleans, arrays, nested objects and Dates come back as the same types they went in.',
+      },
+      {
+        q: 'Does URL state survive a page refresh?',
+        a: 'Yes. The state is the query string, so a reload, a bookmark or a link pasted somewhere else restores it. On the Next.js App Router, pass the page\u2019s searchParams prop into the hook so the first server render already shows the right values instead of the defaults.',
+      },
+      {
+        q: 'Does it work with Next.js Server Components, without a Suspense boundary?',
+        a: 'Yes. The hook never calls useSearchParams, so a component using it needs no Suspense boundary and does not opt the page out of prerendering, PPR included. Server Components read the same state through the searchParams prop; a layout can decode it from a header set in proxy.ts.',
+      },
+      {
+        q: 'Can I sync react-hook-form or a table library with the URL?',
+        a: 'Yes. Keep the form library as the source of truth, seed it with urlState as the default values, and mirror its changes with setUrl from a change handler or an effect. The same pattern works for TanStack Table state, filter panels and anything else that exposes values and a setter.',
+      },
+      {
+        q: 'Which frameworks does state-in-url support?',
+        a: 'Next.js 14-16 App Router, React Router v6 and v7, Remix v2 and Astro islands (React or Preact), each through its own entry point. Plain JavaScript and any other framework can use the encodeState and decodeState helpers directly. It is ~2 KB gzipped with zero dependencies.',
+      },
+    ],
+  },
+
+  nextjs: {
+    crumb: 'Next.js guide',
+    title: 'URL state management in Next.js App Router',
+    intro:
+      'state-in-url keeps typed state in the query string on Next.js 14, 15 and 16: one useUrlState hook per feature, no adapter, no provider, no Suspense boundary. This page covers what is specific to the App Router — Server Components, prerendering, layouts and history.',
+    demoLead: 'The live demo on the',
+    demoLinkText: 'home page',
+    demoTail: ' runs on Next.js 16.',
+    serverTitle: 'Forward searchParams from the server page',
+    serverBody:
+      'A Server Component page receives searchParams — a Promise since Next.js 15. Await it and pass the object into the client component, which hands it to the hook. The first server render then shows the URL\u2019s values instead of the defaults, so there is no flash and no hydration warning.',
+    suspenseTitle: 'No Suspense boundary, prerendering kept',
+    prerenderNote:
+      'A prerendered page still renders the defaults, because there is no query string at build time — render a route dynamically when a shared link must be right on first paint.',
+    layoutTitle: 'Layouts: decode the query string from a header',
+    layoutBody:
+      'Server layouts never receive searchParams. Copy the query string into a request header in proxy.ts (middleware.ts still works as a deprecated alias) and decode it in the layout with decodeState and the same default-state object — the result is typed exactly like urlState on the client.',
+    historyTitle: 'History, shallow updates and scroll',
+    historyBody:
+      'setUrl replaces the current history entry by default, so typing does not pile up entries; pass replace: false to push one. Updates go through the History API — no server round trip and no _rsc request per keystroke. Pass useHistory: false to go through the Next.js router instead, when the server should re-render on every change. scroll is false by default.',
+    inputTitle: 'Fast inputs: render now, write the URL later',
+    inputBody:
+      'For text fields and sliders, update with setState on every change and call setUrl() with no arguments on blur or after a debounce. The component re-renders immediately; the URL is written once, with content-based diffing, so calling it repeatedly is safe.',
+    faq: {
+      title: 'Next.js URL state — frequently asked questions',
+      items: [
+        {
+          q: 'How do I keep state in the URL in Next.js App Router?',
+          a: 'Define a default-state object outside the component, wrap useUrlState from state-in-url/next in a small hook, and call that hook in any client component. urlState is the typed current value and setUrl writes a partial into the query string. Pass the page\u2019s searchParams prop in so the server render is already correct.',
+        },
+        {
+          q: 'Does useSearchParams need a Suspense boundary, and does state-in-url?',
+          a: 'Next\u2019s useSearchParams opts a statically rendered route into client rendering up to the nearest Suspense boundary, and the build fails without one. state-in-url never calls it: it reads searchParams on the server and window.location on the client, so no boundary is needed and prerendering, PPR included, is kept.',
+        },
+        {
+          q: 'How do I read URL state in a Server Component?',
+          a: 'Pages get it as the searchParams prop — await it and either forward it to the client hook or decode it on the server with decodeState and the same default object. Layouts do not receive searchParams; expose the query string through a header set in proxy.ts and decode that.',
+        },
+        {
+          q: 'Does updating the URL re-render the page on the server?',
+          a: 'Not by default. setUrl updates through the History API, so nothing is fetched and no _rsc request is made. When the server should see the new state — say, to refetch a list in a Server Component — pass useHistory: false so updates go through the Next.js router and the route re-renders.',
+        },
+        {
+          q: 'Is state-in-url a nuqs alternative for Next.js?',
+          a: 'Yes. Both keep typed state in the query string; state-in-url takes one object with nested values and dates preserved, needs no adapter component and no per-key parser, and never touches useSearchParams. nuqs fits better when each value should be its own hand-readable query param. See the full comparison.',
+        },
+        {
+          q: 'Which Next.js versions are supported?',
+          a: 'Next.js 14, 15 and 16 on the App Router, including the async searchParams introduced in 15 and cacheComponents with PPR in 16. Other setups can use the framework-agnostic encodeState and decodeState helpers with the router of their choice.',
+        },
+      ],
     },
   },
 

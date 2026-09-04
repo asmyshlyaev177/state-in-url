@@ -11,10 +11,11 @@ import type { SiteCopy } from '../i18n/copy/types';
  * subpages get their trail right under the top bar, above the hero.
  *
  * The matching BreadcrumbList JSON-LD is emitted by each subpage's route
- * (see `breadcrumbJsonLd` in VsNuqsPage) — keep the two in step.
+ * (`breadcrumbListJsonLd` in jsonLd.ts) — keep the two in step.
  */
 const CRUMB_OF: Record<string, (copy: SiteCopy) => string> = {
   '/vs/nuqs': (copy) => copy.comparison.title,
+  '/nextjs': (copy) => copy.nextjs.crumb,
 };
 
 export const Breadcrumbs = ({

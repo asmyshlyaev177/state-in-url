@@ -100,6 +100,7 @@ export const jsonLd: WithContext<SoftwareApplication> = {
     'URI state',
     'URL state',
     'React.js URL state management',
+    'Next.js App Router URL state management',
     'queryString parser/stringifier',
   ],
 };
@@ -251,6 +252,7 @@ export function localeMetadata({
     '/react-router': copy.meta.reactRouter,
     '/remix': copy.meta.remix,
     '/astro': copy.meta.astro,
+    '/nextjs': copy.meta.nextjs,
     '/vs/nuqs': copy.meta.vsNuqs,
   };
   const page = metaByPath[path] ?? copy.meta.home;

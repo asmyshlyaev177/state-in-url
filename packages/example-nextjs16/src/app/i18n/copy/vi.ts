@@ -3,15 +3,15 @@
 // Values only: every key, its order and its type come from en.ts, and a
 // missing or renamed one is a type error rather than a silently English
 // page. Do not add keys here that en.ts does not have.
-// i18n:meta locale=vi source=en.ts source-blob=7ed7b2279891828661b2d22fb37cb520b35aae17 status=translated
+// i18n:meta locale=vi source=en.ts source-blob=d77309b236f9e4529c3c3b32f7338be30db41126 status=translated
 import type { SiteCopy } from './types';
 
 export const copy: SiteCopy = {
   meta: {
     home: {
-      title: 'state-in-url - lưu state trong URL như trong JSON, an toàn kiểu',
+      title: 'state-in-url — state URL có kiểu cho React & Next.js, như useState',
       description:
-        'Lưu bất kỳ state người dùng nào trong tham số truy vấn; hãy tưởng tượng JSON trong URL trình duyệt, trong khi giữ nguyên kiểu và cấu trúc dữ liệu. Cho Next.js, React-router và JS thuần.',
+        'Quản lý state URL cho React: giữ state có kiểu trong chuỗi truy vấn, như useState. Giữ nguyên sau khi tải lại, mọi state là một liên kết có thể chia sẻ, nút quay lại hoạt động. Next.js, React Router, Remix, Astro.',
     },
     reactRouter: {
       title:
@@ -29,17 +29,22 @@ export const copy: SiteCopy = {
       description:
         'Lưu state lồng nhau, có kiểu trong chuỗi truy vấn với Astro: island React hoặc Preact, hoặc trang không có framework phía client. Demo trực tiếp và hướng dẫn cho hook useUrlState của state-in-url.',
     },
+    nextjs: {
+      title: 'Quản lý state URL trong Next.js App Router — state-in-url',
+      description:
+        'Giữ state có kiểu trong URL của Next.js: searchParams từ Server Components, không ranh giới Suspense, vẫn prerender, layout qua proxy.ts, cập nhật history shallow. Hướng dẫn và FAQ cho hook useUrlState của state-in-url.',
+    },
     vsNuqs: {
-      title: 'state-in-url vs nuqs — so sánh state URL có kiểu trong React',
+      title: 'Lựa chọn thay thế nuqs — state-in-url vs nuqs, so sánh state URL có kiểu trong React',
       description:
         'So sánh thẳng thắn state-in-url và nuqs: cài đặt, hình dạng state, object lồng nhau, ngày tháng và kích thước bundle — thêm TanStack Router, use-query-params và useSearchParams, kèm demo trực tiếp.',
     },
   },
 
   header: {
-    titleLead: 'State có kiểu, sống trong',
-    titleUrl: 'URL',
-    desc: 'là state React tự ghi chính nó vào chuỗi truy vấn. Object, array và ngày giữ nguyên kiểu, mọi state là một liên kết có thể chia sẻ và tồn tại qua các lần tải lại — không provider, không boilerplate.',
+    titleLead: 'State URL có kiểu cho React & Next.js —',
+    titleUrl: 'như useState',
+    desc: 'là state React tự ghi chính nó vào chuỗi truy vấn. Object, array và ngày giữ nguyên kiểu, mọi state là một liên kết có thể chia sẻ, tồn tại qua các lần tải lại và nút quay lại hoạt động — không provider, không ranh giới Suspense, không boilerplate.',
     factsLabel: 'Thông tin thư viện',
     // The thin space in "~2 KB" is what `&thinsp;` rendered in the markup.
     facts: [
@@ -52,7 +57,7 @@ export const copy: SiteCopy = {
   },
 
   tabs: {
-    heading: 'Cùng một API, bốn framework',
+    heading: 'Quản lý state URL cho Next.js, React Router, Remix và Astro — cùng một API',
     selectLabel: 'Chọn framework',
   },
 
@@ -248,6 +253,94 @@ export const copy: SiteCopy = {
           pick: 'Chỉ một hai param chuỗi phẳng, không đáng thêm thư viện',
         },
       },
+    },
+  },
+
+  faq: {
+    title: 'State URL trong React — câu hỏi thường gặp',
+    items: [
+      {
+        q: 'Tại sao nên giữ state React trong URL?',
+        a: 'URL chứa state là một liên kết có thể chia sẻ: tải lại, đánh dấu trang hoặc gửi đi thì cùng bộ lọc, tab hay trang đó sẽ mở ra. Nút quay lại và tiến tới tự động hoạt động, và các component không liên quan có thể đọc cùng giá trị mà không cần provider. state-in-url làm việc này với một object có kiểu thay vì các chuỗi tự parse.',
+      },
+      {
+        q: 'State nào nên nằm trong URL?',
+        a: 'Bất cứ thứ gì người đọc có thể đánh dấu hoặc chia sẻ: bộ lọc, sắp xếp, phân trang, tab đang mở, khoảng ngày, văn bản tìm kiếm. Tránh những gì riêng tư, quá lớn hoặc thuần tạm thời — token xác thực, dialog có đang mở hay không, vị trí chuột. Một phép thử nhanh: liên kết được chia sẻ có còn ý nghĩa với giá trị này trong đó không?',
+      },
+      {
+        q: 'Đọc và ghi tham số URL trong React bằng state-in-url như thế nào?',
+        a: 'Gọi useUrlState với một object state mặc định. urlState giữ giá trị hiện tại, đã có kiểu; setUrl ghi một object partial vào chuỗi truy vấn; setState cập nhật state mà không chạm vào URL cho đến khi bạn flush nó. Số, boolean, mảng, object lồng nhau và Date trả về đúng kiểu như lúc đưa vào.',
+      },
+      {
+        q: 'State URL có tồn tại sau khi tải lại trang không?',
+        a: 'Có. State chính là chuỗi truy vấn, nên tải lại, đánh dấu trang hay dán liên kết ở nơi khác đều khôi phục nó. Trên Next.js App Router, truyền prop searchParams của trang vào hook để lần render đầu trên server đã hiển thị đúng giá trị thay vì giá trị mặc định.',
+      },
+      {
+        q: 'Có hoạt động với Next.js Server Components mà không cần ranh giới Suspense không?',
+        a: 'Có. Hook không bao giờ gọi useSearchParams, nên component dùng nó không cần ranh giới Suspense và không khiến trang bị loại khỏi prerendering, kể cả PPR. Server Components đọc cùng state qua prop searchParams; layout có thể giải mã nó từ một header đặt trong proxy.ts.',
+      },
+      {
+        q: 'Có thể đồng bộ react-hook-form hoặc thư viện bảng với URL không?',
+        a: 'Có. Giữ thư viện form làm nguồn sự thật, khởi tạo nó với urlState làm giá trị mặc định, và phản chiếu thay đổi của nó bằng setUrl từ một handler thay đổi hoặc một effect. Cùng mẫu này áp dụng cho state của TanStack Table, panel bộ lọc và bất cứ thứ gì cung cấp giá trị cùng một setter.',
+      },
+      {
+        q: 'state-in-url hỗ trợ những framework nào?',
+        a: 'Next.js 14-16 App Router, React Router v6 và v7, Remix v2 và island của Astro (React hoặc Preact), mỗi cái qua entry point riêng. JavaScript thuần và bất kỳ framework nào khác có thể dùng trực tiếp các helper encodeState và decodeState. Thư viện nặng ~2 KB nén gzip, không phụ thuộc.',
+      },
+    ],
+  },
+
+  nextjs: {
+    crumb: 'Hướng dẫn Next.js',
+    title: 'Quản lý state URL trong Next.js App Router',
+    intro:
+      'state-in-url giữ state có kiểu trong chuỗi truy vấn trên Next.js 14, 15 và 16: một hook useUrlState cho mỗi tính năng, không adapter, không provider, không ranh giới Suspense. Trang này nói về những gì đặc thù của App Router — Server Components, prerendering, layout và history.',
+    demoLead: 'Demo trực tiếp trên',
+    demoLinkText: 'trang chủ',
+    demoTail: ' chạy trên Next.js 16.',
+    serverTitle: 'Chuyển tiếp searchParams từ trang server',
+    serverBody:
+      'Một trang Server Component nhận searchParams — là Promise kể từ Next.js 15. Await nó rồi truyền object vào client component, component này đưa nó cho hook. Lần render đầu trên server khi đó hiển thị giá trị của URL thay vì giá trị mặc định, nên không có nhấp nháy và không có cảnh báo hydration.',
+    suspenseTitle: 'Không ranh giới Suspense, vẫn prerender',
+    prerenderNote:
+      'Trang được prerender vẫn render giá trị mặc định, vì lúc build không có chuỗi truy vấn — hãy render route đó động khi một liên kết chia sẻ phải đúng ngay từ lần vẽ đầu tiên.',
+    layoutTitle: 'Layout: giải mã chuỗi truy vấn từ một header',
+    layoutBody:
+      'Layout trên server không bao giờ nhận searchParams. Sao chép chuỗi truy vấn vào một header của request trong proxy.ts (middleware.ts vẫn hoạt động như một alias đã lỗi thời) và giải mã nó trong layout bằng decodeState cùng chính object state mặc định đó — kết quả có kiểu y hệt urlState phía client.',
+    historyTitle: 'History, cập nhật shallow và scroll',
+    historyBody:
+      'setUrl mặc định thay thế mục history hiện tại, nên gõ phím không chất đống mục; truyền replace: false để push thêm một mục. Cập nhật đi qua History API — không có vòng đi-về server và không request _rsc cho mỗi phím gõ. Truyền useHistory: false để đi qua router của Next.js thay thế, khi server cần render lại ở mỗi thay đổi. scroll mặc định là false.',
+    inputTitle: 'Ô nhập nhanh: render ngay, ghi URL sau',
+    inputBody:
+      'Với ô văn bản và thanh trượt, cập nhật bằng setState ở mỗi thay đổi và gọi setUrl() không tham số khi blur hoặc sau một debounce. Component render lại ngay lập tức; URL được ghi một lần, có so sánh theo nội dung, nên gọi lặp lại là an toàn.',
+    faq: {
+      title: 'State URL trong Next.js — câu hỏi thường gặp',
+      items: [
+        {
+          q: 'Làm sao giữ state trong URL với Next.js App Router?',
+          a: 'Định nghĩa một object state mặc định bên ngoài component, bọc useUrlState từ state-in-url/next trong một hook nhỏ, và gọi hook đó trong bất kỳ client component nào. urlState là giá trị hiện tại có kiểu và setUrl ghi một partial vào chuỗi truy vấn. Truyền prop searchParams của trang vào để lần render trên server đã đúng sẵn.',
+        },
+        {
+          q: 'useSearchParams có cần ranh giới Suspense không, còn state-in-url thì sao?',
+          a: 'useSearchParams của Next đưa một route render tĩnh sang render phía client cho đến ranh giới Suspense gần nhất, và build sẽ thất bại nếu không có ranh giới đó. state-in-url không bao giờ gọi nó: hook đọc searchParams trên server và window.location phía client, nên không cần ranh giới nào và prerendering, kể cả PPR, được giữ nguyên.',
+        },
+        {
+          q: 'Đọc state URL trong Server Component như thế nào?',
+          a: 'Trang nhận nó qua prop searchParams — await rồi hoặc chuyển tiếp cho hook phía client, hoặc giải mã ngay trên server bằng decodeState cùng chính object mặc định đó. Layout không nhận searchParams; hãy đưa chuỗi truy vấn ra qua một header đặt trong proxy.ts và giải mã header đó.',
+        },
+        {
+          q: 'Cập nhật URL có khiến trang render lại trên server không?',
+          a: 'Mặc định là không. setUrl cập nhật qua History API, nên không có gì được fetch và không có request _rsc nào. Khi server cần thấy state mới — chẳng hạn để fetch lại một danh sách trong Server Component — hãy truyền useHistory: false để cập nhật đi qua router của Next.js và route được render lại.',
+        },
+        {
+          q: 'state-in-url có phải lựa chọn thay thế nuqs cho Next.js không?',
+          a: 'Có. Cả hai đều giữ state có kiểu trong chuỗi truy vấn; state-in-url nhận một object với giá trị lồng nhau và ngày tháng được giữ nguyên, không cần component adapter hay parser theo khóa, và không bao giờ chạm vào useSearchParams. nuqs hợp hơn khi mỗi giá trị nên là một query param dễ đọc bằng mắt. Xem bản so sánh đầy đủ.',
+        },
+        {
+          q: 'Những phiên bản Next.js nào được hỗ trợ?',
+          a: 'Next.js 14, 15 và 16 trên App Router, bao gồm searchParams bất đồng bộ ra mắt ở bản 15 và cacheComponents với PPR ở bản 16. Các thiết lập khác có thể dùng các helper encodeState và decodeState không phụ thuộc framework với router mà mình chọn.',
+        },
+      ],
     },
   },
 

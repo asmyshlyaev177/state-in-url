@@ -3,6 +3,7 @@ import React from 'react';
 import { AiSkills } from '../components/AiSkills';
 import { Comparison } from '../components/Comparison';
 import { Description } from '../components/Description';
+import { Faq } from '../components/Faq';
 import { DemoPart } from '../DemoPart';
 import type { SiteCopy } from '../i18n/copy/types';
 import { TabsBlock } from '../TabsBlock';
@@ -20,23 +21,29 @@ import { TabsBlock } from '../TabsBlock';
  * separate module of highlighted samples, and passing the element keeps this
  * component from importing all three into every route chunk.
  *
- * The AI-skills section is homepage-only, as it was before: the skills are
- * router-agnostic and the two router pages are variants of the same demo, not
- * places to repeat it.
+ * The AI-skills section and the FAQ are homepage-only, as the skills always
+ * were: both are router-agnostic and the router pages are variants of the same
+ * demo, not places to repeat them — a FAQ repeated on four URLs is four
+ * candidates for the same rich result.
  */
 export async function DemoPage({
   searchParams,
   copy,
   codeBlocks,
   aiSkills = false,
+  faq = false,
   vsHref = '/vs/nuqs',
+  nextjsHref = '/nextjs',
 }: {
   searchParams: Promise<object>;
   copy: SiteCopy;
   codeBlocks: React.ReactNode;
   aiSkills?: boolean;
+  faq?: boolean;
   /** Locale-aware href of the full comparison page. */
   vsHref?: string;
+  /** Locale-aware href of the Next.js guide. */
+  nextjsHref?: string;
 }) {
   const resolvedSearchParams = await searchParams;
 
@@ -54,7 +61,9 @@ export async function DemoPage({
 
       <Comparison copy={copy.comparison} fullComparisonHref={vsHref} />
 
-      <Description copy={copy} />
+      {faq && <Faq copy={copy.faq} id="home-faq-title" />}
+
+      <Description copy={copy} nextjsHref={nextjsHref} />
     </>
   );
 }

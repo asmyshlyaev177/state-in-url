@@ -3,15 +3,15 @@
 // Values only: every key, its order and its type come from en.ts, and a
 // missing or renamed one is a type error rather than a silently English
 // page. Do not add keys here that en.ts does not have.
-// i18n:meta locale=fr source=en.ts source-blob=7ed7b2279891828661b2d22fb37cb520b35aae17 status=translated
+// i18n:meta locale=fr source=en.ts source-blob=d77309b236f9e4529c3c3b32f7338be30db41126 status=translated
 import type { SiteCopy } from './types';
 
 export const copy: SiteCopy = {
   meta: {
     home: {
-      title: "state-in-url - stocke l'état dans l'URL comme en JSON, typé",
+      title: 'state-in-url — état typé dans l’URL pour React et Next.js, comme useState',
       description:
-        "Stockez n'importe quel état utilisateur dans les paramètres de requête ; imaginez du JSON dans une URL de navigateur, tout en conservant les types et la structure des données. Pour Next.js, React-router et le JS pur.",
+        'Gestion d’état dans l’URL pour React : gardez un état typé dans la chaîne de requête, comme useState. Survit au rechargement, chaque état est un lien partageable, le bouton Précédent fonctionne. Next.js, React Router, Remix, Astro.',
     },
     reactRouter: {
       title: "state-in-url pour React Router — état typé dans l'URL, v6 et v7",
@@ -28,17 +28,22 @@ export const copy: SiteCopy = {
       description:
         "Stockez de l'état imbriqué et typé dans la chaîne de requête avec Astro : îlots React ou Preact, ou pages sans framework côté client. Démo en direct et configuration du hook useUrlState de state-in-url.",
     },
+    nextjs: {
+      title: 'Gestion d’état dans l’URL avec Next.js App Router — state-in-url',
+      description:
+        'Gardez un état typé dans l’URL Next.js : searchParams depuis les Server Components, aucune frontière Suspense, prérendu conservé, layouts via proxy.ts, historique mis à jour sans aller-retour serveur. Guide et FAQ du hook useUrlState de state-in-url.',
+    },
     vsNuqs: {
-      title: 'state-in-url vs nuqs — état d’URL typé en React, comparés',
+      title: 'Alternative à nuqs — state-in-url vs nuqs, état d’URL typé en React, comparés',
       description:
         'Comparaison honnête de state-in-url et nuqs : mise en place, forme de l’état, objets imbriqués, dates et taille du bundle — plus TanStack Router, use-query-params et useSearchParams, avec démo en direct.',
     },
   },
 
   header: {
-    titleLead: 'État typé, vivant dans',
-    titleUrl: "l'URL",
-    desc: "est l'état React qui s'écrit lui-même dans la chaîne de requête. Les objets, les tableaux et les dates conservent leurs types, chaque état est un lien partageable et survit aux rechargements — sans providers, sans code répétitif.",
+    titleLead: 'État typé dans l’URL pour React et Next.js —',
+    titleUrl: 'comme useState',
+    desc: 'est l’état React qui s’écrit lui-même dans la chaîne de requête. Les objets, les tableaux et les dates conservent leurs types, chaque état est un lien partageable, il survit aux rechargements et le bouton Précédent fonctionne — sans providers, sans frontière Suspense, sans code répétitif.',
     factsLabel: 'Faits sur la bibliothèque',
     // The thin space in "~2 KB" is what `&thinsp;` rendered in the markup.
     facts: [
@@ -51,7 +56,7 @@ export const copy: SiteCopy = {
   },
 
   tabs: {
-    heading: 'La même API, quatre frameworks',
+    heading: 'Gestion d’état dans l’URL pour Next.js, React Router, Remix et Astro — la même API',
     selectLabel: 'Sélectionner le framework',
   },
 
@@ -256,6 +261,94 @@ export const copy: SiteCopy = {
     },
   },
 
+  faq: {
+    title: 'État dans l’URL en React — questions fréquentes',
+    items: [
+      {
+        q: 'Pourquoi garder l’état React dans l’URL ?',
+        a: 'Une URL qui porte l’état est un lien partageable : rechargez-la, mettez-la en favori ou envoyez-la, et les mêmes filtres, le même onglet ou la même page s’ouvrent. Précédent et Suivant fonctionnent sans rien faire, et des composants sans rapport lisent les mêmes valeurs sans provider. state-in-url le fait avec un seul objet typé plutôt qu’avec des chaînes parsées à la main.',
+      },
+      {
+        q: 'Quel état a sa place dans l’URL ?',
+        a: 'Tout ce qu’un lecteur pourrait mettre en favori ou partager : filtres, tri, pagination, onglet actif, plage de dates, texte de recherche. Laissez de côté ce qui est privé, énorme ou purement transitoire — jetons d’authentification, ouverture d’une boîte de dialogue, position de la souris. Un test rapide : un lien partagé aurait-il encore un sens avec cette valeur dedans ?',
+      },
+      {
+        q: 'Comment lire et écrire des paramètres d’URL en React avec state-in-url ?',
+        a: 'Appelez useUrlState avec un objet d’état par défaut. urlState contient les valeurs courantes, déjà typées ; setUrl écrit un objet partiel dans la chaîne de requête ; setState met l’état à jour sans toucher à l’URL tant que vous ne l’y écrivez pas. Nombres, booléens, tableaux, objets imbriqués et Dates reviennent avec les types qu’ils avaient en entrant.',
+      },
+      {
+        q: 'L’état dans l’URL survit-il à un rechargement de page ?',
+        a: 'Oui. L’état est la chaîne de requête, donc un rechargement, un favori ou un lien collé ailleurs le restaure. Sur l’App Router de Next.js, passez la prop searchParams de la page au hook pour que le premier rendu serveur affiche déjà les bonnes valeurs plutôt que les valeurs par défaut.',
+      },
+      {
+        q: 'Fonctionne-t-il avec les Server Components de Next.js, sans frontière Suspense ?',
+        a: 'Oui. Le hook n’appelle jamais useSearchParams, donc un composant qui l’utilise n’a pas besoin de frontière Suspense et n’exclut pas la page du prérendu, PPR compris. Les Server Components lisent le même état via la prop searchParams ; un layout peut le décoder depuis un en-tête défini dans proxy.ts.',
+      },
+      {
+        q: 'Puis-je synchroniser react-hook-form ou une bibliothèque de tableaux avec l’URL ?',
+        a: 'Oui. Gardez la bibliothèque de formulaires comme source de vérité, initialisez-la avec urlState comme valeurs par défaut, et reflétez ses changements avec setUrl depuis un gestionnaire de changement ou un effet. Le même schéma fonctionne pour l’état de TanStack Table, les panneaux de filtres et tout ce qui expose des valeurs et un setter.',
+      },
+      {
+        q: 'Quels frameworks state-in-url prend-il en charge ?',
+        a: 'Next.js 14 à 16 avec l’App Router, React Router v6 et v7, Remix v2 et les îlots Astro (React ou Preact), chacun via son propre point d’entrée. Le JavaScript pur et tout autre framework peuvent utiliser directement les helpers encodeState et decodeState. La bibliothèque pèse ~2 KB en gzip, sans dépendance.',
+      },
+    ],
+  },
+
+  nextjs: {
+    crumb: 'Guide Next.js',
+    title: 'Gestion d’état dans l’URL avec Next.js App Router',
+    intro:
+      'state-in-url garde un état typé dans la chaîne de requête sur Next.js 14, 15 et 16 : un hook useUrlState par fonctionnalité, sans adaptateur, sans provider, sans frontière Suspense. Cette page couvre ce qui est propre à l’App Router — Server Components, prérendu, layouts et historique.',
+    demoLead: 'La démo en direct de la',
+    demoLinkText: 'page d’accueil',
+    demoTail: ' tourne sur Next.js 16.',
+    serverTitle: 'Transmettez searchParams depuis la page serveur',
+    serverBody:
+      'Une page Server Component reçoit searchParams — une Promise depuis Next.js 15. Attendez-la avec await et passez l’objet au composant client, qui le remet au hook. Le premier rendu serveur affiche alors les valeurs de l’URL plutôt que les valeurs par défaut : pas de flash, pas d’avertissement d’hydratation.',
+    suspenseTitle: 'Aucune frontière Suspense, prérendu conservé',
+    prerenderNote:
+      'Une page prérendue affiche tout de même les valeurs par défaut, puisqu’il n’y a pas de chaîne de requête au moment du build — rendez une route dynamiquement quand un lien partagé doit être juste dès le premier affichage.',
+    layoutTitle: 'Layouts : décodez la chaîne de requête depuis un en-tête',
+    layoutBody:
+      'Les layouts serveur ne reçoivent jamais searchParams. Copiez la chaîne de requête dans un en-tête de requête dans proxy.ts (middleware.ts fonctionne encore, comme alias déprécié) et décodez-la dans le layout avec decodeState et le même objet d’état par défaut — le résultat est typé exactement comme urlState côté client.',
+    historyTitle: 'Historique, mises à jour sans aller-retour serveur et scroll',
+    historyBody:
+      'setUrl remplace l’entrée d’historique courante par défaut, donc la saisie n’empile pas les entrées ; passez replace: false pour en pousser une. Les mises à jour passent par l’History API — aucun aller-retour serveur ni requête _rsc à chaque frappe. Indiquez useHistory: false pour passer par le routeur Next.js à la place, quand le serveur doit re-rendre à chaque changement. scroll vaut false par défaut.',
+    inputTitle: 'Champs rapides : affichez maintenant, écrivez l’URL plus tard',
+    inputBody:
+      'Pour les champs de texte et les curseurs, mettez à jour avec setState à chaque changement et appelez setUrl() sans argument au blur ou après un debounce. Le composant se re-rend immédiatement ; l’URL est écrite une fois, avec un diff basé sur le contenu, donc l’appeler à répétition ne pose aucun problème.',
+    faq: {
+      title: 'État dans l’URL avec Next.js — questions fréquentes',
+      items: [
+        {
+          q: 'Comment garder l’état dans l’URL avec Next.js App Router ?',
+          a: 'Définissez un objet d’état par défaut hors du composant, enveloppez useUrlState de state-in-url/next dans un petit hook, et appelez ce hook dans n’importe quel composant client. urlState est la valeur courante typée et setUrl écrit un partiel dans la chaîne de requête. Passez-lui la prop searchParams de la page pour que le rendu serveur soit déjà correct.',
+        },
+        {
+          q: 'useSearchParams a-t-il besoin d’une frontière Suspense, et state-in-url ?',
+          a: 'Le useSearchParams de Next fait basculer une route rendue statiquement en rendu client jusqu’à la frontière Suspense la plus proche, et le build échoue sans elle. state-in-url ne l’appelle jamais : il lit searchParams côté serveur et window.location côté client, donc aucune frontière n’est nécessaire et le prérendu, PPR compris, est conservé.',
+        },
+        {
+          q: 'Comment lire l’état de l’URL dans un Server Component ?',
+          a: 'Les pages le reçoivent via la prop searchParams — attendez-la avec await, puis transmettez-la au hook client ou décodez-la côté serveur avec decodeState et le même objet par défaut. Les layouts ne reçoivent pas searchParams ; exposez la chaîne de requête via un en-tête défini dans proxy.ts et décodez celui-ci.',
+        },
+        {
+          q: 'Mettre à jour l’URL re-rend-il la page côté serveur ?',
+          a: 'Pas par défaut. setUrl met à jour via l’History API, donc rien n’est récupéré et aucune requête _rsc n’est émise. Quand le serveur doit voir le nouvel état — par exemple pour recharger une liste dans un Server Component — passez useHistory: false pour que les mises à jour passent par le routeur Next.js et que la route se re-rende.',
+        },
+        {
+          q: 'state-in-url est-il une alternative à nuqs pour Next.js ?',
+          a: 'Oui. Les deux gardent un état typé dans la chaîne de requête ; state-in-url prend un seul objet, valeurs imbriquées et dates préservées, n’a besoin ni de composant adaptateur ni de parseur par clé, et ne touche jamais à useSearchParams. nuqs convient mieux quand chaque valeur doit être son propre query param lisible à la main. Voir la comparaison complète.',
+        },
+        {
+          q: 'Quelles versions de Next.js sont prises en charge ?',
+          a: 'Next.js 14, 15 et 16 avec l’App Router, y compris les searchParams asynchrones introduits en 15 et cacheComponents avec PPR en 16. Les autres configurations peuvent utiliser les helpers encodeState et decodeState, indépendants du framework, avec le routeur de leur choix.',
+        },
+      ],
+    },
+  },
+
   description: {
     title: 'Pourquoi state-in-url ?',
     whyLead:
@@ -269,11 +362,11 @@ export const copy: SiteCopy = {
     dateTail: ' sort.',
     tested:
       "Construit en test-first, avec des suites unitaires et e2e inter-navigateurs qui s'exécutent à chaque commit.",
-    suspenseTitle: 'Next.js : aucune limite Suspense',
+    suspenseTitle: 'Next.js : aucune frontière Suspense',
     suspenseLead: "Le hook n'appelle jamais",
     suspenseAfterHook:
       ", donc un composant qui l'utilise n'a pas besoin d'être enveloppé dans",
-    suspenseAfterBoundary: " et n'exclut pas sa page du pré-rendu — PPR et",
+    suspenseAfterBoundary: " et n'exclut pas sa page du prérendu — PPR et",
     suspenseAfterFlag:
       " inclus. Il lit l'URL directement et suit chaque changement ultérieur, y compris un",
     suspenseTail: " issu d'un code qui n'en sait rien.",

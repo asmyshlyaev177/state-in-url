@@ -1,8 +1,9 @@
+import { Link } from "./Link"
 import { Share } from "./Share"
 import { Word } from "./Word"
 import type { SiteCopy } from "../i18n/copy/types"
 
-export const Description = ({ copy }: { copy: SiteCopy }) => (
+export const Description = ({ copy, nextjsHref }: { copy: SiteCopy; nextjsHref: string }) => (
   <section className='flex flex-col items-start w-full max-w-[640px] mt-4'>
     <h2 className='text-3xl mt-12 mb-4 font-bold font-display text-ink'>
       {copy.description.title}
@@ -16,6 +17,9 @@ export const Description = ({ copy }: { copy: SiteCopy }) => (
 
     <h3 className='mt-8 mb-2 font-bold text-lg font-display text-ink'>{copy.description.suspenseTitle}</h3>
     <p className='text-base leading-relaxed text-ink2'>{copy.description.suspenseLead} <Word>useSearchParams</Word>{copy.description.suspenseAfterHook} <Word>Suspense</Word> {copy.description.suspenseAfterBoundary} <Word>cacheComponents</Word> {copy.description.suspenseAfterFlag} <Word>history.pushState</Word> {copy.description.suspenseTail}</p>
+    <p className='mt-3 text-base leading-relaxed'>
+      <Link href={nextjsHref} className="font-semibold text-[var(--accent-on-soft)] hover:underline">{copy.nextjs.crumb}</Link>
+    </p>
 
     <h3 className='mt-8 mb-2 font-bold text-lg font-display text-ink'>{copy.description.otherTitle}</h3>
     <p className='text-base leading-relaxed text-ink2'>{copy.description.helpersLead} <Word>encodeState</Word> / <Word>decodeState</Word> {copy.description.helpersTail}</p>

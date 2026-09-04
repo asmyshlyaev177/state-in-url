@@ -2,9 +2,10 @@ import React from 'react';
 
 import { Alternatives } from '../components/Alternatives';
 import { Comparison } from '../components/Comparison';
+import { Faq } from '../components/Faq';
 import { File } from '../components/File';
 import type { SiteCopy } from '../i18n/copy/types';
-import { siteUrl } from '../domain';
+import { breadcrumbListJsonLd, faqPageJsonLd } from '../jsonLd';
 import {
   NUQS_ADAPTER_SAMPLE,
   NUQS_FILTERS_SAMPLE,
@@ -105,61 +106,19 @@ export function VsNuqsPage({ copy }: { copy: SiteCopy }) {
 
       <Alternatives copy={copy.vsNuqs.alternatives} />
 
-      <section
-        className="flex w-full max-w-[640px] flex-col items-start"
-        aria-labelledby="vs-faq-title"
-      >
-        <SectionTitle id="vs-faq-title">{vs.faqTitle}</SectionTitle>
-        <dl className="w-full">
-          {vs.faq.map((item) => (
-            <div
-              key={item.q}
-              className="border-b border-[var(--line)] py-4 last:border-b-0"
-            >
-              <dt className="text-ink font-semibold">{item.q}</dt>
-              <dd className="text-ink2 mt-2 text-base leading-relaxed">
-                {item.a}
-              </dd>
-            </div>
-          ))}
-        </dl>
-      </section>
+      <Faq copy={{ title: vs.faqTitle, items: vs.faq }} id="vs-faq-title" />
     </div>
   );
 }
 
 /** FAQPage JSON-LD for this page, built from the same copy the DOM renders. */
-export function faqJsonLd(copy: SiteCopy) {
-  return {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: copy.vsNuqs.faq.map((item) => ({
-      '@type': 'Question',
-      name: item.q,
-      acceptedAnswer: { '@type': 'Answer', text: item.a },
-    })),
-  };
-}
+export const faqJsonLd = (copy: SiteCopy) => faqPageJsonLd(copy.vsNuqs.faq);
 
 /** BreadcrumbList JSON-LD, mirroring the visible breadcrumbs. */
-export function breadcrumbJsonLd(copy: SiteCopy, homeHref: string) {
-  const prefix = homeHref === '/' ? '' : homeHref;
-  return {
-    '@context': 'https://schema.org',
-    '@type': 'BreadcrumbList',
-    itemListElement: [
-      {
-        '@type': 'ListItem',
-        position: 1,
-        name: copy.chrome.home,
-        item: `${siteUrl}${prefix}` || siteUrl,
-      },
-      {
-        '@type': 'ListItem',
-        position: 2,
-        name: copy.comparison.title,
-        item: `${siteUrl}${prefix}/vs/nuqs`,
-      },
-    ],
-  };
-}
+export const breadcrumbJsonLd = (copy: SiteCopy, homeHref: string) =>
+  breadcrumbListJsonLd({
+    homeName: copy.chrome.home,
+    homeHref,
+    name: copy.comparison.title,
+    path: '/vs/nuqs',
+  });

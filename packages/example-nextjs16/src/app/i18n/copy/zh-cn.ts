@@ -3,15 +3,15 @@
 // Values only: every key, its order and its type come from en.ts, and a
 // missing or renamed one is a type error rather than a silently English
 // page. Do not add keys here that en.ts does not have.
-// i18n:meta locale=zh-CN source=en.ts source-blob=7ed7b2279891828661b2d22fb37cb520b35aae17 status=translated
+// i18n:meta locale=zh-CN source=en.ts source-blob=d77309b236f9e4529c3c3b32f7338be30db41126 status=translated
 import type { SiteCopy } from './types';
 
 export const copy: SiteCopy = {
   meta: {
     home: {
-      title: 'state-in-url - 像 JSON 一样在 URL 中存储状态,类型安全',
+      title: 'state-in-url — 面向 React 与 Next.js 的类型化 URL 状态，用法像 useState',
       description:
-        '在查询参数中存储任意用户状态;想象 JSON 在浏览器 URL 中,同时保持数据的类型和结构。适用于 Next.js、React-router 和纯 JS。',
+        'React 的 URL 状态管理：把类型化状态放进查询字符串，用法像 useState。刷新不丢失，每个状态都是可分享的链接，后退按钮正常工作。支持 Next.js、React Router、Remix、Astro。',
     },
     reactRouter: {
       title: '面向 React Router 的 state-in-url — 类型化 URL 状态,v6 和 v7',
@@ -28,17 +28,22 @@ export const copy: SiteCopy = {
       description:
         '使用 Astro 在查询字符串中存储嵌套的类型化状态：React 或 Preact 岛屿，或没有客户端框架的页面。state-in-url useUrlState hook 的在线演示和设置。',
     },
+    nextjs: {
+      title: 'Next.js App Router 中的 URL 状态管理 — state-in-url',
+      description:
+        '在 Next.js 的 URL 中保存类型化状态：来自 Server Components 的 searchParams、无需 Suspense 边界、保持预渲染、通过 proxy.ts 支持布局、浅层历史记录更新。state-in-url useUrlState hook 的指南与常见问题。',
+    },
     vsNuqs: {
-      title: 'state-in-url vs nuqs——React 类型化 URL 状态对比',
+      title: 'nuqs 替代品 — state-in-url vs nuqs，React 类型化 URL 状态对比',
       description:
         '诚实对比 state-in-url 与 nuqs：配置、状态形态、嵌套对象、日期和包体积——外加 TanStack Router、use-query-params 和 useSearchParams，附可交互演示。',
     },
   },
 
   header: {
-    titleLead: '类型化状态,生活在',
-    titleUrl: 'URL 中',
-    desc: '是将自身写入查询字符串的 React 状态。对象、数组和日期保持其类型,每个状态都是一个可分享的链接,并在重新加载后仍然存在——无需 provider,也无需样板代码。',
+    titleLead: '面向 React 与 Next.js 的类型化 URL 状态——',
+    titleUrl: '用法像 useState',
+    desc: '是将自身写入查询字符串的 React 状态。对象、数组和日期保持其类型，每个状态都是一个可分享的链接，重新加载后仍然存在，后退按钮也正常工作——无需 provider，无需 Suspense 边界，也无需样板代码。',
     factsLabel: '库信息',
     // The thin space in "~2 KB" is what `&thinsp;` rendered in the markup.
     facts: [
@@ -51,7 +56,7 @@ export const copy: SiteCopy = {
   },
 
   tabs: {
-    heading: '相同的 API,四种框架',
+    heading: 'Next.js、React Router、Remix 和 Astro 的 URL 状态管理——同一套 API',
     selectLabel: '选择框架',
   },
 
@@ -241,6 +246,94 @@ export const copy: SiteCopy = {
           pick: '只有一两个扁平字符串参数，不值得引库',
         },
       },
+    },
+  },
+
+  faq: {
+    title: 'React 中的 URL 状态——常见问题',
+    items: [
+      {
+        q: '为什么要把 React 状态放进 URL？',
+        a: '承载状态的 URL 就是一个可分享的链接：重新加载、收藏或发给别人，打开的都是同样的筛选条件、标签页或页码。后退和前进不用额外写代码，不相关的组件无需 provider 也能读到同一份值。state-in-url 用一个类型化对象做到这一点，而不是手动解析字符串。',
+      },
+      {
+        q: '什么样的状态适合放进 URL？',
+        a: '任何读者可能收藏或分享的东西：筛选条件、排序、分页、当前标签页、日期范围、搜索文本。私密的、体积巨大的或纯粹临时的不要放——认证令牌、对话框是否打开、鼠标位置。一个快速判断：带着这个值的分享链接还说得通吗？',
+      },
+      {
+        q: '如何用 state-in-url 在 React 中读取和设置 URL 参数？',
+        a: '用一个默认状态对象调用 useUrlState。urlState 保存当前值，已经带好类型；setUrl 把一个 partial 对象写进查询字符串；setState 只更新状态，在你主动写入 URL 之前不会触碰它。数字、布尔值、数组、嵌套对象和 Date 取回来时与存入时类型一致。',
+      },
+      {
+        q: 'URL 状态在页面刷新后还在吗？',
+        a: '在。状态就是查询字符串本身，所以重新加载、收藏夹或粘贴到别处的链接都能恢复它。在 Next.js App Router 上，把页面的 searchParams prop 传给 hook，这样首次服务端渲染就已经显示正确的值，而不是默认值。',
+      },
+      {
+        q: '它能和 Next.js Server Components 一起用吗？不需要 Suspense 边界？',
+        a: '可以。该 hook 从不调用 useSearchParams，因此使用它的组件不需要 Suspense 边界，也不会让页面退出预渲染，PPR 也不例外。Server Components 通过 searchParams prop 读取同一份状态；布局则可以从 proxy.ts 里设置的请求头中解码它。',
+      },
+      {
+        q: '能把 react-hook-form 或表格库与 URL 同步吗？',
+        a: '能。让表单库继续做单一数据源，用 urlState 作为默认值初始化它，再在变更处理函数或 effect 里用 setUrl 把它的变化镜像到 URL。同样的模式适用于 TanStack Table 的状态、筛选面板，以及任何暴露出值和 setter 的东西。',
+      },
+      {
+        q: 'state-in-url 支持哪些框架？',
+        a: 'Next.js 14-16 App Router、React Router v6 和 v7、Remix v2，以及 Astro 岛屿（React 或 Preact），各有自己的入口。纯 JavaScript 和其他任何框架都可以直接使用 encodeState 和 decodeState 辅助函数。gzip 后 ~2 KB，零依赖。',
+      },
+    ],
+  },
+
+  nextjs: {
+    crumb: 'Next.js 指南',
+    title: 'Next.js App Router 中的 URL 状态管理',
+    intro:
+      'state-in-url 在 Next.js 14、15 和 16 上把类型化状态保存在查询字符串中：每个功能一个 useUrlState hook，没有适配器，没有 provider，也没有 Suspense 边界。本页只讲 App Router 特有的部分——Server Components、预渲染、布局和历史记录。',
+    demoLead: '在线演示位于',
+    demoLinkText: '首页',
+    demoTail: '，运行在 Next.js 16 上。',
+    serverTitle: '从服务端页面转发 searchParams',
+    serverBody:
+      'Server Component 页面会收到 searchParams——从 Next.js 15 起它是一个 Promise。await 它，再把对象传给客户端组件，由客户端组件交给 hook。这样首次服务端渲染显示的就是 URL 里的值而不是默认值，没有闪烁，也没有 hydration 警告。',
+    suspenseTitle: '无需 Suspense 边界，预渲染保留',
+    prerenderNote:
+      '预渲染的页面渲染出的仍是默认值，因为构建时没有查询字符串——如果分享链接必须在首屏就正确，就把该路由改为动态渲染。',
+    layoutTitle: '布局：从请求头解码查询字符串',
+    layoutBody:
+      '服务端布局永远收不到 searchParams。在 proxy.ts 中把查询字符串复制进一个请求头（middleware.ts 作为已弃用的别名仍然可用），再在布局里用 decodeState 和同一个默认状态对象解码——结果的类型与客户端的 urlState 完全一致。',
+    historyTitle: '历史记录、浅层更新与 scroll',
+    historyBody:
+      'setUrl 默认替换当前历史记录条目，所以打字不会堆出一串条目；传入 replace: false 则会推入新条目。更新通过 History API 完成——没有服务端往返，每次按键也不会发出 _rsc 请求。当服务端需要在每次变更时重新渲染，传入 useHistory: false 改走 Next.js 路由器。scroll 默认为 false。',
+    inputTitle: '快速输入：先渲染，稍后再写 URL',
+    inputBody:
+      '对于文本框和滑块，每次变化时用 setState 更新，在失焦或防抖之后调用不带参数的 setUrl()。组件立即重新渲染；URL 只写一次，并基于内容做差异比较，所以重复调用也是安全的。',
+    faq: {
+      title: 'Next.js URL 状态——常见问题',
+      items: [
+        {
+          q: '如何在 Next.js App Router 中把状态保存在 URL 里？',
+          a: '在组件外定义一个默认状态对象，把 state-in-url/next 的 useUrlState 包成一个小 hook，然后在任意客户端组件里调用它。urlState 是带类型的当前值，setUrl 把一个 partial 写进查询字符串。把页面的 searchParams prop 传进去，服务端渲染就已经是正确的。',
+        },
+        {
+          q: 'useSearchParams 需要 Suspense 边界吗？state-in-url 呢？',
+          a: 'Next.js 的 useSearchParams 会让静态渲染的路由在最近的 Suspense 边界以内改为客户端渲染，没有边界时构建会失败。state-in-url 从不调用它：服务端读 searchParams，客户端读 window.location，所以不需要边界，预渲染（包括 PPR）也得以保留。',
+        },
+        {
+          q: '如何在 Server Component 中读取 URL 状态？',
+          a: '页面通过 searchParams prop 拿到它——await 之后，要么转发给客户端 hook，要么在服务端用 decodeState 和同一个默认对象解码。布局收不到 searchParams；在 proxy.ts 里设置一个请求头暴露查询字符串，然后解码那个请求头。',
+        },
+        {
+          q: '更新 URL 会让页面在服务端重新渲染吗？',
+          a: '默认不会。setUrl 通过 History API 更新，不会请求任何东西，也不会发出 _rsc 请求。当服务端需要看到新状态时——比如在 Server Component 里重新获取列表——传入 useHistory: false，更新就会走 Next.js 路由器，路由随之重新渲染。',
+        },
+        {
+          q: '在 Next.js 上，state-in-url 是 nuqs 的替代品吗？',
+          a: '是。两者都把类型化状态放进查询字符串；state-in-url 接收一个对象，嵌套值和日期都保留，不需要适配器组件，也不需要逐键解析器，并且从不触碰 useSearchParams。若希望每个值都是一条人可读的查询参数，nuqs 更合适。详见完整对比。',
+        },
+        {
+          q: '支持哪些 Next.js 版本？',
+          a: 'App Router 上的 Next.js 14、15 和 16，包括 15 引入的异步 searchParams 以及 16 中配合 PPR 的 cacheComponents。其他环境可以用与框架无关的 encodeState 和 decodeState 辅助函数，搭配自己选择的路由器。',
+        },
+      ],
     },
   },
 

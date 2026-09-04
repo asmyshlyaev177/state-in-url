@@ -301,6 +301,8 @@ Same module-scoped default-state-identity rule. Use only when URL sync is explic
 
 ## Documentation resources
 
+- Next.js App Router guide (searchParams forwarding, layouts, history, FAQ): https://state-in-url.dev/nextjs — Markdown at https://state-in-url.dev/nextjs.md
+- Comparison with nuqs, TanStack Router, use-query-params: https://state-in-url.dev/vs/nuqs — Markdown at https://state-in-url.dev/vs/nuqs.md
 - Full README (humans): https://github.com/asmyshlyaev177/state-in-url/blob/master/README.md
 - URL size limits: https://github.com/asmyshlyaev177/state-in-url/blob/master/Limits.md
 - Working examples per framework: `packages/example-nextjs{14,15,16}`, `packages/example-react-router{6,7}`, `packages/example-remix2`, `packages/example-astro`

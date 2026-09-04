@@ -146,7 +146,8 @@ nothing but the `(tests)` group). It audits the production build: `build:demo`
 `dist/`) then `next start --port 3012`. Port 3012, not the demo's own 3002, so a
 server left over from `pnpm run dev` cannot be silently accepted in place of it.
 
-**Only the four public pages** — `/`, `/react-router`, `/remix`, `/astro`. The app also
+**Only the four demo pages** — `/`, `/react-router`, `/remix`, `/astro` (`/nextjs` and
+`/vs/nuqs` are prerendered prose pages and are audited by the a11y suite instead). The app also
 serves `/useUrlState`, `/test-ssr` and the rest of the `(tests)` group, but those
 are e2e fixtures that happen to be deployed: they exist to be asserted against,
 not read, and several render in ways no real page would.
@@ -177,6 +178,7 @@ answers agents in four overlapping ways — they disagree about which to try:
 | `/llms.txt` | `public/llms.txt` — the single source |
 | `/` under `Accept: text/markdown`, or a known agent user-agent — 307 to `/index.md` | `src/proxy.ts` |
 | `/index.md`, `/react-router.md`, `/remix.md`, `/astro.md` | `src/app/<route>.md/route.ts`, all four through `src/app/llmsTxtResponse.ts` |
+| `/nextjs.md`, `/vs/nuqs.md` | built from the page's own copy module and samples — those pages have content of their own |
 | `<link rel="alternate">` and a `Link:` response header | `src/app/seoStuff.ts` (`markdownAlternates`), `next.config.mjs` |
 
 All three `.md` mirrors serve the same document, deliberately: this site is one

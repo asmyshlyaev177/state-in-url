@@ -16,7 +16,7 @@ import { expect, test } from '@playwright/test';
 test.describe('cache headers (landing only)', () => {
   test.skip(({ browserName }) => browserName !== 'chromium', 'Chromium only');
 
-  const prerendered = ['/vs/nuqs', '/ja/vs/nuqs'];
+  const prerendered = ['/vs/nuqs', '/ja/vs/nuqs', '/nextjs', '/ko/nextjs'];
 
   for (const path of prerendered) {
     test(`${path} does not outlive its own s-maxage`, async ({ request }) => {

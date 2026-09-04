@@ -6,20 +6,29 @@ import { expect, test } from '@playwright/test';
 test.describe('Landing SEO metadata & JSON-LD (landing only)', () => {
   test.skip(({ browserName }) => browserName !== 'chromium', 'Chromium only');
 
-  test('emits exactly one valid JSON-LD block and no bogus meta', async ({
+  test('emits valid JSON-LD (SoftwareApplication + FAQPage) and no bogus meta', async ({
     page,
   }) => {
     await page.goto('/');
 
+    // One block from the root document, one from the home route's FAQ.
     const ldScripts = page.locator('script[type="application/ld+json"]');
-    await expect(ldScripts).toHaveCount(1);
+    await expect(ldScripts).toHaveCount(2);
 
-    const raw = await ldScripts.first().textContent();
-    expect(raw).toBeTruthy();
-    const data = JSON.parse(raw as string);
-    expect(data['@context']).toBe('https://schema.org');
-    expect(data['@type']).toBe('SoftwareApplication');
-    expect(data.name).toBe('state-in-url');
+    const nodes = (await ldScripts.allTextContents())
+      .flatMap((raw) => JSON.parse(raw))
+      .filter((node) => node['@context'] === 'https://schema.org');
+    const types = nodes.map((node) => node['@type']);
+    expect(types).toContain('SoftwareApplication');
+    expect(types).toContain('FAQPage');
+
+    const app = nodes.find((node) => node['@type'] === 'SoftwareApplication');
+    expect(app.name).toBe('state-in-url');
+
+    // The FAQ JSON-LD must say what the page says.
+    const faq = nodes.find((node) => node['@type'] === 'FAQPage');
+    const questions = await page.locator('#home-faq-title ~ dl dt').allTextContents();
+    expect(faq.mainEntity.map((q: { name: string }) => q.name)).toEqual(questions);
 
     // The old `metadata.other['script:ld+json']` rendered an invalid
     // `<meta name="script:ld+json">`; it must not come back.

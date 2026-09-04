@@ -3,15 +3,15 @@
 // Values only: every key, its order and its type come from en.ts, and a
 // missing or renamed one is a type error rather than a silently English
 // page. Do not add keys here that en.ts does not have.
-// i18n:meta locale=ja source=en.ts source-blob=7ed7b2279891828661b2d22fb37cb520b35aae17 status=translated
+// i18n:meta locale=ja source=en.ts source-blob=d77309b236f9e4529c3c3b32f7338be30db41126 status=translated
 import type { SiteCopy } from './types';
 
 export const copy: SiteCopy = {
   meta: {
     home: {
-      title: 'state-in-url - JSON のように URL に状態を保存、型安全',
+      title: 'state-in-url — React と Next.js の型付き URL 状態、useState のように使える',
       description:
-        '任意のユーザー状態をクエリパラメータに保存。データの型と構造を保ったまま、ブラウザの URL に JSON があるイメージ。Next.js、React-router、ピュア JS 向け。',
+        'React の URL 状態管理：型付きの状態を useState のようにクエリ文字列に保存。リロード後も維持され、あらゆる状態が共有可能なリンクになり、戻るボタンも動きます。Next.js、React Router、Remix、Astro 対応。',
     },
     reactRouter: {
       title: 'React Router 向け state-in-url — 型付き URL 状態、v6 と v7',
@@ -28,17 +28,22 @@ export const copy: SiteCopy = {
       description:
         'Astro で、ネストした型付き状態をクエリ文字列に保存。React / Preact のアイランド、またはクライアントフレームワークなしのページに対応。state-in-url useUrlState フックのライブデモとセットアップ。',
     },
+    nextjs: {
+      title: 'Next.js App Router での URL 状態管理 — state-in-url',
+      description:
+        'Next.js の URL に型付きの状態を保存：Server Components からの searchParams、Suspense 境界なし、プリレンダリングを維持、proxy.ts 経由のレイアウト、シャローな履歴更新。state-in-url useUrlState フックのガイドと FAQ。',
+    },
     vsNuqs: {
-      title: 'state-in-url vs nuqs — React の型付き URL 状態を比較',
+      title: 'nuqs の代替 — state-in-url vs nuqs、React の型付き URL 状態を比較',
       description:
         'state-in-url と nuqs の率直な比較：セットアップ、状態の形、ネストしたオブジェクト、日付、バンドルサイズ。TanStack Router、use-query-params、useSearchParams も併記し、ライブデモ付き。',
     },
   },
 
   header: {
-    titleLead: '型付きの状態、住む場所は',
-    titleUrl: 'URL',
-    desc: 'は、自分自身をクエリ文字列に書き込む React の状態です。オブジェクト、配列、日付は型を保ち、あらゆる状態は共有可能なリンクになり、リロード後も維持されます。プロバイダーもボイラープレートも不要。',
+    titleLead: 'React と Next.js の型付き URL 状態 —',
+    titleUrl: 'useState のように',
+    desc: 'は、自分自身をクエリ文字列に書き込む React の状態です。オブジェクト、配列、日付は型を保ち、あらゆる状態は共有可能なリンクになり、リロード後も維持され、戻るボタンも動きます。プロバイダーも Suspense 境界もボイラープレートも不要。',
     factsLabel: 'ライブラリの事実',
     // The thin space in "~2 KB" is what `&thinsp;` rendered in the markup.
     facts: [
@@ -51,7 +56,7 @@ export const copy: SiteCopy = {
   },
 
   tabs: {
-    heading: '同じ API、4 つのフレームワーク',
+    heading: 'Next.js、React Router、Remix、Astro の URL 状態管理 — 同じ API',
     selectLabel: 'フレームワークを選択',
   },
 
@@ -247,6 +252,94 @@ export const copy: SiteCopy = {
           pick: 'フラットな文字列パラメータが1〜2個だけ',
         },
       },
+    },
+  },
+
+  faq: {
+    title: 'React の URL 状態 — よくある質問',
+    items: [
+      {
+        q: 'なぜ React の状態を URL に置くのですか？',
+        a: '状態を含む URL は共有可能なリンクです。リロード、ブックマーク、送信のどれをしても、同じフィルター、タブ、ページが開きます。戻る・進むは何もしなくても動き、関連のないコンポーネントがプロバイダーなしで同じ値を読めます。state-in-url は手動でパースした文字列ではなく、型付きオブジェクト1つでこれを実現します。',
+      },
+      {
+        q: 'どんな状態を URL に置くべきですか？',
+        a: '読み手がブックマークや共有をしそうなものすべて：フィルター、ソート、ページネーション、アクティブなタブ、日付範囲、検索テキスト。非公開のもの、巨大なもの、純粋に一時的なもの — 認証トークン、ダイアログの開閉、マウス位置 — は置かないでください。簡単なテスト：この値が入った共有リンクは、まだ意味を持つでしょうか？',
+      },
+      {
+        q: 'state-in-url で React の URL パラメータを読み書きするには？',
+        a: 'デフォルト状態オブジェクトを渡して useUrlState を呼びます。urlState には型付き済みの現在の値が入り、setUrl は partial オブジェクトをクエリ文字列に書き込み、setState はフラッシュするまで URL に触れずに状態を更新します。数値、真偽値、配列、ネストしたオブジェクト、Date は、入れたときと同じ型で返ってきます。',
+      },
+      {
+        q: 'URL 状態はページのリフレッシュ後も残りますか？',
+        a: 'はい。状態はクエリ文字列そのものなので、リロード、ブックマーク、どこかに貼り付けたリンクから復元されます。Next.js App Router では、ページの searchParams prop を hook に渡すと、最初のサーバーレンダリングの時点でデフォルトではなく正しい値が表示されます。',
+      },
+      {
+        q: 'Suspense 境界なしで Next.js の Server Components と動きますか？',
+        a: 'はい。この hook は useSearchParams を決して呼ばないため、使うコンポーネントに Suspense 境界は不要で、PPR も含めページがプリレンダリングから除外されることもありません。Server Components は searchParams prop から同じ状態を読み、レイアウトは proxy.ts で設定したヘッダーからデコードできます。',
+      },
+      {
+        q: 'react-hook-form やテーブルライブラリを URL と同期できますか？',
+        a: 'はい。フォームライブラリを信頼できる唯一の情報源のままにし、urlState をデフォルト値として初期化し、change ハンドラーや effect から setUrl でその変更を反映します。同じパターンは TanStack Table の状態、フィルターパネル、値とセッターを公開するあらゆるものに使えます。',
+      },
+      {
+        q: 'state-in-url はどのフレームワークに対応していますか？',
+        a: 'Next.js 14〜16 の App Router、React Router v6 と v7、Remix v2、Astro のアイランド（React または Preact）に、それぞれ専用のエントリーポイントで対応します。素の JavaScript やその他のフレームワークでは、encodeState と decodeState ヘルパーを直接使えます。gzip 圧縮で ~2 KB、依存関係ゼロです。',
+      },
+    ],
+  },
+
+  nextjs: {
+    crumb: 'Next.js ガイド',
+    title: 'Next.js App Router での URL 状態管理',
+    intro:
+      'state-in-url は Next.js 14、15、16 で型付きの状態をクエリ文字列に保存します：機能ごとに useUrlState hook を1つ、アダプターもプロバイダーも Suspense 境界も不要。このページでは App Router に固有のこと — Server Components、プリレンダリング、レイアウト、履歴 — を扱います。',
+    demoLead: 'ライブデモは',
+    demoLinkText: 'ホームページ',
+    demoTail: 'にあり、Next.js 16 で動いています。',
+    serverTitle: 'サーバーページから searchParams を転送する',
+    serverBody:
+      'Server Component のページは searchParams を受け取ります — Next.js 15 からは Promise です。await してそのオブジェクトをクライアントコンポーネントに渡し、そこから hook に渡します。最初のサーバーレンダリングの時点でデフォルトではなく URL の値が表示されるため、ちらつきもハイドレーション警告もありません。',
+    suspenseTitle: 'Suspense 境界なし、プリレンダリングは維持',
+    prerenderNote:
+      'プリレンダリングされたページはそれでもデフォルト値を描画します。ビルド時にはクエリ文字列がないためです — 共有リンクが最初の描画から正しくなければならない場合は、そのルートを動的にレンダリングしてください。',
+    layoutTitle: 'レイアウト：ヘッダーからクエリ文字列をデコードする',
+    layoutBody:
+      'サーバーのレイアウトは searchParams を決して受け取りません。proxy.ts（非推奨のエイリアスとして middleware.ts も動きます）でクエリ文字列をリクエストヘッダーにコピーし、レイアウト内で decodeState と同じデフォルト状態オブジェクトを使ってデコードします — 結果はクライアントの urlState とまったく同じ型になります。',
+    historyTitle: '履歴、シャロー更新、scroll',
+    historyBody:
+      'setUrl はデフォルトで現在の履歴エントリを置き換えるため、入力しても履歴が積み上がりません。1つ push したいときは replace: false を渡します。更新は History API を通るので、サーバーへの往復も、キー入力ごとの _rsc リクエストもありません。変更のたびにサーバーで再レンダリングさせたい場合は useHistory: false を渡すと、代わりに Next.js のルーターを通ります。scroll はデフォルトで false です。',
+    inputTitle: '速い入力：今すぐ描画し、URL は後で書く',
+    inputBody:
+      'テキストフィールドやスライダーでは、変更のたびに setState で更新し、blur 時またはデバウンス後に引数なしで setUrl() を呼びます。コンポーネントは即座に再描画され、URL は内容ベースの差分で一度だけ書き込まれるため、繰り返し呼んでも安全です。',
+    faq: {
+      title: 'Next.js の URL 状態 — よくある質問',
+      items: [
+        {
+          q: 'Next.js App Router で状態を URL に保存するには？',
+          a: 'コンポーネントの外でデフォルト状態オブジェクトを定義し、state-in-url/next の useUrlState を小さな hook に包み、その hook を任意のクライアントコンポーネントで呼びます。urlState が型付きの現在の値で、setUrl が partial をクエリ文字列に書き込みます。ページの searchParams prop を渡しておけば、サーバーレンダリングの時点で正しい値になります。',
+        },
+        {
+          q: 'useSearchParams に Suspense 境界は必要ですか？state-in-url は？',
+          a: 'Next.js の useSearchParams は、静的にレンダリングされるルートを最も近い Suspense 境界までクライアントレンダリングに切り替え、境界がなければビルドが失敗します。state-in-url はそれを決して呼びません：サーバーでは searchParams を、クライアントでは window.location を読むため、境界は不要で、PPR を含むプリレンダリングが維持されます。',
+        },
+        {
+          q: 'Server Component で URL 状態を読むには？',
+          a: 'ページは searchParams prop として受け取ります — await して、クライアントの hook に転送するか、decodeState と同じデフォルトオブジェクトでサーバー側でデコードします。レイアウトは searchParams を受け取らないので、proxy.ts で設定したヘッダー経由でクエリ文字列を公開し、それをデコードしてください。',
+        },
+        {
+          q: 'URL を更新するとサーバーでページが再レンダリングされますか？',
+          a: 'デフォルトでは再レンダリングされません。setUrl は History API で更新するため、何もフェッチされず、_rsc リクエストも発生しません。サーバーに新しい状態を見せたいとき — たとえば Server Component でリストを再取得するとき — は useHistory: false を渡すと、更新が Next.js のルーターを通り、ルートが再レンダリングされます。',
+        },
+        {
+          q: 'state-in-url は Next.js における nuqs の代替になりますか？',
+          a: 'はい。どちらも型付きの状態をクエリ文字列に保存します。state-in-url はネストした値と日付を保持したままオブジェクト1つを受け取り、アダプターコンポーネントもキーごとのパーサーも不要で、useSearchParams に決して触れません。値ごとに人が読めるクエリパラメータにしたいなら nuqs のほうが向いています。完全版の比較をご覧ください。',
+        },
+        {
+          q: 'どの Next.js バージョンに対応していますか？',
+          a: 'App Router の Next.js 14、15、16 に対応し、15 で導入された非同期の searchParams と、16 の PPR 付き cacheComponents も含みます。それ以外の構成では、フレームワークに依存しない encodeState と decodeState ヘルパーを好きなルーターと組み合わせて使えます。',
+        },
+      ],
     },
   },
 

@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation';
 import { CodeBlocks } from '../CodeBlocksNext';
 import { localeFromParam } from '../i18n';
 import { copyFor } from '../i18n/copy';
+import { faqPageJsonLd, jsonLdScript } from '../jsonLd';
 import { DemoPage } from '../pages/DemoPage';
 import { localeMetadata } from '../seoStuff';
 
@@ -25,11 +26,20 @@ export default async function Home({
   const copy = copyFor(locale.code);
 
   return (
-    <DemoPage
-      searchParams={searchParams}
-      copy={copy} vsHref={`/${dir}/vs/nuqs`}
-      codeBlocks={<CodeBlocks copy={copy.quickStart} />}
-      aiSkills
-    />
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: jsonLdScript([faqPageJsonLd(copy.faq.items)]) }}
+      />
+      <DemoPage
+        searchParams={searchParams}
+        copy={copy}
+        vsHref={`/${dir}/vs/nuqs`}
+        nextjsHref={`/${dir}/nextjs`}
+        codeBlocks={<CodeBlocks copy={copy.quickStart} />}
+        aiSkills
+        faq
+      />
+    </>
   );
 }

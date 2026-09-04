@@ -65,6 +65,18 @@ const nextConfig = {
     // !! WARN !!
     ignoreBuildErrors: true,
   },
+  async redirects() {
+    // `www.` served the whole site as a second host; canonical tags pointed
+    // at the apex but nothing sent a reader there. One 308 does.
+    return [
+      {
+        source: '/:path*',
+        has: [{ type: 'host', value: 'www.state-in-url.dev' }],
+        destination: 'https://state-in-url.dev/:path*',
+        permanent: true,
+      },
+    ];
+  },
   async headers() {
     // A `Link:` header survives a HEAD request and reaches clients that never
     // parse markup. Per documented page, not globbed, so it can't end up on
@@ -129,7 +141,7 @@ const nextConfig = {
     // and `<Link>` prefetch revalidates on a loop, measured at ~26 requests a
     // second from one idle tab. Its layout's `revalidate` caches it for a week.
     const demoPages = ['', '/react-router', '/remix', '/astro'];
-    const pages = [...demoPages, '/vs/nuqs'];
+    const pages = [...demoPages, '/nextjs', '/vs/nuqs'];
     const prefixes = ['', ...LOCALES.map((locale) => `/${locale.dir}`)];
 
     return [
