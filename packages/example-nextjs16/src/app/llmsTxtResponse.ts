@@ -2,14 +2,14 @@ import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 
 /**
- * The `.md` mirrors: `/index.md`, `/react-router.md`, `/remix.md`.
+ * The `.md` mirrors: `/index.md`, `/react-router.md`, `/remix.md`, `/astro.md`.
  *
- * All three serve the same document, and that is not a shortcut. This site is
+ * All four serve the same document, and that is not a shortcut. This site is
  * one page repeated per router variant, and `public/llms.txt` is that page's
- * Markdown — it documents Next.js, React Router v6/v7 and Remix v2 in one
- * file, so an agent that lands on any of the three gets what it came for plus
- * the other two. Splitting it into three near-identical files would create
- * three things to keep in sync and answer no question better.
+ * Markdown — it documents Next.js, React Router v6/v7, Remix v2 and Astro in one
+ * file, so an agent that lands on any of the four gets what it came for plus
+ * the other three. Splitting it into four near-identical files would create
+ * four things to keep in sync and answer no question better.
  *
  * Read from public/llms.txt so there is one source: the same file is served
  * verbatim at /llms.txt, and `/` redirects agents here rather than answering

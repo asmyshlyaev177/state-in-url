@@ -3,7 +3,7 @@
 // Values only: every key, its order and its type come from en.ts, and a
 // missing or renamed one is a type error rather than a silently English
 // page. Do not add keys here that en.ts does not have.
-// i18n:meta locale=zh-CN source=en.ts source-blob=0b8e15b33eef39645b3d11c606155cb4178a6817 status=translated
+// i18n:meta locale=zh-CN source=en.ts source-blob=7ed7b2279891828661b2d22fb37cb520b35aae17 status=translated
 import type { SiteCopy } from './types';
 
 export const copy: SiteCopy = {
@@ -23,6 +23,11 @@ export const copy: SiteCopy = {
       description:
         '使用 Remix v2 在查询字符串中存储嵌套的类型化状态。state-in-url useUrlState hook 的在线演示和设置。',
     },
+    astro: {
+      title: '面向 Astro 的 state-in-url — 岛屿中的类型化 URL 状态',
+      description:
+        '使用 Astro 在查询字符串中存储嵌套的类型化状态：React 或 Preact 岛屿，或没有客户端框架的页面。state-in-url useUrlState hook 的在线演示和设置。',
+    },
     vsNuqs: {
       title: 'state-in-url vs nuqs——React 类型化 URL 状态对比',
       description:
@@ -40,13 +45,13 @@ export const copy: SiteCopy = {
       '~2 KB gzip 压缩',
       '零依赖',
       'TypeScript 优先',
-      'Next.js / react-router / Remix',
+      'Next.js / react-router / Remix / Astro',
       'MIT',
     ],
   },
 
   tabs: {
-    heading: '相同的 API,三种路由器',
+    heading: '相同的 API,四种框架',
     selectLabel: '选择框架',
   },
 
@@ -78,7 +83,7 @@ export const copy: SiteCopy = {
     pitfallsMid: ' 来定义状态形状,而',
     pitfallsTail:
       ' 约束会直接拒绝它。而且它们在组件内部构建默认状态对象,这会悄悄破坏共享——它是按对象身份做键的,所以不会报错,两个组件只是不再能看到彼此。',
-    shipsLead: '所以这个包随附六个',
+    shipsLead: '所以这个包随附七个',
     shipsMid: ' 文件。你的代理通过',
     intentLinkText: 'TanStack Intent',
     shipsTail: ' 按需加载其中一个,并且它们与库一起版本化,而不是与本页面一起。',
@@ -91,6 +96,7 @@ export const copy: SiteCopy = {
       inputHandling: '文本输入、滑块,以及任何变化很快的东西',
       nextjsSsr: 'App Router:searchParams 转发、用于布局的 Proxy',
       reactRouterRemixSetup: 'React Router v6/v7 或 Remix v2 的设置',
+      astroSetup: 'Astro 岛屿（React 或 Preact），或没有客户端框架的页面',
       formLibraryIntegration: '与 react-hook-form(或 formik)配合使用',
       sharedStateNoUrl: 'useSharedState — 不接触 URL 的共享',
     },
@@ -108,7 +114,7 @@ export const copy: SiteCopy = {
     rows: {
       setup: {
         label: '配置',
-        siu: '无需配置——导入 hook 即可使用',
+        siu: 'Next.js、React Router v6/v7、Remix、Astro，纯 JS 辅助函数',
         nuqs: '需要用适配器组件包裹应用',
       },
       stateShape: {

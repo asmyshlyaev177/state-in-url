@@ -24,10 +24,10 @@ test.describe('robots.txt (landing only)', () => {
     .filter((entry) => entry.isDirectory())
     .map((entry) => `/${entry.name}`);
 
-  // The three public pages, English and translated. A locale prefix must not
+  // The public pages, English and translated. A locale prefix must not
   // be caught by a fixture Disallow, and the fixtures exist only under the
   // unprefixed English tree.
-  const documented = ['/', '/react-router', '/remix', '/vs/nuqs', '/ja', '/ja/react-router', '/zh-cn/remix', '/ja/vs/nuqs'];
+  const documented = ['/', '/react-router', '/remix', '/astro', '/vs/nuqs', '/ja', '/ja/react-router', '/zh-cn/remix', '/ko/astro', '/ja/vs/nuqs'];
 
   const disallowedPrefixes = async (request: {
     get: (url: string) => Promise<{ text: () => Promise<string> }>;

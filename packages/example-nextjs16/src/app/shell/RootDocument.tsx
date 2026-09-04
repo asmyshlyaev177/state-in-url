@@ -15,7 +15,7 @@ import { PageShell } from './PageShell';
  * The `<html>` document, shared by the two root layouts.
  *
  * There are two because English is served unprefixed and the translations are
- * not: `(en)/layout.tsx` owns `/`, `/react-router` and `/remix`, and
+ * not: `(en)/layout.tsx` owns `/`, `/react-router`, `/remix` and `/astro`, and
  * `[locale]/layout.tsx` owns `/ja/...` and its seven siblings. App Router
  * gives `params` only to the layout that owns the dynamic segment, and only a
  * root layout may render `<html>` — so a single root layout could never know

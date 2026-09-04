@@ -29,6 +29,8 @@ export interface MetaCopy {
   reactRouter: PageMeta;
   /** `/remix` */
   remix: PageMeta;
+  /** `/astro` */
+  astro: PageMeta;
   /** `/vs/nuqs` */
   vsNuqs: PageMeta;
 }
@@ -105,6 +107,7 @@ export interface AiSkillsTableCopy {
   inputHandling: string;
   nextjsSsr: string;
   reactRouterRemixSetup: string;
+  astroSetup: string;
   formLibraryIntegration: string;
   sharedStateNoUrl: string;
 }

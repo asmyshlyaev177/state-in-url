@@ -13,7 +13,7 @@ export const revalidate = 604800; // 7 days
 
 /**
  * Root layout for the English pages, which are served unprefixed: `/`,
- * `/react-router`, `/remix`, and the Playwright fixture routes under
+ * `/react-router`, `/remix`, `/astro`, and the Playwright fixture routes under
  * `(tests)`. `[locale]/layout.tsx` is the second root layout, for the eight
  * translations. See shell/RootDocument.tsx for why there are two.
  */

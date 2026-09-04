@@ -3,7 +3,7 @@
 // Values only: every key, its order and its type come from en.ts, and a
 // missing or renamed one is a type error rather than a silently English
 // page. Do not add keys here that en.ts does not have.
-// i18n:meta locale=fr source=en.ts source-blob=0b8e15b33eef39645b3d11c606155cb4178a6817 status=translated
+// i18n:meta locale=fr source=en.ts source-blob=7ed7b2279891828661b2d22fb37cb520b35aae17 status=translated
 import type { SiteCopy } from './types';
 
 export const copy: SiteCopy = {
@@ -23,6 +23,11 @@ export const copy: SiteCopy = {
       description:
         "Stockez de l'état imbriqué et typé dans la chaîne de requête avec Remix v2. Démo en direct et configuration du hook useUrlState de state-in-url.",
     },
+    astro: {
+      title: "state-in-url pour Astro — état typé dans l'URL dans les îlots",
+      description:
+        "Stockez de l'état imbriqué et typé dans la chaîne de requête avec Astro : îlots React ou Preact, ou pages sans framework côté client. Démo en direct et configuration du hook useUrlState de state-in-url.",
+    },
     vsNuqs: {
       title: 'state-in-url vs nuqs — état d’URL typé en React, comparés',
       description:
@@ -40,13 +45,13 @@ export const copy: SiteCopy = {
       '~2 KB en gzip',
       'zéro dépendance',
       'TypeScript-first',
-      'Next.js / react-router / Remix',
+      'Next.js / react-router / Remix / Astro',
       'MIT',
     ],
   },
 
   tabs: {
-    heading: 'La même API, trois routeurs',
+    heading: 'La même API, quatre frameworks',
     selectLabel: 'Sélectionner le framework',
   },
 
@@ -81,7 +86,7 @@ export const copy: SiteCopy = {
     pitfallsMid: ', que la contrainte',
     pitfallsTail:
       " rejette d'emblée. Et ils construisent l'objet d'état par défaut dans le composant, ce qui casse le partage en silence — il est indexé par l'identité de l'objet, donc rien ne génère d'erreur, les deux composants cessent simplement de se voir.",
-    shipsLead: 'Le paquet fournit donc six',
+    shipsLead: 'Le paquet fournit donc sept',
     shipsMid: ' fichiers. Votre agent en charge un à la demande via',
     intentLinkText: 'TanStack Intent',
     shipsTail:
@@ -97,6 +102,7 @@ export const copy: SiteCopy = {
       nextjsSsr:
         'App Router : transfert de searchParams, Proxy pour les layouts',
       reactRouterRemixSetup: 'Configuration de React Router v6/v7 ou Remix v2',
+      astroSetup: 'Îlots Astro (React ou Preact), ou pages sans framework côté client',
       formLibraryIntegration: 'Association avec react-hook-form (ou formik)',
       sharedStateNoUrl: "useSharedState — partager sans toucher à l'URL",
     },
@@ -116,7 +122,7 @@ export const copy: SiteCopy = {
     rows: {
       setup: {
         label: 'Mise en place',
-        siu: 'Aucune — importez le hook et c’est parti',
+        siu: 'Next.js, React Router v6/v7, Remix, Astro, helpers pour JS pur',
         nuqs: 'Un composant adaptateur enveloppe l’application',
       },
       stateShape: {

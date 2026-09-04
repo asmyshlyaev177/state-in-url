@@ -96,7 +96,7 @@ export const jsonLd: WithContext<SoftwareApplication> = {
   },
   operatingSystem: 'Web Browser',
   featureList: [
-    'React.js/Next.js/Remix.js/react-router state management',
+    'React.js/Next.js/Remix.js/react-router/Astro state management',
     'URI state',
     'URL state',
     'React.js URL state management',
@@ -174,7 +174,7 @@ export const metadata = {
   },
 
   alternates: {
-    // Homepage only. /react-router and /remix set their own — see
+    // Homepage only. /react-router, /remix and /astro set their own — see
     // `pageMetadata` below. Inheriting this one made both of them declare the
     // homepage as canonical, which asks Google to drop them from the index
     // while the sitemap still lists them.
@@ -232,7 +232,7 @@ export function pageMetadata({
  * BCP 47 tag.
  *
  * The Markdown alternates deliberately stay English. `/index.md`,
- * `/react-router.md` and `/remix.md` all serve public/llms.txt, which is one
+ * `/react-router.md`, `/remix.md` and `/astro.md` all serve public/llms.txt, which is one
  * English document by design — agents get English, and there is no per-locale
  * mirror to point at.
  */
@@ -250,6 +250,7 @@ export function localeMetadata({
   const metaByPath: Record<string, { title: string; description: string }> = {
     '/react-router': copy.meta.reactRouter,
     '/remix': copy.meta.remix,
+    '/astro': copy.meta.astro,
     '/vs/nuqs': copy.meta.vsNuqs,
   };
   const page = metaByPath[path] ?? copy.meta.home;

@@ -20,8 +20,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const lastModified = CONTENT_LAST_MODIFIED;
 
   // The homepage is the Next.js demo plus the full API documentation; the
-  // other two are the same demo rebuilt on a different router. Priority is
-  // relative within a sitemap, so giving all three a 1 said nothing.
+  // others are the same demo rebuilt on a different framework. Priority is
+  // relative within a sitemap, so giving them all a 1 said nothing.
   const priorityOf = (path: string) => (path === '' ? 1 : 0.8);
 
   return ALL_LOCALES.flatMap((locale) =>

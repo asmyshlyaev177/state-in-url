@@ -18,6 +18,7 @@ const SKILLS: ReadonlyArray<readonly [string, keyof AiSkillsTableCopy]> = [
   ['input-handling', 'inputHandling'],
   ['nextjs-ssr', 'nextjsSsr'],
   ['react-router-remix-setup', 'reactRouterRemixSetup'],
+  ['astro-setup', 'astroSetup'],
   ['form-library-integration', 'formLibraryIntegration'],
   ['shared-state-no-url', 'sharedStateNoUrl'],
 ];
