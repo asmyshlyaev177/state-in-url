@@ -1,3 +1,10 @@
+# [6.5.0](https://github.com/asmyshlyaev177/state-in-url/compare/v6.4.1...v6.5.0) (2026-09-04)
+
+
+### Features
+
+* astro hook ([555159c](https://github.com/asmyshlyaev177/state-in-url/commit/555159c8743b700cdbd2525fa8f48681cf1cd7ef))
+
 ## [6.4.1](https://github.com/asmyshlyaev177/state-in-url/compare/v6.4.0...v6.4.1) (2026-08-21)
 
 

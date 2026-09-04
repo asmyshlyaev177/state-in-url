@@ -6,8 +6,8 @@ description: >
   encodeState/decodeState in the frontmatter. Covers the searchParams island
   prop for a matching server render, sharing state between islands, and the
   replace/push choice with no client router involved. Load this skill when the
-  project is Astro, with React islands, Preact islands (compat), or no
-  client framework at all.
+  project is Astro, with React islands, Preact islands (compat), or no client
+  framework at all.
 requires:
   - feature-state-hook
 sources:
@@ -18,7 +18,7 @@ sources:
 metadata:
   type: framework
   library: state-in-url
-  library_version: '6.4.1'
+  library_version: '6.5.0'
   framework: astro
 ---
 

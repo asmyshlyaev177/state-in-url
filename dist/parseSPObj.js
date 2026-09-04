@@ -1,0 +1,1 @@
+"use strict";var c=require("./encoder/encoder.js");function s(r,e){return{...e,...o(JSON.stringify(r),e)}}function o(r,e){try{return JSON.parse(r,u)}catch{return e}}const u=(r,e)=>{const t=typeof e==="string";const n=t&&c.decode(e?.replace?.(/'/g,'"'));return r&&t?n:e};exports.parseSPObj=s;

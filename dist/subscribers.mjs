@@ -1,0 +1,1 @@
+const o=new WeakMap;const n=new WeakMap;const i={get(t){return n.get(t)||[]},add(t,e){const s=this.get(t);n.set(t,[...s,e]);return()=>this.remove(t,e)},remove(t,e){const s=this.get(t);if(!s)return;const r=s.filter(c=>c!==e);if(r.length){n.set(t,r)}else{n.delete(t)}}};const a={get:function(t){return o.get(t)},set:function(t,e){o.set(t,e)}};export{a as stateMap,i as subscribers};
