@@ -18,7 +18,10 @@ test.describe('robots.txt (landing only)', () => {
     .readdirSync(
       // `(en)` is a route group: it shapes the layout tree, not the URLs,
       // so these are still served at `/test-ssr`, `/useUrlState` and so on.
-      path.join(process.cwd(), 'packages/example-nextjs16/src/app/(en)/(tests)'),
+      path.join(
+        process.cwd(),
+        'packages/example-nextjs16/src/app/(en)/(tests)',
+      ),
       { withFileTypes: true },
     )
     .filter((entry) => entry.isDirectory())
@@ -26,8 +29,23 @@ test.describe('robots.txt (landing only)', () => {
 
   // The public pages, English and translated. A locale prefix must not
   // be caught by a fixture Disallow, and the fixtures exist only under the
-  // unprefixed English tree.
-  const documented = ['/', '/react-router', '/remix', '/astro', '/nextjs', '/vs/nuqs', '/ja', '/ja/react-router', '/zh-cn/remix', '/ko/astro', '/ru/nextjs', '/ja/vs/nuqs'];
+  // unprefixed English tree. ja, ru and vi are the indexed translations
+  // (scripts/i18n/locales.mjs); zh-cn and ko are kept out of the index.
+  const documented = [
+    '/',
+    '/react-router',
+    '/remix',
+    '/astro',
+    '/nextjs',
+    '/vs/nuqs',
+    '/ja',
+    '/ja/react-router',
+    '/vi/remix',
+    '/ru/astro',
+    '/ru/nextjs',
+    '/ja/vs/nuqs',
+  ];
+  const unindexed = ['/zh-cn', '/zh-cn/remix', '/ko/astro'];
 
   const disallowedPrefixes = async (request: {
     get: (url: string) => Promise<{ text: () => Promise<string> }>;
@@ -77,6 +95,11 @@ test.describe('robots.txt (landing only)', () => {
     }
     for (const route of documented.filter((r) => r !== '/')) {
       expect(sitemap).toContain(route);
+    }
+    for (const route of unindexed) {
+      expect(sitemap, `${route} is noindex and must stay out`).not.toContain(
+        `${route}<`,
+      );
     }
   });
 });

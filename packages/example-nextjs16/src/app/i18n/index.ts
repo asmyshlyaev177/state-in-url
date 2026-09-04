@@ -8,13 +8,14 @@
 
 import {
   ALL_LOCALES,
+  INDEXED_LOCALES,
   LOCALES,
   SOURCE,
   SOURCE_LOCALE,
   type Locale,
 } from '../../../../../scripts/i18n/locales.mjs';
 
-export { ALL_LOCALES, LOCALES, SOURCE, SOURCE_LOCALE };
+export { ALL_LOCALES, INDEXED_LOCALES, LOCALES, SOURCE, SOURCE_LOCALE };
 export type { Locale };
 
 /**
@@ -67,19 +68,28 @@ export function stripLocale(pathname: string): string {
 }
 
 /** The public pages, locale-independent. */
-export const PAGES = ['', '/react-router', '/remix', '/astro', '/nextjs', '/vs/nuqs'] as const;
+export const PAGES = [
+  '',
+  '/react-router',
+  '/remix',
+  '/astro',
+  '/nextjs',
+  '/vs/nuqs',
+] as const;
 
 /**
  * The reciprocal hreflang cluster for one page.
  *
  * Next's `alternates.languages` renders these as `<link rel="alternate"
- * hreflang>`. Every locale of a page lists every other one *and* itself, plus
- * `x-default` for English — a cluster whose members disagree about who is in
- * it is discarded wholesale rather than partially honoured.
+ * hreflang>`. Every *indexed* locale of a page lists every other one *and*
+ * itself, plus `x-default` for English — a cluster whose members disagree
+ * about who is in it is discarded wholesale rather than partially honoured,
+ * and one naming a `noindex` page is an error, so an unindexed locale is left
+ * out on both sides (its own pages declare none — see `localeMetadata`).
  */
 export function languageAlternates(origin: string, path: string) {
   const out: Record<string, string> = {};
-  for (const locale of ALL_LOCALES) {
+  for (const locale of INDEXED_LOCALES) {
     out[locale.code] = `${origin}${localePrefix(locale.code)}${path}`;
   }
   out['x-default'] = `${origin}${path}`;

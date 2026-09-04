@@ -4,7 +4,11 @@ Repo-wide guide: [`AGENTS.md`](../../AGENTS.md). Translator prompt:
 [`TRANSLATING.md`](TRANSLATING.md). Protected terms: [`GLOSSARY.md`](GLOSSARY.md).
 
 Eight languages besides English: `zh-CN`, `ja`, `ko`, `ru`, `es`, `pt-BR`, `fr`,
-`vi`. Declared once in [`locales.mjs`](locales.mjs); the README suffixes and the
+`vi`. Declared once in [`locales.mjs`](locales.mjs) — with an `indexed` flag
+per locale: only `ja`, `ru` and `vi` are told to crawlers, the rest are
+`noindex` (`localeMetadata` in `seoStuff.ts`), out of every hreflang cluster
+and out of `sitemap.ts`, while staying built and linked. The Search Console
+figures behind the split are in the table's comment. The README suffixes and the
 language-switcher line both derive from that list, so adding a language is an
 edit there plus `pnpm i18n:init`.
 

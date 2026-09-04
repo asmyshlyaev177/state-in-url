@@ -263,9 +263,14 @@ export function localeMetadata({
   return {
     title: page.title,
     description: page.description,
+    // An unindexed locale (`indexed: false` in the locale table) declines the
+    // index and names no cluster; the rest of its head stays for sharing.
+    ...(locale.indexed ? {} : { robots: { index: false, follow: true } }),
     alternates: {
       canonical: url,
-      languages: languageAlternates(vercelUrl, path),
+      ...(locale.indexed
+        ? { languages: languageAlternates(vercelUrl, path) }
+        : {}),
       types: { 'text/markdown': markdownAlternates(mirror) },
     },
     openGraph: {
