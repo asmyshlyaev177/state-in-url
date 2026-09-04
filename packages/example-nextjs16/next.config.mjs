@@ -18,12 +18,17 @@ const ROOT = path.resolve(import.meta.dirname, '../..');
  * without a .git directory).
  */
 function contentLastModified() {
-  try {
-    const iso = execSync('git log -1 --format=%cI', {
+  const gitDate = (args) =>
+    execSync(`git log -1 --format=%cI ${args}`, {
       cwd: ROOT,
       encoding: 'utf8',
       stdio: ['ignore', 'pipe', 'ignore'],
     }).trim();
+  try {
+    // Scoped to this package: a library release is not a change to any page
+    // here, yet this date moved on every commit. HEAD stays the fallback for
+    // a shallow clone, where a path-scoped log can find nothing.
+    const iso = gitDate('-- packages/example-nextjs16') || gitDate('');
     if (iso) return new Date(iso).toISOString();
   } catch {
     // Not a git checkout — fall through.
