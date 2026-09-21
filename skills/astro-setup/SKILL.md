@@ -18,7 +18,7 @@ sources:
 metadata:
   type: framework
   library: state-in-url
-  library_version: '6.5.0'
+  library_version: '7.0.0'
   framework: astro
 ---
 

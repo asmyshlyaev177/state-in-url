@@ -1,3 +1,16 @@
+# [7.0.0](https://github.com/asmyshlyaev177/state-in-url/compare/v6.5.0...v7.0.0) (2026-09-21)
+
+
+### Features
+
+* pure react hook export ([7b2d276](https://github.com/asmyshlyaev177/state-in-url/commit/7b2d27671bd723c578b4d91c6afc012163d7073f))
+
+
+### BREAKING CHANGES
+
+* Default import of nextjs hook is removed, it was exported nextjs version by
+default, use named import now "state-in-url/next" for nextjs
+
 # [6.5.0](https://github.com/asmyshlyaev177/state-in-url/compare/v6.4.1...v6.5.0) (2026-09-04)
 
 
