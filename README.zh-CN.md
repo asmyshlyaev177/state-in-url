@@ -1,6 +1,6 @@
 <!-- i18n:start -->
 [English](./README.md) · 简体中文 · [日本語](./README.ja.md) · [한국어](./README.ko.md) · [Русский](./README.ru.md) · [Español](./README.es.md) · [Português (BR)](./README.pt-BR.md) · [Français](./README.fr.md) · [Tiếng Việt](./README.vi.md)
-<!-- i18n:meta locale=zh-CN source=README.md source-blob=4d98ba970e6aab8f29987fbcba29fb6c61c2fc67 status=translated -->
+<!-- i18n:meta locale=zh-CN source=README.md source-blob=ad78fdbbee096115a953813ed9a462e3393c5736 status=translated -->
 <!-- i18n:end -->
 
 <div align="center">
@@ -150,14 +150,16 @@ nuqs 也是一个不错的库——如果你希望每个值都是一条可读的
       - [示例](#示例)
     - [用于 React-Router 的 useUrlState hook](#用于-react-router-的-useurlstate-hook)
       - [示例](#示例-1)
-    - [用于 Astro 的 useUrlState hook](#用于-astro-的-useurlstate-hook)
+    - [用于 React 的 useUrlState hook（无路由器）](#用于-react-的-useurlstate-hook无路由器)
       - [示例](#示例-2)
+    - [用于 Astro 的 useUrlState hook](#用于-astro-的-useurlstate-hook)
+      - [示例](#示例-3)
   - [实用技巧](#实用技巧)
         - [自定义 hook 以便捷地处理状态切片](#自定义-hook-以便捷地处理状态切片)
         - [使用复杂状态形状](#使用复杂状态形状)
         - [仅更新状态并手动同步到 URL](#仅更新状态并手动同步到-url)
   - [其他 hooks 和辅助函数](#其他-hooks-和辅助函数)
-    - [`useUrlStateBase` hook 用于其他路由器](#useurlstatebase-hook-用于其他路由器)
+    - [用于其他路由器的 `useUrlStateBase` hook](#用于其他路由器的-useurlstatebase-hook)
     - [`useSharedState` hook 用于 React.js](#usesharedstate-hook-用于-reactjs)
     - [`useLinkProps` hook 用于 React.js](#uselinkprops-hook-用于-reactjs)
     - [`useUrlEncode` hook 用于 React.js](#useurlencode-hook-用于-reactjs)
@@ -540,6 +542,39 @@ const tags = [
 
 [示例代码](packages/example-react-router6/src/Form-for-test.tsx)
 
+### 用于 React 的 useUrlState hook（无路由器）
+
+适用于没有路由器的 React 应用 —— Vite、Create React App，或挂载到你无法控制的页面中的小部件。该 hook 通过 `window.history` 写入 URL，并在前进/后退以及任何其他 `pushState`/`replaceState` 时读回。使用同一个 state 对象的每个组件都共享该状态，既不需要包裹组件，也不需要通过 props 传递。
+
+[API 文档](packages/urlstate/react/useUrlState)
+
+#### 示例
+
+```typescript
+// useFilters.ts
+import { useUrlState } from 'state-in-url/react';
+
+type FiltersState = { sort: 'name' | 'date'; page: number };
+const FILTERS_STATE: FiltersState = { sort: 'name', page: 1 };
+
+export function useFilters() {
+  return useUrlState(FILTERS_STATE);
+}
+```
+
+```typescript
+// FiltersBar.tsx
+import { useFilters } from './useFilters';
+
+export function FiltersBar() {
+  const { urlState, setUrl } = useFilters();
+
+  return <button onClick={() => setUrl({ page: urlState.page + 1 })}>Page {urlState.page}</button>;
+}
+```
+
+`state-in-url/astro` 就是这个 hook；之所以在下文单独说明，是因为 islands 还会把 `searchParams` 作为 prop 传入。
+
 ### 用于 Astro 的 useUrlState hook
 
 适用于 React 岛屿（islands）。Astro 默认没有客户端路由器，因此该 hook 通过 `window.history` 写入 URL，并在浏览器前进/后退以及任何其他 `pushState`/`replaceState` 调用时将其读回，Astro 自带的 `<ClientRouter />` 也包括在内。同一页面上的岛屿共享状态，无需用任何东西将它们包裹起来。
@@ -818,9 +853,39 @@ const tags = [
 
 ## 其他 hooks 和辅助函数
 
-### `useUrlStateBase` hook 用于其他路由器
+### 用于其他路由器的 `useUrlStateBase` hook
 
-用于使用其他路由器(例如 react-router 或 tanstack router)创建自己的 `useUrlState` hooks 的 Hooks。
+用它为本包未提供入口的路由器（例如 TanStack Router）构建自己的 `useUrlState`。传入任意带有 `push(url)` 和 `replace(url)` 的记忆化对象即可。
+
+如果**完全没有路由器**，则不需要它 —— 请使用 [`state-in-url/react`](#用于-react-的-useurlstate-hook无路由器)，它就是已经接好 `window.history` 的这个 hook。
+
+```typescript
+import { useUrlStateBase } from 'state-in-url/useUrlStateBase';
+
+type FiltersState = { sort: 'name' | 'date'; page: number };
+const FILTERS_STATE: FiltersState = { sort: 'name', page: 1 };
+
+export function useFilters() {
+  const router = useYourRouter();
+  const nav = React.useMemo(
+    () => ({
+      push: (url: string) => router.navigate(url),
+      replace: (url: string) => router.navigate(url, { replace: true }),
+    }),
+    [router],
+  );
+
+  return useUrlStateBase(FILTERS_STATE, nav, ({ parse }) => parse(window.location.search));
+}
+```
+
+与 `useUrlState` 有两点不同：
+
+- 它返回 `state`、`updateUrl`、`updateState`，而不是 `urlState`、`setUrl`、`setState`；并且 `updateUrl` 默认为 push，而 `setUrl` 默认为 replace。
+- 第三个参数用于填充初始 state。省略它，hook 就会忽略页面加载时 URL 中的查询字符串，于是分享出去的链接打开后只显示默认值。
+
+> [!NOTE]
+> `useUrlState` 不再从包的根入口导出 —— 每个 `useUrlState` 都与某个框架绑定，因此各自位于独立入口（`state-in-url/next`、`/react`、`/react-router`、`/react-router6`、`/remix`、`/astro`）。根入口只保留与框架无关的部分：`useSharedState`、`useUrlEncode`、`useUrlStateBase`、`useLinkProps`、`encode`/`decode` 和 `encodeState`/`decodeState`。
 
 [API 文档](packages/urlstate/useUrlStateBase)
 

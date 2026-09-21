@@ -1,6 +1,6 @@
 <!-- i18n:start -->
 [English](./README.md) · [简体中文](./README.zh-CN.md) · [日本語](./README.ja.md) · [한국어](./README.ko.md) · [Русский](./README.ru.md) · [Español](./README.es.md) · Português (BR) · [Français](./README.fr.md) · [Tiếng Việt](./README.vi.md)
-<!-- i18n:meta locale=pt-BR source=README.md source-blob=4d98ba970e6aab8f29987fbcba29fb6c61c2fc67 status=translated -->
+<!-- i18n:meta locale=pt-BR source=README.md source-blob=ad78fdbbee096115a953813ed9a462e3393c5736 status=translated -->
 <!-- i18n:end -->
 
 <div align="center">
@@ -150,14 +150,16 @@ A comparação completa — a mesma feature nas duas, outras alternativas (TanSt
       - [Exemplo](#exemplo)
     - [Hook useUrlState para React-Router](#hook-useurlstate-para-react-router)
       - [Exemplo](#exemplo-1)
-    - [Hook useUrlState para Astro](#hook-useurlstate-para-astro)
+    - [Hook useUrlState para React (sem router)](#hook-useurlstate-para-react-sem-router)
       - [Exemplo](#exemplo-2)
+    - [Hook useUrlState para Astro](#hook-useurlstate-para-astro)
+      - [Exemplo](#exemplo-3)
   - [Receitas](#receitas)
         - [Hook personalizado para trabalhar convenientemente com uma fatia do estado](#hook-personalizado-para-trabalhar-convenientemente-com-uma-fatia-do-estado)
         - [Com forma de estado complexa](#com-forma-de-estado-complexa)
         - [Atualizar apenas o estado e sincronizar com a URL manualmente](#atualizar-apenas-o-estado-e-sincronizar-com-a-url-manualmente)
   - [Outros hooks e helpers](#outros-hooks-e-helpers)
-    - [Hook `useUrlStateBase` para outros routers](#hook-useurlstatebase-para-outros-routers)
+    - [Hook `useUrlStateBase` para outro router](#hook-useurlstatebase-para-outro-router)
     - [Hook `useSharedState` para React.js](#hook-usesharedstate-para-reactjs)
     - [Hook `useLinkProps` para React.js](#hook-uselinkprops-para-reactjs)
     - [Hook `useUrlEncode` para React.js](#hook-useurlencode-para-reactjs)
@@ -540,6 +542,39 @@ const tags = [
 
 [Exemplo de código](packages/example-react-router6/src/Form-for-test.tsx)
 
+### Hook useUrlState para React (sem router)
+
+Para uma aplicação React sem router: Vite, Create React App, ou um widget montado em uma página que você não controla. O hook escreve a URL com `window.history` e a lê de volta ao navegar para trás e para frente e a cada outro `pushState`/`replaceState`. Todos os componentes que usam o mesmo objeto de estado o compartilham, sem nada para envolver e sem nada para passar por props.
+
+[Documentação da API](packages/urlstate/react/useUrlState)
+
+#### Exemplo
+
+```typescript
+// useFilters.ts
+import { useUrlState } from 'state-in-url/react';
+
+type FiltersState = { sort: 'name' | 'date'; page: number };
+const FILTERS_STATE: FiltersState = { sort: 'name', page: 1 };
+
+export function useFilters() {
+  return useUrlState(FILTERS_STATE);
+}
+```
+
+```typescript
+// FiltersBar.tsx
+import { useFilters } from './useFilters';
+
+export function FiltersBar() {
+  const { urlState, setUrl } = useFilters();
+
+  return <button onClick={() => setUrl({ page: urlState.page + 1 })}>Page {urlState.page}</button>;
+}
+```
+
+`state-in-url/astro` é este mesmo hook; ele é documentado à parte abaixo porque as islands também recebem `searchParams` como prop.
+
 ### Hook useUrlState para Astro
 
 Para ilhas React. O Astro não tem um router no lado do cliente por padrão, então o hook escreve a URL com `window.history` e a lê de volta ao navegar para trás/para frente e em qualquer outro `pushState`/`replaceState`, incluindo o próprio `<ClientRouter />` do Astro. As ilhas de uma página compartilham o estado, sem precisar envolvê-las em nada.
@@ -818,9 +853,39 @@ Sincronizar o estado em `onBlur` estará mais alinhado com o uso no mundo real.
 
 ## Outros hooks e helpers
 
-### Hook `useUrlStateBase` para outros routers
+### Hook `useUrlStateBase` para outro router
 
-Hooks para criar seus próprios hooks `useUrlState` com outros routers, por exemplo react-router ou tanstack router.
+Use-o para construir seu próprio `useUrlState` para um router do qual este pacote não publica um ponto de entrada, por exemplo TanStack Router. Passe qualquer objeto memoizado com `push(url)` e `replace(url)`.
+
+Se **não houver router algum**, você não precisa disso — use [`state-in-url/react`](#hook-useurlstate-para-react-sem-router), que é este mesmo hook já ligado ao `window.history`.
+
+```typescript
+import { useUrlStateBase } from 'state-in-url/useUrlStateBase';
+
+type FiltersState = { sort: 'name' | 'date'; page: number };
+const FILTERS_STATE: FiltersState = { sort: 'name', page: 1 };
+
+export function useFilters() {
+  const router = useYourRouter();
+  const nav = React.useMemo(
+    () => ({
+      push: (url: string) => router.navigate(url),
+      replace: (url: string) => router.navigate(url, { replace: true }),
+    }),
+    [router],
+  );
+
+  return useUrlStateBase(FILTERS_STATE, nav, ({ parse }) => parse(window.location.search));
+}
+```
+
+Duas diferenças em relação ao `useUrlState`:
+
+- Ele retorna `state`, `updateUrl` e `updateState`, e não `urlState`, `setUrl` e `setState`; além disso `updateUrl` faz push por padrão, enquanto `setUrl` faz replace.
+- O terceiro argumento define o state inicial. Se você omiti-lo, o hook ignora a query string com que a página foi carregada, então um link compartilhado abre com os valores padrão.
+
+> [!NOTE]
+> `useUrlState` não é mais exportado da raiz do pacote: cada um está preso a um framework, então cada um fica em seu próprio ponto de entrada (`state-in-url/next`, `/react`, `/react-router`, `/react-router6`, `/remix`, `/astro`). A raiz mantém apenas o que independe de framework: `useSharedState`, `useUrlEncode`, `useUrlStateBase`, `useLinkProps`, `encode`/`decode` e `encodeState`/`decodeState`.
 
 [Documentação da API](packages/urlstate/useUrlStateBase)
 

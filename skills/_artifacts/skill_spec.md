@@ -1,6 +1,6 @@
 # state-in-url — Skill Spec
 
-`state-in-url` is a small (~2 KB, zero runtime deps) React utility for storing typed, JSON-serializable state objects in URL query parameters. It exposes `useUrlState` for Next.js App Router, React Router v6/v7, and Remix v2, plus framework-agnostic helpers (`useSharedState`, `useUrlEncode`, `encodeState`/`decodeState`).
+`state-in-url` is a small (~2 KB, zero runtime deps) React utility for storing typed, JSON-serializable state objects in URL query parameters. It exposes `useUrlState` for Next.js App Router, React Router v6/v7, Remix v2 and Astro islands; `useUrlState` from `state-in-url/react` for plain React apps with no router; plus framework-agnostic helpers (`useSharedState`, `useUrlEncode`, `encodeState`/`decodeState`).
 
 ## Domains
 
@@ -10,6 +10,8 @@
 | input-handling | Reconciling instant feedback with URL write throttling | input-handling |
 | nextjs-integration | SSR, hydration, Proxy/layout patterns | nextjs-ssr |
 | router-integration | react-router v6/v7 and remix v2 setup | react-router-remix-setup |
+| astro-integration | Astro React islands, no client router | astro-setup |
+| no-router | Plain React SPAs (Vite/CRA) and unsupported routers | react-no-router |
 | form-composition | Pairing with form libraries (react-hook-form, formik) | form-library-integration |
 | non-url-sharing | useSharedState as a no-URL primitive | shared-state-no-url |
 
@@ -23,8 +25,19 @@
 | react-router-remix-setup | framework | router-integration | rr6/rr7/remix imports and NavigateOptions | 2 |
 | form-library-integration | composition | form-composition | useUrlState + react-hook-form pattern | 2 |
 | shared-state-no-url | core | non-url-sharing | useSharedState for cross-component state without URL | 2 |
+| astro-setup | framework | astro-integration | state-in-url/astro in islands, searchParams island prop, encodeState in frontmatter | — |
+| react-no-router | framework | no-router | state-in-url/react, no root useUrlState, useUrlStateBase for other routers | 3 |
 
-Total: 23 failure modes across 6 skills.
+Total: 26 failure modes across 8 skills.
+
+### react-no-router (3 failure modes)
+| # | Mistake | Priority | Source | Cross-skill? |
+| --- | --- | --- | --- | --- |
+| 1 | Importing `useUrlState` from the package root | CRITICAL | packages/urlstate/index.ts | — |
+| 2 | `defaultState` defined inside the component | CRITICAL | issues #57, #60, #69 | feature-state-hook |
+| 3 | Hand-composing `useUrlStateBase` when there is simply no router | HIGH | react/useUrlState/useUrlState.ts | — |
+
+The root no longer exports any `useUrlState`, so #1 is now a build error rather than a silent Next dependency. It stays listed because agents trained on older code still reach for it.
 
 ## Failure Mode Inventory
 

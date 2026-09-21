@@ -1,6 +1,6 @@
 <!-- i18n:start -->
 [English](./README.md) · [简体中文](./README.zh-CN.md) · [日本語](./README.ja.md) · [한국어](./README.ko.md) · [Русский](./README.ru.md) · [Español](./README.es.md) · [Português (BR)](./README.pt-BR.md) · [Français](./README.fr.md) · Tiếng Việt
-<!-- i18n:meta locale=vi source=README.md source-blob=4d98ba970e6aab8f29987fbcba29fb6c61c2fc67 status=translated -->
+<!-- i18n:meta locale=vi source=README.md source-blob=ad78fdbbee096115a953813ed9a462e3393c5736 status=translated -->
 <!-- i18n:end -->
 
 <div align="center">
@@ -150,14 +150,16 @@ Bản so sánh đầy đủ — cùng một tính năng trong cả hai, các l�
       - [Ví dụ](#ví-dụ)
     - [Hook useUrlState cho React-Router](#hook-useurlstate-cho-react-router)
       - [Ví dụ](#ví-dụ-1)
-    - [Hook useUrlState cho Astro](#hook-useurlstate-cho-astro)
+    - [Hook useUrlState cho React (không có router)](#hook-useurlstate-cho-react-không-có-router)
       - [Ví dụ](#ví-dụ-2)
+    - [Hook useUrlState cho Astro](#hook-useurlstate-cho-astro)
+      - [Ví dụ](#ví-dụ-3)
   - [Công thức nấu ăn](#công-thức-nấu-ăn)
         - [Hook tùy chỉnh để làm việc thuận tiện với một phần của state](#hook-tùy-chỉnh-để-làm-việc-thuận-tiện-với-một-phần-của-state)
         - [Với hình dạng state phức tạp](#với-hình-dạng-state-phức-tạp)
         - [Chỉ cập nhật state và đồng bộ với URL thủ công](#chỉ-cập-nhật-state-và-đồng-bộ-với-url-thủ-công)
   - [Các hook và helper khác](#các-hook-và-helper-khác)
-    - [Hook `useUrlStateBase` cho các router khác](#hook-useurlstatebase-cho-các-router-khác)
+    - [Hook `useUrlStateBase` cho router khác](#hook-useurlstatebase-cho-router-khác)
     - [Hook `useSharedState` cho React.js](#hook-usesharedstate-cho-reactjs)
     - [Hook `useLinkProps` cho React.js](#hook-uselinkprops-cho-reactjs)
     - [Hook `useUrlEncode` cho React.js](#hook-useurlencode-cho-reactjs)
@@ -540,6 +542,39 @@ const tags = [
 
 [Ví dụ code](packages/example-react-router6/src/Form-for-test.tsx)
 
+### Hook useUrlState cho React (không có router)
+
+Dành cho ứng dụng React không có router — Vite, Create React App, hoặc một widget được gắn vào trang mà bạn không kiểm soát. Hook ghi URL bằng `window.history` và đọc lại khi người dùng đi lui/tới cũng như khi có bất kỳ `pushState`/`replaceState` nào khác. Mọi component dùng chung một object state đều chia sẻ state đó, không cần bọc gì và không cần truyền qua props.
+
+[Tài liệu API](packages/urlstate/react/useUrlState)
+
+#### Ví dụ
+
+```typescript
+// useFilters.ts
+import { useUrlState } from 'state-in-url/react';
+
+type FiltersState = { sort: 'name' | 'date'; page: number };
+const FILTERS_STATE: FiltersState = { sort: 'name', page: 1 };
+
+export function useFilters() {
+  return useUrlState(FILTERS_STATE);
+}
+```
+
+```typescript
+// FiltersBar.tsx
+import { useFilters } from './useFilters';
+
+export function FiltersBar() {
+  const { urlState, setUrl } = useFilters();
+
+  return <button onClick={() => setUrl({ page: urlState.page + 1 })}>Page {urlState.page}</button>;
+}
+```
+
+`state-in-url/astro` chính là hook này; nó được nói riêng ở phần dưới vì islands còn nhận `searchParams` dưới dạng prop.
+
 ### Hook useUrlState cho Astro
 
 Dành cho React island. Astro mặc định không có router phía client, nên hook ghi URL bằng `window.history` và đọc lại nó khi back/forward cũng như khi có bất kỳ lời gọi `pushState`/`replaceState` nào khác, kể cả `<ClientRouter />` của chính Astro. Các island trên cùng một trang chia sẻ state mà không cần bọc chúng trong bất cứ thứ gì.
@@ -818,9 +853,39 @@ const tags = [
 
 ## Các hook và helper khác
 
-### Hook `useUrlStateBase` cho các router khác
+### Hook `useUrlStateBase` cho router khác
 
-Hook để tạo các hook `useUrlState` của riêng bạn với các router khác, ví dụ react-router hoặc tanstack router.
+Dùng nó để tự dựng `useUrlState` cho một router mà gói này không cung cấp điểm vào, ví dụ TanStack Router. Hãy truyền một object đã được ghi nhớ (memoized) có `push(url)` và `replace(url)`.
+
+Nếu **hoàn toàn không có router**, bạn không cần tới nó — hãy dùng [`state-in-url/react`](#hook-useurlstate-cho-react-không-có-router), vốn chính là hook này đã nối sẵn với `window.history`.
+
+```typescript
+import { useUrlStateBase } from 'state-in-url/useUrlStateBase';
+
+type FiltersState = { sort: 'name' | 'date'; page: number };
+const FILTERS_STATE: FiltersState = { sort: 'name', page: 1 };
+
+export function useFilters() {
+  const router = useYourRouter();
+  const nav = React.useMemo(
+    () => ({
+      push: (url: string) => router.navigate(url),
+      replace: (url: string) => router.navigate(url, { replace: true }),
+    }),
+    [router],
+  );
+
+  return useUrlStateBase(FILTERS_STATE, nav, ({ parse }) => parse(window.location.search));
+}
+```
+
+Hai điểm khác so với `useUrlState`:
+
+- Nó trả về `state`, `updateUrl`, `updateState` chứ không phải `urlState`, `setUrl`, `setState`; và `updateUrl` mặc định là push, còn `setUrl` mặc định là replace.
+- Tham số thứ ba nạp state ban đầu. Bỏ nó đi thì hook sẽ bỏ qua chuỗi truy vấn lúc trang được tải, nên một liên kết được chia sẻ sẽ mở ra với giá trị mặc định.
+
+> [!NOTE]
+> `useUrlState` không còn được export từ gốc của gói: mỗi `useUrlState` đều gắn với một framework, nên mỗi cái nằm ở điểm vào riêng (`state-in-url/next`, `/react`, `/react-router`, `/react-router6`, `/remix`, `/astro`). Điểm vào gốc chỉ giữ những gì không phụ thuộc framework: `useSharedState`, `useUrlEncode`, `useUrlStateBase`, `useLinkProps`, `encode`/`decode` và `encodeState`/`decodeState`.
 
 [Tài liệu API](packages/urlstate/useUrlStateBase)
 

@@ -7,7 +7,7 @@ files are written for that, and are far more specific than this one.
 
 ## What this is
 
-`state-in-url` is a ~2KB, zero-runtime-dependency React library that stores typed, JSON-serializable state objects in URL query parameters while preserving types and structure (numbers stay numbers, dates stay dates, nested objects/arrays work). It ships a `useUrlState` hook for Next.js App Router, React Router v6/v7, Remix v2, and Astro (React islands), plus framework-agnostic encode/decode helpers. Positioned as a NUQS alternative.
+`state-in-url` is a ~2KB, zero-runtime-dependency React library that stores typed, JSON-serializable state objects in URL query parameters while preserving types and structure (numbers stay numbers, dates stay dates, nested objects/arrays work). It ships a `useUrlState` hook per framework, each behind its own entry point: `state-in-url/next` (App Router), `/react-router` (v7), `/react-router6`, `/remix`, `/astro` (React islands), and `/react` for a plain React app with no router at all. `useUrlStateBase` builds one for a router with no entry point of its own. Plus framework-agnostic encode/decode helpers. Positioned as a NUQS alternative.
 
 ## Commands
 
@@ -121,9 +121,21 @@ The library is layered; each layer has its own subdirectory under `packages/urls
 
 3. **`useUrlStateBase/`** — generic hook composing `useSharedState` + `useUrlEncode` and accepting a `router` with `push`/`replace`. Contains the **"last update wins" URL-write throttling**: a module-global timer batches rapid `setUrl` calls (`TIMEOUT` = 70ms, 330ms on Safari). URL updates are therefore async/debounced, not synchronous.
 
-4. **Framework wrappers** — `next/`, `react-router/` (v7), `react-router6/`, `remix/`, `astro/` each export a `useUrlState` that adapts the framework's router to `useUrlStateBase` and handles SSR (`parseSPObj`, `filterUnknownParams`). The Next.js wrapper defaults to `window.history` navigation (`useHistory: true`) to avoid `_rsc` refetches, and accepts server `searchParams`. The Astro wrapper is the Next.js one without `next/navigation`: `window.history` only, `searchParams` as an island prop for the server render (a `URLSearchParams` there serializes to `{}`, so it must be a plain object), and a resync through `subscribeToUrl` on every URL change, because islands hydrate independently. The two bodies are copies for now, on purpose.
+4. **Framework wrappers** — `next/`, `react-router/` (v7), `react-router6/`, `remix/`, `astro/` each export a `useUrlState` that adapts the framework's router to `useUrlStateBase` and handles SSR (`parseSPObj`, `filterUnknownParams`). The Next.js wrapper defaults to `window.history` navigation (`useHistory: true`) to avoid `_rsc` refetches, and accepts server `searchParams`. The `react/` wrapper is the Next.js one without `next/navigation`: `window.history` only, `searchParams` optional for a server render (a `URLSearchParams` there serializes to `{}`, so it must be a plain object), and a resync through `subscribeToUrl` on every URL change, because an island hydrates independently. `astro/` re-exports it. The `next/` and `react/` bodies are copies for now, on purpose.
 
-`index.ts` re-exports the public surface: `useUrlState` (Next), `useSharedState`, `useUrlEncode`, `useUrlStateBase`, `encode`/`decode`, `encodeState`/`decodeState`, `typeOf`, `isSSR`.
+`index.ts` re-exports the public surface: `useUrlState` (Next), `useSharedState`, `useUrlEncode`, `useUrlStateBase`, `useLinkProps`, `encode`/`decode`, `encodeState`/`decodeState`, `typeOf`, `isSSR`.
+
+**No `useUrlState` is exported from the root, deliberately.** It used to be the
+Next one, which reaches `next/navigation`, so a Vite or CRA user who found that
+undocumented import got a build error or a phantom Next. Every `useUrlState` is
+tied to a framework, so every one lives behind its own entry point and the root
+carries only what is framework-agnostic. Do not re-add one: a root export that
+works in one framework and breaks in the rest is the bug this removed.
+
+`react/useUrlState/` holds the no-router implementation and `astro/useUrlState/`
+re-exports it — one body, two entry points, because Astro islands are that same
+hook plus a `searchParams` prop. The `/astro` docs stay separate for the island
+setup. `next/` keeps its own copy (see Framework wrappers above).
 
 ### Invariants that bite
 

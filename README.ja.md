@@ -1,6 +1,6 @@
 <!-- i18n:start -->
 [English](./README.md) · [简体中文](./README.zh-CN.md) · 日本語 · [한국어](./README.ko.md) · [Русский](./README.ru.md) · [Español](./README.es.md) · [Português (BR)](./README.pt-BR.md) · [Français](./README.fr.md) · [Tiếng Việt](./README.vi.md)
-<!-- i18n:meta locale=ja source=README.md source-blob=4d98ba970e6aab8f29987fbcba29fb6c61c2fc67 status=translated -->
+<!-- i18n:meta locale=ja source=README.md source-blob=ad78fdbbee096115a953813ed9a462e3393c5736 status=translated -->
 <!-- i18n:end -->
 
 <div align="center">
@@ -150,8 +150,10 @@ nuqs も優れたライブラリです。値ごとに読みやすいクエリパ
       - [例](#例)
     - [React-Router 向け useUrlState フック](#react-router-向け-useurlstate-フック)
       - [例](#例-1)
-    - [Astro 向け useUrlState フック](#astro-向け-useurlstate-フック)
+    - [React 向け useUrlState フック（ルーターなし）](#react-向け-useurlstate-フックルーターなし)
       - [例](#例-2)
+    - [Astro 向け useUrlState フック](#astro-向け-useurlstate-フック)
+      - [例](#例-3)
   - [レシピ](#レシピ)
         - [状態の一部を便利に扱うカスタムフック](#状態の一部を便利に扱うカスタムフック)
         - [複雑な状態の形を使用](#複雑な状態の形を使用)
@@ -540,6 +542,39 @@ const tags = [
 
 [サンプルコード](packages/example-react-router6/src/Form-for-test.tsx)
 
+### React 向け useUrlState フック（ルーターなし）
+
+ルーターを持たない React アプリ向けです。Vite、Create React App、あるいは自分では管理できないページに埋め込むウィジェットなどが対象です。このフックは `window.history` で URL を書き込み、戻る/進むや他の `pushState`/`replaceState` のたびに読み戻します。同じ state オブジェクトを使うコンポーネントはすべて状態を共有するため、ラップするものも props で渡すものもありません。
+
+[API ドキュメント](packages/urlstate/react/useUrlState)
+
+#### 例
+
+```typescript
+// useFilters.ts
+import { useUrlState } from 'state-in-url/react';
+
+type FiltersState = { sort: 'name' | 'date'; page: number };
+const FILTERS_STATE: FiltersState = { sort: 'name', page: 1 };
+
+export function useFilters() {
+  return useUrlState(FILTERS_STATE);
+}
+```
+
+```typescript
+// FiltersBar.tsx
+import { useFilters } from './useFilters';
+
+export function FiltersBar() {
+  const { urlState, setUrl } = useFilters();
+
+  return <button onClick={() => setUrl({ page: urlState.page + 1 })}>Page {urlState.page}</button>;
+}
+```
+
+`state-in-url/astro` は同じフックです。islands では `searchParams` を prop として受け取るため、下で別に説明しています。
+
 ### Astro 向け useUrlState フック
 
 React アイランド向けです。Astro にはデフォルトでクライアントサイドルーターがないため、このフックは `window.history` で URL を書き込み、戻る/進む操作時およびその他あらゆる `pushState`/`replaceState` の際（Astro 自身の `<ClientRouter />` を含む）に URL を読み戻します。ページ上のアイランドは状態を共有し、それらをラップするものは何も必要ありません。
@@ -820,7 +855,37 @@ const tags = [
 
 ### 他のルーター向け `useUrlStateBase` フック
 
-react-router や tanstack router など、他のルーターで独自の `useUrlState` フックを作成するためのフックです。
+本パッケージがエントリーポイントを用意していないルーター（例: TanStack Router）向けに、自前の `useUrlState` を作るために使います。`push(url)` と `replace(url)` を持つメモ化されたオブジェクトを渡してください。
+
+ルーターが**まったくない**場合は不要です。[`state-in-url/react`](#react-向け-useurlstate-フックルーターなし) を使ってください。こちらは同じフックを `window.history` に接続済みのものです。
+
+```typescript
+import { useUrlStateBase } from 'state-in-url/useUrlStateBase';
+
+type FiltersState = { sort: 'name' | 'date'; page: number };
+const FILTERS_STATE: FiltersState = { sort: 'name', page: 1 };
+
+export function useFilters() {
+  const router = useYourRouter();
+  const nav = React.useMemo(
+    () => ({
+      push: (url: string) => router.navigate(url),
+      replace: (url: string) => router.navigate(url, { replace: true }),
+    }),
+    [router],
+  );
+
+  return useUrlStateBase(FILTERS_STATE, nav, ({ parse }) => parse(window.location.search));
+}
+```
+
+`useUrlState` との違いは 2 点です:
+
+- 返すのは `urlState`、`setUrl`、`setState` ではなく `state`、`updateUrl`、`updateState` です。また `updateUrl` の既定は push で、`setUrl` の既定は replace です。
+- 第 3 引数が初期 state を決めます。省略するとフックは読み込み時のクエリ文字列を無視するため、共有されたリンクを開いても既定値が表示されます。
+
+> [!NOTE]
+> `useUrlState` はパッケージのルートからはエクスポートされません。どの `useUrlState` もフレームワークに結び付いているため、それぞれ専用のエントリーポイント（`state-in-url/next`、`/react`、`/react-router`、`/react-router6`、`/remix`、`/astro`）にあります。ルートエントリーにはフレームワークに依存しないものだけが残ります: `useSharedState`、`useUrlEncode`、`useUrlStateBase`、`useLinkProps`、`encode`/`decode`、`encodeState`/`decodeState`。
 
 [API ドキュメント](packages/urlstate/useUrlStateBase)
 

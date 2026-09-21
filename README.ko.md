@@ -1,6 +1,6 @@
 <!-- i18n:start -->
 [English](./README.md) · [简体中文](./README.zh-CN.md) · [日本語](./README.ja.md) · 한국어 · [Русский](./README.ru.md) · [Español](./README.es.md) · [Português (BR)](./README.pt-BR.md) · [Français](./README.fr.md) · [Tiếng Việt](./README.vi.md)
-<!-- i18n:meta locale=ko source=README.md source-blob=4d98ba970e6aab8f29987fbcba29fb6c61c2fc67 status=translated -->
+<!-- i18n:meta locale=ko source=README.md source-blob=ad78fdbbee096115a953813ed9a462e3393c5736 status=translated -->
 <!-- i18n:end -->
 
 <div align="center">
@@ -150,8 +150,10 @@ nuqs도 훌륭한 라이브러리입니다. 값마다 읽기 쉬운 쿼리 파�
       - [예제](#예제)
     - [React-Router용 useUrlState 훅](#react-router용-useurlstate-훅)
       - [예제](#예제-1)
-    - [Astro용 useUrlState 훅](#astro용-useurlstate-훅)
+    - [React용 useUrlState 훅 (라우터 없음)](#react용-useurlstate-훅-라우터-없음)
       - [예제](#예제-2)
+    - [Astro용 useUrlState 훅](#astro용-useurlstate-훅)
+      - [예제](#예제-3)
   - [레시피](#레시피)
         - [상태의 일부를 편리하게 다루기 위한 커스텀 훅](#상태의-일부를-편리하게-다루기-위한-커스텀-훅)
         - [복잡한 상태 구조 사용](#복잡한-상태-구조-사용)
@@ -536,6 +538,39 @@ const tags = [
 
 [예제 코드](packages/example-react-router6/src/Form-for-test.tsx)
 
+### React용 useUrlState 훅 (라우터 없음)
+
+라우터가 없는 React 앱을 위한 것입니다. Vite, Create React App, 또는 직접 제어할 수 없는 페이지에 끼워 넣는 위젯이 여기에 해당합니다. 이 훅은 `window.history` 로 URL 을 쓰고, 뒤로/앞으로 이동할 때와 다른 코드가 `pushState`/`replaceState` 를 호출할 때 다시 읽어 옵니다. 같은 state 객체를 쓰는 모든 컴포넌트가 상태를 공유하므로, 감쌀 것도 props 로 넘길 것도 없습니다.
+
+[API 문서](packages/urlstate/react/useUrlState)
+
+#### 예제
+
+```typescript
+// useFilters.ts
+import { useUrlState } from 'state-in-url/react';
+
+type FiltersState = { sort: 'name' | 'date'; page: number };
+const FILTERS_STATE: FiltersState = { sort: 'name', page: 1 };
+
+export function useFilters() {
+  return useUrlState(FILTERS_STATE);
+}
+```
+
+```typescript
+// FiltersBar.tsx
+import { useFilters } from './useFilters';
+
+export function FiltersBar() {
+  const { urlState, setUrl } = useFilters();
+
+  return <button onClick={() => setUrl({ page: urlState.page + 1 })}>Page {urlState.page}</button>;
+}
+```
+
+`state-in-url/astro` 는 바로 이 훅입니다. islands 는 `searchParams` 를 prop 으로도 받기 때문에 아래에서 따로 설명합니다.
+
 ### Astro용 useUrlState 훅
 
 React 아일랜드용입니다. Astro에는 기본적으로 클라이언트 측 라우터가 없으므로, 이 훅은 `window.history`로 URL을 쓰고, 뒤로/앞으로 이동과 그 외 모든 `pushState`/`replaceState` 시점에 (Astro 자체의 `<ClientRouter />` 포함) URL을 다시 읽어 옵니다. 한 페이지의 아일랜드들은 감싸는 것 없이 상태를 공유합니다.
@@ -816,7 +851,37 @@ const tags = [
 
 ### 다른 라우터용 `useUrlStateBase` 훅
 
-다른 라우터(예: react-router 또는 tanstack router)와 함께 자체 `useUrlState` 훅을 만들기 위한 훅입니다.
+이 패키지가 진입점을 제공하지 않는 라우터(예: TanStack Router)를 위해 직접 `useUrlState` 를 만들 때 사용합니다. `push(url)` 과 `replace(url)` 을 가진 메모이즈된 객체를 넘기면 됩니다.
+
+라우터가 **전혀 없다면** 이것은 필요 없습니다. 이미 `window.history` 에 연결된 같은 훅인 [`state-in-url/react`](#react용-useurlstate-훅-라우터-없음) 를 쓰세요.
+
+```typescript
+import { useUrlStateBase } from 'state-in-url/useUrlStateBase';
+
+type FiltersState = { sort: 'name' | 'date'; page: number };
+const FILTERS_STATE: FiltersState = { sort: 'name', page: 1 };
+
+export function useFilters() {
+  const router = useYourRouter();
+  const nav = React.useMemo(
+    () => ({
+      push: (url: string) => router.navigate(url),
+      replace: (url: string) => router.navigate(url, { replace: true }),
+    }),
+    [router],
+  );
+
+  return useUrlStateBase(FILTERS_STATE, nav, ({ parse }) => parse(window.location.search));
+}
+```
+
+`useUrlState` 와 다른 점은 두 가지입니다:
+
+- `urlState`, `setUrl`, `setState` 가 아니라 `state`, `updateUrl`, `updateState` 를 반환하며, `updateUrl` 의 기본값은 push, `setUrl` 의 기본값은 replace 입니다.
+- 세 번째 인자가 초기 state 를 채웁니다. 이를 생략하면 훅이 페이지가 로드된 시점의 쿼리 문자열을 무시하므로, 공유된 링크를 열어도 기본값만 보입니다.
+
+> [!NOTE]
+> `useUrlState` 는 패키지 루트에서 내보내지 않습니다. 모든 `useUrlState` 가 특정 프레임워크에 묶여 있어 각자 자신의 진입점(`state-in-url/next`, `/react`, `/react-router`, `/react-router6`, `/remix`, `/astro`)에 있습니다. 루트 진입점에는 프레임워크와 무관한 것만 남습니다: `useSharedState`, `useUrlEncode`, `useUrlStateBase`, `useLinkProps`, `encode`/`decode`, `encodeState`/`decodeState`.
 
 [API 문서](packages/urlstate/useUrlStateBase)
 

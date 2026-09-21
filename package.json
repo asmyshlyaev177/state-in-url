@@ -43,6 +43,11 @@
       "types": "./dist/next/index.d.ts",
       "default": "./dist/next/index.mjs"
     },
+    "./react": {
+      "require": "./dist/react/index.js",
+      "types": "./dist/react/index.d.ts",
+      "default": "./dist/react/index.mjs"
+    },
     "./react-router6": {
       "require": "./dist/react-router6/index.js",
       "types": "./dist/react-router6/index.d.ts",

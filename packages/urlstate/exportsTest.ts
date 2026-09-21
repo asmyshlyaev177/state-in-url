@@ -6,6 +6,7 @@ import { useUrlState as useUrlStateAstro } from '../../dist/astro';
 import { decode, encode } from '../../dist/encoder';
 import { decodeState, encodeState } from '../../dist/encodeState';
 import { useUrlState } from '../../dist/next';
+import { useUrlState as useUrlStateReact } from '../../dist/react';
 import { useUrlState as useUrlStateRR6 } from '../../dist/react-router6';
 import { useUrlState as useUrlStateRR } from '../../dist/react-router';
 import { useUrlState as useUrlStateRemix } from '../../dist/remix';
@@ -46,7 +47,9 @@ assert(loadFile('/remix/useUrlState/useUrlState.d.ts').length > 15, errorMsg);
 
 // Astro
 assert.ok(useUrlStateAstro, errorMsg);
+assert.ok(useUrlStateReact, errorMsg);
 assert(loadFile('/astro/useUrlState/useUrlState.d.ts').length > 15, errorMsg);
+assert(loadFile('/react/useUrlState/useUrlState.d.ts').length > 15, errorMsg);
 
 // React
 assert.ok(useUrlStateBase, errorMsg);

@@ -149,14 +149,16 @@ The full comparison — the same feature built in both, other alternatives (TanS
       - [Example](#example)
     - [useUrlState hook for React-Router](#useurlstate-hook-for-react-router)
       - [Example](#example-1)
-    - [useUrlState hook for Astro](#useurlstate-hook-for-astro)
+    - [useUrlState hook for React (no router)](#useurlstate-hook-for-react-no-router)
       - [Example](#example-2)
+    - [useUrlState hook for Astro](#useurlstate-hook-for-astro)
+      - [Example](#example-3)
   - [Recipes](#recipes)
         - [Custom hook to work with slice of state conveniently](#custom-hook-to-work-with-slice-of-state-conveniently)
         - [With complex state shape](#with-complex-state-shape)
         - [Update state only and sync to URL manually](#update-state-only-and-sync-to-url-manually)
   - [Other hooks and helpers](#other-hooks-and-helpers)
-    - [`useUrlStateBase` hook for others routers](#useurlstatebase-hook-for-others-routers)
+    - [`useUrlStateBase` hook for another router](#useurlstatebase-hook-for-another-router)
     - [`useSharedState` hook for React.js](#usesharedstate-hook-for-reactjs)
     - [`useLinkProps` hook for React.js](#uselinkprops-hook-for-reactjs)
     - [`useUrlEncode` hook for React.js](#useurlencode-hook-for-reactjs)
@@ -539,6 +541,39 @@ const tags = [
 
 [Example code](packages/example-react-router6/src/Form-for-test.tsx)
 
+### useUrlState hook for React (no router)
+
+For a React app with no router — Vite, Create React App, a widget mounted into a page you do not control. The hook writes the URL with `window.history` and reads it back on back/forward and on any other `pushState`/`replaceState`. Every component using the same state object shares it, with nothing to wrap them in and nothing to pass through props.
+
+[API Docs](packages/urlstate/react/useUrlState)
+
+#### Example
+
+```typescript
+// useFilters.ts
+import { useUrlState } from 'state-in-url/react';
+
+type FiltersState = { sort: 'name' | 'date'; page: number };
+const FILTERS_STATE: FiltersState = { sort: 'name', page: 1 };
+
+export function useFilters() {
+  return useUrlState(FILTERS_STATE);
+}
+```
+
+```typescript
+// FiltersBar.tsx
+import { useFilters } from './useFilters';
+
+export function FiltersBar() {
+  const { urlState, setUrl } = useFilters();
+
+  return <button onClick={() => setUrl({ page: urlState.page + 1 })}>Page {urlState.page}</button>;
+}
+```
+
+`state-in-url/astro` is this same hook; it is documented separately below because islands also take `searchParams` as a prop.
+
 ### useUrlState hook for Astro
 
 For React islands. Astro has no client-side router by default, so the hook writes the URL with `window.history` and reads it back on back/forward and on any other `pushState`/`replaceState`, Astro's own `<ClientRouter />` included. Islands on a page share the state, with nothing to wrap them in.
@@ -817,9 +852,39 @@ Syncing state `onBlur` will be more aligned with real world usage.
 
 ## Other hooks and helpers
 
-### `useUrlStateBase` hook for others routers
+### `useUrlStateBase` hook for another router
 
-Hooks to create your own `useUrlState` hooks with other routers, e.g. react-router or tanstack router.
+Use this to build your own `useUrlState` for a router this package ships no entry point for, e.g. TanStack Router. Pass any memoized object with `push(url)` and `replace(url)`.
+
+With **no router at all**, you do not need this — use [`state-in-url/react`](#useurlstate-hook-for-react-no-router), which is this hook already wired to `window.history`.
+
+```typescript
+import { useUrlStateBase } from 'state-in-url/useUrlStateBase';
+
+type FiltersState = { sort: 'name' | 'date'; page: number };
+const FILTERS_STATE: FiltersState = { sort: 'name', page: 1 };
+
+export function useFilters() {
+  const router = useYourRouter();
+  const nav = React.useMemo(
+    () => ({
+      push: (url: string) => router.navigate(url),
+      replace: (url: string) => router.navigate(url, { replace: true }),
+    }),
+    [router],
+  );
+
+  return useUrlStateBase(FILTERS_STATE, nav, ({ parse }) => parse(window.location.search));
+}
+```
+
+Two differences from `useUrlState`:
+
+- It returns `state`, `updateUrl`, `updateState` — not `urlState`, `setUrl`, `setState` — and `updateUrl` defaults to push, where `setUrl` defaults to replace.
+- The third argument seeds the initial state. Leave it out and the hook ignores the query string it loaded with, so a shared link opens with defaults.
+
+> [!NOTE]
+> `useUrlState` is not exported from the package root — every one of them is tied to a framework, so each lives behind its own entry point (`state-in-url/next`, `/react`, `/react-router`, `/react-router6`, `/remix`, `/astro`). The root entry carries only what is framework-agnostic: `useSharedState`, `useUrlEncode`, `useUrlStateBase`, `useLinkProps`, `encode`/`decode` and `encodeState`/`decodeState`.
 
 [API Docs](packages/urlstate/useUrlStateBase)
 

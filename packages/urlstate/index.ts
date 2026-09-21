@@ -1,6 +1,5 @@
 import { decode, encode } from './encoder';
 import { decodeState, encodeState } from './encodeState';
-import { useUrlState } from './next';
 import { useLinkProps } from './useLinkProps';
 import { useSharedState } from './useSharedState';
 import { useUrlEncode } from './useUrlEncode';
@@ -16,7 +15,6 @@ export {
   useLinkProps,
   useSharedState,
   useUrlEncode,
-  useUrlState,
   useUrlStateBase,
 };
 export type { JSONCompatible, Type };
