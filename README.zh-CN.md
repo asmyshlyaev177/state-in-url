@@ -1,6 +1,6 @@
 <!-- i18n:start -->
 [English](./README.md) · 简体中文 · [日本語](./README.ja.md) · [한국어](./README.ko.md) · [Русский](./README.ru.md) · [Español](./README.es.md) · [Português (BR)](./README.pt-BR.md) · [Français](./README.fr.md) · [Tiếng Việt](./README.vi.md)
-<!-- i18n:meta locale=zh-CN source=README.md source-blob=ad78fdbbee096115a953813ed9a462e3393c5736 status=translated -->
+<!-- i18n:meta locale=zh-CN source=README.md source-blob=8b11ee8f8c8b83c207a940455766e24376508130 status=translated -->
 <!-- i18n:end -->
 
 <div align="center">
@@ -95,7 +95,7 @@
 - **兼容**: 将保持第三方查询参数不变
 - **灵活**: 可以在同一页面上使用多个状态对象,只需使用不同的键
 - **快速**: 最少的重新渲染,大约[1ms](https://github.com/asmyshlyaev177/state-in-url/blob/87c8c7c995c5cd7d9e7aa039c30bfe64b24abe4b/packages/urlstate/encoder/encoder.test.ts#L185)来编码和解码大对象
-- **服务器端渲染**: 可以在服务器组件中使用,支持 Next.js 14 和 15
+- **服务器端渲染**: 可以在服务器组件中使用,支持 Next.js 14、15 和 16
 - **轻量级**: 零依赖,库小于 2KB
 - **开发体验**: 良好的开发者体验、文档、JSDoc 注释和示例
 - **框架灵活性**: 为 `Next.js`、`react-router`、`Remix` 和 `Astro` 提供 hooks,以及用于其他框架或纯 JS 的辅助函数
@@ -138,6 +138,7 @@ nuqs 也是一个不错的库——如果你希望每个值都是一条可读的
   - [安装](#安装)
     - [1. 安装包](#1-安装包)
     - [2. 编辑 tsconfig.json](#2-编辑-tsconfigjson)
+    - [3. 说明：本包仅以 ESM 方式解析](#3-说明本包仅以-esm-方式解析)
   - [与 AI 编程代理一起使用](#与-ai-编程代理一起使用)
   - [useUrlState](#useurlstate)
     - [用于 Next.js 的 useUrlState hook](#用于-nextjs-的-useurlstate-hook)
@@ -196,6 +197,17 @@ pnpm add state-in-url
 
 在 `tsconfig.json` 的 `compilerOptions` 中设置 `"moduleResolution": "Bundler"`,或 `"moduleResolution": "Node16"`,或 `"moduleResolution": "NodeNext"`。
 可能需要设置 `"module": "ES2022"`,或 `"module": "ESNext"`
+
+### 3. 说明：本包仅以 ESM 方式解析
+
+Next.js、Vite、Astro 和 Remix 无需任何配置即可打包它；在 `require(esm)` 已无需标志的
+Node `^20.19` 或 `>=22.12` 上，纯 Node 的 `require()` 同样可用。
+
+`dist/` 中还会附带一份扩展名为 `.cjs` 的 CommonJS 构建产物，但 `exports` 映射并不指向它，
+因此解析不会意外落到它上面。它是为边缘情况准备的——较旧的 Node，或者不想加标志的
+Jest——只能通过明确的路径引用。
+
+**无论哪种方式，Jest 都需要一行配置**——参见[注意事项](#注意事项)第 5 条。
 
 ## 与 AI 编程代理一起使用
 
@@ -980,7 +992,42 @@ export const useUserState = () => {
 
 1. 只能传递可序列化的值,`Function`、`BigInt` 或 `Symbol` 不起作用,可能像 `ArrayBuffer` 这样的东西也不行。所有可以序列化为 JSON 的内容都可以工作。
 2. Vercel 服务器将标头大小(查询字符串和其他内容)限制为 **14KB**,因此请将 URL 状态保持在约 5000 个字以下。<https://vercel.com/docs/errors/URL_TOO_LONG>
-3. 已在带有 app router 的 `next.js` 14/15 中测试,没有计划支持 pages。
+3. 已在带有 app router 的 `next.js` 14/15/16 中测试,没有计划支持 pages。
+
+4. **Vitest + react-router 7**：如果某个测试在 `<BrowserRouter>` 内渲染组件时抛出 `useNavigate() may be used only in the context of a <Router> component`，而 provider 明明就在那里，那么要么升级到 `react-router@8`，要么把本包内联：
+
+   ```ts
+   // vitest.config.ts
+   test: { server: { deps: { inline: ['state-in-url'] } } }
+   ```
+
+   Vitest 会把 `node_modules` 外部化，于是 `state-in-url` 由 Node 加载，而你的测试文件由 Vite 加载。在 `react-router@7` 中，`node` 导出条件把 `module`/`module-sync` 指向 `index.mjs`，把 `default` 指向 `index.js`，两个解析器各选其一——于是 react-router 被加载了两次，它的 React context 也存在两份，provider 写入的是 hook 读不到的那一份。内联能让双方都走 Vite 的解析器。
+
+   `react-router@8` 把 `default` 和 `module-sync` 指向同一个文件，因此任何解析器都不会产生分歧，也就不需要做什么。错误信息里从不出现 `state-in-url`，所以这条说明放在这里。
+
+5. **Jest**：本包仅以 ESM 方式解析，而 Jest 默认以 CommonJS 运行测试，因此直接 `require()` 会失败并报 `Must use import to load ES Module`。Jest 不会继承 Node 已无需标志的 `require(esm)`——它使用自己的同步 `vm` API——所以在 **Node 24.9+** 上要给它加上标志：
+
+   ```json
+   // package.json
+   "scripts": { "test": "NODE_OPTIONS=--experimental-vm-modules jest" }
+   ```
+
+   如果你不想加标志，`dist/` 里也附带了一份 CommonJS 构建产物。它被刻意排除在 `exports` 映射之外，因此不会有解析意外落到它上面——请显式地把 Jest 指向它：
+
+   ```js
+   // jest.config.js
+   moduleNameMapper: {
+     '^state-in-url$': '<rootDir>/node_modules/state-in-url/dist/index.cjs',
+     '^state-in-url/utils$': '<rootDir>/node_modules/state-in-url/dist/utils.cjs',
+     '^state-in-url/(.*)$': '<rootDir>/node_modules/state-in-url/dist/$1/index.cjs',
+   },
+   ```
+
+   这会在整个测试进程中替换为 CJS 构建产物，是安全的做法。不要在同一个进程里混用两者——本包把共享状态的存储放在模块作用域，两份副本就意味着两个存储，`useSharedState` 会悄无声息地停止共享。
+
+   还有一点不同：`jest.mock()` 对 ES 模块无效。如果要 mock 本包，请使用 `jest.unstable_mockModule()`。
+
+   Vitest、Next.js、Vite、Astro 和 Remix 都不需要这些 Jest 配置。Vitest 唯一需要的额外步骤是上面的 `server.deps.inline`,而且仅在使用 `react-router@7` 时。
 
 ## 其他
 

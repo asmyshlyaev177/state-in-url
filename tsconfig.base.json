@@ -63,6 +63,7 @@
     "tests",
     "**/exportsTest.ts",
     "packages/urlstate/exportsTest.ts",
+    "packages/consumer-tests",
     "packages/example-remix2",
     "exportsTest.ts",
     "prettier.config.js"

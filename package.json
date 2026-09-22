@@ -30,93 +30,97 @@
     "skills",
     "!skills/_artifacts"
   ],
-  "main": "./dist/index.js",
-  "module": "dist/index.mjs",
+  "type": "module",
+  "main": "./dist/index.mjs",
   "exports": {
     ".": {
-      "require": "./dist/index.js",
       "types": "./dist/index.d.ts",
       "default": "./dist/index.mjs"
     },
     "./next": {
-      "require": "./dist/next/index.js",
       "types": "./dist/next/index.d.ts",
       "default": "./dist/next/index.mjs"
     },
     "./react": {
-      "require": "./dist/react/index.js",
       "types": "./dist/react/index.d.ts",
       "default": "./dist/react/index.mjs"
     },
     "./react-router6": {
-      "require": "./dist/react-router6/index.js",
       "types": "./dist/react-router6/index.d.ts",
       "default": "./dist/react-router6/index.mjs"
     },
     "./react-router": {
-      "require": "./dist/react-router/index.js",
       "types": "./dist/react-router/index.d.ts",
       "default": "./dist/react-router/index.mjs"
     },
     "./remix": {
-      "require": "./dist/remix/index.js",
       "types": "./dist/remix/index.d.ts",
       "default": "./dist/remix/index.mjs"
     },
     "./astro": {
-      "require": "./dist/astro/index.js",
       "types": "./dist/astro/index.d.ts",
       "default": "./dist/astro/index.mjs"
     },
     "./encodeState": {
-      "require": "./dist/encodeState/index.js",
       "types": "./dist/encodeState/index.d.ts",
       "default": "./dist/encodeState/index.mjs"
     },
     "./encoder": {
-      "require": "./dist/encoder/index.js",
       "types": "./dist/encoder/index.d.ts",
       "default": "./dist/encoder/index.mjs"
     },
     "./useSharedState": {
-      "require": "./dist/useSharedState/index.js",
       "types": "./dist/useSharedState/index.d.ts",
       "default": "./dist/useSharedState/index.mjs"
     },
     "./useLinkProps": {
-      "require": "./dist/useLinkProps/index.js",
       "types": "./dist/useLinkProps/index.d.ts",
       "default": "./dist/useLinkProps/index.mjs"
     },
     "./useUrlEncode": {
-      "require": "./dist/useUrlEncode/index.js",
       "types": "./dist/useUrlEncode/index.d.ts",
       "default": "./dist/useUrlEncode/index.mjs"
     },
     "./useUrlStateBase": {
-      "require": "./dist/useUrlStateBase/index.js",
       "types": "./dist/useUrlStateBase/index.d.ts",
       "default": "./dist/useUrlStateBase/index.mjs"
     },
     "./utils": {
-      "require": "./dist/utils.js",
       "types": "./dist/utils.d.ts",
       "default": "./dist/utils.mjs"
     }
   },
   "types": "./dist/index.d.ts",
+  "engines": {
+    "node": "^20.19.0 || >=22.12.0"
+  },
+  "peerDependencies": {
+    "react": ">=17",
+    "next": ">=14",
+    "react-router": ">=6",
+    "react-router-dom": ">=6",
+    "@remix-run/react": ">=2"
+  },
+  "peerDependenciesMeta": {
+    "next": {
+      "optional": true
+    },
+    "react-router": {
+      "optional": true
+    },
+    "react-router-dom": {
+      "optional": true
+    },
+    "@remix-run/react": {
+      "optional": true
+    }
+  },
   "scripts": {
-    "i18n": "node scripts/i18n/cli.mjs",
-    "i18n:init": "node scripts/i18n/cli.mjs init",
-    "i18n:toc": "node scripts/i18n/cli.mjs toc",
-    "i18n:check": "node scripts/i18n/cli.mjs check",
-    "i18n:copy": "node scripts/i18n/copy.mjs",
-    "i18n:copy:init": "node scripts/i18n/copy.mjs init",
-    "i18n:copy:check": "node scripts/i18n/copy.mjs check",
     "test:unit": "wireit",
     "test:int": "wireit",
     "test:int:ci": "wireit",
     "test:exports": "pnpm run build && npx babel-node --extensions .js,.mjs,.ts,.mts --config-file ./babel.config.json -- ./packages/urlstate/exportsTest.ts",
+    "test:consumers": "node scripts/check-consumers.mjs",
     "test": "wireit",
     "dev": "wireit",
     "dev:lib": "wireit",
@@ -152,6 +156,13 @@
     "pin-gh-deps": "pin-github-action -i .github/workflows/tests.yml .github/workflows/lighthouse.yml",
     "prepare": "pnpm exec husky",
     "dev:astro": "wireit",
+    "i18n": "node scripts/i18n/cli.mjs",
+    "i18n:init": "node scripts/i18n/cli.mjs init",
+    "i18n:toc": "node scripts/i18n/cli.mjs toc",
+    "i18n:check": "node scripts/i18n/cli.mjs check",
+    "i18n:copy": "node scripts/i18n/copy.mjs",
+    "i18n:copy:init": "node scripts/i18n/copy.mjs init",
+    "i18n:copy:check": "node scripts/i18n/copy.mjs check",
     "kill-astro": "wireit"
   },
   "wireit": {
@@ -556,9 +567,11 @@
     "@types/react": "^18.3.25",
     "@types/react-dom": "^18.3.7",
     "@vitest/coverage-istanbul": "^2.1.9",
+    "@yarnpkg/cli-dist": "^4.10.3",
     "auto-changelog": "^2.4.0",
     "babel-plugin-module-resolver": "^5.0.2",
     "baseline-browser-mapping": "^2.8.32",
+    "bun": "^1.3.0",
     "chokidar": "^4.0.3",
     "commitizen": "^4.3.0",
     "commitlint": "^19.8.1",
@@ -667,8 +680,15 @@
       "@remix-run/react>react-dom": "18.3.1",
       "@types/node": "^24"
     },
+    "peerDependencyRules": {
+      "allowedVersions": {
+        "@remix-run/react>react": "19",
+        "@remix-run/react>react-dom": "19"
+      }
+    },
     "onlyBuiltDependencies": [
       "@parcel/watcher",
+      "bun",
       "core-js",
       "esbuild",
       "less",

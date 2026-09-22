@@ -1,38 +1,36 @@
 <!-- i18n:start -->
 [English](./README.md) · [简体中文](./README.zh-CN.md) · [日本語](./README.ja.md) · 한국어 · [Русский](./README.ru.md) · [Español](./README.es.md) · [Português (BR)](./README.pt-BR.md) · [Français](./README.fr.md) · [Tiếng Việt](./README.vi.md)
-<!-- i18n:meta locale=ko source=README.md source-blob=da24fd34a3d4ed9b3d2fdcdc46897b6756d2a208 status=pending -->
+<!-- i18n:meta locale=ko source=README.md source-blob=da24fd34a3d4ed9b3d2fdcdc46897b6756d2a208 status=translated -->
 <!-- i18n:end -->
-
-<!-- i18n:todo -->
 
 # API
 
-This module provides a custom React hook for managing state that is synchronized with URL search parameters, for React applications with **no router** — Vite, Create React App, a widget mounted into a page you do not control.
+이 모듈은 **라우터가 없는** React 애플리케이션을 위해 URL 검색 파라미터와 동기화되는 상태를 관리하는 커스텀 React 훅을 제공합니다. Vite, Create React App, 또는 직접 제어할 수 없는 페이지에 얹는 위젯 등이 해당합니다.
 
-With no router to navigate through, the hook writes the URL with `window.history` and reads it back on back/forward, on its own writes, and on any other `pushState`/`replaceState`. Every component sharing the default-state object shares the state, so nothing has to be passed down.
+탐색에 쓸 라우터가 없으므로 이 훅은 `window.history`로 URL을 쓰고, 뒤로/앞으로 이동할 때, 자신이 쓴 경우, 그리고 다른 어떤 `pushState`/`replaceState`가 일어날 때 URL을 다시 읽습니다. 기본 상태 객체를 공유하는 모든 컴포넌트가 상태를 공유하므로 props로 내려줄 필요가 없습니다.
 
-Use a router entry point instead when the app has one: `state-in-url/next`, `state-in-url/react-router`, `state-in-url/react-router6`, `state-in-url/remix`. For a router this package ships no entry point for, e.g. TanStack Router, build your own hook with [`useUrlStateBase`](../../useUrlStateBase). `state-in-url/astro` is this same hook, documented for [islands](../../astro/useUrlState).
+앱에 라우터가 있다면 해당 진입점을 사용하세요: `state-in-url/next`, `state-in-url/react-router`, `state-in-url/react-router6`, `state-in-url/remix`. 이 패키지가 진입점을 제공하지 않는 라우터(예: TanStack Router)라면 [`useUrlStateBase`](../../useUrlStateBase)로 직접 훅을 만드세요. `state-in-url/astro`는 같은 훅이며 [아일랜드](../../astro/useUrlState)를 위해 문서화되어 있습니다.
 
-## `useUrlState` hook
+## `useUrlState` 훅
 
-A custom React hook that manages state and synchronizes it with URL search parameters.
+상태를 관리하고 이를 URL 검색 파라미터와 동기화하는 커스텀 React 훅입니다.
 
-### Parameters
+### 매개변수
 
-- `defaultState: object` - An object representing the default state values. Must be a module-scoped constant: state is shared by the identity of this object.
-- `searchParams?: object` - Query params from a server render, as a plain object, so the first render matches the URL. A client-only app leaves this out and the hook reads the URL itself.
-- `replace?: boolean` - Control will `setUrl` use `replaceState` or `pushState`, default replace=true, can override by `setUrl(stateObj, { replace: false })`
+- `defaultState: object` - 기본 상태 값을 나타내는 객체. 모듈 스코프 상수여야 합니다: 상태는 이 객체의 동일성으로 공유됩니다.
+- `searchParams?: object` - 서버 렌더링에서 온 쿼리 파라미터를 일반 객체로 전달하면 첫 렌더링이 URL과 일치합니다. 클라이언트 전용 앱은 생략하면 되고, 그러면 훅이 직접 URL을 읽습니다.
+- `replace?: boolean` - `setUrl`이 `replaceState`를 쓸지 `pushState`를 쓸지 제어합니다. 기본값은 replace=true이며 `setUrl(stateObj, { replace: false })`로 덮어쓸 수 있습니다
 
-### Returns
+### 반환값
 
-An object containing:
+다음을 담은 객체:
 
-- `urlState: object` - The current state.
-- `setState: Function` - Function to update the state without updating the URL.
-- `setUrl: Function` - Function to update both the state and the URL.
-- `reset: Function` - Function to reset state to default.
+- `urlState: object` - 현재 상태.
+- `setState: Function` - URL을 갱신하지 않고 상태만 갱신하는 함수.
+- `setUrl: Function` - 상태와 URL을 모두 갱신하는 함수.
+- `reset: Function` - 상태를 기본값으로 되돌리는 함수.
 
-### Example
+### 예제
 
 ```tsx
 // src/useFilters.ts
@@ -61,23 +59,23 @@ export function FiltersBar() {
 }
 ```
 
-Any other component calling `useFilters()` reads and writes the same state and re-renders with it. There is no provider and nothing to pass through props.
+`useFilters()`를 호출하는 다른 어떤 컴포넌트도 같은 상태를 읽고 쓰며 그에 맞춰 다시 렌더링됩니다. provider도 없고 props로 넘길 것도 없습니다.
 
-Call `setState` and `setUrl` from event handlers or effects, never during render:
+`setState`와 `setUrl`은 이벤트 핸들러나 이펙트에서 호출하고, 렌더링 중에는 절대 호출하지 마세요:
 
 ```typescript
-// Update state without changing URL
+// URL을 바꾸지 않고 상태 갱신
 setState({ sort: 'date' });
 setState(currVal => ({ ...currVal, sort: 'date' }) );
 
-// reset state
+// 상태 초기화
 setState((_curr, initial) => initial);
 
-// Update state and URL
+// 상태와 URL 갱신
 setUrl({ sort: 'date' }, { replace: false });
 
-// reset state and URL
+// 상태와 URL 초기화
 setUrl((_curr, initial) => initial);
 ```
 
-For a text input, call `setState` on every keystroke and `setUrl` on blur or a debounce — URL writes are throttled, and binding `setUrl` to `onChange` makes typing feel slow.
+텍스트 입력에서는 키 입력마다 `setState`를 호출하고 `setUrl`은 blur 시점이나 디바운스 후에 호출하세요. URL 쓰기는 스로틀링되므로 `setUrl`을 `onChange`에 묶으면 입력이 느리게 느껴집니다.

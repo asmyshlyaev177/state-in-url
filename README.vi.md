@@ -1,6 +1,6 @@
 <!-- i18n:start -->
 [English](./README.md) · [简体中文](./README.zh-CN.md) · [日本語](./README.ja.md) · [한국어](./README.ko.md) · [Русский](./README.ru.md) · [Español](./README.es.md) · [Português (BR)](./README.pt-BR.md) · [Français](./README.fr.md) · Tiếng Việt
-<!-- i18n:meta locale=vi source=README.md source-blob=ad78fdbbee096115a953813ed9a462e3393c5736 status=translated -->
+<!-- i18n:meta locale=vi source=README.md source-blob=8b11ee8f8c8b83c207a940455766e24376508130 status=translated -->
 <!-- i18n:end -->
 
 <div align="center">
@@ -138,6 +138,7 @@ Bản so sánh đầy đủ — cùng một tính năng trong cả hai, các l�
   - [Cài đặt](#cài-đặt)
     - [1. Cài đặt package](#1-cài-đặt-package)
     - [2. Sửa tsconfig.json](#2-sửa-tsconfigjson)
+    - [3. Ghi chú: gói này chỉ phân giải dưới dạng ESM](#3-ghi-chú-gói-này-chỉ-phân-giải-dưới-dạng-esm)
   - [Dùng với AI coding agent](#dùng-với-ai-coding-agent)
   - [useUrlState](#useurlstate)
     - [Hook useUrlState cho Next.js](#hook-useurlstate-cho-nextjs)
@@ -196,6 +197,20 @@ pnpm add state-in-url
 
 Trong `tsconfig.json`, trong `compilerOptions`, đặt `"moduleResolution": "Bundler"`, hoặc `"moduleResolution": "Node16"`, hoặc `"moduleResolution": "NodeNext"`.
 Có thể cần đặt `"module": "ES2022"`, hoặc `"module": "ESNext"`
+
+### 3. Ghi chú: gói này chỉ phân giải dưới dạng ESM
+
+Next.js, Vite, Astro và Remix đóng gói nó mà không cần cấu hình gì, và `require()`
+từ Node thuần hoạt động trên Node `^20.19` hoặc `>=22.12`, nơi `require(esm)`
+không còn cần cờ.
+
+`dist/` cũng kèm theo một bản build CommonJS với đuôi `.cjs`, nhưng bản đồ
+`exports` không trỏ tới nó, nên không có phân giải nào vô tình rơi vào đó. Nó dành
+cho các trường hợp biên — Node cũ, hoặc Jest không dùng cờ — và chỉ có thể truy cập
+bằng đường dẫn tường minh.
+
+**Dù theo cách nào, Jest cũng cần một dòng cấu hình** — xem mục 5 trong
+[Lưu ý](#lưu-ý).
 
 ## Dùng với AI coding agent
 
@@ -981,6 +996,41 @@ export const useUserState = () => {
 1. Chỉ có thể truyền các giá trị tuần tự hóa được; `Function`, `BigInt` hoặc `Symbol` sẽ không hoạt động, và có lẽ cả những thứ như `ArrayBuffer` cũng vậy. Mọi thứ có thể tuần tự hóa thành JSON sẽ hoạt động.
 2. Máy chủ Vercel giới hạn kích thước header (chuỗi truy vấn và những thứ khác) ở **14KB**, vì vậy hãy giữ state trong URL dưới ~5000 từ. <https://vercel.com/docs/errors/URL_TOO_LONG>
 3. Đã thử nghiệm với `next.js` 14/15/16 với app router, không có kế hoạch hỗ trợ pages.
+
+4. **Vitest + react-router 7**: nếu một test render component bên trong `<BrowserRouter>` ném ra `useNavigate() may be used only in the context of a <Router> component` trong khi provider đang ở ngay đó, hãy nâng lên `react-router@8` hoặc đưa gói này vào inline:
+
+   ```ts
+   // vitest.config.ts
+   test: { server: { deps: { inline: ['state-in-url'] } } }
+   ```
+
+   Vitest đưa `node_modules` ra ngoài, nên Node nạp `state-in-url` còn Vite nạp file test của bạn. Trong `react-router@7`, điều kiện export `node` trỏ `module`/`module-sync` tới `index.mjs` và `default` tới `index.js`, và hai bộ phân giải chọn hai thứ khác nhau — thế là react-router được nạp hai lần, React context của nó tồn tại hai bản, và provider ghi vào bản mà hook không đọc. Inline đưa cả hai phía về cùng bộ phân giải của Vite.
+
+   `react-router@8` trỏ `default` và `module-sync` tới cùng một file, nên không bộ phân giải nào có thể bất đồng và bạn không cần làm gì cả. Thông báo lỗi không bao giờ nhắc tới `state-in-url`, đó là lý do mục này nằm ở đây.
+
+5. **Jest**: gói này chỉ phân giải dưới dạng ESM, còn Jest mặc định chạy test dưới dạng CommonJS, nên một lệnh `require()` thuần sẽ thất bại với `Must use import to load ES Module`. Jest không kế thừa `require(esm)` không cần cờ của Node — nó dùng API `vm` đồng bộ của riêng mình — nên trên **Node 24.9+** hãy truyền cờ cho nó:
+
+   ```json
+   // package.json
+   "scripts": { "test": "NODE_OPTIONS=--experimental-vm-modules jest" }
+   ```
+
+   Nếu bạn không muốn truyền cờ, `dist/` cũng có sẵn một bản build CommonJS. Nó được cố ý để ngoài bản đồ `exports` nên không gì phân giải tới đó một cách tình cờ — hãy trỏ Jest tới nó một cách tường minh:
+
+   ```js
+   // jest.config.js
+   moduleNameMapper: {
+     '^state-in-url$': '<rootDir>/node_modules/state-in-url/dist/index.cjs',
+     '^state-in-url/utils$': '<rootDir>/node_modules/state-in-url/dist/utils.cjs',
+     '^state-in-url/(.*)$': '<rootDir>/node_modules/state-in-url/dist/$1/index.cjs',
+   },
+   ```
+
+   Cách này thay thế bằng bản build CJS cho toàn bộ tiến trình test, và như vậy là an toàn. Đừng trộn cả hai trong cùng một tiến trình — gói này giữ kho trạng thái dùng chung ở phạm vi module, nên hai bản sao nghĩa là hai kho, và `useSharedState` sẽ lặng lẽ ngừng chia sẻ.
+
+   Một khác biệt nữa: `jest.mock()` không áp dụng cho ES module. Hãy dùng `jest.unstable_mockModule()` nếu bạn mock gói này.
+
+   Vitest, Next.js, Vite, Astro và Remix đều không cần cấu hình Jest này. Bước bổ sung duy nhất của Vitest là `server.deps.inline` ở trên, và chỉ với `react-router@7`.
 
 ## Khác
 

@@ -1,0 +1,35 @@
+{
+  "_comment": "Every published subpath, and the named exports each one must carry. Shared by the plain-node probes, the Vitest suite and the Jest suite so all four agree on what the package promises.",
+  "subpaths": {
+    ".": [
+      "decode",
+      "decodeState",
+      "encode",
+      "encodeState",
+      "typeOf",
+      "useLinkProps",
+      "useSharedState",
+      "useUrlEncode",
+      "useUrlStateBase"
+    ],
+    "./next": ["useUrlState"],
+    "./react": ["useUrlState"],
+    "./react-router": ["useUrlState"],
+    "./react-router6": ["useUrlState"],
+    "./remix": ["useUrlState"],
+    "./astro": ["useUrlState"],
+    "./encodeState": ["decodeState", "encodeState"],
+    "./encoder": ["decode", "encode"],
+    "./useSharedState": ["useSharedState"],
+    "./useLinkProps": ["useLinkProps"],
+    "./useUrlEncode": ["useUrlEncode"],
+    "./useUrlStateBase": ["useUrlStateBase"],
+    "./utils": ["typeOf", "filterUnknownParams", "getSearch"]
+  },
+  "frameworkSubpaths": {
+    "./next": "next",
+    "./react-router": "react-router",
+    "./react-router6": "react-router-dom",
+    "./remix": "@remix-run/react"
+  }
+}

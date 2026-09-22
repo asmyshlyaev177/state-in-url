@@ -44,16 +44,33 @@ const bundle = (config) => ({
 
 export default {
   input: glob.sync("packages/urlstate/**/index.ts", { ignore: "**/*.test.*" }),
+  // The CJS half is emitted but deliberately NOT reachable through the exports
+  // map, so normal resolution can only ever pick the ESM build: subscribers.ts
+  // keeps its store in module-scoped WeakMaps, and two builds live in one graph
+  // would mean two stores and useSharedState silently not sharing. Reaching the
+  // .cjs takes an explicit file path (a Jest moduleNameMapper, a bundler alias),
+  // which is a whole-process substitution rather than a second copy.
+  //
+  // .cjs, not .js: the package is "type": "module", so a .js here would be
+  // parsed as ESM and fail.
   output: [
     bundle({
       dir: 'dist',
       format: 'es',
-      entryFileNames: '[name].mjs'
+      entryFileNames: '[name].mjs',
+      // next ships no `exports` map (checked on 14.2, 15.5 and 16.3), so Node
+      // resolves this as a file path — and ESM does no extension guessing, so
+      // the bare specifier is ERR_MODULE_NOT_FOUND for anything that loads this
+      // build through Node rather than a bundler (a Vitest suite with the
+      // package externalized, say). The source keeps the bare specifier, which
+      // is what the .d.ts and every bundler want; only the emitted ESM needs
+      // the extension. CJS is unaffected — require() still guesses extensions.
+      paths: { 'next/navigation': 'next/navigation.js' }
     }),
     bundle({
       dir: 'dist',
       format: 'cjs',
-      entryFileNames: '[name].js',
+      entryFileNames: '[name].cjs',
       interop: 'auto'
     })
   ],

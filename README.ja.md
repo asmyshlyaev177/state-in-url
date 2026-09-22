@@ -1,6 +1,6 @@
 <!-- i18n:start -->
 [English](./README.md) · [简体中文](./README.zh-CN.md) · 日本語 · [한국어](./README.ko.md) · [Русский](./README.ru.md) · [Español](./README.es.md) · [Português (BR)](./README.pt-BR.md) · [Français](./README.fr.md) · [Tiếng Việt](./README.vi.md)
-<!-- i18n:meta locale=ja source=README.md source-blob=ad78fdbbee096115a953813ed9a462e3393c5736 status=translated -->
+<!-- i18n:meta locale=ja source=README.md source-blob=8b11ee8f8c8b83c207a940455766e24376508130 status=translated -->
 <!-- i18n:end -->
 
 <div align="center">
@@ -138,6 +138,7 @@ nuqs も優れたライブラリです。値ごとに読みやすいクエリパ
   - [インストール](#インストール)
     - [1. パッケージのインストール](#1-パッケージのインストール)
     - [2. tsconfig.json の編集](#2-tsconfigjson-の編集)
+    - [3. 補足: このパッケージは ESM としてのみ解決されます](#3-補足-このパッケージは-esm-としてのみ解決されます)
   - [AI コーディングエージェントと使う](#ai-コーディングエージェントと使う)
   - [useUrlState](#useurlstate)
     - [Next.js 向け useUrlState フック](#nextjs-向け-useurlstate-フック)
@@ -196,6 +197,19 @@ pnpm add state-in-url
 
 `tsconfig.json` の `compilerOptions` に `"moduleResolution": "Bundler"`、または `"moduleResolution": "Node16"`、または `"moduleResolution": "NodeNext"` を設定します。
 `"module": "ES2022"` または `"module": "ESNext"` の設定が必要になる場合があります。
+
+### 3. 補足: このパッケージは ESM としてのみ解決されます
+
+Next.js、Vite、Astro、Remix は設定なしでバンドルできます。また `require(esm)` が
+フラグなしで使える Node `^20.19` または `>=22.12` であれば、素の Node からの
+`require()` も動作します。
+
+`dist/` には `.cjs` という拡張子で CommonJS ビルドも同梱されていますが、`exports`
+マップはそれを指していないため、解決が偶然そちらへ向かうことはありません。これは
+例外的なケース——古い Node、あるいはフラグなしの Jest——のためのもので、明示的な
+パスでのみ参照できます。
+
+**どちらの場合も Jest には 1 行の設定が必要です**——[注意点](#注意点)の 5 番を参照してください。
 
 ## AI コーディングエージェントと使う
 
@@ -981,6 +995,41 @@ export const useUserState = () => {
 1. シリアライズ可能な値しか渡せません。`Function`、`BigInt`、`Symbol` は動作せず、`ArrayBuffer` のようなものもおそらく動作しません。JSON にシリアライズできるものはすべて動作します。
 2. Vercel サーバーはヘッダー(クエリ文字列など)のサイズを **14KB** に制限しているため、URL の状態は約 5000 語未満に保ってください。<https://vercel.com/docs/errors/URL_TOO_LONG>
 3. app router 付きの `next.js` 14/15/16 でテスト済みです。pages をサポートする予定はありません。
+
+4. **Vitest + react-router 7**: provider がすぐそこにあるのに、`<BrowserRouter>` の内側でコンポーネントを描画するテストが `useNavigate() may be used only in the context of a <Router> component` を投げる場合は、`react-router@8` に上げるか、このパッケージをインライン化してください:
+
+   ```ts
+   // vitest.config.ts
+   test: { server: { deps: { inline: ['state-in-url'] } } }
+   ```
+
+   Vitest は `node_modules` を外部化するため、`state-in-url` は Node が、テストファイルは Vite が読み込みます。`react-router@7` では `node` エクスポート条件が `module`/`module-sync` を `index.mjs` に、`default` を `index.js` に向けており、2 つのリゾルバがそれぞれ別のものを選びます。その結果 react-router が二重に読み込まれ、React context も二つ存在し、provider が書き込むのは hook が読まない方のコピーになります。インライン化すると双方が Vite のリゾルバに揃います。
+
+   `react-router@8` は `default` と `module-sync` を同じファイルに向けているので、どのリゾルバも食い違いようがなく、何も必要ありません。エラーメッセージに `state-in-url` の名前は出てこないため、ここに書いてあります。
+
+5. **Jest**: このパッケージは ESM としてのみ解決されますが、Jest は既定でテストを CommonJS として実行するため、素の `require()` は `Must use import to load ES Module` で失敗します。Jest は Node のフラグ不要な `require(esm)` を引き継がず、独自の同期 `vm` API を使うので、**Node 24.9+** ではフラグを渡してください:
+
+   ```json
+   // package.json
+   "scripts": { "test": "NODE_OPTIONS=--experimental-vm-modules jest" }
+   ```
+
+   フラグを渡したくない場合、`dist/` には CommonJS ビルドも同梱されています。`exports` マップからは意図的に外してあるため偶然解決されることはありません——Jest を明示的にそこへ向けてください:
+
+   ```js
+   // jest.config.js
+   moduleNameMapper: {
+     '^state-in-url$': '<rootDir>/node_modules/state-in-url/dist/index.cjs',
+     '^state-in-url/utils$': '<rootDir>/node_modules/state-in-url/dist/utils.cjs',
+     '^state-in-url/(.*)$': '<rootDir>/node_modules/state-in-url/dist/$1/index.cjs',
+   },
+   ```
+
+   これはテストプロセス全体を CJS ビルドに差し替えるもので、安全です。一つのプロセス内で両方を混在させないでください——このパッケージは共有ステートのストアをモジュールスコープに置いているため、コピーが二つあればストアも二つになり、`useSharedState` は何も告げずに共有をやめます。
+
+   もう一つの違いとして、`jest.mock()` は ES モジュールには効きません。このパッケージをモックするなら `jest.unstable_mockModule()` を使ってください。
+
+   Vitest、Next.js、Vite、Astro、Remix はいずれもこの Jest 向けの設定を必要としません。Vitest で追加が必要なのは上記の `server.deps.inline` だけで、しかも `react-router@7` の場合のみです。
 
 ## その他
 

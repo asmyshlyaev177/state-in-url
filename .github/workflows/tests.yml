@@ -66,6 +66,45 @@ jobs:
           project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
           coverage-reports: coverage-reports/lcov.info
 
+  consumers:
+    name: consumers
+    # No Playwright container: this needs no browser, and the image pull costs
+    # more than the job. Independent of installtest so both start at once.
+    timeout-minutes: 20
+    runs-on: ubuntu-24.04
+    env:
+      HUSKY: 0
+    permissions:
+      contents: read
+    steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@9af89fc71515a100421586dfdb3dc9c984fbf411 # v2.19.4
+        with:
+          egress-policy: audit
+
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+      - uses: pnpm/action-setup@d15e628ca66d93ee5f352c71671a7bc6a97af5c9 # v6.0.8
+        with:
+          version: 10.26.0
+      - uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6.4.0
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'pnpm'
+
+      # yarn and bun are devDependencies so the matrix is identical here and
+      # locally; bun's postinstall downloads its binary and is allowlisted in
+      # `pnpm.onlyBuiltDependencies`.
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      # Packs the tarball and installs it into throwaway projects under each
+      # package manager. packages/example-* cannot cover this: they reach the
+      # library through an alias or a workspace symlink, never the exports map.
+      - name: Consumer resolution matrix
+        run: pnpm run test:consumers
+
   build:
     name: build
     needs: [ installtest ]
@@ -214,7 +253,9 @@ jobs:
 
   release:
     name: release
-    needs: [ testint ]
+    # consumers gates the release too: it is the only job that resolves the
+    # published exports map out of a real install.
+    needs: [ testint, consumers ]
     if: github.ref == 'refs/heads/master'
     timeout-minutes: 20
     runs-on: ubuntu-24.04

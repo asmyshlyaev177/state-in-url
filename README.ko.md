@@ -1,6 +1,6 @@
 <!-- i18n:start -->
 [English](./README.md) · [简体中文](./README.zh-CN.md) · [日本語](./README.ja.md) · 한국어 · [Русский](./README.ru.md) · [Español](./README.es.md) · [Português (BR)](./README.pt-BR.md) · [Français](./README.fr.md) · [Tiếng Việt](./README.vi.md)
-<!-- i18n:meta locale=ko source=README.md source-blob=ad78fdbbee096115a953813ed9a462e3393c5736 status=translated -->
+<!-- i18n:meta locale=ko source=README.md source-blob=8b11ee8f8c8b83c207a940455766e24376508130 status=translated -->
 <!-- i18n:end -->
 
 <div align="center">
@@ -95,7 +95,7 @@ Next.js, react-router, Remix, Astro용 `useUrlState` 훅과 그 외 JS 환경을
 - **호환성**: 서드파티 쿼리 매개변수를 그대로 유지
 - **유연성**: 동일한 페이지에서 1개 이상의 상태 객체 사용 가능, 다른 키만 사용하면 됨
 - **빠름**: 최소한의 리렌더링, 큰 객체 인코딩 및 디코딩에 약 [1ms](https://github.com/asmyshlyaev177/state-in-url/blob/87c8c7c995c5cd7d9e7aa039c30bfe64b24abe4b/packages/urlstate/encoder/encoder.test.ts#L185) 소요
-- **서버 사이드 렌더링**: 서버 컴포넌트에서 사용 가능, Next.js 14 및 15 지원
+- **서버 사이드 렌더링**: 서버 컴포넌트에서 사용 가능, Next.js 14, 15 및 16 지원
 - **경량**: 의존성 없음, 라이브러리 크기 2KB 미만
 - **개발자 경험**: 좋은 개발자 경험, 문서, JSDoc 주석 및 예제
 - **프레임워크 유연성**: `Next.js`, `react-router`, `Remix`, `Astro`용 훅, 다른 프레임워크나 순수 JS와 함께 사용할 수 있는 헬퍼
@@ -138,6 +138,7 @@ nuqs도 훌륭한 라이브러리입니다. 값마다 읽기 쉬운 쿼리 파�
   - [설치](#설치)
     - [1. 패키지 설치](#1-패키지-설치)
     - [2. tsconfig.json 수정](#2-tsconfigjson-수정)
+    - [3. 참고: 이 패키지는 ESM으로만 해석됩니다](#3-참고-이-패키지는-esm으로만-해석됩니다)
   - [AI 코딩 에이전트와 함께 사용](#ai-코딩-에이전트와-함께-사용)
   - [useUrlState](#useurlstate)
     - [Next.js용 useUrlState 훅](#nextjs용-useurlstate-훅)
@@ -196,6 +197,18 @@ pnpm add state-in-url
 
 `tsconfig.json`의 `compilerOptions`에서 `"moduleResolution": "Bundler"`, 또는 `"moduleResolution": "Node16"`, 또는 `"moduleResolution": "NodeNext"`로 설정하세요.
 `"module": "ES2022"` 또는 `"module": "ESNext"` 설정이 필요할 수 있습니다.
+
+### 3. 참고: 이 패키지는 ESM으로만 해석됩니다
+
+Next.js, Vite, Astro, Remix는 설정 없이 번들링하며, `require(esm)`이 플래그 없이
+동작하는 Node `^20.19` 또는 `>=22.12`에서는 순수 Node의 `require()`도 동작합니다.
+
+`dist/`에는 `.cjs` 확장자의 CommonJS 빌드도 함께 들어 있지만 `exports` 맵이 이를
+가리키지 않으므로 해석이 실수로 그쪽으로 향하는 일은 없습니다. 이는 예외적인
+경우——구버전 Node, 또는 플래그 없는 Jest——를 위한 것이며 명시적인 경로로만
+접근할 수 있습니다.
+
+**어느 쪽이든 Jest에는 설정 한 줄이 필요합니다**——[주의사항](#주의사항) 5번을 참고하세요.
 
 ## AI 코딩 에이전트와 함께 사용
 
@@ -975,7 +988,42 @@ export const useUserState = () => {
 
 1. 직렬화 가능한 값만 전달할 수 있습니다. `Function`, `BigInt` 또는 `Symbol`은 작동하지 않으며, `ArrayBuffer`와 같은 것도 마찬가지일 것입니다. JSON으로 직렬화할 수 있는 모든 것은 작동합니다.
 2. Vercel 서버는 헤더(쿼리 문자열 및 기타 항목) 크기를 **14KB**로 제한하므로 URL 상태를 약 5000단어 미만으로 유지하세요. <https://vercel.com/docs/errors/URL_TOO_LONG>
-3. app router를 사용하는 `next.js` 14/15로 테스트되었으며, pages를 지원할 계획은 없습니다.
+3. app router를 사용하는 `next.js` 14/15/16으로 테스트되었으며, pages를 지원할 계획은 없습니다.
+
+4. **Vitest + react-router 7**: provider가 바로 거기 있는데도 `<BrowserRouter>` 안에서 컴포넌트를 렌더링하는 테스트가 `useNavigate() may be used only in the context of a <Router> component`를 던진다면, `react-router@8`로 올리거나 이 패키지를 인라인하세요:
+
+   ```ts
+   // vitest.config.ts
+   test: { server: { deps: { inline: ['state-in-url'] } } }
+   ```
+
+   Vitest는 `node_modules`를 외부화하므로 `state-in-url`은 Node가, 테스트 파일은 Vite가 로드합니다. `react-router@7`에서는 `node` 내보내기 조건이 `module`/`module-sync`를 `index.mjs`로, `default`를 `index.js`로 가리키고 두 리졸버가 서로 다른 것을 고릅니다——그래서 react-router가 두 번 로드되고 React context도 두 개가 되며, provider는 hook이 읽지 않는 쪽 사본에 씁니다. 인라인하면 양쪽 모두 Vite의 리졸버를 쓰게 됩니다.
+
+   `react-router@8`은 `default`와 `module-sync`를 같은 파일로 가리키므로 어떤 리졸버도 어긋날 수 없고 아무것도 필요하지 않습니다. 오류 메시지에는 `state-in-url`이 전혀 나오지 않기 때문에 이 항목이 여기 있습니다.
+
+5. **Jest**: 이 패키지는 ESM으로만 해석되는데 Jest는 기본적으로 테스트를 CommonJS로 실행하므로, 그냥 `require()`하면 `Must use import to load ES Module`로 실패합니다. Jest는 Node의 플래그 없는 `require(esm)`을 물려받지 않고 자체 동기 `vm` API를 사용하므로, **Node 24.9+**에서는 플래그를 주세요:
+
+   ```json
+   // package.json
+   "scripts": { "test": "NODE_OPTIONS=--experimental-vm-modules jest" }
+   ```
+
+   플래그를 주고 싶지 않다면 `dist/`에 CommonJS 빌드도 들어 있습니다. `exports` 맵에서 의도적으로 빠져 있어 실수로 해석되는 일이 없으니, Jest가 이를 명시적으로 가리키게 하세요:
+
+   ```js
+   // jest.config.js
+   moduleNameMapper: {
+     '^state-in-url$': '<rootDir>/node_modules/state-in-url/dist/index.cjs',
+     '^state-in-url/utils$': '<rootDir>/node_modules/state-in-url/dist/utils.cjs',
+     '^state-in-url/(.*)$': '<rootDir>/node_modules/state-in-url/dist/$1/index.cjs',
+   },
+   ```
+
+   이는 테스트 프로세스 전체를 CJS 빌드로 바꾸는 것이라 안전합니다. 한 프로세스 안에서 둘을 섞지 마세요——이 패키지는 공유 상태 저장소를 모듈 스코프에 두므로, 사본이 둘이면 저장소도 둘이 되어 `useSharedState`가 조용히 공유를 멈춥니다.
+
+   한 가지 차이가 더 있습니다: `jest.mock()`은 ES 모듈에 적용되지 않습니다. 이 패키지를 목으로 만들 때는 `jest.unstable_mockModule()`을 사용하세요.
+
+   Vitest, Next.js, Vite, Astro, Remix는 모두 이런 Jest 설정이 필요 없습니다. Vitest에서 추가로 필요한 것은 위의 `server.deps.inline` 하나뿐이며, `react-router@7`에서만 필요합니다.
 
 ## 기타
 

@@ -174,6 +174,60 @@ Same identity rule as Next.js. A fresh default object each render breaks sharing
 
 Source: GitHub issues #57, #60, #69 (asmyshlyaev177/state-in-url)
 
+### HIGH Vitest throws `useNavigate() may be used only in the context of a <Router>` with the provider present
+
+Applies to **react-router 7 only**. Symptom, under Vitest and never in the browser build:
+
+```
+useNavigate() may be used only in the context of a <Router> component.
+```
+
+Preferred fix — upgrade, since `react-router@8` needs no workaround at all:
+
+```bash
+pnpm add react-router@8
+```
+
+Staying on 7, inline the package in `vitest.config.ts`:
+
+```typescript
+export default defineConfig({
+  test: { server: { deps: { inline: ['state-in-url'] } } },
+});
+```
+
+Vitest externalizes `node_modules`, so **Node** loads `state-in-url` while **Vite** loads the test file. `react-router@7`'s `node` export condition points `module`/`module-sync` at `index.mjs` and `default` at `index.js`; Node takes the first, Vite falls through to the second. Both builds load, React context exists twice, and the provider writes to the copy the hook does not read. Inlining puts both sides on Vite's resolver. `react-router@8` points `default` and `module-sync` at the same file, so no resolver can disagree.
+
+Do not reach for `resolve.dedupe: ['react-router']` — dedupe unifies two paths pointing at one file, and here two different files resolve. Nothing on the consumer's side of the import statement changes it either; the split is decided by which loader reads the `exports` map.
+
+Source: asmyshlyaev177/state-in-url README (Gotchas); both cases are pinned by `pnpm test:consumers`.
+
+### HIGH Jest fails with `Must use import to load ES Module`
+
+Nothing in `state-in-url` resolves to CommonJS. Jest runs tests as CommonJS by default and does not inherit Node's unflagged `require(esm)` — it uses its own synchronous `vm` API — so it needs the flag on Node 24.9+:
+
+```json
+// package.json
+"scripts": { "test": "NODE_OPTIONS=--experimental-vm-modules jest" }
+```
+
+To avoid the flag, map onto the CommonJS build in `dist/`. It is emitted but kept out of the `exports` map, so only an explicit path reaches it:
+
+```javascript
+// jest.config.js
+moduleNameMapper: {
+  '^state-in-url$': '<rootDir>/node_modules/state-in-url/dist/index.cjs',
+  '^state-in-url/utils$': '<rootDir>/node_modules/state-in-url/dist/utils.cjs',
+  '^state-in-url/(.*)$': '<rootDir>/node_modules/state-in-url/dist/$1/index.cjs',
+},
+```
+
+That swaps the build for the whole test process, which is safe. Never mix both in one process: the shared-state store lives in module scope, so two copies means two stores and `useSharedState` stops sharing with no error.
+
+`jest.mock()` does not apply to ES modules — reach for `jest.unstable_mockModule()` when mocking this package. Vitest needs none of this Jest setup; its only extra step is the `react-router@7` inlining above.
+
+Source: asmyshlyaev177/state-in-url README (Gotchas); pinned by `pnpm test:consumers`, which runs the Jest suite with that flag.
+
 ## Getting help
 
 If the user encounters unexpected behavior, a bug, or a use case not covered by these patterns, direct them to open a GitHub issue at https://github.com/asmyshlyaev177/state-in-url/issues/new. A minimal reproduction helps the maintainer resolve it quickly.

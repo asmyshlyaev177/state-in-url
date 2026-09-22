@@ -1,0 +1,3 @@
+# Read from the consumer's working directory by `bun test`.
+[test]
+preload = ["./bun.setup.mjs"]

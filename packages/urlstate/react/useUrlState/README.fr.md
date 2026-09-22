@@ -1,38 +1,36 @@
 <!-- i18n:start -->
 [English](./README.md) · [简体中文](./README.zh-CN.md) · [日本語](./README.ja.md) · [한국어](./README.ko.md) · [Русский](./README.ru.md) · [Español](./README.es.md) · [Português (BR)](./README.pt-BR.md) · Français · [Tiếng Việt](./README.vi.md)
-<!-- i18n:meta locale=fr source=README.md source-blob=da24fd34a3d4ed9b3d2fdcdc46897b6756d2a208 status=pending -->
+<!-- i18n:meta locale=fr source=README.md source-blob=da24fd34a3d4ed9b3d2fdcdc46897b6756d2a208 status=translated -->
 <!-- i18n:end -->
-
-<!-- i18n:todo -->
 
 # API
 
-This module provides a custom React hook for managing state that is synchronized with URL search parameters, for React applications with **no router** — Vite, Create React App, a widget mounted into a page you do not control.
+Ce module fournit un hook React personnalisé pour gérer un état synchronisé avec les paramètres de recherche de l'URL, destiné aux applications React **sans routeur** : Vite, Create React App, ou un widget monté dans une page que vous ne contrôlez pas.
 
-With no router to navigate through, the hook writes the URL with `window.history` and reads it back on back/forward, on its own writes, and on any other `pushState`/`replaceState`. Every component sharing the default-state object shares the state, so nothing has to be passed down.
+Faute de routeur pour naviguer, le hook écrit l'URL avec `window.history` et la relit lors des retours/avances, lors de ses propres écritures et lors de tout autre `pushState`/`replaceState`. Tous les composants qui partagent l'objet d'état par défaut partagent l'état, il n'y a donc rien à transmettre.
 
-Use a router entry point instead when the app has one: `state-in-url/next`, `state-in-url/react-router`, `state-in-url/react-router6`, `state-in-url/remix`. For a router this package ships no entry point for, e.g. TanStack Router, build your own hook with [`useUrlStateBase`](../../useUrlStateBase). `state-in-url/astro` is this same hook, documented for [islands](../../astro/useUrlState).
+Utilisez plutôt le point d'entrée du routeur si l'application en a un : `state-in-url/next`, `state-in-url/react-router`, `state-in-url/react-router6`, `state-in-url/remix`. Pour un routeur auquel ce paquet ne consacre pas de point d'entrée, par exemple TanStack Router, construisez votre propre hook avec [`useUrlStateBase`](../../useUrlStateBase). `state-in-url/astro` est ce même hook, documenté pour les [îlots](../../astro/useUrlState).
 
-## `useUrlState` hook
+## Hook `useUrlState`
 
-A custom React hook that manages state and synchronizes it with URL search parameters.
+Un hook React personnalisé qui gère l'état et le synchronise avec les paramètres de recherche de l'URL.
 
-### Parameters
+### Paramètres
 
-- `defaultState: object` - An object representing the default state values. Must be a module-scoped constant: state is shared by the identity of this object.
-- `searchParams?: object` - Query params from a server render, as a plain object, so the first render matches the URL. A client-only app leaves this out and the hook reads the URL itself.
-- `replace?: boolean` - Control will `setUrl` use `replaceState` or `pushState`, default replace=true, can override by `setUrl(stateObj, { replace: false })`
+- `defaultState: object` - Un objet représentant les valeurs d'état par défaut. Ce doit être une constante de portée module : l'état est partagé par l'identité de cet objet.
+- `searchParams?: object` - Les paramètres de requête issus d'un rendu serveur, sous forme d'objet simple, pour que le premier rendu corresponde à l'URL. Une application uniquement côté client l'omet et le hook lit l'URL lui-même.
+- `replace?: boolean` - Détermine si `setUrl` utilise `replaceState` ou `pushState` ; par défaut replace=true, et l'on peut surcharger avec `setUrl(stateObj, { replace: false })`
 
-### Returns
+### Renvoie
 
-An object containing:
+Un objet contenant :
 
-- `urlState: object` - The current state.
-- `setState: Function` - Function to update the state without updating the URL.
-- `setUrl: Function` - Function to update both the state and the URL.
-- `reset: Function` - Function to reset state to default.
+- `urlState: object` - L'état courant.
+- `setState: Function` - Fonction pour mettre à jour l'état sans mettre à jour l'URL.
+- `setUrl: Function` - Fonction pour mettre à jour à la fois l'état et l'URL.
+- `reset: Function` - Fonction pour réinitialiser l'état à sa valeur par défaut.
 
-### Example
+### Exemple
 
 ```tsx
 // src/useFilters.ts
@@ -61,23 +59,23 @@ export function FiltersBar() {
 }
 ```
 
-Any other component calling `useFilters()` reads and writes the same state and re-renders with it. There is no provider and nothing to pass through props.
+Tout autre composant appelant `useFilters()` lit et écrit le même état et se rerend avec lui. Il n'y a pas de provider et rien à passer par les props.
 
-Call `setState` and `setUrl` from event handlers or effects, never during render:
+Appelez `setState` et `setUrl` depuis des gestionnaires d'événements ou des effets, jamais pendant le rendu :
 
 ```typescript
-// Update state without changing URL
+// Mettre à jour l'état sans changer l'URL
 setState({ sort: 'date' });
 setState(currVal => ({ ...currVal, sort: 'date' }) );
 
-// reset state
+// réinitialiser l'état
 setState((_curr, initial) => initial);
 
-// Update state and URL
+// Mettre à jour l'état et l'URL
 setUrl({ sort: 'date' }, { replace: false });
 
-// reset state and URL
+// réinitialiser l'état et l'URL
 setUrl((_curr, initial) => initial);
 ```
 
-For a text input, call `setState` on every keystroke and `setUrl` on blur or a debounce — URL writes are throttled, and binding `setUrl` to `onChange` makes typing feel slow.
+Pour un champ de texte, appelez `setState` à chaque frappe et `setUrl` au blur ou avec un debounce : les écritures dans l'URL sont limitées, et lier `setUrl` à `onChange` donne une saisie qui paraît lente.
