@@ -1,38 +1,36 @@
 <!-- i18n:start -->
 [English](./README.md) · [简体中文](./README.zh-CN.md) · [日本語](./README.ja.md) · [한국어](./README.ko.md) · [Русский](./README.ru.md) · [Español](./README.es.md) · [Português (BR)](./README.pt-BR.md) · [Français](./README.fr.md) · Tiếng Việt
-<!-- i18n:meta locale=vi source=README.md source-blob=da24fd34a3d4ed9b3d2fdcdc46897b6756d2a208 status=pending -->
+<!-- i18n:meta locale=vi source=README.md source-blob=da24fd34a3d4ed9b3d2fdcdc46897b6756d2a208 status=translated -->
 <!-- i18n:end -->
-
-<!-- i18n:todo -->
 
 # API
 
-This module provides a custom React hook for managing state that is synchronized with URL search parameters, for React applications with **no router** — Vite, Create React App, a widget mounted into a page you do not control.
+Module này cung cấp một React hook tuỳ biến để quản lý trạng thái được đồng bộ với tham số tìm kiếm trên URL, dành cho các ứng dụng React **không có router** — Vite, Create React App, hay một widget gắn vào trang mà bạn không kiểm soát.
 
-With no router to navigate through, the hook writes the URL with `window.history` and reads it back on back/forward, on its own writes, and on any other `pushState`/`replaceState`. Every component sharing the default-state object shares the state, so nothing has to be passed down.
+Vì không có router để điều hướng, hook ghi URL bằng `window.history` và đọc lại khi người dùng lùi/tiến, khi chính nó ghi, và khi có bất kỳ `pushState`/`replaceState` nào khác. Mọi component dùng chung đối tượng trạng thái mặc định đều dùng chung trạng thái, nên không cần truyền xuống qua props.
 
-Use a router entry point instead when the app has one: `state-in-url/next`, `state-in-url/react-router`, `state-in-url/react-router6`, `state-in-url/remix`. For a router this package ships no entry point for, e.g. TanStack Router, build your own hook with [`useUrlStateBase`](../../useUrlStateBase). `state-in-url/astro` is this same hook, documented for [islands](../../astro/useUrlState).
+Nếu ứng dụng có router, hãy dùng entry point tương ứng: `state-in-url/next`, `state-in-url/react-router`, `state-in-url/react-router6`, `state-in-url/remix`. Với router mà gói này không có entry point riêng, ví dụ TanStack Router, hãy tự dựng hook bằng [`useUrlStateBase`](../../useUrlStateBase). `state-in-url/astro` chính là hook này, được viết tài liệu cho [island](../../astro/useUrlState).
 
-## `useUrlState` hook
+## Hook `useUrlState`
 
-A custom React hook that manages state and synchronizes it with URL search parameters.
+Một React hook tuỳ biến quản lý trạng thái và đồng bộ nó với tham số tìm kiếm trên URL.
 
-### Parameters
+### Tham số
 
-- `defaultState: object` - An object representing the default state values. Must be a module-scoped constant: state is shared by the identity of this object.
-- `searchParams?: object` - Query params from a server render, as a plain object, so the first render matches the URL. A client-only app leaves this out and the hook reads the URL itself.
-- `replace?: boolean` - Control will `setUrl` use `replaceState` or `pushState`, default replace=true, can override by `setUrl(stateObj, { replace: false })`
+- `defaultState: object` - Đối tượng chứa các giá trị trạng thái mặc định. Phải là hằng ở phạm vi module: trạng thái được chia sẻ theo định danh của đối tượng này.
+- `searchParams?: object` - Tham số truy vấn từ lần render trên máy chủ, dưới dạng đối tượng thuần, để lần render đầu tiên khớp với URL. Ứng dụng chỉ chạy phía client có thể bỏ qua, khi đó hook tự đọc URL.
+- `replace?: boolean` - Quyết định `setUrl` dùng `replaceState` hay `pushState`, mặc định replace=true, có thể ghi đè bằng `setUrl(stateObj, { replace: false })`
 
-### Returns
+### Trả về
 
-An object containing:
+Một đối tượng gồm:
 
-- `urlState: object` - The current state.
-- `setState: Function` - Function to update the state without updating the URL.
-- `setUrl: Function` - Function to update both the state and the URL.
-- `reset: Function` - Function to reset state to default.
+- `urlState: object` - Trạng thái hiện tại.
+- `setState: Function` - Hàm cập nhật trạng thái mà không cập nhật URL.
+- `setUrl: Function` - Hàm cập nhật cả trạng thái lẫn URL.
+- `reset: Function` - Hàm đặt lại trạng thái về mặc định.
 
-### Example
+### Ví dụ
 
 ```tsx
 // src/useFilters.ts
@@ -61,23 +59,23 @@ export function FiltersBar() {
 }
 ```
 
-Any other component calling `useFilters()` reads and writes the same state and re-renders with it. There is no provider and nothing to pass through props.
+Bất kỳ component nào khác gọi `useFilters()` đều đọc và ghi cùng một trạng thái và render lại theo nó. Không có provider và không phải truyền gì qua props.
 
-Call `setState` and `setUrl` from event handlers or effects, never during render:
+Hãy gọi `setState` và `setUrl` từ trình xử lý sự kiện hoặc effect, tuyệt đối không gọi trong lúc render:
 
 ```typescript
-// Update state without changing URL
+// Cập nhật trạng thái mà không đổi URL
 setState({ sort: 'date' });
 setState(currVal => ({ ...currVal, sort: 'date' }) );
 
-// reset state
+// đặt lại trạng thái
 setState((_curr, initial) => initial);
 
-// Update state and URL
+// Cập nhật trạng thái và URL
 setUrl({ sort: 'date' }, { replace: false });
 
-// reset state and URL
+// đặt lại trạng thái và URL
 setUrl((_curr, initial) => initial);
 ```
 
-For a text input, call `setState` on every keystroke and `setUrl` on blur or a debounce — URL writes are throttled, and binding `setUrl` to `onChange` makes typing feel slow.
+Với ô nhập văn bản, hãy gọi `setState` mỗi lần gõ phím và gọi `setUrl` khi blur hoặc sau debounce — thao tác ghi URL bị tiết lưu, và gắn `setUrl` vào `onChange` sẽ khiến việc gõ có cảm giác chậm.

@@ -75,7 +75,28 @@ assert.ok(encode, errorMsg);
 assert(loadFile('/encoder/encoder.d.ts').length > 15, errorMsg);
 assert.ok(decode, errorMsg);
 
-// Test that 'default' field is last in all exports
+// next ships no `exports` map, so Node resolves `next/navigation` as a file
+// path and ESM does no extension guessing. The source and the .d.ts keep the
+// bare specifier — every bundler wants that, and it survives next adding an
+// exports map — and rollup's `output.paths` adds the extension to the emitted
+// ESM alone. Lose that mapping and nothing fails until a consumer loads this
+// build through Node instead of a bundler.
+assert.match(
+  loadFile('/next/useUrlState/useUrlState.mjs'),
+  /next\/navigation\.js/,
+  "The ESM build must import 'next/navigation.js'; check rollup output.paths",
+);
+
+// Conditions are matched in declaration order, so the order is the contract:
+// 'types' anywhere but first is shadowed by whichever condition matches (TS
+// then falls back to guessing), and 'default' anywhere but last shadows every
+// condition after it.
+//
+// The absent 'require' is the ESM-only decision. A .cjs build is still emitted
+// for manual use, so this assertion is what keeps it off the resolution path:
+// two builds reachable in one consumer's graph means two copies of the
+// module-scoped WeakMaps in subscribers.ts, and useSharedState silently stops
+// sharing.
 const packageJsonPath = path.join(__dirname, '../../package.json');
 const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
 const exports = packageJson.exports;
@@ -85,8 +106,14 @@ Object.keys(exports).forEach(exportPath => {
   if (typeof exportObj === 'object' && exportObj.default) {
     const keys = Object.keys(exportObj);
     const lastKey = keys[keys.length - 1];
-    assert.strictEqual(lastKey, 'default', 
+    assert.strictEqual(lastKey, 'default',
       `Export '${exportPath}': 'default' field should be last, but found '${lastKey}' as last field`);
+    assert.strictEqual(keys[0], 'types',
+      `Export '${exportPath}': 'types' field should be first, but found '${keys[0]}' as first field`);
+    assert.ok(!exportObj.require,
+      `Export '${exportPath}': this package is ESM-only, so it must declare no 'require' condition`);
+    assert.ok(exportObj.default.endsWith('.mjs'),
+      `Export '${exportPath}': 'default' should point at the ESM build, got '${exportObj.default}'`);
   }
 });
 

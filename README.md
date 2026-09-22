@@ -137,6 +137,7 @@ The full comparison — the same feature built in both, other alternatives (TanS
   - [installation](#installation)
     - [1. Install package](#1-install-package)
     - [2. Edit tsconfig.json](#2-edit-tsconfigjson)
+    - [3. Note: this package resolves as ESM only](#3-note-this-package-resolves-as-esm-only)
   - [Using with AI coding agents](#using-with-ai-coding-agents)
   - [useUrlState](#useurlstate)
     - [useUrlState hook for Next.js](#useurlstate-hook-for-nextjs)
@@ -195,6 +196,18 @@ pnpm add state-in-url
 
 In `tsconfig.json` in `compilerOptions` set `"moduleResolution": "Bundler"`, or`"moduleResolution": "Node16"`, or `"moduleResolution": "NodeNext"`.
 Possibly need to set `"module": "ES2022"`, or `"module": "ESNext"`
+
+### 3. Note: this package resolves as ESM only
+
+Next.js, Vite, Astro and Remix bundle it with no configuration, and `require()`
+from plain Node works on Node `^20.19` or `>=22.12`, where `require(esm)` is
+unflagged.
+
+A CommonJS build ships in `dist/` as `.cjs`, but the `exports` map does not point
+at it, so nothing resolves to it by accident. It is there for the edge cases —
+older Node, or Jest without a flag — and you reach it by explicit path.
+
+**Jest needs one line of config either way** — see [Gotchas](#gotchas) item 5.
 
 ## Using with AI coding agents
 
@@ -980,6 +993,40 @@ export const useUserState = () => {
 1. Can pass only serializable values, `Function`, `BigInt` or `Symbol` won't work, probably things like `ArrayBuffer` neither. Everything that can be serialized to JSON will work.
 2. Vercel servers limit size of headers (query string and other stuff) to **14KB**, so keep your URL state under ~5000 words. <https://vercel.com/docs/errors/URL_TOO_LONG>
 3. Tested with `next.js` 14/15/16  with app router, no plans to support pages.
+4. **Vitest + react-router 7**: if a test rendering a component inside `<BrowserRouter>` throws `useNavigate() may be used only in the context of a <Router> component` with the provider right there, either upgrade to `react-router@8` or inline this package:
+
+   ```ts
+   // vitest.config.ts
+   test: { server: { deps: { inline: ['state-in-url'] } } }
+   ```
+
+   Vitest externalizes `node_modules`, so Node loads `state-in-url` while Vite loads your test file. In `react-router@7` the `node` export condition points `module`/`module-sync` at `index.mjs` and `default` at `index.js`, and the two resolvers pick different ones — so react-router loads twice, its React context exists twice, and the provider writes to the copy the hook does not read. Inlining puts both sides on Vite's resolver.
+
+   `react-router@8` points `default` and `module-sync` at the same file, so no resolver can disagree and nothing is needed. The error never names `state-in-url`, which is why this is here.
+
+5. **Jest**: this package resolves as ESM only, and Jest runs tests as CommonJS by default, so a bare `require()` fails with `Must use import to load ES Module`. Jest does not inherit Node's unflagged `require(esm)` — it uses its own synchronous `vm` API — so on **Node 24.9+** give it the flag:
+
+   ```json
+   // package.json
+   "scripts": { "test": "NODE_OPTIONS=--experimental-vm-modules jest" }
+   ```
+
+   If you would rather not pass a flag, `dist/` also ships a CommonJS build. It is deliberately absent from the `exports` map, so nothing resolves to it by accident — point Jest at it explicitly:
+
+   ```js
+   // jest.config.js
+   moduleNameMapper: {
+     '^state-in-url$': '<rootDir>/node_modules/state-in-url/dist/index.cjs',
+     '^state-in-url/utils$': '<rootDir>/node_modules/state-in-url/dist/utils.cjs',
+     '^state-in-url/(.*)$': '<rootDir>/node_modules/state-in-url/dist/$1/index.cjs',
+   },
+   ```
+
+   That substitutes the CJS build for the whole test process, which is safe. Do not mix the two in one process — this package keeps its shared-state store in module scope, so two copies means two stores and `useSharedState` quietly stops sharing.
+
+   One more difference: `jest.mock()` does not apply to ES modules. Use `jest.unstable_mockModule()` if you mock this package.
+
+   Vitest, Next.js, Vite, Astro and Remix all need none of this Jest setup. Vitest's one extra step is the `server.deps.inline` above, and only with `react-router@7`.
 
 ## Other
 

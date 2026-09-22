@@ -1,6 +1,6 @@
 <!-- i18n:start -->
 [English](./README.md) · [简体中文](./README.zh-CN.md) · [日本語](./README.ja.md) · [한국어](./README.ko.md) · [Русский](./README.ru.md) · Español · [Português (BR)](./README.pt-BR.md) · [Français](./README.fr.md) · [Tiếng Việt](./README.vi.md)
-<!-- i18n:meta locale=es source=README.md source-blob=ad78fdbbee096115a953813ed9a462e3393c5736 status=translated -->
+<!-- i18n:meta locale=es source=README.md source-blob=8b11ee8f8c8b83c207a940455766e24376508130 status=translated -->
 <!-- i18n:end -->
 
 <div align="center">
@@ -138,6 +138,7 @@ La comparación completa — la misma feature en ambas, otras alternativas (TanS
   - [Instalación](#instalación)
     - [1. Instalar el paquete](#1-instalar-el-paquete)
     - [2. Editar tsconfig.json](#2-editar-tsconfigjson)
+    - [3. Nota: este paquete se resuelve solo como ESM](#3-nota-este-paquete-se-resuelve-solo-como-esm)
   - [Uso con agentes de codificación con IA](#uso-con-agentes-de-codificación-con-ia)
   - [useUrlState](#useurlstate)
     - [Hook useUrlState para Next.js](#hook-useurlstate-para-nextjs)
@@ -196,6 +197,20 @@ pnpm add state-in-url
 
 En `tsconfig.json`, en `compilerOptions`, establece `"moduleResolution": "Bundler"`, o `"moduleResolution": "Node16"`, o `"moduleResolution": "NodeNext"`.
 Posiblemente necesites establecer `"module": "ES2022"`, o `"module": "ESNext"`
+
+### 3. Nota: este paquete se resuelve solo como ESM
+
+Next.js, Vite, Astro y Remix lo empaquetan sin ninguna configuración, y
+`require()` desde Node puro funciona en Node `^20.19` o `>=22.12`, donde
+`require(esm)` no necesita flag.
+
+En `dist/` también se publica una compilación CommonJS con extensión `.cjs`, pero
+el mapa `exports` no apunta a ella, así que ninguna resolución llega allí por
+accidente. Está para los casos límite — Node antiguo, o Jest sin flag — y solo se
+alcanza mediante una ruta explícita.
+
+**En cualquiera de los dos casos Jest necesita una línea de configuración** —
+consulta el punto 5 de [Trampas](#trampas).
 
 ## Uso con agentes de codificación con IA
 
@@ -981,6 +996,41 @@ export const useUserState = () => {
 1. Solo se pueden pasar valores serializables; `Function`, `BigInt` o `Symbol` no funcionarán, y probablemente tampoco cosas como `ArrayBuffer`. Todo lo que se pueda serializar a JSON funcionará.
 2. Los servidores de Vercel limitan el tamaño de las cabeceras (la cadena de consulta y demás) a **14KB**, así que mantén el estado de tu URL por debajo de ~5000 palabras. <https://vercel.com/docs/errors/URL_TOO_LONG>
 3. Probado con `next.js` 14/15/16 con app router; no hay planes de soportar pages.
+
+4. **Vitest + react-router 7**: si una prueba que renderiza un componente dentro de `<BrowserRouter>` lanza `useNavigate() may be used only in the context of a <Router> component` con el provider justo ahí, actualiza a `react-router@8` o incorpora este paquete en línea:
+
+   ```ts
+   // vitest.config.ts
+   test: { server: { deps: { inline: ['state-in-url'] } } }
+   ```
+
+   Vitest externaliza `node_modules`, así que Node carga `state-in-url` mientras Vite carga tu archivo de prueba. En `react-router@7` la condición de exportación `node` apunta `module`/`module-sync` a `index.mjs` y `default` a `index.js`, y los dos resolutores eligen distinto: react-router se carga dos veces, su contexto de React existe por duplicado y el provider escribe en la copia que el hook no lee. Incorporarlo en línea pone ambos lados en el resolutor de Vite.
+
+   `react-router@8` apunta `default` y `module-sync` al mismo archivo, de modo que ningún resolutor puede discrepar y no hace falta nada. El error nunca menciona `state-in-url`, por eso esto está aquí.
+
+5. **Jest**: este paquete se resuelve solo como ESM y Jest ejecuta las pruebas como CommonJS por defecto, así que un `require()` simple falla con `Must use import to load ES Module`. Jest no hereda el `require(esm)` sin flag de Node — usa su propia API síncrona `vm` —, así que en **Node 24.9+** pásale el flag:
+
+   ```json
+   // package.json
+   "scripts": { "test": "NODE_OPTIONS=--experimental-vm-modules jest" }
+   ```
+
+   Si prefieres no pasar un flag, `dist/` también incluye una compilación CommonJS. Está deliberadamente fuera del mapa `exports`, así que nada se resuelve a ella por accidente: apunta Jest a ella de forma explícita:
+
+   ```js
+   // jest.config.js
+   moduleNameMapper: {
+     '^state-in-url$': '<rootDir>/node_modules/state-in-url/dist/index.cjs',
+     '^state-in-url/utils$': '<rootDir>/node_modules/state-in-url/dist/utils.cjs',
+     '^state-in-url/(.*)$': '<rootDir>/node_modules/state-in-url/dist/$1/index.cjs',
+   },
+   ```
+
+   Eso sustituye la compilación por la de CJS en todo el proceso de pruebas, y es seguro. No mezcles las dos en un mismo proceso: este paquete guarda su almacén de estado compartido en el ámbito del módulo, así que dos copias significan dos almacenes y `useSharedState` deja de compartir sin avisar.
+
+   Una diferencia más: `jest.mock()` no se aplica a los módulos ES. Usa `jest.unstable_mockModule()` si haces mock de este paquete.
+
+   Vitest, Next.js, Vite, Astro y Remix no necesitan nada de esta configuración de Jest. El único paso adicional de Vitest es el `server.deps.inline` de arriba, y solo con `react-router@7`.
 
 ## Otros
 

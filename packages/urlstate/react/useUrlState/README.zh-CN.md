@@ -1,38 +1,36 @@
 <!-- i18n:start -->
 [English](./README.md) · 简体中文 · [日本語](./README.ja.md) · [한국어](./README.ko.md) · [Русский](./README.ru.md) · [Español](./README.es.md) · [Português (BR)](./README.pt-BR.md) · [Français](./README.fr.md) · [Tiếng Việt](./README.vi.md)
-<!-- i18n:meta locale=zh-CN source=README.md source-blob=da24fd34a3d4ed9b3d2fdcdc46897b6756d2a208 status=pending -->
+<!-- i18n:meta locale=zh-CN source=README.md source-blob=da24fd34a3d4ed9b3d2fdcdc46897b6756d2a208 status=translated -->
 <!-- i18n:end -->
-
-<!-- i18n:todo -->
 
 # API
 
-This module provides a custom React hook for managing state that is synchronized with URL search parameters, for React applications with **no router** — Vite, Create React App, a widget mounted into a page you do not control.
+本模块为**没有路由器**的 React 应用提供一个自定义 React hook，用于管理与 URL 查询参数同步的状态——Vite、Create React App，或挂载到你无法控制的页面里的小部件。
 
-With no router to navigate through, the hook writes the URL with `window.history` and reads it back on back/forward, on its own writes, and on any other `pushState`/`replaceState`. Every component sharing the default-state object shares the state, so nothing has to be passed down.
+由于没有路由器可用于导航，该 hook 使用 `window.history` 写入 URL，并在前进/后退、自身写入以及任何其他 `pushState`/`replaceState` 时把它读回来。共享同一个默认状态对象的每个组件都共享状态，因此无需层层传递。
 
-Use a router entry point instead when the app has one: `state-in-url/next`, `state-in-url/react-router`, `state-in-url/react-router6`, `state-in-url/remix`. For a router this package ships no entry point for, e.g. TanStack Router, build your own hook with [`useUrlStateBase`](../../useUrlStateBase). `state-in-url/astro` is this same hook, documented for [islands](../../astro/useUrlState).
+如果应用本身带有路由器，请改用对应的入口：`state-in-url/next`、`state-in-url/react-router`、`state-in-url/react-router6`、`state-in-url/remix`。对于本包没有提供入口的路由器（例如 TanStack Router），请用 [`useUrlStateBase`](../../useUrlStateBase) 自行构建 hook。`state-in-url/astro` 就是同一个 hook，针对[群岛](../../astro/useUrlState)作了说明。
 
 ## `useUrlState` hook
 
-A custom React hook that manages state and synchronizes it with URL search parameters.
+一个管理状态并将其与 URL 查询参数同步的自定义 React hook。
 
-### Parameters
+### 参数
 
-- `defaultState: object` - An object representing the default state values. Must be a module-scoped constant: state is shared by the identity of this object.
-- `searchParams?: object` - Query params from a server render, as a plain object, so the first render matches the URL. A client-only app leaves this out and the hook reads the URL itself.
-- `replace?: boolean` - Control will `setUrl` use `replaceState` or `pushState`, default replace=true, can override by `setUrl(stateObj, { replace: false })`
+- `defaultState: object` - 表示默认状态值的对象。必须是模块作用域的常量：状态是按这个对象的标识共享的。
+- `searchParams?: object` - 来自服务端渲染的查询参数，以普通对象形式传入，使首次渲染与 URL 一致。纯客户端应用可以省略它，hook 会自行读取 URL。
+- `replace?: boolean` - 控制 `setUrl` 使用 `replaceState` 还是 `pushState`，默认 replace=true，可通过 `setUrl(stateObj, { replace: false })` 覆盖
 
-### Returns
+### 返回值
 
-An object containing:
+一个包含以下内容的对象：
 
-- `urlState: object` - The current state.
-- `setState: Function` - Function to update the state without updating the URL.
-- `setUrl: Function` - Function to update both the state and the URL.
-- `reset: Function` - Function to reset state to default.
+- `urlState: object` - 当前状态。
+- `setState: Function` - 更新状态但不更新 URL 的函数。
+- `setUrl: Function` - 同时更新状态和 URL 的函数。
+- `reset: Function` - 将状态重置为默认值的函数。
 
-### Example
+### 示例
 
 ```tsx
 // src/useFilters.ts
@@ -61,23 +59,23 @@ export function FiltersBar() {
 }
 ```
 
-Any other component calling `useFilters()` reads and writes the same state and re-renders with it. There is no provider and nothing to pass through props.
+任何其他调用 `useFilters()` 的组件都会读写同一份状态并随之重新渲染。没有 provider，也不需要通过 props 传递任何东西。
 
-Call `setState` and `setUrl` from event handlers or effects, never during render:
+请在事件处理函数或副作用中调用 `setState` 和 `setUrl`，绝不要在渲染过程中调用：
 
 ```typescript
-// Update state without changing URL
+// 更新状态但不改变 URL
 setState({ sort: 'date' });
 setState(currVal => ({ ...currVal, sort: 'date' }) );
 
-// reset state
+// 重置状态
 setState((_curr, initial) => initial);
 
-// Update state and URL
+// 更新状态和 URL
 setUrl({ sort: 'date' }, { replace: false });
 
-// reset state and URL
+// 重置状态和 URL
 setUrl((_curr, initial) => initial);
 ```
 
-For a text input, call `setState` on every keystroke and `setUrl` on blur or a debounce — URL writes are throttled, and binding `setUrl` to `onChange` makes typing feel slow.
+对于文本输入框，请在每次按键时调用 `setState`，并在失焦或防抖之后调用 `setUrl`——URL 写入是有节流的，把 `setUrl` 绑定到 `onChange` 会让输入显得卡顿。
