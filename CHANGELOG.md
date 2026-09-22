@@ -1,3 +1,16 @@
+# [8.0.0](https://github.com/asmyshlyaev177/state-in-url/compare/v7.0.0...v8.0.0) (2026-09-22)
+
+
+### Bug Fixes
+
+* esm as default output format ([feee6d5](https://github.com/asmyshlyaev177/state-in-url/commit/feee6d57d83392cf7cd936841cada7dedd11139c))
+
+
+### BREAKING CHANGES
+
+* CJS Vs ESM, probably everything will work, tested client apps, but if something
+doesn't work you know the reason. Old CJS bundle is still emmited, can import it by full path.
+
 # [7.0.0](https://github.com/asmyshlyaev177/state-in-url/compare/v6.5.0...v7.0.0) (2026-09-21)
 
 
