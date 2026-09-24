@@ -45,7 +45,7 @@ With `{ name: 'John', age: 0 }` in state, clicking that link navigates to `/de/p
 
 ### Which params come along
 
-The same ones [`setUrl`](../next/useUrlState/README.md#updateurl) would have kept, at the href you passed:
+The same ones [`setUrl`](../next/useUrlState/README.md#seturl) would have kept, at the href you passed:
 
 - values equal to the default are left out, exactly as `setUrl` leaves them out;
 - params of the current url that the shape does not own — `utm_source` and friends — come along, so a language switch does not lose attribution;

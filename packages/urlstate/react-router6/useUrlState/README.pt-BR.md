@@ -1,6 +1,6 @@
 <!-- i18n:start -->
 [English](./README.md) · [简体中文](./README.zh-CN.md) · [日本語](./README.ja.md) · [한국어](./README.ko.md) · [Русский](./README.ru.md) · [Español](./README.es.md) · Português (BR) · [Français](./README.fr.md) · [Tiếng Việt](./README.vi.md)
-<!-- i18n:meta locale=pt-BR source=README.md source-blob=7f1a0b9b6347360148100d95626ead84f8200c12 status=translated -->
+<!-- i18n:meta locale=pt-BR source=README.md source-blob=68c1b5d211468cd72a72ef925f953d0b491b1d34 status=translated -->
 <!-- i18n:end -->
 
 # API
@@ -15,7 +15,7 @@ Um hook React personalizado que gerencia o estado e o sincroniza com os parâmet
 
 - `defaultState: object` - Um objeto que representa os valores de estado padrão.
 - `replace?: boolean` - Controla se `setUrl` usará o método `replace` ou `push` no router, padrão replace=true, pode ser substituído por `updateUrl(stateObj, { replace: false })`
-- `options?: NavigateOptions` - O argumento `replace` e os tipos de [`NavigateOptions`](https://api.reactrouter.com/v7/interfaces/react_router.NavigateOptions.html) do tipo `react-router`, o mesmo que as opções de `useNavigate`
+- `options?: NavigateOptions` - O argumento `replace` e os tipos de [`NavigateOptions`](https://api.reactrouter.com/v7/interfaces/react-router.NavigateOptions.html) do tipo `react-router`, o mesmo que as opções de `useNavigate`
 - `useHistory` - Opcionalmente pode usar window.history para navegação
 - `preventScrollReset` - Opção do navigate do react-router
 
@@ -67,7 +67,7 @@ Atualiza tanto o estado quanto a URL.
 ### Parâmetros de `setUrl`
 
 - `value?: (Partial<T> | (curr: T, initial: T) => T, options)` - Novo valor de estado opcional, ou uma função que recebe o estado atual e o estado inicial e retorna o novo estado.
-- `options?: NavigateOptions` - Objeto de opções opcional do tipo [`NavigateOptions`](https://api.reactrouter.com/v7/interfaces/react_router.NavigateOptions.html) do react-router.
+- `options?: NavigateOptions` - Objeto de opções opcional do tipo [`NavigateOptions`](https://api.reactrouter.com/v7/interfaces/react-router.NavigateOptions.html) do react-router.
 
 ## `reset`
 
@@ -75,4 +75,4 @@ Atualiza tanto o estado quanto a URL.
 
 ### Parâmetros de `reset`
 
-- `options?: NavigateOptions` - Objeto de opções opcional do tipo [`NavigateOptions`](https://api.reactrouter.com/v7/interfaces/react_router.NavigateOptions.html) do react-router.
+- `options?: NavigateOptions` - Objeto de opções opcional do tipo [`NavigateOptions`](https://api.reactrouter.com/v7/interfaces/react-router.NavigateOptions.html) do react-router.

@@ -1,6 +1,6 @@
 <!-- i18n:start -->
 [English](./README.md) · [简体中文](./README.zh-CN.md) · [日本語](./README.ja.md) · [한국어](./README.ko.md) · [Русский](./README.ru.md) · [Español](./README.es.md) · Português (BR) · [Français](./README.fr.md) · [Tiếng Việt](./README.vi.md)
-<!-- i18n:meta locale=pt-BR source=README.md source-blob=1f4f64a26bb4e480a8007ed2024bb5b0ae89e257 status=translated -->
+<!-- i18n:meta locale=pt-BR source=README.md source-blob=581837f4384529a8b600e61804210f7852068546 status=translated -->
 <!-- i18n:end -->
 
 # API
@@ -45,7 +45,7 @@ Com `{ name: 'John', age: 0 }` no estado, clicar nesse link leva a `/de/pricing?
 
 ### Quais parâmetros vão junto
 
-Os mesmos que [`setUrl`](../next/useUrlState/README.md#updateurl) teria mantido, no href que você passou:
+Os mesmos que [`setUrl`](../next/useUrlState/README.md#seturl) teria mantido, no href que você passou:
 
 - valores iguais ao padrão ficam de fora, exatamente como `setUrl` os omite;
 - parâmetros da URL atual que não pertencem ao `shape` — `utm_source` e afins — vão junto, para que uma troca de idioma não perca a atribuição;

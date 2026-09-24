@@ -1,6 +1,6 @@
 <!-- i18n:start -->
 [English](./README.md) · [简体中文](./README.zh-CN.md) · [日本語](./README.ja.md) · 한국어 · [Русский](./README.ru.md) · [Español](./README.es.md) · [Português (BR)](./README.pt-BR.md) · [Français](./README.fr.md) · [Tiếng Việt](./README.vi.md)
-<!-- i18n:meta locale=ko source=README.md source-blob=1f4f64a26bb4e480a8007ed2024bb5b0ae89e257 status=translated -->
+<!-- i18n:meta locale=ko source=README.md source-blob=581837f4384529a8b600e61804210f7852068546 status=translated -->
 <!-- i18n:end -->
 
 # API
@@ -45,7 +45,7 @@ function LanguagePicker() {
 
 ### 어떤 파라미터가 따라가는가
 
-전달한 href 를 기준으로, [`setUrl`](../next/useUrlState/README.md#updateurl) 이 남겼을 것과 같습니다.
+전달한 href 를 기준으로, [`setUrl`](../next/useUrlState/README.md#seturl) 이 남겼을 것과 같습니다.
 
 - 기본값과 같은 값은 `setUrl` 과 마찬가지로 빠집니다.
 - 현재 URL 에서 `shape` 이 소유하지 않는 파라미터(`utm_source` 같은 것들)는 따라갑니다. 언어를 바꿔도 유입 정보를 잃지 않기 위해서입니다.

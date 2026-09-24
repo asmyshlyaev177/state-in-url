@@ -1,6 +1,6 @@
 <!-- i18n:start -->
 [English](./README.md) · [简体中文](./README.zh-CN.md) · 日本語 · [한국어](./README.ko.md) · [Русский](./README.ru.md) · [Español](./README.es.md) · [Português (BR)](./README.pt-BR.md) · [Français](./README.fr.md) · [Tiếng Việt](./README.vi.md)
-<!-- i18n:meta locale=ja source=README.md source-blob=1c8bfbd0d0f5f8b7ac5ea33a5a298550b0141f5f status=translated -->
+<!-- i18n:meta locale=ja source=README.md source-blob=ada9598fbd519ba6c0ff3d15a2bc43da141db92f status=translated -->
 <!-- i18n:end -->
 
 # API
@@ -15,7 +15,7 @@
 
 - `defaultState: object` - デフォルトの状態値を表すオブジェクト。
 - `replace?: boolean` - `setUrl` がルーターで `replace` と `push` のどちらを使うかを制御します。デフォルトは replace=true。`updateUrl(stateObj, { replace: false })` で上書きできます。
-- `options?: NavigateOptions` - `react-router` 型の [`NavigateOptions`](https://api.reactrouter.com/v7/interfaces/react_router.NavigateOptions.html) の `replace` 引数と型。`useNavigate` のオプションと同じです。
+- `options?: NavigateOptions` - `react-router` 型の [`NavigateOptions`](https://api.reactrouter.com/v7/interfaces/react-router.NavigateOptions.html) の `replace` 引数と型。`useNavigate` のオプションと同じです。
 - `useHistory` - ナビゲーションに window.history を使うこともできます。
 - `preventScrollReset` - react-router navigate のオプション。
 
@@ -67,7 +67,7 @@ URL を変更せずに状態を更新します。
 ### `setUrl` のパラメータ
 
 - `value?: (Partial<T> | (curr: T, initial: T) => T, options)` - オプションの新しい状態の値、または現在の状態と初期状態を受け取り新しい状態を返す関数。
-- `options?: NavigateOptions` - react-router の [`NavigateOptions`](https://api.reactrouter.com/v7/interfaces/react_router.NavigateOptions.html) 型のオプションオブジェクト。
+- `options?: NavigateOptions` - react-router の [`NavigateOptions`](https://api.reactrouter.com/v7/interfaces/react-router.NavigateOptions.html) 型のオプションオブジェクト。
 
 ## `reset`
 
@@ -75,4 +75,4 @@ URL を変更せずに状態を更新します。
 
 ### `reset` のパラメータ
 
-- `options?: NavigateOptions` - react-router の [`NavigateOptions`](https://api.reactrouter.com/v7/interfaces/react_router.NavigateOptions.html) 型のオプションオブジェクト。
+- `options?: NavigateOptions` - react-router の [`NavigateOptions`](https://api.reactrouter.com/v7/interfaces/react-router.NavigateOptions.html) 型のオプションオブジェクト。

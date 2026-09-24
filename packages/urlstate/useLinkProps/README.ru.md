@@ -1,6 +1,6 @@
 <!-- i18n:start -->
 [English](./README.md) · [简体中文](./README.zh-CN.md) · [日本語](./README.ja.md) · [한국어](./README.ko.md) · Русский · [Español](./README.es.md) · [Português (BR)](./README.pt-BR.md) · [Français](./README.fr.md) · [Tiếng Việt](./README.vi.md)
-<!-- i18n:meta locale=ru source=README.md source-blob=1f4f64a26bb4e480a8007ed2024bb5b0ae89e257 status=translated -->
+<!-- i18n:meta locale=ru source=README.md source-blob=581837f4384529a8b600e61804210f7852068546 status=translated -->
 <!-- i18n:end -->
 
 # API
@@ -45,7 +45,7 @@ function LanguagePicker() {
 
 ### Какие параметры едут с вами
 
-Те же, что сохранил бы [`setUrl`](../next/useUrlState/README.md#updateurl), но по переданному вами href:
+Те же, что сохранил бы [`setUrl`](../next/useUrlState/README.md#seturl), но по переданному вами href:
 
 - значения, равные значению по умолчанию, не попадают в URL — ровно так же, как их опускает `setUrl`;
 - параметры текущего URL, не принадлежащие `shape`, — `utm_source` и ему подобные — едут дальше, чтобы смена языка не теряла источник перехода;

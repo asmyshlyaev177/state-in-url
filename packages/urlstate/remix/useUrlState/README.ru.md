@@ -1,6 +1,6 @@
 <!-- i18n:start -->
 [English](./README.md) · [简体中文](./README.zh-CN.md) · [日本語](./README.ja.md) · [한국어](./README.ko.md) · Русский · [Español](./README.es.md) · [Português (BR)](./README.pt-BR.md) · [Français](./README.fr.md) · [Tiếng Việt](./README.vi.md)
-<!-- i18n:meta locale=ru source=README.md source-blob=8eaf1922213c8e89f693b5213bf3cc611d332564 status=translated -->
+<!-- i18n:meta locale=ru source=README.md source-blob=3e41a1a6f845ca3ad5287835b627517a3e1a68eb status=translated -->
 <!-- i18n:end -->
 
 # API
@@ -15,7 +15,7 @@
 
 - `defaultState: object` - Объект, представляющий значения состояния по умолчанию.
 - `replace?: boolean` - Управляет тем, использует ли `setUrl` метод `replace` или `push` у роутера; по умолчанию replace=true, можно переопределить через `updateUrl(stateObj, { replace: false })`
-- `options?: NavigateOptions` - Аргумент `replace` и типы из [`NavigateOptions`](https://api.reactrouter.com/v7/interfaces/react_router.NavigateOptions.html) типа `react-router`, то же, что и опции `useNavigate`
+- `options?: NavigateOptions` - Аргумент `replace` и типы из [`NavigateOptions`](https://api.reactrouter.com/v7/interfaces/react-router.NavigateOptions.html) типа `react-router`, то же, что и опции `useNavigate`
 - `useHistory` - Опционально можно использовать window.history для навигации
 - `preventScrollReset` - Опция из navigate react-router
 
@@ -67,7 +67,7 @@ setUrl((_curr, initial) => initial);
 ### Параметры `setUrl`
 
 - `value?: (Partial<T> | (curr: T, initial: T) => T, options)` - Необязательное новое значение состояния, либо функция, которая получает текущее состояние и начальное состояние и возвращает новое состояние.
-- `options?: NavigateOptions` - Необязательный объект опций из типа [`NavigateOptions`](https://api.reactrouter.com/v7/interfaces/react_router.NavigateOptions.html) react-router.
+- `options?: NavigateOptions` - Необязательный объект опций из типа [`NavigateOptions`](https://api.reactrouter.com/v7/interfaces/react-router.NavigateOptions.html) react-router.
 
 ## `reset`
 
@@ -75,4 +75,4 @@ setUrl((_curr, initial) => initial);
 
 ### Параметры `reset`
 
-- `options?: NavigateOptions` - Необязательный объект опций из типа [`NavigateOptions`](https://api.reactrouter.com/v7/interfaces/react_router.NavigateOptions.html) react-router.
+- `options?: NavigateOptions` - Необязательный объект опций из типа [`NavigateOptions`](https://api.reactrouter.com/v7/interfaces/react-router.NavigateOptions.html) react-router.

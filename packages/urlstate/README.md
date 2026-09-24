@@ -7,7 +7,7 @@ English · [简体中文](./README.zh-CN.md) · [日本語](./README.ja.md) · [
 
 Here is links to relevant documentation, you can also just click on folder to see info for each module.
 
-[`useUrlState` NextJS hook](useUrlState/README.md)
+[`useUrlState` NextJS hook](next/useUrlState/README.md)
 
 [`useUrlEncode` React hook](useUrlEncode/README.md)
 

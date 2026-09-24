@@ -1,6 +1,6 @@
 <!-- i18n:start -->
 [English](./README.md) · 简体中文 · [日本語](./README.ja.md) · [한국어](./README.ko.md) · [Русский](./README.ru.md) · [Español](./README.es.md) · [Português (BR)](./README.pt-BR.md) · [Français](./README.fr.md) · [Tiếng Việt](./README.vi.md)
-<!-- i18n:meta locale=zh-CN source=README.md source-blob=1f4f64a26bb4e480a8007ed2024bb5b0ae89e257 status=translated -->
+<!-- i18n:meta locale=zh-CN source=README.md source-blob=581837f4384529a8b600e61804210f7852068546 status=translated -->
 <!-- i18n:end -->
 
 # API
@@ -45,7 +45,7 @@ function LanguagePicker() {
 
 ### 哪些参数会被带上
 
-对于你传入的 href，与 [`setUrl`](../next/useUrlState/README.md#updateurl) 保留的完全一致：
+对于你传入的 href，与 [`setUrl`](../next/useUrlState/README.md#seturl) 保留的完全一致：
 
 - 与默认值相同的值不会写出，和 `setUrl` 的处理一样；
 - 当前 URL 中不属于 `shape` 的参数（例如 `utm_source` 之类）会被带上，这样切换语言不会丢失来源归因；

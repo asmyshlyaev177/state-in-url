@@ -1,6 +1,6 @@
 <!-- i18n:start -->
 [English](./README.md) · [简体中文](./README.zh-CN.md) · [日本語](./README.ja.md) · [한국어](./README.ko.md) · [Русский](./README.ru.md) · [Español](./README.es.md) · [Português (BR)](./README.pt-BR.md) · [Français](./README.fr.md) · Tiếng Việt
-<!-- i18n:meta locale=vi source=README.md source-blob=1f4f64a26bb4e480a8007ed2024bb5b0ae89e257 status=translated -->
+<!-- i18n:meta locale=vi source=README.md source-blob=581837f4384529a8b600e61804210f7852068546 status=translated -->
 <!-- i18n:end -->
 
 # API
@@ -45,7 +45,7 @@ Với trạng thái `{ name: 'John', age: 0 }`, nhấp vào liên kết đó s�
 
 ### Những tham số nào đi cùng
 
-Đúng những tham số mà [`setUrl`](../next/useUrlState/README.md#updateurl) đã giữ lại, trên href bạn truyền vào:
+Đúng những tham số mà [`setUrl`](../next/useUrlState/README.md#seturl) đã giữ lại, trên href bạn truyền vào:
 
 - giá trị trùng với mặc định sẽ bị bỏ qua, y như cách `setUrl` bỏ qua chúng;
 - các tham số của URL hiện tại không thuộc về `shape` — `utm_source` và những tham số tương tự — vẫn đi cùng, để việc đổi ngôn ngữ không làm mất nguồn truy cập;

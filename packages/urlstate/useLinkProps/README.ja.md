@@ -1,6 +1,6 @@
 <!-- i18n:start -->
 [English](./README.md) · [简体中文](./README.zh-CN.md) · 日本語 · [한국어](./README.ko.md) · [Русский](./README.ru.md) · [Español](./README.es.md) · [Português (BR)](./README.pt-BR.md) · [Français](./README.fr.md) · [Tiếng Việt](./README.vi.md)
-<!-- i18n:meta locale=ja source=README.md source-blob=1f4f64a26bb4e480a8007ed2024bb5b0ae89e257 status=translated -->
+<!-- i18n:meta locale=ja source=README.md source-blob=581837f4384529a8b600e61804210f7852068546 status=translated -->
 <!-- i18n:end -->
 
 # API
@@ -45,7 +45,7 @@ function LanguagePicker() {
 
 ### 引き継がれるパラメータ
 
-渡した href に対して、[`setUrl`](../next/useUrlState/README.md#updateurl) が残すのと同じものです。
+渡した href に対して、[`setUrl`](../next/useUrlState/README.md#seturl) が残すのと同じものです。
 
 - デフォルトと同じ値は、`setUrl` の場合と同じく含まれません。
 - 現在の URL のうち `shape` が持たないパラメータ（`utm_source` など）は引き継がれます。言語を切り替えても参照元の情報を失わないためです。

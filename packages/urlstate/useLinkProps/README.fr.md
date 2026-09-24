@@ -1,6 +1,6 @@
 <!-- i18n:start -->
 [English](./README.md) · [简体中文](./README.zh-CN.md) · [日本語](./README.ja.md) · [한국어](./README.ko.md) · [Русский](./README.ru.md) · [Español](./README.es.md) · [Português (BR)](./README.pt-BR.md) · Français · [Tiếng Việt](./README.vi.md)
-<!-- i18n:meta locale=fr source=README.md source-blob=1f4f64a26bb4e480a8007ed2024bb5b0ae89e257 status=translated -->
+<!-- i18n:meta locale=fr source=README.md source-blob=581837f4384529a8b600e61804210f7852068546 status=translated -->
 <!-- i18n:end -->
 
 # API
@@ -45,7 +45,7 @@ Avec `{ name: 'John', age: 0 }` dans l'état, un clic sur ce lien mène à `/de/
 
 ### Quels paramètres font le voyage
 
-Les mêmes que ceux qu'aurait gardés [`setUrl`](../next/useUrlState/README.md#updateurl), sur le href que vous avez passé :
+Les mêmes que ceux qu'aurait gardés [`setUrl`](../next/useUrlState/README.md#seturl), sur le href que vous avez passé :
 
 - les valeurs égales à la valeur par défaut sont omises, exactement comme les omet `setUrl` ;
 - les paramètres de l'URL courante qui n'appartiennent pas à `shape` — `utm_source` et consorts — font le voyage, pour qu'un changement de langue ne perde pas l'attribution ;

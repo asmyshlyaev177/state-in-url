@@ -1,6 +1,6 @@
 <!-- i18n:start -->
 [English](./README.md) · [简体中文](./README.zh-CN.md) · [日本語](./README.ja.md) · [한국어](./README.ko.md) · [Русский](./README.ru.md) · [Español](./README.es.md) · [Português (BR)](./README.pt-BR.md) · [Français](./README.fr.md) · Tiếng Việt
-<!-- i18n:meta locale=vi source=README.md source-blob=7f1a0b9b6347360148100d95626ead84f8200c12 status=translated -->
+<!-- i18n:meta locale=vi source=README.md source-blob=68c1b5d211468cd72a72ef925f953d0b491b1d34 status=translated -->
 <!-- i18n:end -->
 
 # API
@@ -15,7 +15,7 @@ Một React hook tùy chỉnh quản lý state và đồng bộ nó với tham s
 
 - `defaultState: object` - Một object đại diện cho các giá trị state mặc định.
 - `replace?: boolean` - Kiểm soát việc `setUrl` dùng phương thức `replace` hay `push` trên router, mặc định replace=true, có thể ghi đè bằng `updateUrl(stateObj, { replace: false })`
-- `options?: NavigateOptions` - Đối số `replace` và các kiểu từ [`NavigateOptions`](https://api.reactrouter.com/v7/interfaces/react_router.NavigateOptions.html) của kiểu `react-router`, giống các tùy chọn của `useNavigate`
+- `options?: NavigateOptions` - Đối số `replace` và các kiểu từ [`NavigateOptions`](https://api.reactrouter.com/v7/interfaces/react-router.NavigateOptions.html) của kiểu `react-router`, giống các tùy chọn của `useNavigate`
 - `useHistory` - Tùy chọn có thể dùng window.history để điều hướng
 - `preventScrollReset` - Tùy chọn từ navigate của react-router
 
@@ -67,7 +67,7 @@ Cập nhật cả state và URL.
 ### Tham số của `setUrl`
 
 - `value?: (Partial<T> | (curr: T, initial: T) => T, options)` - Giá trị state mới tùy chọn, hoặc một hàm nhận state hiện tại và state ban đầu rồi trả về state mới.
-- `options?: NavigateOptions` - Object tùy chọn từ kiểu [`NavigateOptions`](https://api.reactrouter.com/v7/interfaces/react_router.NavigateOptions.html) của react-router.
+- `options?: NavigateOptions` - Object tùy chọn từ kiểu [`NavigateOptions`](https://api.reactrouter.com/v7/interfaces/react-router.NavigateOptions.html) của react-router.
 
 ## `reset`
 
@@ -75,4 +75,4 @@ Cập nhật cả state và URL.
 
 ### Tham số của `reset`
 
-- `options?: NavigateOptions` - Object tùy chọn từ kiểu [`NavigateOptions`](https://api.reactrouter.com/v7/interfaces/react_router.NavigateOptions.html) của react-router.
+- `options?: NavigateOptions` - Object tùy chọn từ kiểu [`NavigateOptions`](https://api.reactrouter.com/v7/interfaces/react-router.NavigateOptions.html) của react-router.

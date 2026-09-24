@@ -17,7 +17,7 @@ import {
  *
  * @param {JSONCompatible<T>} [defaultState] Fallback (default) values for state
  * @param {Object} params - Object with other parameters
- * @param {NavigateOptions} params.NavigateOptions See type from [`react-router-dom`](https://api.reactrouter.com/v7/interfaces/react_router.NavigateOptions.html)
+ * @param {NavigateOptions} params.NavigateOptions See type from [`react-router-dom`](https://api.reactrouter.com/v7/interfaces/react-router.NavigateOptions.html)
  * @param {boolean} params.replace replace URL or push, default `true`
  * @param {boolean} params.useHistory use window.history for navigation, default `false`
  * @param {boolean} params.preventScrollReset keep scroll position, default `true`

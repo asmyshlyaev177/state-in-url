@@ -1,6 +1,6 @@
 <!-- i18n:start -->
 [English](./README.md) · [简体中文](./README.zh-CN.md) · [日本語](./README.ja.md) · 한국어 · [Русский](./README.ru.md) · [Español](./README.es.md) · [Português (BR)](./README.pt-BR.md) · [Français](./README.fr.md) · [Tiếng Việt](./README.vi.md)
-<!-- i18n:meta locale=ko source=README.md source-blob=7f1a0b9b6347360148100d95626ead84f8200c12 status=translated -->
+<!-- i18n:meta locale=ko source=README.md source-blob=68c1b5d211468cd72a72ef925f953d0b491b1d34 status=translated -->
 <!-- i18n:end -->
 
 # API
@@ -15,7 +15,7 @@
 
 - `defaultState: object` - 기본 상태 값을 나타내는 객체입니다.
 - `replace?: boolean` - `setUrl`이 라우터에서 `replace`와 `push` 중 어떤 메서드를 사용할지 제어합니다. 기본값은 replace=true이며, `updateUrl(stateObj, { replace: false })`로 재정의할 수 있습니다.
-- `options?: NavigateOptions` - `react-router` 타입의 [`NavigateOptions`](https://api.reactrouter.com/v7/interfaces/react_router.NavigateOptions.html)의 `replace` 인자와 타입입니다. `useNavigate`의 옵션과 동일합니다.
+- `options?: NavigateOptions` - `react-router` 타입의 [`NavigateOptions`](https://api.reactrouter.com/v7/interfaces/react-router.NavigateOptions.html)의 `replace` 인자와 타입입니다. `useNavigate`의 옵션과 동일합니다.
 - `useHistory` - 선택적으로 window.history를 내비게이션에 사용할 수 있습니다.
 - `preventScrollReset` - react-router navigate의 옵션입니다.
 
@@ -67,7 +67,7 @@ URL을 수정하지 않고 상태를 업데이트합니다.
 ### `setUrl` 매개변수
 
 - `value?: (Partial<T> | (curr: T, initial: T) => T, options)` - 선택적 새 상태 값, 또는 현재 상태와 초기 상태를 받아 새 상태를 반환하는 함수입니다.
-- `options?: NavigateOptions` - react-router의 [`NavigateOptions`](https://api.reactrouter.com/v7/interfaces/react_router.NavigateOptions.html) 타입의 선택적 옵션 객체입니다.
+- `options?: NavigateOptions` - react-router의 [`NavigateOptions`](https://api.reactrouter.com/v7/interfaces/react-router.NavigateOptions.html) 타입의 선택적 옵션 객체입니다.
 
 ## `reset`
 
@@ -75,4 +75,4 @@ URL을 수정하지 않고 상태를 업데이트합니다.
 
 ### `reset` 매개변수
 
-- `options?: NavigateOptions` - react-router의 [`NavigateOptions`](https://api.reactrouter.com/v7/interfaces/react_router.NavigateOptions.html) 타입의 선택적 옵션 객체입니다.
+- `options?: NavigateOptions` - react-router의 [`NavigateOptions`](https://api.reactrouter.com/v7/interfaces/react-router.NavigateOptions.html) 타입의 선택적 옵션 객체입니다.

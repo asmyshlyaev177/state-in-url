@@ -1,6 +1,6 @@
 <!-- i18n:start -->
 [English](./README.md) · 简体中文 · [日本語](./README.ja.md) · [한국어](./README.ko.md) · [Русский](./README.ru.md) · [Español](./README.es.md) · [Português (BR)](./README.pt-BR.md) · [Français](./README.fr.md) · [Tiếng Việt](./README.vi.md)
-<!-- i18n:meta locale=zh-CN source=README.md source-blob=8eaf1922213c8e89f693b5213bf3cc611d332564 status=translated -->
+<!-- i18n:meta locale=zh-CN source=README.md source-blob=3e41a1a6f845ca3ad5287835b627517a3e1a68eb status=translated -->
 <!-- i18n:end -->
 
 # API
@@ -15,7 +15,7 @@
 
 - `defaultState: object` - 表示默认状态值的对象。
 - `replace?: boolean` - 控制 `setUrl` 在路由器上使用 `replace` 还是 `push` 方法,默认 replace=true,可通过 `updateUrl(stateObj, { replace: false })` 覆盖。
-- `options?: NavigateOptions` - 来自 `react-router` 类型的 [`NavigateOptions`](https://api.reactrouter.com/v7/interfaces/react_router.NavigateOptions.html) 的 `replace` 参数和类型,与 `useNavigate` 的选项相同。
+- `options?: NavigateOptions` - 来自 `react-router` 类型的 [`NavigateOptions`](https://api.reactrouter.com/v7/interfaces/react-router.NavigateOptions.html) 的 `replace` 参数和类型,与 `useNavigate` 的选项相同。
 - `useHistory` - 可选地使用 window.history 进行导航。
 - `preventScrollReset` - 来自 react-router navigate 的选项。
 
@@ -67,7 +67,7 @@ setUrl((_curr, initial) => initial);
 ### `setUrl` 参数
 
 - `value?: (Partial<T> | (curr: T, initial: T) => T, options)` - 可选的新状态值,或接收当前状态、初始状态并返回新状态的函数。
-- `options?: NavigateOptions` - 来自 react-router 的 [`NavigateOptions`](https://api.reactrouter.com/v7/interfaces/react_router.NavigateOptions.html) 类型的可选选项对象。
+- `options?: NavigateOptions` - 来自 react-router 的 [`NavigateOptions`](https://api.reactrouter.com/v7/interfaces/react-router.NavigateOptions.html) 类型的可选选项对象。
 
 ## `reset`
 
@@ -75,4 +75,4 @@ setUrl((_curr, initial) => initial);
 
 ### `reset` 参数
 
-- `options?: NavigateOptions` - 来自 react-router 的 [`NavigateOptions`](https://api.reactrouter.com/v7/interfaces/react_router.NavigateOptions.html) 类型的可选选项对象。
+- `options?: NavigateOptions` - 来自 react-router 的 [`NavigateOptions`](https://api.reactrouter.com/v7/interfaces/react-router.NavigateOptions.html) 类型的可选选项对象。
