@@ -19,4 +19,22 @@ PATH="$root/node_modules/.bin:$PATH"
 
 export PORTLESS_PORT=1355
 export PORTLESS_HTTPS=0
-exec portless run --force "$@"
+
+# A fixed port per app, not portless's random one: eight apps starting at once
+# each pick a port that is free *at that instant*, and two of them have picked
+# the same one (EADDRINUSE on CI, 2026-10-20). Still in portless's own 4000-4999
+# range, where nothing else of ours listens. Keyed by the package directory,
+# which every caller cd's into first.
+case "$(basename -- "$PWD")" in
+  example-nextjs14)      app_port=4300 ;;
+  example-nextjs15)      app_port=4301 ;;
+  example-nextjs16)      app_port=4302 ;;
+  example-react)         app_port=4310 ;;
+  example-react-router6) app_port=4311 ;;
+  example-react-router7) app_port=4312 ;;
+  example-remix2)        app_port=4313 ;;
+  example-astro)         app_port=4314 ;;
+  *) echo "portless.sh: no port for $(basename -- "$PWD"), add it to the table" >&2; exit 1 ;;
+esac
+
+exec portless run --force --app-port "$app_port" "$@"

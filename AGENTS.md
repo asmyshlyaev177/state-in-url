@@ -47,8 +47,11 @@ might be holding:
 | `example-astro` | `http://example-astro.localhost:1355` |
 
 The hostname is each package's own `name`, so portless infers it — nothing in
-`package.json` names an app twice. Actual ports are random (4000–4999) and
-nobody needs to know them; `portless list` prints the mapping.
+`package.json` names an app twice. Each app's port is pinned in
+`scripts/portless.sh` (4300–4314, inside portless's own range) rather than
+picked at random: eight apps starting at once each pick a port that is free at
+that instant, and two of them picked the same one on CI. `portless list`
+prints the mapping.
 
 Only `example-nextjs16` has a homepage; the other two Next apps answer 404 at
 `/` and serve their test routes (`/test-ssr`, `/test-ssr-usp`, …) instead. A
