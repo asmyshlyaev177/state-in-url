@@ -206,7 +206,7 @@ test.describe('main tests', () => {
 
 test.describe('useHook - race condition', () => {
   for (const url of useHookUrls) {
-    test(`useHook ${url}`, async ({ page, browserName }) => {
+    test(`useHook ${url}`, async ({ page }) => {
       await page.goto(url);
       await page.waitForSelector('[data-testid="showForm"]');
 
@@ -242,10 +242,14 @@ test.describe('useHook - race condition', () => {
       const updatesText = await page.textContent('[data-testid="updates-array"]');
 
       // Parse the updates array and verify it contains boolean values tracking showForm state
-      const updates = JSON.parse(updatesText || '[]');
-      if (browserName !== 'firefox') {
-        expect(updates).toEqual([false, true, true])
-      }
+      const updates: boolean[] = JSON.parse(updatesText || '[]');
+      // How many renders show up depends on whether the URL write landed yet; a resync from a URL still waiting
+      // for the write is what would put a false after the first true.
+      expect(updates[0]).toBe(false);
+      expect(updates.slice(1)).toContain(true);
+      expect(updates.slice(1)).not.toContain(false);
+      // one render per state change and per URL write that lands; a loop here would be dozens
+      expect(updates.length).toBeLessThan(10);
     })
   }
 })

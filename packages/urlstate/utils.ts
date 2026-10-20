@@ -44,7 +44,7 @@ export type Simple =
   | number
   | null
   | undefined
-  // eslint-disable-next-line @typescript-eslint/ban-types
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
   | Function
   | symbol;
 
@@ -152,7 +152,7 @@ export function getOtherParams<T extends object>(shape: T, search: string) {
   const params = new URLSearchParams();
 
   for (const [key, value] of new URLSearchParams(search)) {
-    !shapeKeys.includes(key) && params.set(key, value);
+    if (!shapeKeys.includes(key)) params.set(key, value);
   }
   return params;
 }
@@ -215,7 +215,14 @@ export const routerHistory: Router = {
   },
 };
 
-export const isSafari = /apple/i.test((!isSSR && navigator?.userAgent) || '');
+// WebKit reports its version (605 today); Blink froze the string at 537.36 when it forked, as do happy-dom
+// and jsdom. iOS in-app browsers and WKWebView apps are WebKit too and say neither "Safari" nor "Chrome".
+export const isWebKitUserAgent = (userAgent: string) =>
+  /AppleWebKit\/[6-9]\d\d/.test(userAgent);
+
+export const isWebKit = isWebKitUserAgent(
+  (!isSSR && navigator?.userAgent) || '',
+);
 
 export const popstateEv = 'popstate';
 

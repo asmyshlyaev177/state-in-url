@@ -55,6 +55,8 @@ export const HistoryDemo = ({
         searchParams={searchParams}
       />
 
+      <Pager useHistory={useHistory} searchParams={searchParams} />
+
       <button
         type="button"
         data-testid="remount"
@@ -164,5 +166,35 @@ const Editor = ({
           now, on a different path than the initial read */}
       <pre data-testid={`types-${id}`}>{types(urlState)}</pre>
     </>
+  );
+};
+
+const pagerForm = { page: 1 };
+
+// A second shape: its write must keep a name change that is still on its way to the URL.
+const Pager = ({
+  useHistory,
+  searchParams,
+}: {
+  useHistory: boolean;
+  searchParams?: object;
+}) => {
+  const { urlState, setUrl } = useUrlState(pagerForm, {
+    searchParams,
+    useHistory,
+    replace: false,
+  });
+
+  return (
+    <select
+      value={urlState.page}
+      onChange={(ev) => setUrl({ page: +ev.target.value })}
+      className="text-black"
+      data-testid="page-select"
+    >
+      <option>1</option>
+      <option>2</option>
+      <option>3</option>
+    </select>
   );
 };

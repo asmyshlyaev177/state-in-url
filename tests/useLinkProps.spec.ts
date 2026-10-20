@@ -1,6 +1,6 @@
 import { expect, type Page, test } from '@playwright/test';
 
-import { ignoredErrors, toHaveUrl } from './testUtils';
+import { ignoredErrors, fillStateOnlyInput, toHaveUrl } from './testUtils';
 
 // Next only. The hook takes `navigate` as an argument, so only the fixture's
 // router differs per framework — and Next is where a wrong one fails silently:
@@ -47,7 +47,7 @@ test.describe('useLinkProps', () => {
 
   test('state ahead of the URL still makes the trip', async ({ page }) => {
     await page.goto(url);
-    await page.getByTestId('state-only').fill('Alex');
+    await fillStateOnlyInput(page, 'Alex');
     await expect(page).toHaveURL(url);
 
     await page.getByTestId('plain').click();

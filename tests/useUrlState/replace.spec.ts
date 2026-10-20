@@ -112,3 +112,29 @@ for (const url of urls) {
     expect(errorLogs.filter(err => ignoredErrors.includes(err))).toHaveLength(0);
 });
 }
+
+// useUrlState with no `replace` option: the race-condition page passes only `searchParams`.
+const defaultUrls = [
+  'http://example-nextjs15.localhost:1355/useHook-race-condition',
+  'http://example-nextjs16.localhost:1355/useHook-race-condition',
+  'http://example-react-router6.localhost:1355/useHook-race-condition',
+  'http://example-remix2.localhost:1355/useHook-race-condition',
+  'http://example-react-router7.localhost:1355/useHook-race-condition',
+  'http://example-astro.localhost:1355/useHook-race-condition',
+];
+
+for (const url of defaultUrls) {
+  test(`replace by default ${url}`, async ({ page }) => {
+    await page.goto(url);
+    await page.waitForSelector('[data-testid="showForm"]');
+    const historyLength = await page.evaluate(() => history.length);
+    const valueInput = page.getByTestId('valueInput').first();
+
+    await valueInput.fill('42');
+    await toHaveUrl(page, `${url}?value=42`);
+    await valueInput.fill('43');
+    await toHaveUrl(page, `${url}?value=43`);
+
+    expect(await page.evaluate(() => history.length)).toBe(historyLength);
+  });
+}

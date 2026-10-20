@@ -321,6 +321,227 @@ describe('useUrlStateBase', () => {
       expect(router.push).not.toHaveBeenCalled();
     });
 
+    test('a value the URL already has still reaches state set ahead of it', () => {
+      vi.mocked(utils).isSSR = false;
+      const { result } = renderHook(() => useUrlStateBase(shape, router));
+
+      act(() => {
+        result.current.updateState({ num: 50 });
+      });
+      act(() => {
+        result.current.updateUrl({ num: 0 });
+      });
+
+      expect(result.current.state).toStrictEqual(shape);
+      expect(router.push).not.toHaveBeenCalled();
+      expect(result.current.pendingUrlUpdate()).toBe(false);
+    });
+
+    // The URL is written TIMEOUT ms after the call, so window.location still shows the old one in between.
+    test('a change undone before it is written leaves the URL as it was', async () => {
+      vi.useFakeTimers({
+        toFake: ['setTimeout']
+      });
+      vi.mocked(utils).isSSR = false;
+      const { result } = renderHook(() => useUrlStateBase(shape, router));
+
+      act(() => {
+        result.current.updateUrl({ num: 50 });
+      });
+      act(() => {
+        result.current.updateUrl({ num: 0 });
+      });
+
+      await vi.advanceTimersByTime(700);
+
+      expect(result.current.state).toStrictEqual(shape);
+      expect(router.push).not.toHaveBeenCalled();
+      expect(result.current.pendingUrlUpdate()).toBe(false);
+    });
+
+    test('a change undone after another one keeps the other one', async () => {
+      vi.useFakeTimers({
+        toFake: ['setTimeout']
+      });
+      vi.mocked(utils).isSSR = false;
+      const { result } = renderHook(() => useUrlStateBase(shape, router));
+
+      act(() => {
+        result.current.updateUrl({ num: 50 });
+      });
+      act(() => {
+        result.current.updateUrl({ str: 'a' });
+      });
+      act(() => {
+        result.current.updateUrl({ num: 0 });
+      });
+
+      await vi.advanceTimersByTime(700);
+
+      expect(result.current.state).toStrictEqual({ ...shape, str: 'a' });
+      expect(router.push).toHaveBeenCalledTimes(1);
+      expect(router.push).toHaveBeenNthCalledWith(1, "/?str=%27a%27", {});
+    });
+
+    test("a hook writing while another hook's change waits keeps that change", async () => {
+      vi.useFakeTimers({
+        toFake: ['setTimeout']
+      });
+      vi.mocked(utils).isSSR = false;
+      const pageShape = { page: 1 };
+      const { result } = renderHook(() => ({
+        form: useUrlStateBase(shape, router),
+        pager: useUrlStateBase(pageShape, router),
+      }));
+
+      act(() => {
+        result.current.form.updateUrl({ num: 50 });
+      });
+      // a write that changes nothing must not disturb the waiting one
+      act(() => {
+        result.current.pager.updateUrl({ page: 1 });
+      });
+      act(() => {
+        result.current.pager.updateUrl({ page: 2 });
+      });
+
+      await vi.advanceTimersByTime(700);
+
+      expect(router.push).toHaveBeenCalledTimes(1);
+      expect(router.push).toHaveBeenNthCalledWith(1, '/?num=50&page=2', {});
+    });
+
+    // A navigation another one overtook never lands; Next discards it, a data router interrupts it.
+    test('a URL change and back while a write is on its way ends it', async () => {
+      vi.useFakeTimers({
+        toFake: ['setTimeout']
+      });
+      vi.mocked(utils).isSSR = false;
+      const { result } = renderHook(() => useUrlStateBase(shape, router));
+
+      act(() => {
+        result.current.updateUrl({ num: 50 });
+      });
+      await vi.advanceTimersByTime(700);
+      expect(router.push).toHaveBeenNthCalledWith(1, '/?num=50', {});
+
+      window.history.replaceState(null, '', '/?other=1');
+      await Promise.resolve();
+      window.history.replaceState(null, '', '/');
+      await Promise.resolve();
+
+      act(() => {
+        result.current.updateUrl({ num: 0 });
+      });
+      await vi.advanceTimersByTime(700);
+
+      expect(router.push).toHaveBeenCalledTimes(1);
+      expect(router.replace).not.toHaveBeenCalled();
+    });
+
+    // The mocked router never moves window.location, which is a write handed to the router whose
+    // navigation has not landed: Next with useHistory: false, a data router with loaders.
+    describe('a write on its way', () => {
+      const originalLocation = window.location;
+      let search = '';
+      const moveUrlTo = (newSearch: string) => {
+        search = newSearch;
+      };
+
+      beforeEach(() => {
+        vi.useFakeTimers({
+          toFake: ['setTimeout']
+        });
+        vi.mocked(utils).isSSR = false;
+        search = '';
+        vi.spyOn(window, 'location', 'get').mockImplementation(() => ({
+          ...originalLocation,
+          pathname: '/',
+          search,
+          hash: '',
+        }));
+      });
+
+      test('a change undone while its write is on its way is written back, in place', async () => {
+        const { result } = renderHook(() => useUrlStateBase(shape, router));
+
+        act(() => {
+          result.current.updateUrl({ num: 50 });
+        });
+        await vi.advanceTimersByTime(700);
+        expect(router.push).toHaveBeenNthCalledWith(1, '/?num=50', {});
+
+        act(() => {
+          result.current.updateUrl({ num: 0 });
+        });
+        await vi.advanceTimersByTime(700);
+
+        expect(result.current.state).toStrictEqual(shape);
+        expect(router.push).toHaveBeenCalledTimes(1);
+        expect(router.replace).toHaveBeenCalledTimes(1);
+        expect(router.replace).toHaveBeenNthCalledWith(1, '/', {});
+      });
+
+      test("a hook writing while another hook's write is on its way keeps that write", async () => {
+        const pageShape = { page: 1 };
+        const { result } = renderHook(() => ({
+          form: useUrlStateBase(shape, router),
+          pager: useUrlStateBase(pageShape, router),
+        }));
+
+        act(() => {
+          result.current.form.updateUrl({ num: 50 });
+        });
+        await vi.advanceTimersByTime(700);
+        act(() => {
+          result.current.pager.updateUrl({ page: 2 });
+        });
+        await vi.advanceTimersByTime(700);
+
+        expect(router.push).toHaveBeenCalledTimes(2);
+        expect(router.push).toHaveBeenNthCalledWith(2, '/?num=50&page=2', {});
+      });
+
+      test('once the write lands, an undo back to it is dropped', async () => {
+        const { result } = renderHook(() => useUrlStateBase(shape, router));
+
+        act(() => {
+          result.current.updateUrl({ num: 50 });
+        });
+        await vi.advanceTimersByTime(700);
+        moveUrlTo('?num=50');
+
+        act(() => {
+          result.current.updateUrl({ num: 0 });
+        });
+        act(() => {
+          result.current.updateUrl({ num: 50 });
+        });
+        await vi.advanceTimersByTime(700);
+
+        expect(router.push).toHaveBeenCalledTimes(1);
+        expect(router.replace).not.toHaveBeenCalled();
+      });
+
+      test('a URL change that is not the write on its way ends it', async () => {
+        const { result } = renderHook(() => useUrlStateBase(shape, router));
+
+        act(() => {
+          result.current.updateUrl({ num: 50 });
+        });
+        await vi.advanceTimersByTime(700);
+        moveUrlTo('?other=1');
+
+        act(() => {
+          result.current.updateUrl({ num: 7 });
+        });
+        await vi.advanceTimersByTime(700);
+
+        expect(router.push).toHaveBeenNthCalledWith(2, '/?other=1&num=7', {});
+      });
+
+    });
+
     test('should preserve hash', async () => {
       vi.useFakeTimers({
         toFake: ['setTimeout']

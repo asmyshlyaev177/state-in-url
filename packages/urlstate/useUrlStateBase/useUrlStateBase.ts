@@ -11,6 +11,7 @@ import {
   type JSONCompatible,
   popstateEv,
   type Router,
+  subscribeToUrl,
 } from '../utils';
 
 /**
@@ -47,17 +48,79 @@ import {
  * * Docs {@link https://github.com/asmyshlyaev177/state-in-url/tree/integrations/packages/urlstate/useUrlStateBase}
  */
 
+type PendingWrite = {
+  router: Router;
+  method: 'push' | 'replace';
+  url: string;
+  pathname: string;
+  search: string;
+  opts?: Partial<Options>;
+};
+
 // Global timer for "last update wins" behavior across all hook instances
 let timer: ReturnType<typeof setTimeout> | undefined;
 // Track active update info to prevent memory leaks
-let pendingUpdate:
-  | {
-      router: Router;
-      method: 'push' | 'replace';
-      url: string;
-      opts?: Partial<Options>;
-    }
-  | undefined;
+let pendingUpdate: PendingWrite | undefined;
+
+// The write handed to the router whose navigation has not reached window.location: Next with
+// useHistory: false waits for the server response, a data router for its loaders.
+let writeInFlight: { from: string; to: string; search: string } | undefined;
+let unsubscribeFromUrl: (() => void) | undefined;
+let mountedHooks = 0;
+
+const getUrlHere = () => window.location.pathname + window.location.search;
+
+function clearWriteInFlight() {
+  writeInFlight = undefined;
+  unsubscribeFromUrl?.();
+  unsubscribeFromUrl = undefined;
+}
+
+function clearWrites() {
+  clearTimeout(timer);
+  timer = undefined;
+  pendingUpdate = undefined;
+  clearWriteInFlight();
+}
+
+// Still on its way while the page shows the URL it left from. Any URL change ends it: Next discards and
+// a data router interrupts a navigation that another one overtakes.
+function getWriteInFlight() {
+  if (!writeInFlight) return undefined;
+  const here = getUrlHere();
+  if (here === writeInFlight.from && here !== writeInFlight.to) {
+    return writeInFlight;
+  }
+  clearWriteInFlight();
+  return undefined;
+}
+
+function recordSentWrite(to: string, search: string) {
+  const from = getWriteInFlight()?.from ?? getUrlHere();
+  // a history router has landed by now, and an undo back to `from` supersedes the write it undoes
+  if (from === to) {
+    clearWriteInFlight();
+    return;
+  }
+  writeInFlight = { from, to, search };
+  unsubscribeFromUrl ??= subscribeToUrl(clearWriteInFlight);
+}
+
+// Decided now, not at the call: the write this one undoes may have landed since.
+function sendWrite(write: PendingWrite) {
+  const live = getWriteInFlight();
+  const to = write.pathname + write.search;
+  if (live?.to === to) return;
+
+  const isUndoToHere = to === getUrlHere();
+  if (isUndoToHere && !live) return;
+  // The entry of a write still on its way may never be pushed (Next discards it, a data router
+  // interrupts it), so the undo replaces the entry on screen instead of pushing onto it.
+  const method = isUndoToHere ? 'replace' : write.method;
+
+  write.router[method](write.url, write.opts);
+  recordSentWrite(to, write.search);
+}
 
 export function useUrlStateBase<T extends JSONCompatible>(
   defaultState: T,
@@ -98,6 +161,16 @@ export function useUrlStateBase<T extends JSONCompatible>(
     };
   }, []);
 
+  // A passive effect: Suspense hides a tree by cleaning up its layout effects only.
+  React.useEffect(() => {
+    mountedHooks += 1;
+    return () => {
+      mountedHooks -= 1;
+      // a write waiting or on its way belongs to the hooks on the page
+      if (mountedHooks === 0) clearWrites();
+    };
+  }, []);
+
   const updateUrl = React.useCallback(
     (value?: Parameters<typeof setState>[0], options?: Options) => {
       const newVal =
@@ -108,50 +181,49 @@ export function useUrlStateBase<T extends JSONCompatible>(
               ...value,
             };
 
-      const qStr = stringify(
-        newVal,
-        getOtherParams(defaultState, window.location.search),
-      );
+      // before the URL check: updateState can put state ahead of a URL that already holds newVal
+      setState(newVal);
+
+      // While a write waits or is on its way, the URL is the one it will leave, not window.location: an undo
+      // compares against it, and another hook's params in it survive this write.
+      const currSearch =
+        pendingUpdate?.search ??
+        getWriteInFlight()?.search ??
+        window.location.search;
+      const qStr = stringify(newVal, getOtherParams(defaultState, currSearch));
+      const search = qStr.length ? `?${qStr}` : '';
 
       const base = removeBasename(window.location.pathname, basename);
-      const newUrl = `${base}${qStr.length ? '?' : ''}${qStr}${window.location.hash}`;
-      const currUrl = `${base}${window.location.search}${window.location.hash}`;
-      if (newUrl === currUrl) return;
-
-      setState(newVal);
+      const newUrl = `${base}${search}${window.location.hash}`;
+      if (newUrl === `${base}${currSearch}${window.location.hash}`) return;
 
       const { replace, ..._rest } = options || {};
 
       clearTimeout(timer);
-      timer = undefined;
-
       pendingUpdate = {
         router,
         method: replace ? 'replace' : 'push',
         url: newUrl,
+        pathname: window.location.pathname,
+        search,
         opts: _rest,
       };
 
       timer = setTimeout(() => {
-        if (pendingUpdate) {
-          pendingUpdate.router[pendingUpdate.method](
-            pendingUpdate.url,
-            pendingUpdate.opts,
-          );
-          pendingUpdate = undefined;
-        }
+        // first: a router that throws (WebKit's history rate limit) must not leave the timer stuck
         timer = undefined;
+        if (!pendingUpdate) return;
+        const write = pendingUpdate;
+        pendingUpdate = undefined;
+        sendWrite(write);
       }, TIMEOUT);
     },
     [router, stringify, getState],
   );
 
   const reset = React.useCallback(
-    (options?: Options) => {
-      setState(defaultState);
-      updateUrl(defaultState, options);
-    },
-    [updateUrl, setState],
+    (options?: Options) => updateUrl(defaultState, options),
+    [updateUrl],
   );
 
   return {

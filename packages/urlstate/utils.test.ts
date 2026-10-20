@@ -1,4 +1,5 @@
-import { getParams, typeOf, assignValue, filterUnknownParamsClient, filterUnknown, filterUnknownParams, isPrimitive, getSearch, subscribeToUrl } from './utils';
+import { getParams, typeOf, assignValue, filterUnknownParamsClient, filterUnknown, filterUnknownParams, isPrimitive, getSearch, isWebKitUserAgent, subscribeToUrl } from './utils';
+import { TIMEOUT } from './constants';
 
 describe('typeOf', () => {
   test('string', () => {
@@ -419,5 +420,31 @@ describe('subscribeToUrl', () => {
       unsubscribe();
       window.history.replaceState(null, '', originalHref);
     }
+  });
+});
+
+describe('isWebKitUserAgent', () => {
+  test.each([
+    ['Safari macOS', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.4 Safari/605.1.15', true],
+    ['Safari iOS', 'Mozilla/5.0 (iPhone; CPU iPhone OS 17_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.4 Mobile/15E148 Safari/604.1', true],
+    ['Chrome iOS', 'Mozilla/5.0 (iPhone; CPU iPhone OS 17_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/124.0.6367.88 Mobile/15E148 Safari/604.1', true],
+    ['Firefox iOS', 'Mozilla/5.0 (iPhone; CPU iPhone OS 17_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) FxiOS/125.0 Mobile/15E148 Safari/605.1.15', true],
+    ['Facebook in-app iOS', 'Mozilla/5.0 (iPhone; CPU iPhone OS 17_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 [FBAN/FBIOS;FBAV/460.0.0.36.109;FBBV/592346183]', true],
+    ['WKWebView iOS', 'Mozilla/5.0 (iPhone; CPU iPhone OS 17_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148', true],
+    ['WebKitGTK', 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Safari/605.1.15 Epiphany/46.0', true],
+    ['Chrome', 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36', false],
+    ['Edge', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36 Edg/124.0.2478.80', false],
+    ['Chrome Android', 'Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Mobile Safari/537.36', false],
+    ['Samsung Internet', 'Mozilla/5.0 (Linux; Android 13; SM-S901B) AppleWebKit/537.36 (KHTML, like Gecko) SamsungBrowser/24.0 Chrome/117.0.0.0 Mobile Safari/537.36', false],
+    ['Firefox', 'Mozilla/5.0 (X11; Linux x86_64; rv:125.0) Gecko/20100101 Firefox/125.0', false],
+    ['happy-dom', 'Mozilla/5.0 (X11; Linux x64) AppleWebKit/537.36 (KHTML, like Gecko) HappyDOM/21.0.1', false],
+    ['jsdom', 'Mozilla/5.0 (linux) AppleWebKit/537.36 (KHTML, like Gecko) jsdom/22.1.0', false],
+    ['empty', '', false],
+  ])('%s', (_name, userAgent, expected) => {
+    expect(isWebKitUserAgent(userAgent)).toBe(expected);
+  });
+
+  test('a test DOM gets the short URL write delay', () => {
+    expect(TIMEOUT).toBe(70);
   });
 });
