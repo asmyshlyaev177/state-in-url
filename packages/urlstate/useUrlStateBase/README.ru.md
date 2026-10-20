@@ -1,6 +1,6 @@
 <!-- i18n:start -->
 [English](./README.md) · [简体中文](./README.zh-CN.md) · [日本語](./README.ja.md) · [한국어](./README.ko.md) · Русский · [Español](./README.es.md) · [Português (BR)](./README.pt-BR.md) · [Français](./README.fr.md) · [Tiếng Việt](./README.vi.md)
-<!-- i18n:meta locale=ru source=README.md source-blob=ccf4feacda4d25a7cbd63d3d1c7165c9b4b4cb00 status=translated -->
+<!-- i18n:meta locale=ru source=README.md source-blob=bbfd8f6275cd93591d4e3680f8dd35a7ec004b30 status=translated -->
 <!-- i18n:end -->
 
 # API
@@ -16,6 +16,8 @@
 - `defaultState: object` - Объект, представляющий значения состояния по умолчанию.
 - `router: object` - Объект роутера с методами `push` и `replace`
 - `getInitialState?: function` - Необязательная функция, возвращающая начальное состояние.
+- `basename?: string` - Необязательный basename роутера, убирается из pathname перед записью URL.
+- `canSeedFromUrl?: boolean` - Читает ли `getInitialState` тот маршрут, который сейчас рендерится, по умолчанию `true`. Hook, монтируемый в одиночку, тогда начинает с него, а не с состояния, оставленного размонтированным hook'ом. Передайте `false`, если роутер меняет `window.location` только после рендера, как Next.js.
 
 ### Возвращает:
 

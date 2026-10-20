@@ -1,6 +1,6 @@
 <!-- i18n:start -->
 [English](./README.md) · [简体中文](./README.zh-CN.md) · [日本語](./README.ja.md) · 한국어 · [Русский](./README.ru.md) · [Español](./README.es.md) · [Português (BR)](./README.pt-BR.md) · [Français](./README.fr.md) · [Tiếng Việt](./README.vi.md)
-<!-- i18n:meta locale=ko source=README.md source-blob=ccf4feacda4d25a7cbd63d3d1c7165c9b4b4cb00 status=translated -->
+<!-- i18n:meta locale=ko source=README.md source-blob=bbfd8f6275cd93591d4e3680f8dd35a7ec004b30 status=translated -->
 <!-- i18n:end -->
 
 # API
@@ -16,6 +16,8 @@
 - `defaultState: object` - 기본 상태 값을 나타내는 객체입니다.
 - `router: object` - `push` 및 `replace` 메서드를 가진 라우터 객체입니다.
 - `getInitialState?: function` - 초기 상태를 반환하는 선택적 함수입니다.
+- `basename?: string` - 선택적인 라우터 basename으로, URL을 쓰기 전에 pathname에서 제거됩니다.
+- `canSeedFromUrl?: boolean` - `getInitialState`가 현재 렌더링 중인 라우트를 읽는지 여부, 기본값은 `true`입니다. 단독으로 마운트되는 hook은 언마운트된 hook이 남긴 상태 대신 거기서 시작합니다. Next.js처럼 렌더링 이후에야 `window.location`을 옮기는 라우터라면 `false`를 전달하세요.
 
 ### 반환값:
 

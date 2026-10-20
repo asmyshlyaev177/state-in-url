@@ -89,7 +89,8 @@ describe('astro useUrlState', () => {
     expect(result.current.urlState.num).toBe(55);
   });
 
-  test('a stale shared entry (previous page under <ClientRouter />) renders first, then the URL', () => {
+  // The server rendered the new page from its URL, so a first render of the previous page's value would not match it.
+  test('a stale shared entry (previous page under <ClientRouter />) does not render; the URL does', () => {
     visit('/?num=1');
     const previous = renderHook(() =>
       useUrlState(state, { searchParams: { num: '1' } }),
@@ -101,7 +102,7 @@ describe('astro useUrlState', () => {
       useUrlState(state, { searchParams: { num: '2' } }),
     );
 
-    expect(first.num).toBe(1);
+    expect(first.num).toBe(2);
     expect(result.current.urlState.num).toBe(2);
   });
 

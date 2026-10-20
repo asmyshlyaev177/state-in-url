@@ -135,19 +135,27 @@ export function useUrlState<T extends JSONCompatible>(
     reset: resetBase,
     getState,
     pendingUrlUpdate,
-  } = useUrlStateBase(defaultState, router, ({ parse }) => {
-    return isSSR
-      ? parseSPObj(
-          filterUnknownParams(defaultState, params?.searchParams),
-          defaultState,
-        )
-      : parse(
-          filterUnknownParamsClient(
+  } = useUrlStateBase(
+    defaultState,
+    router,
+    ({ parse }) => {
+      return isSSR
+        ? parseSPObj(
+            filterUnknownParams(defaultState, params?.searchParams),
             defaultState,
-            params?.searchParams || getSearch(),
-          ),
-        );
-  });
+          )
+        : parse(
+            filterUnknownParamsClient(
+              defaultState,
+              params?.searchParams || getSearch(),
+            ),
+          );
+      // Next moves window.location after the render of a navigation, so without `searchParams`
+      // a remount would start from the route it left
+    },
+    undefined,
+    params?.searchParams !== undefined,
+  );
 
   // Resync when anything else changes the URL: <Link>, router.push, back/forward.
   // Was an effect keyed on useSearchParams(), but that opts the component out of

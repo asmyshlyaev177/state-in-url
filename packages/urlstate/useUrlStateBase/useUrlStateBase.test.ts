@@ -900,6 +900,123 @@ describe('useUrlStateBase', () => {
     });
   });
 
+  describe('mounting', () => {
+    const fromUrl = ({ parse }: { parse: (search: string) => State }) =>
+      parse(window.location.search);
+
+    afterEach(() => {
+      window.history.replaceState(null, '', '/');
+    });
+
+    test('a hook mounting alone starts from the URL, not from the state an unmounted hook left', () => {
+      vi.mocked(utils).isSSR = false;
+      window.history.replaceState(null, '', '/?num=50');
+      const first = renderHook(() => useUrlStateBase(shape, router, fromUrl));
+      expect(first.result.current.state.num).toBe(50);
+      first.unmount();
+
+      window.history.replaceState(null, '', '/?num=7');
+      const rendered: number[] = [];
+      renderHook(() => {
+        const hook = useUrlStateBase(shape, router, fromUrl);
+        rendered.push(hook.state.num);
+        return hook;
+      });
+
+      expect(rendered[0]).toBe(7);
+    });
+
+    // Two hooks of a page and its child mount in one commit; a fresh but equal object from the second one would
+    // re-render the first when it subscribes (the useHook-race-condition example counts that render).
+    test('hooks mounting together take the URL once, with no extra render', () => {
+      vi.mocked(utils).isSSR = false;
+      window.history.replaceState(null, '', '/?num=7');
+      let renders = 0;
+      const { result } = renderHook(() => {
+        renders += 1;
+        return [useUrlStateBase(shape, router, fromUrl), useUrlStateBase(shape, router, fromUrl)];
+      });
+
+      expect(result.current[0]?.state.num).toBe(7);
+      expect(result.current[0]?.state).toBe(result.current[1]?.state);
+      expect(renders).toBe(1);
+    });
+
+    test('a hook mounting beside a mounted one shares its state, even one the URL does not hold', () => {
+      vi.mocked(utils).isSSR = false;
+      const first = renderHook(() => useUrlStateBase(shape, router, fromUrl));
+      act(() => {
+        first.result.current.updateState({ num: 3 });
+      });
+
+      const second = renderHook(() => useUrlStateBase(shape, router, fromUrl));
+
+      expect(second.result.current.state.num).toBe(3);
+    });
+
+    test('a hook mounting while a write waits starts from the state that write carries', async () => {
+      vi.useFakeTimers({ toFake: ['setTimeout'] });
+      vi.mocked(utils).isSSR = false;
+      const first = renderHook(() => useUrlStateBase(shape, router, fromUrl));
+      act(() => {
+        first.result.current.updateUrl({ num: 50 });
+      });
+      first.unmount();
+
+      const second = renderHook(() => useUrlStateBase(shape, router, fromUrl));
+      expect(second.result.current.state.num).toBe(50);
+
+      await vi.advanceTimersByTime(700);
+      expect(router.push).toHaveBeenNthCalledWith(1, '/?num=50', {});
+    });
+
+    test('a hook without a URL parser keeps the shared state on remount', () => {
+      vi.mocked(utils).isSSR = false;
+      const first = renderHook(() => useUrlStateBase(shape, router));
+      act(() => {
+        first.result.current.updateState({ num: 5 });
+      });
+      first.unmount();
+
+      const second = renderHook(() => useUrlStateBase(shape, router));
+
+      expect(second.result.current.state.num).toBe(5);
+    });
+
+    test('a write waiting for another route neither blocks the seed nor gets sent', async () => {
+      vi.useFakeTimers({ toFake: ['setTimeout'] });
+      vi.mocked(utils).isSSR = false;
+      window.history.replaceState(null, '', '/x');
+      const first = renderHook(() => useUrlStateBase(shape, router, fromUrl));
+      act(() => {
+        first.result.current.updateUrl({ num: 50 });
+      });
+      first.unmount();
+
+      window.history.replaceState(null, '', '/y?num=7');
+      const second = renderHook(() => useUrlStateBase(shape, router, fromUrl));
+      expect(second.result.current.state.num).toBe(7);
+      expect(second.result.current.pendingUrlUpdate()).toBe(false);
+
+      await vi.advanceTimersByTime(700);
+      expect(router.push).not.toHaveBeenCalled();
+    });
+
+    test('a hook whose URL source is behind the render keeps the shared state', () => {
+      vi.mocked(utils).isSSR = false;
+      window.history.replaceState(null, '', '/?num=50');
+      const first = renderHook(() => useUrlStateBase(shape, router, fromUrl));
+      first.unmount();
+
+      window.history.replaceState(null, '', '/?num=7');
+      const second = renderHook(() =>
+        useUrlStateBase(shape, router, fromUrl, undefined, false),
+      );
+
+      expect(second.result.current.state.num).toBe(50);
+    });
+  });
+
   describe('basename prop', () => {
     test('basename /base and url /base', async () => {
       vi.useFakeTimers({

@@ -15,6 +15,7 @@ export default async function Page({ searchParams }: { searchParams: object }) {
         <Comp1 searchParams={searchParams} />
       </React.Suspense>
 
+      {/* only page 1 has a pager: a trip through page 2 unmounts and remounts it */}
       <React.Suspense>
         <Pager searchParams={searchParams} />
       </React.Suspense>
