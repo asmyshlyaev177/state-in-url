@@ -4,7 +4,6 @@ import React from 'react';
 
 import { Comp1 } from '../Comp1';
 import LinkClient from '../LinkClient';
-import { Pager } from '../Pager';
 
 export default async function Page({ searchParams }: { searchParams: object }) {
   return (
@@ -13,10 +12,6 @@ export default async function Page({ searchParams }: { searchParams: object }) {
 
       <React.Suspense>
         <Comp1 searchParams={searchParams} />
-      </React.Suspense>
-
-      <React.Suspense>
-        <Pager searchParams={searchParams} />
       </React.Suspense>
 
       <Link href="1" className="text-lg" data-testid="link">

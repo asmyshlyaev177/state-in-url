@@ -9,6 +9,8 @@ export const Pager = ({ searchParams }: { searchParams?: object }) => {
     searchParams,
     replace: false,
   });
+  // the first render's value: a remount must start from the URL, not from what the hook held before
+  const [firstRenderPage] = React.useState(urlState.page);
 
   return (
     <div className="flex gap-2">
@@ -23,6 +25,7 @@ export const Pager = ({ searchParams }: { searchParams?: object }) => {
         <option>2</option>
         <option>3</option>
       </select>
+      <span data-testid="page-first-render">{firstRenderPage}</span>
     </div>
   );
 };

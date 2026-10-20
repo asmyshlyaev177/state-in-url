@@ -1,6 +1,6 @@
 <!-- i18n:start -->
 [English](./README.md) · [简体中文](./README.zh-CN.md) · 日本語 · [한국어](./README.ko.md) · [Русский](./README.ru.md) · [Español](./README.es.md) · [Português (BR)](./README.pt-BR.md) · [Français](./README.fr.md) · [Tiếng Việt](./README.vi.md)
-<!-- i18n:meta locale=ja source=README.md source-blob=ccf4feacda4d25a7cbd63d3d1c7165c9b4b4cb00 status=translated -->
+<!-- i18n:meta locale=ja source=README.md source-blob=bbfd8f6275cd93591d4e3680f8dd35a7ec004b30 status=translated -->
 <!-- i18n:end -->
 
 # API
@@ -16,6 +16,8 @@
 - `defaultState: object` - デフォルトの状態値を表すオブジェクト。
 - `router: object` - `push` と `replace` メソッドを持つルーターオブジェクト。
 - `getInitialState?: function` - 初期状態を返すオプションの関数。
+- `basename?: string` - 省略可能なルーターの basename。URL 書き込みの前に pathname から取り除かれます。
+- `canSeedFromUrl?: boolean` - `getInitialState` がレンダリング中のルートを読み取るかどうか。デフォルトは `true`。単独でマウントされる hook は、アンマウントされた hook が残した状態ではなく、そこから開始します。Next.js のようにレンダリング後にしか `window.location` を更新しないルーターでは `false` を渡してください。
 
 ### 戻り値:
 

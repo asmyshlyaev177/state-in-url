@@ -320,4 +320,53 @@ test.describe('few components tests', () => {
     }
 
   });
+
+  // Only page 1 has a pager, so a trip through page 2 unmounts and remounts it. The pager shows the value
+  // of its first render: the shared state outlives the hook, and a remount used to render what it left.
+  test.describe('remount', () => {
+    const remountUrls = [
+      // the Astro few-components pair is a full load each time, which cannot carry state over
+      ...urls.filter(([url]) => !url.includes('example-astro')),
+      // Astro's <ClientRouter /> swaps the page in place
+      [
+        'http://example-astro.localhost:1355/view-transitions/1',
+        'http://example-astro.localhost:1355/view-transitions/2',
+      ],
+    ];
+    type Marked = { __marker?: true };
+
+    for (const url of remountUrls) {
+      test(`starts from the URL, not from the state it left ${url[0]}`, async ({ page }) => {
+        const [URL1, URL2] = url;
+        const errorLogs: unknown[] = [];
+        page.on('console', (message) => {
+          if (message.type() === 'error') {
+            errorLogs.push({ text: message.text() });
+          }
+        });
+        await page.goto(`${URL1}?page=2`);
+        await page.waitForSelector(`[data-testid="${link}"]`);
+        await expect(page.getByTestId('page-first-render')).toHaveText('2');
+        // a click before hydration is a full load, which starts with no shared state and proves nothing
+        await page.evaluate(() => {
+          (window as unknown as Marked).__marker = true;
+        });
+
+        // the query string travels along, so the hook never sees a URL without `page` before it unmounts
+        await page.getByTestId(linkQs).click();
+        await toHaveUrl(page, `${URL2}?page=2`);
+        await expect(page.getByTestId('page-select')).toHaveCount(0);
+
+        await page.getByTestId(link).click();
+        await toHaveUrl(page, URL1);
+        await expect(page.getByTestId('page-select')).toHaveValue('1');
+        // Astro swaps in server HTML that already says 1; the island drops `ssr` once it has hydrated
+        await expect(page.locator('astro-island[ssr]')).toHaveCount(0);
+        await expect(page.getByTestId('page-first-render')).toHaveText('1');
+
+        expect(await page.evaluate(() => (window as unknown as Marked).__marker)).toBe(true);
+        await expect(errorLogs).toHaveLength(0);
+      });
+    }
+  });
 });

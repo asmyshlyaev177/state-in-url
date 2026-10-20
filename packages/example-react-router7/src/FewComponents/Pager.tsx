@@ -7,6 +7,8 @@ export const Pager = () => {
   const { urlState, setUrl } = useUrlState(pagerShape, {
     replace: false,
   });
+  // the first render's value: a remount must start from the URL, not from what the hook held before
+  const [firstRenderPage] = React.useState(urlState.page);
 
   return (
     <div className="flex w-fit flex-col gap-2">
@@ -21,6 +23,7 @@ export const Pager = () => {
         <option>2</option>
         <option>3</option>
       </select>
+      <span data-testid="page-first-render">{firstRenderPage}</span>
     </div>
   );
 };

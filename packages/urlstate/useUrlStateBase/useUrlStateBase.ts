@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { TIMEOUT } from '../constants';
+import { stateMap, subscribers } from '../subscribers';
 import { useIsomorphicLayoutEffect } from '../useIsomorphicLayoutEffect';
 import { useSharedState } from '../useSharedState';
 import { useUrlEncode } from '../useUrlEncode';
@@ -8,6 +9,8 @@ import {
   filterUnknownParamsClient,
   getOtherParams,
   getSearch,
+  isEqual,
+  isSSR,
   type JSONCompatible,
   popstateEv,
   type Router,
@@ -21,6 +24,8 @@ import {
  * @param {T} defaultState - An object representing the default state values.
  * @param {Router} router - Router object with [push] and [replace] methods.
  * @param {Function} [getInitialState] - Optional function to get the initial state, passes `parse`, and `filterUnknownParams` helpers
+ * @param {string} [basename] - Router basename, stripped from the pathname of a write
+ * @param {boolean} [canSeedFromUrl] - Whether `getInitialState` reads the route being rendered, default `true`; a remount then starts from it
  * @returns {Object} [result] State and callbacks
  * @returns {Object} [result.state] - current state object
  * @returns {Function} [result.updateUrl] - function to update state and url
@@ -117,6 +122,13 @@ function sendWrite(write: PendingWrite) {
   recordSentWrite(to, write.search);
 }
 
+// A waiting write belongs to the route it was made on; one left behind is dropped when its timer runs.
+function isWriteWaitingHere() {
+  return !!pendingUpdate && pendingUpdate.pathname === window.location.pathname;
+}
+
+// `basename` is positional in the public signature, so a fifth argument beats an options object that breaks it
+// eslint-disable-next-line max-params
 export function useUrlStateBase<T extends JSONCompatible>(
   defaultState: T,
   router: Router,
@@ -126,8 +138,22 @@ export function useUrlStateBase<T extends JSONCompatible>(
     parse: ReturnType<typeof useUrlEncode<T>>['parse'];
   }) => T,
   basename?: string,
+  canSeedFromUrl = true,
 ) {
   const { parse, stringify } = useUrlEncode(defaultState);
+  // Before useSharedState reads the shared value: a hook mounting alone takes the URL, since the value an unmounted
+  // hook left is stale once the page has moved, and the frameworks sync from the URL only after the first render.
+  // Beside a mounted hook, or with a write waiting or on its way, the shared value is the newer one and stays.
+  React.useState(() => {
+    if (isSSR || !getInitialState || !canSeedFromUrl) return;
+    const isAlone = !subscribers.get(defaultState).length;
+    if (!isAlone || isWriteWaitingHere() || getWriteInFlight()) return;
+    const fromUrl = getInitialState({ parse });
+    // An equal value keeps its object: hooks mounting in one commit each get here, and a new object would
+    // re-render the ones that rendered before it once they subscribe.
+    if (!isEqual(stateMap.get(defaultState), fromUrl))
+      stateMap.set(defaultState, fromUrl);
+  });
   const { state, getState, setState } = useSharedState(
     defaultState,
     () =>
@@ -228,7 +254,7 @@ export function useUrlStateBase<T extends JSONCompatible>(
     state,
     reset,
     getState,
-    pendingUrlUpdate: () => timer !== undefined,
+    pendingUrlUpdate: isWriteWaitingHere,
   };
 }
 

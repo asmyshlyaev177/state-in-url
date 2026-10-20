@@ -3,9 +3,9 @@ import { expect, type Page, test } from '@playwright/test';
 import { toHaveUrl } from '../testUtils';
 
 // Astro's <ClientRouter /> swaps the document in place: islands unmount and
-// mount, Astro writes the URL with history.pushState, and useSharedState still
-// holds the previous page's value when the new islands render. The hook has to
-// end up on what the URL says, every time.
+// mount, Astro writes the URL with history.pushState, and the shared state
+// outlives the islands of the previous page. Each page has to render what its
+// URL says, every time.
 const url = 'http://example-astro.localhost:1355/view-transitions';
 
 type Marked = { __marker?: true };

@@ -19,7 +19,8 @@ export default function FewComponents() {
 
       <Component />
       <Component />
-      <Pager />
+      {/* only page 1 has a pager: a trip through page 2 unmounts and remounts it */}
+      {id === "1" && <Pager />}
 
       <Link relative="path" to={newUrl} className="text-lg" data-testid="link">
         To Page {to}

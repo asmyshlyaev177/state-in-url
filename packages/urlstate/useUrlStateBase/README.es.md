@@ -1,6 +1,6 @@
 <!-- i18n:start -->
 [English](./README.md) · [简体中文](./README.zh-CN.md) · [日本語](./README.ja.md) · [한국어](./README.ko.md) · [Русский](./README.ru.md) · Español · [Português (BR)](./README.pt-BR.md) · [Français](./README.fr.md) · [Tiếng Việt](./README.vi.md)
-<!-- i18n:meta locale=es source=README.md source-blob=ccf4feacda4d25a7cbd63d3d1c7165c9b4b4cb00 status=translated -->
+<!-- i18n:meta locale=es source=README.md source-blob=bbfd8f6275cd93591d4e3680f8dd35a7ec004b30 status=translated -->
 <!-- i18n:end -->
 
 # API
@@ -16,6 +16,8 @@ Un hook de React personalizado para crear hooks `useUrlState` personalizados.
 - `defaultState: object` - Un objeto que representa los valores de estado por defecto.
 - `router: object` - Objeto router con métodos `push` y `replace`
 - `getInitialState?: function` - Función opcional que devuelve el estado inicial.
+- `basename?: string` - Basename opcional del router; se quita del pathname antes de escribir la URL.
+- `canSeedFromUrl?: boolean` - Si `getInitialState` lee la ruta que se está renderizando, por defecto `true`. Un hook que se monta solo parte entonces de ella en lugar del estado que dejó un hook desmontado. Pase `false` cuando el router mueve `window.location` solo después del render, como hace Next.js.
 
 ### Devuelve:
 

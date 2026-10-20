@@ -1,6 +1,6 @@
 <!-- i18n:start -->
 [English](./README.md) · [简体中文](./README.zh-CN.md) · [日本語](./README.ja.md) · [한국어](./README.ko.md) · [Русский](./README.ru.md) · [Español](./README.es.md) · [Português (BR)](./README.pt-BR.md) · [Français](./README.fr.md) · Tiếng Việt
-<!-- i18n:meta locale=vi source=README.md source-blob=ccf4feacda4d25a7cbd63d3d1c7165c9b4b4cb00 status=translated -->
+<!-- i18n:meta locale=vi source=README.md source-blob=bbfd8f6275cd93591d4e3680f8dd35a7ec004b30 status=translated -->
 <!-- i18n:end -->
 
 # API
@@ -16,6 +16,8 @@ Một React hook tùy chỉnh để tạo các hook `useUrlState` tùy chỉnh.
 - `defaultState: object` - Một object đại diện cho các giá trị state mặc định.
 - `router: object` - Object router với các phương thức `push` và `replace`
 - `getInitialState?: function` - Hàm tùy chọn trả về state ban đầu.
+- `basename?: string` - basename tùy chọn của router, được bỏ khỏi pathname trước khi ghi URL.
+- `canSeedFromUrl?: boolean` - `getInitialState` có đọc route đang được render hay không, mặc định là `true`. Một hook mount một mình sẽ bắt đầu từ đó thay vì từ state mà một hook đã unmount để lại. Truyền `false` khi router chỉ cập nhật `window.location` sau khi render, như Next.js.
 
 ### Trả về:
 

@@ -16,6 +16,8 @@ A custom React hook to create custom `useUrlState` hooks.
 - `defaultState: object` - An object representing the default state values.
 - `router: object` - Router object with `push` and `replace` methods
 - `getInitialState?: function` - Optional function that return initial state.
+- `basename?: string` - Optional router basename, stripped from the pathname before a URL write.
+- `canSeedFromUrl?: boolean` - Whether `getInitialState` reads the route being rendered, default `true`. A hook mounting alone then starts from it instead of the state an unmounted hook left. Pass `false` when the router moves `window.location` only after the render, as Next.js does.
 
 ### Returns:
 

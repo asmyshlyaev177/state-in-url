@@ -1,6 +1,6 @@
 <!-- i18n:start -->
 [English](./README.md) · 简体中文 · [日本語](./README.ja.md) · [한국어](./README.ko.md) · [Русский](./README.ru.md) · [Español](./README.es.md) · [Português (BR)](./README.pt-BR.md) · [Français](./README.fr.md) · [Tiếng Việt](./README.vi.md)
-<!-- i18n:meta locale=zh-CN source=README.md source-blob=ccf4feacda4d25a7cbd63d3d1c7165c9b4b4cb00 status=translated -->
+<!-- i18n:meta locale=zh-CN source=README.md source-blob=bbfd8f6275cd93591d4e3680f8dd35a7ec004b30 status=translated -->
 <!-- i18n:end -->
 
 # API
@@ -16,6 +16,8 @@
 - `defaultState: object` - 表示默认状态值的对象。
 - `router: object` - 具有 `push` 和 `replace` 方法的路由器对象。
 - `getInitialState?: function` - 返回初始状态的可选函数。
+- `basename?: string` - 可选的路由 basename，在写入 URL 前会从 pathname 中去掉。
+- `canSeedFromUrl?: boolean` - `getInitialState` 是否读取的是当前正在渲染的路由，默认为 `true`。单独挂载的 hook 会以它为起点，而不是沿用已卸载 hook 留下的状态。当路由器像 Next.js 那样在渲染之后才更新 `window.location` 时，传入 `false`。
 
 ### 返回值:
 
