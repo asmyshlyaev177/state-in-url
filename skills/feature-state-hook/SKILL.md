@@ -16,7 +16,7 @@ sources:
 metadata:
   type: core
   library: state-in-url
-  library_version: '8.0.0'
+  library_version: '8.0.1'
 ---
 
 # state-in-url — Feature state hook

@@ -33,7 +33,8 @@ export interface Router {
     replace: (href: string, opts?: object) => void;
 }
 export declare const routerHistory: Router;
-export declare const isSafari: boolean;
+export declare const isWebKitUserAgent: (userAgent: string) => boolean;
+export declare const isWebKit: boolean;
 export declare const popstateEv = "popstate";
 export declare function getSearch(): string;
 type UrlCb = () => void;

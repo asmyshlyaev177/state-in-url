@@ -1,1 +1,1 @@
-import e from"react";const o=typeof window==="undefined"?e.useEffect:e.useLayoutEffect;export{o as useIsomorphicLayoutEffect};
+import o from"react";const e=typeof window==="undefined"?o.useEffect:o.useLayoutEffect;export{e as useIsomorphicLayoutEffect};

@@ -1,3 +1,10 @@
+## [8.0.1](https://github.com/asmyshlyaev177/state-in-url/compare/v8.0.0...v8.0.1) (2026-10-20)
+
+
+### Bug Fixes
+
+* timing and race conditions issues ([0d2a297](https://github.com/asmyshlyaev177/state-in-url/commit/0d2a297807bf14655235391fdc0f44c6a54b3ff0))
+
 # [8.0.0](https://github.com/asmyshlyaev177/state-in-url/compare/v7.0.0...v8.0.0) (2026-09-22)
 
 
