@@ -76,13 +76,6 @@ function clearWriteInFlight() {
   unsubscribeFromUrl = undefined;
 }
 
-function clearWrites() {
-  clearTimeout(timer);
-  timer = undefined;
-  pendingUpdate = undefined;
-  clearWriteInFlight();
-}
-
 // Still on its way while the page shows the URL it left from. Any URL change ends it: Next discards and
 // a data router interrupts a navigation that another one overtakes.
 function getWriteInFlight() {
@@ -108,6 +101,8 @@ function recordSentWrite(to: string, search: string) {
 
 // Decided now, not at the call: the write this one undoes may have landed since.
 function sendWrite(write: PendingWrite) {
+  // the page moved on since the call; the write belongs to the route it was made on
+  if (write.pathname !== window.location.pathname) return;
   const live = getWriteInFlight();
   const to = write.pathname + write.search;
   if (live?.to === to) return;
@@ -166,8 +161,9 @@ export function useUrlStateBase<T extends JSONCompatible>(
     mountedHooks += 1;
     return () => {
       mountedHooks -= 1;
-      // a write waiting or on its way belongs to the hooks on the page
-      if (mountedHooks === 0) clearWrites();
+      // A write on its way belongs to the hooks on the page. A waiting write stays: a hook may
+      // call updateUrl and unmount at once, and the timer checks the route before sending.
+      if (mountedHooks === 0) clearWriteInFlight();
     };
   }, []);
 

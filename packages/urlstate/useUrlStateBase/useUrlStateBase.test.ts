@@ -598,7 +598,10 @@ describe('useUrlStateBase', () => {
     });
 
     describe('with existing queryParams', () => {
-      test('should only update fields from stateShape', () => {
+      test('should only update fields from stateShape', async () => {
+        vi.useFakeTimers({
+          toFake: ['setTimeout']
+        });
         vi.mocked(utils).isSSR = false;
         const sp = 'key=value123';
         const search = `?${sp}`;
@@ -625,7 +628,44 @@ describe('useUrlStateBase', () => {
         const call = stringify.mock.calls[0];
         expect(call[0]).toStrictEqual(newState);
         expect(call[1].toString()).toStrictEqual(sp);
+        // the write is sent after the delay, not left for the next test
+        await vi.advanceTimersByTime(700);
       });
+    });
+
+    test('a hook that unmounts right after the call still gets its write sent', async () => {
+      vi.useFakeTimers({
+        toFake: ['setTimeout']
+      });
+      vi.mocked(utils).isSSR = false;
+      // another hook stays on the page; the write it is left with clears when that one unmounts
+      renderHook(() => useUrlStateBase({ page: 1 }, router));
+      const { result, unmount } = renderHook(() => useUrlStateBase(shape, router));
+
+      act(() => {
+        result.current.updateUrl({ num: 50 });
+      });
+      unmount();
+      await vi.advanceTimersByTime(700);
+
+      expect(router.push).toHaveBeenNthCalledWith(1, '/?num=50', {});
+    });
+
+    test('a write is dropped once the page has left the route it was made on', async () => {
+      vi.useFakeTimers({
+        toFake: ['setTimeout']
+      });
+      vi.mocked(utils).isSSR = false;
+      const { result } = renderHook(() => useUrlStateBase(shape, router));
+
+      act(() => {
+        result.current.updateUrl({ num: 50 });
+      });
+      window.history.pushState(null, '', '/elsewhere');
+      await vi.advanceTimersByTime(700);
+      window.history.replaceState(null, '', '/');
+
+      expect(router.push).not.toHaveBeenCalled();
     });
   });
 
