@@ -1,3 +1,10 @@
+## [8.0.2](https://github.com/asmyshlyaev177/state-in-url/compare/v8.0.1...v8.0.2) (2026-10-20)
+
+
+### Bug Fixes
+
+* fix initial mount url parsing ([cb1dc61](https://github.com/asmyshlyaev177/state-in-url/commit/cb1dc61c3d729ada592849b045f2801187c2b363))
+
 ## [8.0.1](https://github.com/asmyshlyaev177/state-in-url/compare/v8.0.0...v8.0.1) (2026-10-20)
 
 
