@@ -1,6 +1,7 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import { Component } from '../../components/FewComponents/Component';
+import { Pager } from '../../components/FewComponents/Pager';
 
 const { id } = Astro.params;
 const to = id === '1' ? '2' : '1';
@@ -14,6 +15,7 @@ const searchParams = Object.fromEntries(Astro.url.searchParams);
 
     <Component client:load searchParams={searchParams} />
     <Component client:load searchParams={searchParams} />
+    <Pager client:load searchParams={searchParams} />
 
     <a href={newUrl} class="text-lg" data-testid="link">To Page {to}</a>
     <a href={`${newUrl}${Astro.url.search}`} class="text-lg" data-testid="link-sp">

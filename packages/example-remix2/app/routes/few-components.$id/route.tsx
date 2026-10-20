@@ -1,6 +1,10 @@
 import { Link, useLocation, useParams } from "@remix-run/react";
 
 import { Component } from "./Component";
+import { Pager } from "./Pager";
+
+// a URL write waits for its data request; tests hold it to keep the navigation in flight
+export const loader = () => null;
 
 export default function FewComponents() {
   const { id } = useParams<"id">();
@@ -15,6 +19,7 @@ export default function FewComponents() {
 
       <Component />
       <Component />
+      <Pager />
 
       <Link relative="path" to={newUrl} className="text-lg" data-testid="link">
         To Page {to}

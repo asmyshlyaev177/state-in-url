@@ -27,7 +27,14 @@ const router = createBrowserRouter([
     // NOTE: no need 3 links per page, but keep it so can reuse tests
     path: '/few-components',
     element: <LayoutFewComponents />,
-    children: [{ path: '/few-components/:id', element: <Page /> }],
+    children: [
+      {
+        path: '/few-components/:id',
+        element: <Page />,
+        // a URL write waits for this; tests hold the request to keep the navigation in flight
+        loader: () => fetch('/loader-ping').then(() => null),
+      },
+    ],
   },
 ]);
 

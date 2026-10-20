@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test';
 
-import { toHaveUrl, ignoredErrors } from '../testUtils';
+import { toHaveUrl, ignoredErrors, fillStateOnlyInput } from '../testUtils';
 
 const urls = [
   '/test-ssr',
@@ -191,4 +191,15 @@ test.describe('update', () => {
       await expect(page.getByTestId('parsed')).toHaveText(expectedText);
   });
   }
+});
+
+// Next 16 only: /test-link-props has the one input that calls setState and never setUrl, putting state ahead of the URL.
+test('clearing a value that is only in state', async ({ page }) => {
+  await page.goto('/test-link-props');
+  await fillStateOnlyInput(page, 'Alex');
+
+  await page.locator('#name').fill('');
+
+  await expect(page.locator('#name')).toHaveValue('');
+  await toHaveUrl(page, '/test-link-props');
 });

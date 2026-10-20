@@ -1,20 +1,22 @@
-import React from "react";
-import { Link, useLocation, useParams } from "react-router";
+import React from 'react';
+import { Link, useLocation, useParams } from 'react-router';
 
-import { Component } from "./Component";
+import { Component } from './Component';
+import { Pager } from './Pager';
 
 export function Page() {
-  const { id } = useParams<"id">();
-  const to = id === "1" ? "2" : "1";
+  const { id } = useParams<'id'>();
+  const to = id === '1' ? '2' : '1';
   const loc = useLocation();
   const newUrl = `../${to}`;
   const newUrlFull = `${newUrl}${loc.search}`;
 
   return (
-    <div className="flex flex-col gap-4 h-[1250px]" data-testid="wrapper">
+    <div className="flex h-[1250px] flex-col gap-4" data-testid="wrapper">
       <h1>Page {id}</h1>
 
       <Component />
+      <Pager />
 
       <Link to={newUrl} className="text-lg" data-testid="link">
         To Page {to}

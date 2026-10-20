@@ -114,10 +114,11 @@ export function useUrlState<T extends JSONCompatible>(
       useHistory
         ? routerHistory
         : {
+            // the method is the base hook's decision; `replace` in defOpts is only the default it decided from
             replace: (url: string, options?: NavigateOptions) =>
-              navigate(url, { ...defOpts, ...options }),
+              navigate(url, { ...defOpts, ...options, replace: true }),
             push: (url: string, options?: NavigateOptions) =>
-              navigate(url, { ...defOpts, ...options }),
+              navigate(url, { ...defOpts, ...options, replace: false }),
           },
     [navigate],
   );
