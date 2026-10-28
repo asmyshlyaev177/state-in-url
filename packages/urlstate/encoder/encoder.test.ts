@@ -178,6 +178,13 @@ describe('encoder', () => {
     expect(encode(undefined)).toStrictEqual("'∙undefined'");
   });
 
+  test.each(['⏲not-a-date', '∙undefined', '↪literal-prefix'])(
+    'round trips strings beginning with reserved markers: %s',
+    (value) => {
+      expect(decode(encode(value))).toBe(value);
+    },
+  );
+
   // no sense to handle this
   test('function', () => {
     expect(encode(() => { })).toStrictEqual("");

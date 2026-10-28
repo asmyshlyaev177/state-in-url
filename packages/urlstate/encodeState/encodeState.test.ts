@@ -169,4 +169,29 @@ describe('decodeState', () => {
       expect(decoded.from).not.toBeInstanceOf(Date);
     });
   });
+
+  describe('reserved-prefix strings', () => {
+    test.each(['⏲not-a-date', '∙undefined', '↪literal-prefix'])(
+      'round trips a top-level string beginning with a reserved marker: %s',
+      (value) => {
+        const state = { value };
+        const defaults = { value: '' };
+        expect(
+          decodeState(encodeState(state, defaults), defaults),
+        ).toEqual(state);
+      },
+    );
+
+    test('round trips reserved markers nested in an object', () => {
+      const state = {
+        filters: {
+          date: '⏲not-a-date',
+          missing: '∙undefined',
+          escape: '↪literal-prefix',
+        },
+      };
+      const defaults = { filters: { date: '', missing: '', escape: '' } };
+      expect(decodeState(encodeState(state, defaults), defaults)).toEqual(state);
+    });
+  });
 });
