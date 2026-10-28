@@ -5,8 +5,6 @@ const ENCODE_REGEX = /['"]/g;
 const ENCODE_QUOTE_MAP: Record<string, string> = { "'": '%27', '"': "'" };
 const DECODE_REGEX = /'|%27/g;
 const DECODE_QUOTE_MAP: Record<string, string> = { "'": '"', '%27': "'" };
-const ENC_REG = new RegExp(`^(${SYMBOLS.undefined}|${SYMBOLS.date})`);
-
 /**
  * Encode any JSON serializable value to URL friendly string
  *
@@ -17,10 +15,6 @@ const ENC_REG = new RegExp(`^(${SYMBOLS.undefined}|${SYMBOLS.date})`);
  */
 export function encode(payload: unknown): string {
   if (typeof payload === 'function' || typeof payload === 'symbol') return '';
-
-  if (isEncoded(payload)) {
-    return payload as string;
-  }
 
   return JSON.stringify(replacer('', payload)).replace(
     ENCODE_REGEX,
@@ -54,6 +48,15 @@ function replacer(_key: string, value: unknown): unknown {
 }
 
 export const encodePrimitive = (payload: Simple) => {
+  if (
+    typeof payload === 'string' &&
+    [SYMBOLS.escape, SYMBOLS.undefined, SYMBOLS.date].some((marker) =>
+      payload.startsWith(marker),
+    )
+  ) {
+    return SYMBOLS.escape + payload;
+  }
+
   switch (typeOf(payload)) {
     case 'date':
       return SYMBOLS.date + new Date(payload as Date).toISOString();
@@ -105,12 +108,12 @@ export function reviver(_key: string, value: unknown): unknown {
 }
 
 export const decodePrimitive = (str: string) => {
+  if (str?.startsWith?.(SYMBOLS.escape))
+    return str.slice(SYMBOLS.escape.length);
   if (str === SYMBOLS.undefined) return undefined;
   if (str?.startsWith?.(SYMBOLS.date)) return new Date(str.slice(1));
 
   return str;
 };
-
-const isEncoded = (val: unknown) => ENC_REG.test(String(val));
 
 export type CustomDecoded = ReturnType<typeof decodePrimitive>;
