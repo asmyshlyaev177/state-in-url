@@ -1,3 +1,10 @@
+## [8.0.3](https://github.com/asmyshlyaev177/state-in-url/compare/v8.0.2...v8.0.3) (2026-10-28)
+
+
+### Bug Fixes
+
+* preserve strings with reserved encoding prefixes ([e63b1e9](https://github.com/asmyshlyaev177/state-in-url/commit/e63b1e9e4910ae1a2c6dac926eba41a5340b2482))
+
 ## [8.0.2](https://github.com/asmyshlyaev177/state-in-url/compare/v8.0.1...v8.0.2) (2026-10-20)
 
 

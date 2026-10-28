@@ -17,7 +17,7 @@ sources:
 metadata:
   type: framework
   library: state-in-url
-  library_version: '8.0.2'
+  library_version: '8.0.3'
   framework: react
 ---
 
