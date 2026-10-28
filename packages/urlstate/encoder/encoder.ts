@@ -47,13 +47,11 @@ function replacer(_key: string, value: unknown): unknown {
   return value;
 }
 
+const hasReservedPrefix = (str: string) =>
+  Object.values(SYMBOLS).some((marker) => str.startsWith(marker));
+
 export const encodePrimitive = (payload: Simple) => {
-  if (
-    typeof payload === 'string' &&
-    [SYMBOLS.escape, SYMBOLS.undefined, SYMBOLS.date].some((marker) =>
-      payload.startsWith(marker),
-    )
-  ) {
+  if (typeof payload === 'string' && hasReservedPrefix(payload)) {
     return SYMBOLS.escape + payload;
   }
 
@@ -108,8 +106,12 @@ export function reviver(_key: string, value: unknown): unknown {
 }
 
 export const decodePrimitive = (str: string) => {
-  if (str?.startsWith?.(SYMBOLS.escape))
-    return str.slice(SYMBOLS.escape.length);
+  // the encoder only ever writes escape + marker; a lone escape is a user
+  // string from before the escape existed and must come back untouched
+  const unescaped = str?.startsWith?.(SYMBOLS.escape)
+    ? str.slice(SYMBOLS.escape.length)
+    : undefined;
+  if (unescaped !== undefined && hasReservedPrefix(unescaped)) return unescaped;
   if (str === SYMBOLS.undefined) return undefined;
   if (str?.startsWith?.(SYMBOLS.date)) return new Date(str.slice(1));
 
