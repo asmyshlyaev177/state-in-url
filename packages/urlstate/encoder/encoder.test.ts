@@ -185,6 +185,10 @@ describe('encoder', () => {
     },
   );
 
+  test('keeps a lone escape marker from a URL written before escaping existed', () => {
+    expect(decode("'↪literal-prefix'")).toBe('↪literal-prefix');
+  });
+
   // no sense to handle this
   test('function', () => {
     expect(encode(() => { })).toStrictEqual("");
